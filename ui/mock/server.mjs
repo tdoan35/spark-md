@@ -758,7 +758,8 @@ const server = http.createServer(async (req, res) => {
       if (!s && rest !== "") return json(res, 404, { error: "study_not_found" })
       if (!rest) {
         if (!s) return json(res, 404, { error: "study_not_found" })
-        return json(res, 200, { ...row(s), series: seriesFor(s), priors: priorsOf(s), job: s.job })
+        // The job's setTimeout handle is circular; leave it out of the response.
+        return json(res, 200, { ...row(s), series: seriesFor(s), priors: priorsOf(s), job: s.job && { ...s.job, timer: undefined } })
       }
       if (rest === "/findings") {
         if (!s) return json(res, 404, { error: "study_not_found" })
