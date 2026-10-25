@@ -1,0 +1,113 @@
+import { Component, Suspense, lazy, useEffect, useState, type ReactNode } from "react"
+import { viewerBus } from "@/api/viewer-bus"
+import type { Findings, StudyDetail, ViewerCommand } from "@/api/types"
+import { cn } from "@/lib/utils"
+import { Box, Images, Columns2, RotateCcw } from "lucide-react"
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { SlicesView } from "./slices-view"
+import { CompareView } from "./slices-view"
+import { ExtrasPanel } from "./extras-panel"
+import { ChatRail } from "./chat-rail"
+
+const Lung3D = lazy(() => import("./lung-3d"))
+
+type Mode = "3d" | "slices" | "compare"
+
+class ViewError extends Component<{ children: ReactNode }, { msg: string | null }> {
+  state = { msg: null as string | null }
+  static getDerivedStateFromError(e: unknown) {
+    return { msg: String(e) }
+  }
+  render() {
+    if (this.state.msg)
+      return <div className="grid h-full place-items-center p-6 text-center text-xs text-muted-foreground">3D scene unavailable: {this.state.msg}</div>
+    return this.props.children
+  }
+}
+
+export function ViewerPane({
+  uid, findings, selected, onSelect, study,
+}: {
+  uid: string
+  findings: Findings | undefined
+  selected: string | null
+  onSelect: (id: string) => void
+  study: StudyDetail
+}) {
+  const [mode, setMode] = useState<Mode>("3d")
+  const [extrasOpen, setExtrasOpen] = useState(false)
+  const [cmdTick, setCmdTick] = useState<{ command: ViewerCommand["command"]; nodule_id?: string } | null>(null)
+
+  useEffect(() => {
+    const off = viewerBus.subscribe((cmd) => {
+      if (cmd.study_uid !== uid) return
+      setCmdTick({ command: cmd.command, nodule_id: "nodule_id" in cmd ? cmd.nodule_id : undefined })
+      if (cmd.command === "show_nodule") {
+        setMode("3d")
+        if (cmd.nodule_id) onSelect(cmd.nodule_id)
+      } else if (cmd.command === "compare_prior") {
+        setMode("compare")
+        if (cmd.nodule_id) onSelect(cmd.nodule_id)
+      } else if (cmd.command === "reset_view") {
+        setMode("3d")
+      } else if (cmd.command === "show_extras") {
+        setExtrasOpen(true)
+      }
+    })
+    return off
+  }, [uid, onSelect])
+
+  const nodule = findings?.nodules.find((n) => n.nodule_id === selected)
+
+  return (
+    <div className="grid h-full min-h-0 grid-cols-[var(--chat-w)_minmax(0,1fr)]" style={{ containerType: "inline-size" }}>
+      <ChatRail uid={uid} />
+      <div className={cn("relative min-h-0 min-w-0 overflow-hidden rounded-lg bg-well", extrasOpen && "col-span-2")}>
+        <div className="flex h-9 items-center gap-2 px-2.5 text-[11px] text-white/60">
+          <ToggleGroup
+            type="single"
+            value={mode}
+            onValueChange={(v) => v && setMode(v as Mode)}
+            className="rounded-md bg-white/5"
+          >
+            <ToggleGroupItem value="3d" className="h-6 px-1.5 text-[11px] text-white/70 data-[state=on]:bg-white/15 data-[state=on]:text-white" aria-label="3D anatomy">
+              <Box className="mr-1 size-3.5" /> 3D anatomy
+            </ToggleGroupItem>
+            <ToggleGroupItem value="slices" className="h-6 px-1.5 text-[11px] text-white/70 data-[state=on]:bg-white/15 data-[state=on]:text-white" aria-label="CT slices">
+              <Images className="mr-1 size-3.5" /> CT slices
+            </ToggleGroupItem>
+            <ToggleGroupItem value="compare" className="h-6 px-1.5 text-[11px] text-white/70 data-[state=on]:bg-white/15 data-[state=on]:text-white" aria-label="Compare">
+              <Columns2 className="mr-1 size-3.5" /> Compare
+            </ToggleGroupItem>
+          </ToggleGroup>
+          <button
+            onClick={() => {
+              setMode("3d")
+              viewerBus.emit({ command: "reset_view", study_uid: uid })
+            }}
+            className="ml-auto flex h-6 items-center gap-1 rounded px-1.5 text-[11px] text-white/60 hover:bg-white/10 hover:text-white"
+            aria-label="Reset view"
+          >
+            <RotateCcw className="size-3.5" /> Reset
+          </button>
+          <span className="font-mono text-[10px] text-white/40">Synthetic preview · placeholder numbers</span>
+        </div>
+        <div className="absolute inset-x-0 bottom-0 top-9">
+          {mode === "3d" && (
+            <ViewError>
+              <Suspense fallback={<div className="grid h-full place-items-center text-[11px] text-white/50">Loading anatomy…</div>}>
+                <Lung3D uid={uid} findings={findings} selected={selected} onSelect={onSelect} command={cmdTick} />
+              </Suspense>
+            </ViewError>
+          )}
+          {mode === "slices" && <SlicesView findings={findings} selected={selected} onSelect={onSelect} />}
+          {mode === "compare" && <CompareView findings={findings} selected={selected} onSelect={onSelect} study={study} />}
+          <div className="pointer-events-none absolute bottom-2 left-3 font-mono text-[10px] text-white/40">
+            {study.timepoint} · {nodule ? `${nodule.lobe} · mean ${nodule.mean_mm ?? nodule.proposal?.mean_mm ?? "—"} mm` : "No nodule selected"}
+          </div>
+        </div>
+        {extrasOpen && <ExtrasPanel findings={findings} onClose={() => setExtrasOpen(false)} uid={uid} />}
+      </div>
+    </div>
+  )
+}
