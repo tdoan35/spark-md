@@ -1,4 +1,5 @@
-// Spark MD static serve + CDP smoke test (dev tool; not part of the product).
+// Spark MD Electron smoke test over CDP (dev tool, not part of the product).
+// Static-serves dist and proxies /api to the worker; drives the REAL electron/main.cjs.
 // Usage: node tools/smoke.mjs [port] [shots-dir]
 import http from "node:http"
 import fs from "node:fs"
@@ -8,26 +9,30 @@ import { spawn } from "node:child_process"
 const PORT = Number(process.argv[2] ?? 8099)
 const SHOTS = process.argv[3] ?? "/tmp/sparkmd-shots"
 const UI = path.resolve(import.meta.dirname, "..", "dist")
-const MOCK = process.env.MOCK_URL ?? "http://127.0.0.1:8101"
+const WORKER = process.env.WORKER_URL ?? "http://127.0.0.1:8100"
+const API = process.env.MOCK_URL ?? WORKER // mock at 8101 or the real worker at 8100
+const SERVE_STATIC = process.env.SERVE_STATIC !== "0"
 
-const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".woff2": "font/woff2", ".json": "application/json", ".glb": "model/gltf-binary" }
+const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".json": "application/json", ".glb": "model/gltf-binary" }
 
-// Static server for dist + a transparent proxy of /api to the mock worker.
-const server = http.createServer(async (req, res) => {
+const server = http.createServer((req, res) => {
   if (req.url.startsWith("/api/")) {
-    const target = new URL(req.url, MOCK)
-    const isSse = target.pathname === "/api/events"
+    const target = new URL(req.url, API)
     const up = http.request({ hostname: target.hostname, port: target.port, path: target.pathname + target.search, method: req.method, headers: { ...req.headers, host: target.host } }, (ur) => {
       res.writeHead(ur.statusCode, ur.headers)
       ur.pipe(res)
     })
     up.on("error", () => {
       res.writeHead(502)
-      res.end("worker down")
+      res.end("api down")
     })
     req.pipe(up)
-    if (isSse) req.socket.setTimeout(0)
+    if (target.pathname === "/api/events") req.socket.setTimeout(0)
     return
+  }
+  if (!SERVE_STATIC) {
+    res.writeHead(404)
+    return res.end()
   }
   let p = req.url.split("?")[0]
   if (p === "/") p = "/index.html"
@@ -42,35 +47,33 @@ const server = http.createServer(async (req, res) => {
 await new Promise((r) => server.listen(PORT, "127.0.0.1", r))
 
 fs.mkdirSync(SHOTS, { recursive: true })
-const CDP_PORT = 9333
+const CDP_PORT = Number(process.env.CDP_PORT ?? 9333)
 const electron = process.env.ELECTRON_BIN ?? path.resolve(import.meta.dirname, "..", "node_modules", ".bin", "electron")
 const proc = spawn(electron, [".", `--remote-debugging-port=${CDP_PORT}`, "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding"], {
   cwd: path.resolve(import.meta.dirname, ".."),
-  env: { ...process.env, SPARKMD_UI_URL: `http://127.0.0.1:${PORT}/` },
+  env: { ...process.env, SPARKMD_UI_URL: SERVE_STATIC ? `http://127.0.0.1:${PORT}/` : WORKER + "/" },
   stdio: ["ignore", "pipe", "pipe"],
 })
-proc.stderr.on("data", (d) => {
-  const s = String(d)
-  if (/blocked non-local/.test(s)) console.log("[smoke] main log:", s.trim())
-})
+const logLines = []
+proc.stdout.on("data", (d) => logLines.push(String(d)))
+proc.stderr.on("data", (d) => logLines.push(String(d)))
 
 const wait = (ms) => new Promise((r) => setTimeout(r, ms))
-let ws
 let seq = 0
 const pending = new Map()
 const netUrls = []
 async function connect() {
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 60; i++) {
     try {
       const list = await (await fetch(`http://127.0.0.1:${CDP_PORT}/json/list`)).json()
-      const page = list.find((t) => t.type === "page")
+      const page = list.find((t) => t.type === "page" && t.url.startsWith("http"))
       if (page) return page.webSocketDebuggerUrl
     } catch {
       /* electron still starting */
     }
     await wait(250)
   }
-  throw new Error("no CDP page")
+  throw new Error("no CDP page; log:\n" + logLines.join(""))
 }
 function send(method, params = {}) {
   const id = ++seq
@@ -82,17 +85,21 @@ async function ev(expression) {
   if (r.exceptionDetails) throw new Error(r.exceptionDetails.text + " " + (r.exceptionDetails.exception?.description ?? ""))
   return r.result.value
 }
-async function shot(name, full = true) {
-  const r = await send("Page.captureScreenshot", { format: "png", captureBeyondViewport: false, fromSurface: true })
+async function shot(name) {
+  const r = await send("Page.captureScreenshot", { format: "png", fromSurface: true })
   fs.writeFileSync(path.join(SHOTS, `${name}.png`), Buffer.from(r.data, "base64"))
-  return path.join(SHOTS, `${name}.png`)
 }
-const mouse = (type, x, y) => send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: 1 })
+async function click(x, y) {
+  for (const type of ["mousePressed", "mouseReleased"]) await send("Input.dispatchMouseEvent", { type, x, y, button: "left", clickCount: 1 })
+}
+async function clickText(text, nth = 0) {
+  const pos = await ev(`(() => { const els=[...document.querySelectorAll('button,[role=tab]')].filter(e=>e.innerText.trim().includes(${JSON.stringify(text)})); const el=els[${nth}]; if(!el) return null; const r=el.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
+  if (pos) await click(pos.x, pos.y)
+  return !!pos
+}
 
 const wsUrl = await connect()
-const { WebSocket } = await import("node:worker_threads") // node has global WebSocket since 22
-const WS = globalThis.WebSocket
-ws = new WS(wsUrl)
+const ws = new WebSocket(wsUrl)
 await new Promise((r) => (ws.onopen = r))
 ws.onmessage = (m) => {
   const msg = JSON.parse(m.data)
@@ -105,45 +112,92 @@ ws.onmessage = (m) => {
 await send("Runtime.enable")
 await send("Page.enable")
 await send("Network.enable")
+await send("Log.enable")
+const consoleErrors = []
+ws.addEventListener("message", (m) => {
+  const msg = JSON.parse(m.data)
+  if (msg.method === "Runtime.exceptionThrown") consoleErrors.push(msg.params.exceptionDetails.text + " " + (msg.params.exceptionDetails.exception?.description ?? ""))
+})
 await send("Emulation.setDeviceMetricsOverride", { width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false })
 await wait(4000)
 
 const report = {}
 await ev("document.documentElement.classList.remove('dark')")
-report.worklistRows = await ev("document.querySelectorAll('tbody tr').length")
+report.bodyStart = await ev("document.body.innerText.slice(0,600)")
+report.rowsHtml = await ev("document.querySelector('tbody')?.innerHTML.slice(0,400) ?? null")
+report.rows = await ev("document.querySelectorAll('tbody tr').length")
 report.disclaimer = await ev("document.body.innerText.includes('Research demo, not for clinical use')")
 report.overflow = await ev("document.documentElement.scrollHeight > window.innerHeight")
-report.tabs = await ev("document.querySelectorAll('[role=tab]').length")
 await shot("01-worklist")
 
-// Open the hero T0 study in the active empty slot.
-const heroRow = await ev(`(() => { const rows=[...document.querySelectorAll('tbody tr')]; const r=rows.find(r=>r.innerText.includes('134503')); if(!r) return null; const b=r.getBoundingClientRect(); return {x:b.x+120,y:b.y+15} })()`)
-report.heroRow = !!heroRow
-if (heroRow) {
-  await send("Input.dispatchMouseEvent", { type: "mousePressed", x: heroRow.x, y: heroRow.y, button: "left", clickCount: 1 })
-  await send("Input.dispatchMouseEvent", { type: "mouseReleased", x: heroRow.x, y: heroRow.y, button: "left", clickCount: 1 })
-  await wait(2200)
+const hero = await ev(`(() => { const r=[...document.querySelectorAll('tbody tr')].find(r=>r.innerText.includes(${JSON.stringify(process.env.HERO ?? "134503")})); if(!r) return null; const b=r.getBoundingClientRect(); return {x:b.x+120,y:b.y+15} })()`)
+report.heroRow = !!hero
+if (hero) {
+  await click(hero.x, hero.y)
+  await wait(2500)
 }
 report.url = await ev("location.hash")
-report.hasCanvas = await ev("!!document.querySelector('canvas')")
-report.canvasSize = await ev("(() => { const c=document.querySelector('canvas'); return c ? [c.width, c.height] : null })()")
-report.overview = await ev("document.body.innerText.slice(0, 1400)")
-await shot("02-study-3d")
-await wait(1500)
-await shot("03-study-3d-later")
+report.canvas = await ev("(() => { const c=document.querySelector('canvas'); return c ? [c.width,c.height] : null })()")
+report.studyBody = await ev("document.body.innerText.slice(600,2200)")
+await shot("02-study")
 
-report.nonLoopback = netUrls.filter((u) => !/^https?:\/\/(127\.0\.0\.1|localhost)(:|\/)/.test(u))
-report.requests = netUrls.length
+report.slicesClicked = await clickText("CT slices")
+await wait(900)
+report.sliceImgs = await ev("document.querySelectorAll('img[src*=stack_]').length")
+await shot("03-slices")
 
-// Slices tab
-const slicesBtn = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.textContent.includes('CT slices')); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
-if (slicesBtn) {
-  await mouse("mousePressed", slicesBtn.x, slicesBtn.y)
-  await mouse("mouseReleased", slicesBtn.x, slicesBtn.y)
-  await wait(900)
-  report.sliceImgs = await ev("document.querySelectorAll('img[src*=stack_]').length")
-  await shot("04-slices")
+report.compareClicked = await clickText("Compare")
+await wait(600)
+await shot("04-compare")
+
+report.slicesBack = await clickText("CT slices")
+await wait(600)
+report.toolbarBack = await clickText("3D anatomy")
+await wait(1200)
+
+// Chat: click a fixed phrase and wait for a streamed answer.
+report.chatClicked = await clickText("Show me the nodule")
+await wait(2500)
+report.chatText = await ev("document.body.innerText.includes('Talk to the scan')")
+await shot("05-chat")
+
+// Confirm flow (real worker fixtures): press Confirm if present.
+const confirmBtn = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.innerText.trim()==='Confirm' && !b.disabled); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
+report.confirmBtn = !!confirmBtn
+if (confirmBtn) {
+  await click(confirmBtn.x, confirmBtn.y)
+  await wait(2500)
+  await shot("06-confirmed")
+  report.assessmentText = await ev("document.body.innerText.match(/Lung-RADS [0-9ABX]+/)?.[0] ?? null")
+  report.afterConfirm = await ev("document.body.innerText.slice(700,1800)")
 }
+
+// Report sheet + Approve via a real mouse click.
+report.sheetBtn = await clickText("Review & approve")
+if (!report.sheetBtn) report.sheetBtn = await clickText("View approved reports")
+await wait(900)
+await shot("07-sheet")
+const approveBtn = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>/^Approve$/.test(b.innerText.trim())); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2,disabled:b.disabled} })()`)
+report.approveBtn = approveBtn ? { ...approveBtn, disabled: !!approveBtn.disabled } : null
+if (approveBtn && !approveBtn.disabled) {
+  await click(approveBtn.x, approveBtn.y)
+  await wait(1500)
+  await shot("08-approved")
+}
+await send('Input.dispatchKeyEvent', { type: 'keyDown', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 })
+await send('Input.dispatchKeyEvent', { type: 'keyUp', key: 'Escape', code: 'Escape', windowsVirtualKeyCode: 27 })
+await wait(500)
+
+report.inboxClicked = await ev(`(() => { const a=[...document.querySelectorAll('a[href="#/inbox"]')][0]; if(!a) return false; const r=a.getBoundingClientRect(); window.__inboxPos={x:r.x+r.width/2,y:r.y+r.height/2}; return true })()`)
+if (report.inboxClicked) { const p = await ev("window.__inboxPos"); await click(p.x, p.y) }
+await wait(1200)
+await shot("09-inbox")
+report.inboxRows = await ev("document.querySelectorAll('li button').length")
+
+report.nonLoopback = netUrls.filter((u) => !/^(https?|ws):\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/)/.test(u))
+report.requests = netUrls.length
+report.exceptions = consoleErrors.slice(0, 5)
+report.log = logLines.filter((l) => /blocked|Error|error/.test(l)).slice(0, 8)
 fs.writeFileSync(path.join(SHOTS, "report.json"), JSON.stringify(report, null, 1))
 console.log(JSON.stringify(report, null, 1))
 ws.close()

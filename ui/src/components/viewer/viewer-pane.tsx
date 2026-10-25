@@ -1,4 +1,5 @@
 import { Component, Suspense, lazy, useEffect, useState, type ReactNode } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { viewerBus } from "@/api/viewer-bus"
 import type { Findings, StudyDetail, ViewerCommand } from "@/api/types"
 import { cn } from "@/lib/utils"
@@ -37,6 +38,35 @@ export function ViewerPane({
   const [mode, setMode] = useState<Mode>("3d")
   const [extrasOpen, setExtrasOpen] = useState(false)
   const [cmdTick, setCmdTick] = useState<{ command: ViewerCommand["command"]; nodule_id?: string } | null>(null)
+  const qc = useQueryClient()
+
+  // A study that has not been organized/analyzed yet has nothing to show: start the job once
+  // (the worker long-polls and returns `awaiting_confirmation`; SSE then refreshes findings).
+  const needsAnalysis = study.status === "received" || study.status === "organized"
+  useEffect(() => {
+    if (!needsAnalysis) return
+    let cancelled = false
+    const series = study.series?.find((x) => x.eligible)
+    const run = async () => {
+      try {
+        if (series) {
+          await fetch(`/api/studies/${uid}/select-series`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ series_uid: series.series_uid, reason: series.eligible_reason ?? "eligible" }) })
+        }
+        await fetch(`/api/studies/${uid}/analyze`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ wait_s: 25 }) })
+      } catch {
+        /* SSE study_updated drives the refresh; a failed start shows in the log */
+      }
+      if (!cancelled) {
+        void qc.invalidateQueries({ queryKey: ["study", uid] })
+        void qc.invalidateQueries({ queryKey: ["findings", uid] })
+      }
+    }
+    void run()
+    return () => {
+      cancelled = true
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [needsAnalysis, uid, qc])
 
   useEffect(() => {
     const off = viewerBus.subscribe((cmd) => {
@@ -100,7 +130,7 @@ export function ViewerPane({
               </Suspense>
             </ViewError>
           )}
-          {mode === "slices" && <SlicesView findings={findings} selected={selected} onSelect={onSelect} />}
+          {mode === "slices" && <SlicesView uid={uid} findings={findings} selected={selected} onSelect={onSelect} />}
           {mode === "compare" && <CompareView findings={findings} selected={selected} onSelect={onSelect} study={study} />}
           <div className="pointer-events-none absolute bottom-2 left-3 font-mono text-[10px] text-white/40">
             {study.timepoint} · {nodule ? `${nodule.lobe} · mean ${nodule.mean_mm ?? nodule.proposal?.mean_mm ?? "—"} mm` : "No nodule selected"}

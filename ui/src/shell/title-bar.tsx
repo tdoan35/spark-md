@@ -38,10 +38,14 @@ export function TitleBar({
   useEffect(() => window.sparkmd?.onState((s) => setMaximized(s?.maximized ?? false)), [])
 
   const close = (id: string) => {
+    if (tabs.length === 1) {
+      onCloseTab(id)
+      return navigate("/")
+    }
     const idx = tabs.findIndex((t) => t.id === id)
     const next = tabs[idx + 1] ?? tabs[idx - 1]
+    if (id === activeId) navigate(next.path)
     onCloseTab(id)
-    if (id === activeId) navigate(next ? next.path : "/")
   }
 
   return (

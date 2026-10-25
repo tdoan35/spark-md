@@ -18,7 +18,7 @@ function Bracket({ box, w, h, color }: { box: [number, number, number, number] |
   )
 }
 
-export function SlicesView({ findings, selected, onSelect }: { findings: Findings | undefined; selected: string | null; onSelect: (id: string) => void }) {
+export function SlicesView({ uid, findings, selected, onSelect }: { uid: string; findings: Findings | undefined; selected: string | null; onSelect: (id: string) => void }) {
   const stack = findings?.assets.slice_stack ?? null
   const [color, setColor] = usePref("sparkmd-slice-color", false)
   const [index, setIndex] = useState<number | null>(null)
@@ -64,6 +64,8 @@ export function SlicesView({ findings, selected, onSelect }: { findings: Finding
 
   if (!stack) {
     const ks = findings.assets.key_slices ?? []
+    // The worker keys key slices by nodule id: /api/studies/<uid>/assets/key_axial_<nodule_id>.png
+    const urlFor = (name: string, k: { nodule_id: string | null }) => (k.nodule_id && name.includes(k.nodule_id) ? `/api/studies/${uid}/assets/key_axial_${k.nodule_id}.png` : name)
     const slice = ks.find((k) => k.nodule_id === selected) ?? ks[0]
     return (
       <div className="flex h-full flex-col">
@@ -75,7 +77,7 @@ export function SlicesView({ findings, selected, onSelect }: { findings: Finding
           {slice && (
             <div ref={wrap} className="relative" style={{ containerType: "size" }}>
               <div className="relative" style={{ width: "min(100cqw, calc(100cqh * 1))" }}>
-                <img src={slice.url} alt={`Key slice for ${slice.nodule_id}`} className="block w-full" style={{ imageRendering: "pixelated", filter: color ? "none" : "grayscale(1)" }} onLoad={() => setLoading(false)} />
+                <img src={urlFor(slice.url, slice)} alt={`Key slice for ${slice.nodule_id}`} className="block w-full" style={{ imageRendering: "pixelated", filter: color ? "none" : "grayscale(1)" }} onLoad={() => setLoading(false)} />
                 <Bracket box={slice.box_px} w={512} h={512} color="var(--warn)" />
               </div>
             </div>

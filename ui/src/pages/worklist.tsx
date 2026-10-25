@@ -42,13 +42,13 @@ export function WorklistPage() {
   const app = useApp()
   const { data, isLoading, isError } = useWorklist()
   const [busy, setBusy] = useState<string | null>(null)
-  const hero = useMemo(() => data?.find((r) => r.patient_id === "134503"), [data])
+  const hero = useMemo(() => data?.find((r) => r.patient_id === "134503" || r.patient_id === "fixture-134503"), [data])
   const heroReports = useReports(hero?.study_uid ?? null)
 
   const drop = async (tp: string) => {
     setBusy(tp)
     try {
-      await api.demoDrop("134503", tp)
+      await api.demoDrop(hero?.patient_id ?? "134503", tp)
       toast.success(`Dropped 134503 ${tp}`, { description: "The worker will analyze it; you confirm diameters." })
     } catch (e) {
       toast.error(String((e as Error).message))
@@ -69,8 +69,8 @@ export function WorklistPage() {
           </p>
         </div>
         <div className="flex items-center gap-1.5">
-          <Button variant="outline" size="sm" className="h-7 gap-1.5 text-xs" onClick={() => void drop("T0")} disabled={!!busy}>
-            {busy === "T0" ? <Loader2 className="size-3 animate-spin" /> : <Play className="size-3" />} Drop T0
+          <Button variant="outline" size="sm" className="h-7 gap-1.5 text-xs" onClick={() => void drop("T1")} disabled={!!busy || !hero}>
+            {busy === "T1" ? <Loader2 className="size-3 animate-spin" /> : <Play className="size-3" />} Drop next scan
           </Button>
           <Button
             size="sm"
