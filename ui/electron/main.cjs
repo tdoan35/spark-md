@@ -6,7 +6,9 @@ const path = require("node:path")
 const START_URL = process.env.SPARKMD_UI_URL || "http://127.0.0.1:8100/"
 const ALLOWED_HOSTS = new Set(["127.0.0.1", "::1", "10.77.0.1"])
 
-if (process.arch === "arm64") app.commandLine.appendSwitch("use-angle", "metal")
+// GB10 (linux arm64): gl-egl per 08; Mac dev: metal. Fallback on the box: --ozone-platform=x11.
+if (process.platform === "linux" && process.arch === "arm64") app.commandLine.appendSwitch("use-angle", "gl-egl")
+else if (process.platform === "darwin") app.commandLine.appendSwitch("use-angle", "metal")
 
 function hostAllowed(url) {
   try {
