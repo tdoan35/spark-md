@@ -87,7 +87,7 @@ export function StudyPage({ uid }: { uid: string }) {
           <div className="flex h-full w-(--inspector-w) flex-col">
             {awaiting && !findings?.assessment && (
               <div className="mt-2 flex items-center gap-1.5 bg-warn-soft px-3 py-1.5 text-[11px] text-warn dark:bg-warn-soft/30">
-                <AlertTriangle className="size-3" /> Needs confirmation — no category yet
+                <AlertTriangle className="size-3" /> {STATUS_LABEL.awaiting_confirmation} — no category yet
               </div>
             )}
             <Inspector uid={uid} tab={tab} setTab={setTab} findings={findings} selected={selected} setSelected={onSelectNodule} />
@@ -192,7 +192,7 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
         </div>
       ) : (
         <div className="rounded-md bg-warn-soft/70 px-2.5 py-2 text-[12px] leading-snug text-warn dark:bg-warn-soft/30">
-          <div className="mb-0.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide"><AlertTriangle className="size-3" /> Needs confirmation</div>
+          <div className="mb-0.5 flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wide"><AlertTriangle className="size-3" /> {STATUS_LABEL.awaiting_confirmation}</div>
           Confirm each diameter below. Growth, VDT and Lung-RADS are computed by code after the last confirm.
         </div>
       )}

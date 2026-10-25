@@ -44,9 +44,9 @@ export function shortId(uid: string) {
 
 export const STATUS_LABEL: Record<string, string> = {
   received: "Received",
-  organized: "Organizing",
+  organized: "Loading files",
   analyzing: "Analyzing",
-  awaiting_confirmation: "Needs confirmation",
+  awaiting_confirmation: "Awaiting Review",
   analyzed: "Analyzed",
   reported: "Awaiting approval",
   approved: "Approved",
