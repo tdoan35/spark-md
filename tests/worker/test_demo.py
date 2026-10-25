@@ -12,6 +12,7 @@ from fastapi.responses import JSONResponse
 
 from sparkmd.demo import install_demo
 from sparkmd.registry import Registry
+from sparkmd.netstats import NetStats
 
 
 class Events:
@@ -65,6 +66,7 @@ class DemoReplay(unittest.IsolatedAsyncioTestCase):
             jobs_lock=threading.RLock(), jobs={}, events=Events(), logs=[], netstats_resets=0, seeds=0,
         )
         self.worker.log = lambda *args: self.worker.logs.append(args)
+        self.netstats = NetStats(home/'net')
         self.worker.netstats = SimpleNamespace(reset=self.reset_netstats)
         self.worker.seed = self.seed
         self.worker.intake = Intake(self.worker)
@@ -88,6 +90,7 @@ class DemoReplay(unittest.IsolatedAsyncioTestCase):
 
     def reset_netstats(self):
         self.worker.netstats_resets += 1
+        return self.netstats.reset()
 
     def seed(self):
         self.worker.seeds += 1

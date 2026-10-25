@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS studies (
  study_date TEXT, rank INTEGER, timepoint TEXT, day_offset INTEGER,
  day_offset_source TEXT NOT NULL DEFAULT 'none', inbox_path TEXT, failure_reason TEXT,
  status TEXT NOT NULL DEFAULT 'received', priority TEXT NOT NULL DEFAULT 'routine',
- priority_reason TEXT, received_at TEXT NOT NULL
+ priority_reason TEXT, received_at TEXT NOT NULL, mode TEXT CHECK(mode IN ('live','cached'))
 );
 CREATE TABLE IF NOT EXISTS series (
  series_uid TEXT PRIMARY KEY, study_uid TEXT NOT NULL REFERENCES studies(study_uid) ON DELETE CASCADE,
@@ -77,6 +77,9 @@ class Registry:
         self.db.execute('PRAGMA foreign_keys=ON')
         self.db.execute('PRAGMA journal_mode=WAL')
         self.db.executescript(SCHEMA)
+        # Additive event-box migration; unanalysed/older rows keep unknown mode.
+        if 'mode' not in {row['name'] for row in self.db.execute('PRAGMA table_info(studies)')}:
+            self.db.execute("ALTER TABLE studies ADD COLUMN mode TEXT CHECK(mode IN ('live','cached'))")
         self.db.commit()
 
     @contextmanager

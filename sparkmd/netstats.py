@@ -38,6 +38,20 @@ class NetStats:
         self._rebaseline(interfaces)
         self._previous = interfaces
         self._link_up = any(up for up, _, _ in interfaces.values())
+        # Use the same physical counter read for the baseline and zero snapshot.
+        return self._snapshot(interfaces, 0, 0)
+
+    def _snapshot(self, interfaces, tx_bytes, rx_bytes):
+        return {
+            'tx_bytes': tx_bytes,
+            'rx_bytes': rx_bytes,
+            'since': self.since,
+            'interfaces': [
+                {'name': name, 'up': up, 'tx_bytes': tx}
+                for name, (up, tx, _) in interfaces.items()
+            ],
+            'link_up': self._link_up,
+        }
 
     def sample(self):
         interfaces = self._read()
@@ -65,13 +79,4 @@ class NetStats:
             rx_bytes += rx - base_rx
         self._previous = interfaces
         self._link_up = link_up
-        return {
-            'tx_bytes': tx_bytes,
-            'rx_bytes': rx_bytes,
-            'since': self.since,
-            'interfaces': [
-                {'name': name, 'up': up, 'tx_bytes': tx}
-                for name, (up, tx, _) in interfaces.items()
-            ],
-            'link_up': link_up,
-        }
+        return self._snapshot(interfaces, tx_bytes, rx_bytes)

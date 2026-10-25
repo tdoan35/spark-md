@@ -3,7 +3,7 @@
 Each study waits for analysis, diameter confirmation, both drafts, and both human
 approvals before the next drop. Cached mode selects recorded v0.3+ proposals in
 the worker; stop drains any active intake before returning. Reset is explicit.
-Reset restores three cached, unconfirmed cohort baselines; the hero is replay-only.
+Reset restores four cached, unconfirmed cohort baselines; the hero is replay-only.
 """
 
 import asyncio
@@ -187,11 +187,13 @@ def install_demo(app, worker, gate):
             if worker.config.fake_seed and not values.get('empty'):
                 worker.seed()
             seeded = await seed_background(worker, plans)
-            worker.netstats.reset()
             worker.events.emit('worklist_changed', {'reason': 'reset', 'study_uid': None})
             update(replaying=False, patient_id=None, timepoint=None, speed=1, mode='live', phase='idle', waiting_for=None)
             worker.log('system', 'Demo reset; human confirmation and approval required', None)
-        return {'ok': True, 'seeded': seeded}
+            # Snapshot exactly at reset completion; later physical traffic still counts.
+            net_stats = worker.netstats.reset()
+            worker.events.emit('net_stats', net_stats)
+        return {'ok': True, 'seeded': seeded, 'net_stats': net_stats}
 
     @app.get('/api/demo/state')
     async def demo_state(request: Request):

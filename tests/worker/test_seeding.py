@@ -12,6 +12,7 @@ import httpx
 from sparkmd.config import Config
 from sparkmd.demo import install_demo
 from sparkmd.findings import findings
+from sparkmd.netstats import NetStats
 from sparkmd.worker import Worker
 from tests.worker.test_state import dicom
 
@@ -21,7 +22,7 @@ class ResetSeeding(unittest.IsolatedAsyncioTestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.home = Path(self.tmp.name)
         self.entries = []
-        for index, (pid, cohort) in enumerate((('control-a', 'nlst_ctrl'), ('control-b', 'nlst_ctrl'), ('LIDC-case', 'lidc')), 1):
+        for index, (pid, cohort) in enumerate((('control-a', 'nlst_ctrl'), ('control-b', 'nlst_ctrl'), ('control-c', 'nlst_ctrl'), ('LIDC-case', 'lidc')), 1):
             uid = f'1.2.826.0.1.3680043.10.999.{index}'
             sid = uid+'.1'
             source = self.home/'backlog'/pid/'T0'
@@ -68,7 +69,7 @@ class ResetSeeding(unittest.IsolatedAsyncioTestCase):
         self.manifest_patch.stop()
         self.tmp.cleanup()
 
-    async def test_reset_seeds_only_three_pending_cohort_patients(self):
+    async def test_reset_seeds_only_four_pending_cohort_patients(self):
         # A prior hero row is reset, never silently re-seeded or analyzed.
         with self.worker.registry.transaction() as db:
             db.execute("INSERT INTO patients(patient_id) VALUES ('134503')")
@@ -77,14 +78,14 @@ class ResetSeeding(unittest.IsolatedAsyncioTestCase):
         response = await self.client.post('/api/demo/reset', json={})
         self.assertEqual(response.status_code, 200, response.text)
         seeded = response.json()['seeded']
-        self.assertEqual({s['patient_id'] for s in seeded}, {'control-a', 'control-b', 'LIDC-case'})
+        self.assertEqual({s['patient_id'] for s in seeded}, {'control-a', 'control-b', 'control-c', 'LIDC-case'})
         self.assertTrue(all(s['mode'] == 'cached' and s['status'] == 'awaiting_confirmation' for s in seeded))
         self.assertEqual(self.worker.registry.all("SELECT * FROM studies WHERE patient_id='134503'"), [])
         rows = self.worker.worklist()
-        self.assertEqual(len(rows), 3)
-        self.assertTrue(all(row['status'] == 'awaiting_confirmation' and row['lung_rads'] is None for row in rows))
+        self.assertEqual(len(rows), 4)
+        self.assertTrue(all(row['mode'] == 'cached' and row['status'] == 'awaiting_confirmation' and row['lung_rads'] is None for row in rows))
         cohorts = {row['patient_id']: row['cohort'] for row in self.worker.registry.all('SELECT * FROM patients')}
-        self.assertEqual([cohorts['control-a'], cohorts['control-b'], cohorts['LIDC-case']], ['nlst_ctrl', 'nlst_ctrl', 'lidc'])
+        self.assertEqual([cohorts['control-a'], cohorts['control-b'], cohorts['control-c'], cohorts['LIDC-case']], ['nlst_ctrl', 'nlst_ctrl', 'nlst_ctrl', 'lidc'])
         for row in rows:
             ui, _ = findings(self.worker, row['study_uid'])
             self.assertEqual(ui['nodules'][0]['proposal']['mean_mm'], 6.5)
@@ -103,23 +104,73 @@ class ResetSeeding(unittest.IsolatedAsyncioTestCase):
         for body in ({}, {}, {'empty': True}):
             response = await self.client.post('/api/demo/reset', json=body)
             self.assertEqual(response.status_code, 200, response.text)
-            self.assertEqual(len(self.worker.registry.all('SELECT * FROM studies')), 3)
-            self.assertEqual(len(self.worker.registry.all('SELECT * FROM nodules')), 3)
+            self.assertEqual(len(self.worker.registry.all('SELECT * FROM studies')), 4)
+            self.assertEqual(len(self.worker.registry.all('SELECT * FROM nodules')), 4)
             self.assertTrue(all(row['confirmed_at'] is None for row in self.worker.registry.all('SELECT * FROM nodules')))
             self.assertEqual(self.worker.registry.all('SELECT * FROM assessments'), [])
         self.assertTrue(all((self.home/'seed-cache'/entry['series_uid']/'nodules.json').exists() for entry in self.entries))
 
-    async def test_bad_cache_preflight_preserves_existing_registry(self):
+    async def test_missing_cache_preflight_preserves_existing_registry(self):
         response = await self.client.post('/api/demo/reset', json={})
         self.assertEqual(response.status_code, 200)
         before = self.worker.registry.all('SELECT * FROM studies ORDER BY study_uid')
         path = self.home/'seed-cache'/self.entries[1]['series_uid']/'nodules.json'
-        nodes = json.loads(path.read_text())
-        nodes[0]['proposed_short_mm'] = None
-        path.write_text(json.dumps(nodes))
+        path.unlink()
         response = await self.client.post('/api/demo/reset', json={})
         self.assertEqual(response.status_code, 422)
         self.assertEqual(self.worker.registry.all('SELECT * FROM studies ORDER BY study_uid'), before)
+
+    async def test_failed_A7_proposal_remains_pending_for_manual_measurement(self):
+        entry = self.entries[2]
+        path = self.home/'seed-cache'/entry['series_uid']/'nodules.json'
+        nodes = json.loads(path.read_text())
+        nodes[0].update(proposed_long_mm=None, proposed_short_mm=None, proposed_mean_mm=None,
+                        proposal_reason='core_below_minus600_hu')
+        path.write_text(json.dumps(nodes))
+        response = await self.client.post('/api/demo/reset', json={})
+        self.assertEqual(response.status_code, 200, response.text)
+        data, _ = findings(self.worker, entry['study_uid'])
+        self.assertEqual(data['pending_confirmation'], ['control-c-N1'])
+        self.assertIsNone(data['nodules'][0]['proposal']['mean_mm'])
+        self.assertEqual(data['nodules'][0]['proposal']['reason'], 'core_below_minus600_hu')
+        self.assertIsNone(data['assessment'])
+        self.assertEqual(self.worker.registry.all('SELECT * FROM reports'), [])
+
+    async def test_cached_row_mode_survives_worker_restart(self):
+        response = await self.client.post('/api/demo/reset', json={})
+        self.assertEqual(response.status_code, 200)
+        restarted = Worker(Config(home=self.home, fake=False, fake_seed=False, hook_url='', hook_token=''))
+        try:
+            rows = restarted.worklist()
+            self.assertEqual(len(rows), 4)
+            self.assertTrue(all(row['mode'] == 'cached' for row in rows))
+        finally:
+            restarted.registry.close()
+
+    async def test_reset_zero_snapshot_and_subsequent_physical_traffic(self):
+        root = self.home/'net'
+        interface = root/'lan'
+        (interface/'device').mkdir(parents=True)
+        (interface/'statistics').mkdir()
+        (interface/'operstate').write_text('up')
+        tx, rx = interface/'statistics'/'tx_bytes', interface/'statistics'/'rx_bytes'
+        tx.write_text('100')
+        rx.write_text('200')
+        self.worker.netstats = NetStats(root)
+        tx.write_text('150')
+        rx.write_text('250')
+        self.assertEqual(self.worker.netstats.sample()['tx_bytes'], 50)
+        response = await self.client.post('/api/demo/reset', json={})
+        self.assertEqual(response.status_code, 200)
+        snapshot = response.json()['net_stats']
+        self.assertEqual((snapshot['tx_bytes'], snapshot['rx_bytes']), (0, 0))
+        events = [frame for _, frame in self.worker.events.history if 'event: net_stats' in frame.splitlines()]
+        self.assertEqual(json.loads(events[-1].split('data: ', 1)[1]), snapshot)
+        tx.write_text('158')
+        rx.write_text('263')
+        after = self.worker.netstats.sample()
+        self.assertEqual((after['tx_bytes'], after['rx_bytes']), (8, 13))
+        self.assertEqual(after['since'], snapshot['since'])
 
     async def test_manifest_cannot_seed_hero(self):
         self.entries[0]['patient_id'] = '134503'

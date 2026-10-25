@@ -1,8 +1,9 @@
 """Build/10 reset seeds use audited local caches, never detector fallback or human gates.
 
-fixtures/demo-seeds.json selects two NLST controls and one LIDC baseline. Prepared
+fixtures/demo-seeds.json selects three NLST controls and one LIDC baseline. Prepared
 proposal/render caches live in SPARKMD_HOME/seed-cache so an explicit cold reset
 can clear active caches without losing the offline background seed inputs.
+Admitted A7 failures stay pending with their audit reason for manual measurement.
 """
 import asyncio
 import json
@@ -16,10 +17,10 @@ HERO = '134503'
 
 def seed_plan(home):
     entries = json.loads(MANIFEST.read_text())
-    if len(entries) != 3 or len({entry['patient_id'] for entry in entries}) != 3:
-        raise ValueError('background seeds require three distinct patients')
-    if sorted(entry['cohort'] for entry in entries) != ['lidc', 'nlst_ctrl', 'nlst_ctrl']:
-        raise ValueError('background seeds require two NLST controls and one LIDC case')
+    if len(entries) != 4 or len({entry['patient_id'] for entry in entries}) != 4:
+        raise ValueError('background seeds require four distinct patients')
+    if sorted(entry['cohort'] for entry in entries) != ['lidc', 'nlst_ctrl', 'nlst_ctrl', 'nlst_ctrl']:
+        raise ValueError('background seeds require three NLST controls and one LIDC case')
     for entry in entries:
         if entry['patient_id'] == HERO or entry['timepoint'] != 'T0':
             raise ValueError('the hero is replay-only; background seeds must be baselines')
@@ -30,11 +31,8 @@ def seed_plan(home):
             version = tuple(int(part) for part in metadata['pipeline_version'].split('.'))
         except (OSError, KeyError, TypeError, ValueError) as exc:
             raise ValueError(f"background seed cache unavailable: {entry['patient_id']}") from exc
-        if version < (0, 3, 0) or not nodes or any(
-            node.get('proposed_long_mm') is None or node.get('proposed_short_mm') is None
-            for node in nodes
-        ):
-            raise ValueError(f"background seed cache is not clean: {entry['patient_id']}")
+        if version < (0, 3, 0) or not nodes:
+            raise ValueError(f"background seed cache has no admitted proposals: {entry['patient_id']}")
     return entries
 
 

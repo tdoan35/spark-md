@@ -138,7 +138,8 @@ class Worker:
     def job_payload(self, job):
         study = self.registry.one('SELECT status FROM studies WHERE study_uid=?', (job['study_uid'],))
         return {k: job[k] for k in ('job_id', 'study_uid', 'state', 'stage', 'stage_index', 'error')} | {
-            'elapsed_s': round((job.get('ended', time.monotonic()) - job['started']), 3), 'study_status': study['status'] if study else None}
+            'elapsed_s': round((job.get('ended', time.monotonic()) - job['started']), 3),
+            'study_status': study['status'] if study else None, 'mode': job.get('mode')}
 
     def progress(self, job, stage):
         with self.jobs_lock:
@@ -228,6 +229,8 @@ class Worker:
             else:
                 from sparkmd.imaging import run_analysis
                 run_analysis(uid, registry=self.registry, home=self.config.home, progress=lambda stage: self.progress(job, stage))
+            with self.registry.transaction() as db:
+                db.execute('UPDATE studies SET mode=? WHERE study_uid=?', (job['mode'], uid))
             self.status(uid, 'awaiting_confirmation')
             if not self.registry.one('SELECT nodule_id FROM nodules WHERE study_uid=?', (uid,)):
                 if recompute(self, uid):
