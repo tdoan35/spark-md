@@ -99,6 +99,7 @@ async function click(x, y) {
 }
 async function clickText(text, nth = 0) {
   const pos = await ev(`(() => { const els=[...document.querySelectorAll('button,[role=tab]')].filter(e=>e.innerText.trim().includes(${JSON.stringify(text)})); const el=els[${nth}]; if(!el) return null; const r=el.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
+  if (!pos) return false
   if (pos) await click(pos.x, pos.y)
   return !!pos
 }
@@ -181,19 +182,26 @@ if (confirmBtn) {
 
 // Mock-only: drop T1 so the hero has a prior + a category change (worklist reorder check).
 if (MOCK_MODE) {
-  await clickText("Worklist")
+  report.worklistClick = await ev(`(() => { const a=document.querySelector('aside a[href="#/"]'); if(!a) return false; const r=a.getBoundingClientRect(); window.__wl={x:r.x+r.width/2,y:r.y+r.height/2}; return true })()`)
+  if (report.worklistClick) { const p = await ev("window.__wl"); await click(p.x, p.y) }
   await wait(700)
   const dropBtn = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.innerText.includes('Drop next scan')); if(!b||b.disabled) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
   if (dropBtn) await click(dropBtn.x, dropBtn.y)
-  await wait(6000)
-  report.worklistAfter = await ev("document.querySelector('tbody').innerText")
+  report.dropped = !!dropBtn
+  await wait(8000)
+  report.worklistAfter = await ev("document.querySelector('tbody')?.innerText ?? null")
+  report.hashAfterWorklist = await ev("location.hash")
+  report.tabsAfterWorklist = await ev("[...document.querySelectorAll('[role=tab]')].map(t=>t.innerText.trim())")
+  report.worklistBody = await ev("document.querySelector('main')?.innerText.slice(0,700)")
   const t1 = await ev(`(() => { const r=[...document.querySelectorAll('tbody tr')].find(r=>r.innerText.includes('T1')); if(!r) return null; const b=r.getBoundingClientRect(); return {x:b.x+120,y:b.y+15} })()`)
+  report.t1Row = !!t1
   if (t1) { await click(t1.x, t1.y); await wait(2500)
     const c2 = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.innerText.trim()==='Confirm' && !b.disabled); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
     if (c2) { await click(c2.x, c2.y); await wait(3000) }
     const c3 = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.innerText.trim()==='Confirm' && !b.disabled); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
     if (c3) { await click(c3.x, c3.y); await wait(3500) }
     report.t1Assessment = await ev("document.body.innerText.match(/Lung-RADS [0-9ABX]+/)?.[0] ?? null")
+    report.t1Body = await ev("document.querySelector('main')?.innerText.slice(0,900)")
     await shot("06b-t1")
   }
 }
