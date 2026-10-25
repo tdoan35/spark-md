@@ -4,7 +4,7 @@ import { CheckCheck, Loader2, Lock, X } from "lucide-react"
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { useReports } from "@/api/hooks"
+import { usePatientOf, useReports } from "@/api/hooks"
 import { qk } from "@/api/keys"
 import { api, ApiError } from "@/api/client"
 import { hm } from "@/lib/format"
@@ -18,6 +18,7 @@ type Tab = ReportKind
 
 export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpenChange: (v: boolean) => void; uid: string }) {
   const { data: reports, isLoading } = useReports(uid)
+  const patient = usePatientOf(uid)
   const [tab, setTab] = useState<Tab>("radiology")
   const [approver, setApprover] = useState(() => localStorage.getItem("sparkmd-approver") ?? "Dr. Joyce (demo)")
   const [result, setResult] = useState<ApproveResult | null>(null)
@@ -53,10 +54,13 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
       void qc.invalidateQueries({ queryKey: qk.outbox })
       void qc.invalidateQueries({ queryKey: qk.worklist })
       toast.success(r.already_approved ? "Already approved" : `Approved by ${name}`, {
-        description: r.already_approved ? `Approved earlier by ${r.report.approved_by ?? "a radiologist"}` : "Delivered to the EHR inbox",
+        description: r.already_approved ? `Approved earlier by ${r.report.approved_by ?? "a radiologist"}` : r.outbox_id != null ? "Delivered to the EHR inbox" : "Signed and filed",
       })
     } catch (e) {
-      if (e instanceof ApiError && e.status === 409) setError("Confirm all nodules before approving this study.")
+      if (e instanceof ApiError && e.status === 409) {
+        const code = (e.body as { error?: string } | null)?.error
+        setError(code === "confirm_all_first" ? "Confirm all nodules before approving this study." : code === "superseded report" ? "A newer draft exists. Reopen the report to approve the latest version." : `Not approved: ${code ?? "conflict"}`)
+      }
       else if (e instanceof ApiError && e.status === 403) setError("Approval only works from this device (loopback only).")
       else setError((e as Error).message ?? "Approve failed")
     } finally {
@@ -76,7 +80,7 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
       >
         <div className="flex h-full flex-col">
           <div className="border-b px-5 py-3">
-            <SheetTitle className="text-sm">Report review · patient {uid.split(".").pop()}</SheetTitle>
+            <SheetTitle className="text-sm">Report review · patient {patient ?? "—"}</SheetTitle>
             <SheetDescription className="mt-0.5 text-[11px]">Read the text, then approve. Only a human click approves — no tool, no shortcut.</SheetDescription>
             <div className="mt-2 flex gap-1">
               {(["radiology", "pcp_letter"] as Tab[]).map((k) => {
@@ -116,7 +120,7 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
           <div className="border-t px-5 py-3">
             {approved ? (
               <div className="flex items-center gap-2 rounded-md bg-ok-soft px-2.5 py-2 text-[12px] text-ok">
-                <CheckCheck className="size-4" /> Approved by {approved.approved_by} on {hm(approved.approved_at)} — delivered to the EHR inbox.
+                <CheckCheck className="size-4" /> Approved by {approved.approved_by} on {hm(approved.approved_at)}{approved.kind === "pcp_letter" ? " — delivered to the EHR inbox." : "."}
               </div>
             ) : (
               <div className="flex items-center gap-2">
