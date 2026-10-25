@@ -3,6 +3,11 @@
 Electron 44 + React 19 + Vite 8 + Tailwind v4 + shadcn, offline. Spec: `docs/build/08-ui.md`;
 build record and verification log: `docs/build/08-ui-status.md`.
 
+Brand palette (Oct 25): Paper `#EEF4ED`, Mist `#8DA9C4`, Blue `#134074`, Stone `#13315C`,
+Ink `#0B2545`. Semantic theme tokens live in `src/index.css`; light/dark logos are in
+`public/brand/`. Clinical status colors and CT imaging colors are unchanged. Full mapping:
+`docs/build/08-ui.md`, Parameters.
+
 ## Install (offline kit)
 
 ```bash

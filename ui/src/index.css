@@ -59,30 +59,35 @@
   --sidebar-width: 240px;
   --inspector-w: 380px;
   --chat-w: 300px;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --brand-paper: #EEF4ED;
+  --brand-mist: #8DA9C4;
+  --brand-blue: #134074;
+  --brand-stone: #13315C;
+  --brand-ink: #0B2545;
+  --background: var(--brand-paper);
+  --foreground: var(--brand-ink);
+  --card: var(--brand-paper);
+  --card-foreground: var(--brand-ink);
+  --popover: var(--brand-paper);
+  --popover-foreground: var(--brand-ink);
+  --primary: var(--brand-blue);
+  --primary-foreground: var(--brand-paper);
+  --secondary: color-mix(in srgb, var(--brand-mist) 20%, var(--brand-paper));
+  --secondary-foreground: var(--brand-stone);
+  --muted: var(--secondary);
+  --muted-foreground: color-mix(in srgb, var(--brand-stone) 80%, var(--brand-paper));
+  --accent: color-mix(in srgb, var(--brand-mist) 30%, var(--brand-paper));
+  --accent-foreground: var(--brand-ink);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --sidebar: oklch(0.965 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-accent: oklch(0.93 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --border: color-mix(in srgb, var(--brand-mist) 55%, var(--brand-paper));
+  --input: var(--border);
+  --ring: var(--brand-blue);
+  --sidebar: color-mix(in srgb, var(--brand-mist) 10%, var(--brand-paper));
+  --sidebar-foreground: var(--brand-ink);
+  --sidebar-accent: var(--accent);
+  --sidebar-accent-foreground: var(--brand-blue);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
   --run: #1d4ed8; --run-soft: #dbeafe;
   --ok: #15803d; --ok-soft: #dcfce7;
   --warn: #b45309; --warn-soft: #fef3c7;
@@ -92,30 +97,30 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
+  --background: var(--brand-ink);
+  --foreground: var(--brand-paper);
+  --card: var(--brand-stone);
+  --card-foreground: var(--brand-paper);
+  --popover: var(--brand-stone);
+  --popover-foreground: var(--brand-paper);
+  --primary: var(--brand-mist);
+  --primary-foreground: var(--brand-ink);
+  --secondary: var(--brand-stone);
+  --secondary-foreground: var(--brand-paper);
+  --muted: var(--brand-stone);
+  --muted-foreground: var(--brand-mist);
+  --accent: var(--brand-blue);
+  --accent-foreground: var(--brand-paper);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --sidebar: oklch(0.19 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --border: color-mix(in srgb, var(--brand-mist) 35%, var(--brand-ink));
+  --input: color-mix(in srgb, var(--brand-mist) 50%, var(--brand-ink));
+  --ring: var(--brand-mist);
+  --sidebar: var(--brand-stone);
+  --sidebar-foreground: var(--brand-paper);
+  --sidebar-accent: var(--brand-blue);
+  --sidebar-accent-foreground: var(--brand-paper);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--ring);
   --run: #93b4ff; --run-soft: #1e2d5a;
   --ok: #6ee7a0; --ok-soft: #12351f;
   --warn: #fbbf6a; --warn-soft: #3a2a0c;
@@ -135,7 +140,7 @@ html.maximized { --win-radius: 0px; }
 
 @layer base {
   * { @apply border-border outline-ring/50; }
-  /* Gray shell backing fills the gutters and rounded cutouts around the main surface.
+  /* Brand-tinted shell backing fills the gutters and rounded cutouts around the main surface.
      Square corners when maximized/fullscreen (html.maximized). */
   body { @apply bg-transparent text-foreground font-sans; overflow: hidden; }
   #root { background: var(--sidebar); border-radius: var(--win-radius); }

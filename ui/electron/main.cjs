@@ -29,7 +29,7 @@ function createWindow() {
     minWidth: 1280,
     minHeight: 800,
     frame: false,
-    backgroundColor: "#fafafa", // opaque: a transparent window costs compositor work on X11
+    backgroundColor: "#EEF4ED", // opaque: a transparent window costs compositor work on X11
     show: false,
     webPreferences: {
       contextIsolation: true,

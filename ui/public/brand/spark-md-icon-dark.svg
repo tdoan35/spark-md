@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img">
+  <title>Spark MD</title>
+  <rect x="0.6" y="0.6" width="118.8" height="118.8" rx="26" fill="#8DA9C4"/>
+  <circle cx="60" cy="60" r="36" fill="none" stroke="#8DA9C4" stroke-width="7"/>
+  <path d="M69.3 15 L36.8 64.7 L55.4 64.7 L47.6 105 L83.3 52.3 L63.1 52.3 Z" fill="#0B2545" stroke="#0B2545" stroke-width="3" stroke-linejoin="round"/>
+</svg>

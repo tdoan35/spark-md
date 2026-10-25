@@ -1,7 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120" role="img">
   <title>Spark MD</title>
-  <rect x="0.6" y="0.6" width="118.8" height="118.8" rx="26" fill="#F4F4F5" stroke="#D4D4D8" stroke-width="1.2"/>
-  <circle cx="60" cy="60" r="36" fill="none" stroke="#1B1B1F" stroke-width="7"/>
-  <path d="M69.3 15 L36.8 64.7 L55.4 64.7 L47.6 105 L83.3 52.3 L63.1 52.3 Z" fill="#F4F4F5" stroke="#F4F4F5" stroke-width="9" stroke-linejoin="round"/>
-  <path d="M69.3 15 L36.8 64.7 L55.4 64.7 L47.6 105 L83.3 52.3 L63.1 52.3 Z" fill="#E8742C" stroke="#E8742C" stroke-width="3" stroke-linejoin="round"/>
+  <rect x="0.6" y="0.6" width="118.8" height="118.8" rx="26" fill="#134074"/>
+  <circle cx="60" cy="60" r="36" fill="none" stroke="#134074" stroke-width="7"/>
+  <path d="M69.3 15 L36.8 64.7 L55.4 64.7 L47.6 105 L83.3 52.3 L63.1 52.3 Z" fill="#EEF4ED" stroke="#EEF4ED" stroke-width="3" stroke-linejoin="round"/>
 </svg>

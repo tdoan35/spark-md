@@ -50,7 +50,8 @@ export function Sidebar({ expanded }: { expanded: boolean }) {
       className="fixed inset-y-0 left-0 z-30 flex w-(--sidebar-w) flex-col rounded-tl-(--win-radius) rounded-bl-(--win-radius) bg-sidebar pb-3 pt-[calc(var(--titlebar-h)+10px)] transition-[width] duration-200 ease-linear"
     >
       <div className={cn("mb-3 flex items-center gap-2 px-3", !expanded && "justify-center px-0")}>
-        <img src="/brand/spark-md-icon.svg" alt="" className="size-7 shrink-0 rounded-lg" />
+        <img src="/brand/spark-md-icon.svg" alt="" className="size-7 shrink-0 rounded-lg dark:hidden" />
+        <img src="/brand/spark-md-icon-dark.svg" alt="" className="hidden size-7 shrink-0 rounded-lg dark:block" />
         {expanded && (
           <div className="min-w-0">
             <div className="truncate text-[13px] font-semibold leading-tight">Spark MD</div>
