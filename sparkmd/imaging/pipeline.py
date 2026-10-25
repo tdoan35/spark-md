@@ -10,6 +10,7 @@ import json
 import os
 from pathlib import Path
 import threading
+import time
 import uuid
 
 import nibabel as nib
@@ -55,7 +56,19 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
     scoped. GPU execution checks platform and MemAvailable before model load.
     """
     home = Path(home or os.environ.get('SPARKMD_HOME', '/srv/spark-md'))
-    progress = progress or (lambda stage: None)
+    notify = progress or (lambda stage: None)
+    stage_timings, current = {}, [None, time.perf_counter()]
+
+    def finish_stage():
+        now = time.perf_counter()
+        if current[0] is not None:
+            stage_timings[current[0]] = round(now - current[1], 6)
+        current[1] = now
+
+    def progress(stage):
+        finish_stage()
+        current[0] = stage
+        notify(stage)
     with _IMAGING_LOCK:
         progress('organize')
         study = registry.one('SELECT * FROM studies WHERE study_uid=?', (study_uid,))
@@ -129,5 +142,7 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
                     'unverified': ['GB10 detector smoke', 'day-of A7 seed/background choices',
                                    'solid type assumption', 'height-based lobes and translation-only matching']}
         _json(cache / 'findings.json', findings)
+        finish_stage()
+        _json(cache / 'stage_timings.json', stage_timings)
         return {'study_uid': study_uid, 'study_status': 'awaiting_confirmation', 'nodules': nodules,
                 'assessment': None, 'assets': findings['assets']}

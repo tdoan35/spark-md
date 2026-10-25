@@ -40,6 +40,7 @@ def require(status, data):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, required=True, help='Local hero DICOM root (T0 alone or all three studies)')
+    parser.add_argument('--timepoint', choices=('T0', 'T1', 'T2'), default='T0')
     args = parser.parse_args()
     from sparkmd.imaging.detector import check_gpu_host, bundle_location
     from sparkmd.imaging.series import summarize_series, select_series
@@ -63,16 +64,22 @@ def main():
     if health.get('placeholder'):
         raise RuntimeError('Worker uses fake imaging; restart without SPARKMD_FAKE_IMAGING')
     rows = [summarize_series(path) for path in sorted({p.parent for p in args.source.rglob('*.dcm')})]
-    hero = next((r for r in rows if r['series_uid'] == T0_SERIES), None)
-    if hero is None:
-        raise RuntimeError(f'Source does not contain hero T0 series {T0_SERIES}')
+    studies = sorted({(r['study_date'], r['study_uid']) for r in rows})
+    rank = int(args.timepoint[1])
+    if rank >= len(studies):
+        raise RuntimeError(f'Source lacks {args.timepoint}; provide the complete hero root')
+    study_uid = studies[rank][1]
+    rows = select_series([r for r in rows if r['study_uid'] == study_uid])
+    selected = next(r for r in rows if r['selected'])
+    series_uid = selected['series_uid']
+    if args.timepoint == 'T0' and series_uid != T0_SERIES:
+        raise RuntimeError(f'Unexpected T0 series selection: {selected}')
+    hero = selected
     header = pydicom.dcmread(next(Path(hero['path']).glob('*.dcm')), stop_before_pixels=True)
     if str(header.PatientID) != '134503':
         raise RuntimeError('Hero PatientID mismatch')
-    rows = select_series([r for r in rows if r['study_uid'] == hero['study_uid']])
-    selected = next(r for r in rows if r['selected'])
-    if selected['series_uid'] != T0_SERIES or selected['kernel'].upper() != 'B30F':
-        raise RuntimeError(f'Unexpected T0 series selection: {selected}')
+    if selected['kernel'].upper() != 'B30F':
+        raise RuntimeError(f'Unexpected hero series selection: {selected}')
     uid = hero['study_uid']
     home = Path(os.environ.get('SPARKMD_HOME', '/srv/spark-md'))
     status, study = request(base, '/api/studies/' + uid)
@@ -92,14 +99,14 @@ def main():
                 break
             time.sleep(1)
         else:
-            raise RuntimeError('Intake did not organize T0 within 45 s; inspect worker log')
+            raise RuntimeError(f'Intake did not organize {args.timepoint} within 45 s; inspect worker log')
     study = require(status, study)
     if study['status'] == 'failed':
         raise RuntimeError(f'Existing study failed: {study.get("failure_reason")}; inspect before rerunning')
     if study['status'] != 'organized':
-        raise RuntimeError(f'First-run check requires organized T0, got {study["status"]}; no reset or overwrite performed')
-    require(*request(base, f'/api/studies/{uid}/select-series', {'series_uid': T0_SERIES, 'reason': 'G2 first real hero T0 run; B30f 2 mm'}))
-    print(json.dumps({'selected': T0_SERIES, 'study_uid': uid, 'kernel': selected['kernel'], 'instances': selected['n_instances']}), flush=True)
+        raise RuntimeError(f'First-run check requires organized {args.timepoint}, got {study["status"]}; no reset or overwrite performed')
+    require(*request(base, f'/api/studies/{uid}/select-series', {'series_uid': series_uid, 'reason': f'G2 first real hero {args.timepoint} run; B30f 2 mm'}))
+    print(json.dumps({'selected': series_uid, 'study_uid': uid, 'kernel': selected['kernel'], 'instances': selected['n_instances']}), flush=True)
     deadline, previous = time.monotonic() + 300, None
     while time.monotonic() < deadline:
         job = require(*request(base, f'/api/studies/{uid}/analyze', {'wait_s': 1}))
@@ -129,8 +136,9 @@ def main():
         with urllib.request.urlopen(base + item['url'], timeout=15) as response:
             if response.read(8) != b'\x89PNG\r\n\x1a\n':
                 raise RuntimeError(f'Key slice is not PNG: {item}')
-    print(json.dumps({'G2': 'PASS', 'study_uid': uid, 'series_uid': T0_SERIES, 'elapsed_s': job['elapsed_s'],
+    print(json.dumps({'G2': 'PASS', 'timepoint': args.timepoint, 'study_uid': uid, 'series_uid': series_uid, 'elapsed_s': job['elapsed_s'],
                       'pending_confirmation': findings['pending_confirmation'],
+                      'proposals': [{'nodule_id': n['nodule_id'], 'det_score': n['det_score'], **n['proposal']} for n in nodules],
                       'lobes': [n['lobe'] for n in nodules], 'assessment': None,
                       'next': f'Open {base}; research demo, not for clinical use. Review proposals and click Confirm manually.'}), flush=True)
 

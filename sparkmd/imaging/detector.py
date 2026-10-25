@@ -92,7 +92,9 @@ def detect(volume_path, models=None):
         checkpoint = torch.load(root / 'models' / 'model.pt', map_location='cpu', weights_only=True)
         network.load_state_dict(checkpoint.get('model', checkpoint), strict=True)
         del checkpoint
-        network.eval()
+        # RetinaNetDetector has its own training flag; network.eval() alone
+        # still enters its ground-truth/loss branch.
+        detector.eval()
         # Use shipped raw-volume transform parameters, without the optional ITK dependency.
         transforms = config['preprocessing']['transforms']
         spacing = next(t['pixdim'] for t in transforms if t['_target_'] == 'Spacingd')

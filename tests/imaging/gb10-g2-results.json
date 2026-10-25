@@ -1,0 +1,813 @@
+{
+  "gate": "G2",
+  "cli_result": "PASS: T0/T1/T2",
+  "machine": "event Dell GB10 Linux aarch64",
+  "date": "2026-10-25",
+  "python": "/home/dell/.venvs/spark-md/bin/python",
+  "home": "/home/dell/spark-md-runtime-g2",
+  "models": "/home/dell/spark-md/models",
+  "offline_flags": {
+    "HF_HUB_OFFLINE": "1",
+    "TRANSFORMERS_OFFLINE": "1",
+    "NEMOCLAW_DISABLE_TELEMETRY": "1"
+  },
+  "versions": {
+    "torch": "2.13.0+cu130",
+    "monai": "1.6.1",
+    "numpy": "2.5.4",
+    "pydicom": "3.0.2",
+    "nibabel": "5.4.2",
+    "scipy": "1.18.1",
+    "scikit-image": "0.26.0"
+  },
+  "first_attempt": {
+    "home": "/home/dell/spark-md-runtime",
+    "timepoint": "T0",
+    "state": "failed",
+    "stage": "detect",
+    "elapsed_s": 7.772,
+    "reason": "ValueError: Please provide ground truth targets during training.",
+    "fix": "Set RetinaNetDetector.eval(), not only the underlying network.eval().",
+    "preserved": true
+  },
+  "verification": {
+    "rules": "10 passed",
+    "imaging": "28 passed, 1 Mac-only test skipped",
+    "clinical_values": "No human confirmation or approval; accepted diameters, volumes and assessments remain null.",
+    "key_slices": "All 18 candidate key slices downloaded through worker API with PNG signatures.",
+    "visual": "Top-score T0/T1/T2 original-grid CT crops with A7 masks and detector boxes inspected: masks localize to targets; boundary accuracy not established.",
+    "ui_limit": "Browser launch failed: Chrome for Testing has no linux/arm64 build; no local Chromium executable, UI node_modules or ui/dist available. Actual UI alignment unverified.",
+    "headroom": "free -g before every run and detector invocation; preflight MemAvailable ~80/78/78 GiB; no continuous peak-memory measurement.",
+    "interval_limit": "Isolated smoke home has no day_offsets.csv: day_offset=null; no growth/VDT/category asserted."
+  },
+  "timing_method": "time.perf_counter() at pipeline stage boundaries; segment includes A7 + threshold lung split, characterize includes mask writes, render includes PNG/registry/cache writes. Cold imports before first stage and intake excluded; job_elapsed_s is worker wall time. rules intentionally not run before human confirmation.",
+  "runs": [
+    {
+      "timepoint": "T0",
+      "study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693",
+      "series_uid": "1.2.840.113654.2.55.191672868291879989699384719070844674759",
+      "status": "awaiting_confirmation",
+      "job": {
+        "job_id": "cbcbd36d18d245ddaa6d68cc44945039",
+        "study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693",
+        "state": "done",
+        "stage": "render",
+        "stage_index": 8,
+        "error": null,
+        "elapsed_s": 11.778,
+        "study_status": "awaiting_confirmation"
+      },
+      "stage_timings_s": {
+        "organize": 0.000125,
+        "select": 8.1e-05,
+        "volume": 1.927897,
+        "detect": 7.879478,
+        "segment": 1.755387,
+        "characterize": 0.001312,
+        "match": 0.00019,
+        "render": 0.087791
+      },
+      "pending_confirmation": [
+        "N2c287b64a14051cf82c71f84e425d173",
+        "Nd5313f8c74ab53a6a714a7fad51901b9",
+        "Nd6cf9f91a2785f0082d2772d5d7c9f10"
+      ],
+      "assessment": null,
+      "proposals": [
+        {
+          "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+          "center_mm": [
+            -60.5625,
+            192.5,
+            -230.75
+          ],
+          "det_score": 0.99951171875,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 7.7,
+            "short_mm": 5.2,
+            "mean_mm": 6.5,
+            "box_mean_mm": 7.1,
+            "reason": null
+          },
+          "lobe": "LLL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+            "prior_nodule_id": null,
+            "status": "new",
+            "confidence": "none",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [],
+            "candidates": [],
+            "prior_study_uid": null
+          }
+        },
+        {
+          "nodule_id": "Nd6cf9f91a2785f0082d2772d5d7c9f10",
+          "center_mm": [
+            54.3125,
+            125.75,
+            -79.3125
+          ],
+          "det_score": 0.9521484375,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 5.3,
+            "short_mm": 4.7,
+            "mean_mm": 5.0,
+            "box_mean_mm": 4.6,
+            "reason": null
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "Nd6cf9f91a2785f0082d2772d5d7c9f10",
+            "prior_nodule_id": null,
+            "status": "new",
+            "confidence": "none",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [],
+            "candidates": [],
+            "prior_study_uid": null
+          }
+        },
+        {
+          "nodule_id": "N2c287b64a14051cf82c71f84e425d173",
+          "center_mm": [
+            43.8125,
+            121.0,
+            -89.875
+          ],
+          "det_score": 0.60693359375,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 8.4,
+            "short_mm": 6.4,
+            "mean_mm": 7.4,
+            "box_mean_mm": 6.4,
+            "reason": null
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N2c287b64a14051cf82c71f84e425d173",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "nearest_lung_outside_mask"
+            ],
+            "candidates": [],
+            "prior_study_uid": null
+          }
+        }
+      ]
+    },
+    {
+      "timepoint": "T1",
+      "study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794",
+      "series_uid": "1.2.840.113654.2.55.22198691282350879638748709186011341024",
+      "status": "awaiting_confirmation",
+      "job": {
+        "job_id": "5b4117a8922e43b2a98efd7b2f9932be",
+        "study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794",
+        "state": "done",
+        "stage": "render",
+        "stage_index": 8,
+        "error": null,
+        "elapsed_s": 9.567,
+        "study_status": "awaiting_confirmation"
+      },
+      "stage_timings_s": {
+        "organize": 8.3e-05,
+        "select": 8.1e-05,
+        "volume": 1.98423,
+        "detect": 5.184919,
+        "segment": 2.206901,
+        "characterize": 0.00161,
+        "match": 0.000419,
+        "render": 0.185634
+      },
+      "pending_confirmation": [
+        "N171ebd90451f5fcaab562d561d47b15b",
+        "N294c5ae94f545e3c881041e3aa587c72",
+        "N3782c15df3bc503eaf9ee53090fccbff",
+        "N61f1206114c6592db139d2582a5ddd11",
+        "N795651b129cd5f2dbcda57502c2ef230",
+        "N9877d30667865792b8aefa7ef108759f",
+        "Nf4c94b2eb0e354e0811c67df1086fa6a"
+      ],
+      "assessment": null,
+      "proposals": [
+        {
+          "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+          "center_mm": [
+            -87.5,
+            191.5,
+            -217.5
+          ],
+          "det_score": 0.9990234375,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 11.1,
+            "short_mm": 9.7,
+            "mean_mm": 10.4,
+            "box_mean_mm": 9.6,
+            "reason": null
+          },
+          "lobe": "LLL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+            "prior_nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+            "status": "matched",
+            "confidence": "high",
+            "distance_mm": 2.8317338882746563,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "automatic_link_audited",
+              "approximate_lobe_rule"
+            ],
+            "candidates": [
+              {
+                "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+                "distance_mm": 2.8317338882746563
+              }
+            ],
+            "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+          }
+        },
+        {
+          "nodule_id": "N9877d30667865792b8aefa7ef108759f",
+          "center_mm": [
+            24.703125,
+            128.125,
+            -65.5
+          ],
+          "det_score": 0.810546875,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 6.1,
+            "short_mm": 4.8,
+            "mean_mm": 5.4,
+            "box_mean_mm": 4.7,
+            "reason": null
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N9877d30667865792b8aefa7ef108759f",
+            "prior_nodule_id": "Nd6cf9f91a2785f0082d2772d5d7c9f10",
+            "status": "matched",
+            "confidence": "high",
+            "distance_mm": 4.882062822203404,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "automatic_link_audited",
+              "approximate_lobe_rule"
+            ],
+            "candidates": [
+              {
+                "nodule_id": "Nd6cf9f91a2785f0082d2772d5d7c9f10",
+                "distance_mm": 4.882062822203404
+              }
+            ],
+            "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+          }
+        },
+        {
+          "nodule_id": "Nf4c94b2eb0e354e0811c67df1086fa6a",
+          "center_mm": [
+            -42.5,
+            318.5,
+            -347.5
+          ],
+          "det_score": 0.129150390625,
+          "proposal": {
+            "source": "A7",
+            "long_mm": null,
+            "short_mm": null,
+            "mean_mm": null,
+            "box_mean_mm": 9.9,
+            "reason": "core_below_minus600_hu"
+          },
+          "lobe": null,
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "Nf4c94b2eb0e354e0811c67df1086fa6a",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "missing_lobe_or_lung_frame"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+          }
+        },
+        {
+          "nodule_id": "N795651b129cd5f2dbcda57502c2ef230",
+          "center_mm": [
+            14.8203125,
+            123.1875,
+            -75.6875
+          ],
+          "det_score": 0.1019287109375,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 10.8,
+            "short_mm": 7.8,
+            "mean_mm": 9.3,
+            "box_mean_mm": 7.6,
+            "reason": null
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N795651b129cd5f2dbcda57502c2ef230",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "nearest_lung_outside_mask"
+            ],
+            "candidates": [
+              {
+                "nodule_id": "N2c287b64a14051cf82c71f84e425d173",
+                "distance_mm": 4.432597280369678
+              }
+            ],
+            "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+          }
+        },
+        {
+          "nodule_id": "N61f1206114c6592db139d2582a5ddd11",
+          "center_mm": [
+            -41.78125,
+            319.25,
+            -344.75
+          ],
+          "det_score": 0.046722412109375,
+          "proposal": {
+            "source": "A7",
+            "long_mm": null,
+            "short_mm": null,
+            "mean_mm": null,
+            "box_mean_mm": 10.5,
+            "reason": "core_below_minus600_hu"
+          },
+          "lobe": null,
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N61f1206114c6592db139d2582a5ddd11",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "missing_lobe_or_lung_frame"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+          }
+        },
+        {
+          "nodule_id": "N294c5ae94f545e3c881041e3aa587c72",
+          "center_mm": [
+            -33.25,
+            118.5,
+            -128.375
+          ],
+          "det_score": 0.0252227783203125,
+          "proposal": {
+            "source": "A7",
+            "long_mm": null,
+            "short_mm": null,
+            "mean_mm": null,
+            "box_mean_mm": 3.4,
+            "reason": "core_below_minus600_hu"
+          },
+          "lobe": "LUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N294c5ae94f545e3c881041e3aa587c72",
+            "prior_nodule_id": null,
+            "status": "new",
+            "confidence": "none",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+          }
+        },
+        {
+          "nodule_id": "N3782c15df3bc503eaf9ee53090fccbff",
+          "center_mm": [
+            -42.1875,
+            319.5,
+            -348.0
+          ],
+          "det_score": 0.02191162109375,
+          "proposal": {
+            "source": "A7",
+            "long_mm": null,
+            "short_mm": null,
+            "mean_mm": null,
+            "box_mean_mm": 6.2,
+            "reason": "core_below_minus600_hu"
+          },
+          "lobe": null,
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N3782c15df3bc503eaf9ee53090fccbff",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "missing_lobe_or_lung_frame"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+          }
+        }
+      ]
+    },
+    {
+      "timepoint": "T2",
+      "study_uid": "1.2.840.113654.2.55.278333827878071825845925251507545037002",
+      "series_uid": "1.2.840.113654.2.55.48229687676636292501867215868097032173",
+      "status": "awaiting_confirmation",
+      "job": {
+        "job_id": "67a6ec7ec3e640eca2311a97bda5cde5",
+        "study_uid": "1.2.840.113654.2.55.278333827878071825845925251507545037002",
+        "state": "done",
+        "stage": "render",
+        "stage_index": 8,
+        "error": null,
+        "elapsed_s": 12.751,
+        "study_status": "awaiting_confirmation"
+      },
+      "stage_timings_s": {
+        "organize": 3.9e-05,
+        "select": 4.5e-05,
+        "volume": 1.87322,
+        "detect": 8.507364,
+        "segment": 2.155063,
+        "characterize": 0.001943,
+        "match": 0.000464,
+        "render": 0.20953
+      },
+      "pending_confirmation": [
+        "N1e2a67d77885528e8df191cc5c0196a7",
+        "N27c8aabb84ad578d946d6a32aec299d3",
+        "N4eed869a6f6753298d6529504783a7e3",
+        "N65c81946b69f5fc296094688ac5a0cde",
+        "Naedbd4a572e8517686e70335a7fb7f3a",
+        "Nb1c3a958bfe5524a923e6a0c597b106f",
+        "Nd211b1f32d7d51fbb3326556e4137fc6",
+        "Neeaf7ce7e05054f7b119a772d7a802a9"
+      ],
+      "assessment": null,
+      "proposals": [
+        {
+          "nodule_id": "Neeaf7ce7e05054f7b119a772d7a802a9",
+          "center_mm": [
+            -63.29648208618164,
+            195.22232055664062,
+            -201.41159057617188
+          ],
+          "det_score": 0.9995608925819397,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 15.4,
+            "short_mm": 11.7,
+            "mean_mm": 13.6,
+            "box_mean_mm": 13.1,
+            "reason": null
+          },
+          "lobe": "LLL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "Neeaf7ce7e05054f7b119a772d7a802a9",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "incomplete_prior_geometry"
+            ],
+            "candidates": [
+              {
+                "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+                "distance_mm": 3.7370914253119003
+              }
+            ],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        },
+        {
+          "nodule_id": "Naedbd4a572e8517686e70335a7fb7f3a",
+          "center_mm": [
+            54.66436767578125,
+            129.17251586914062,
+            -58.842620849609375
+          ],
+          "det_score": 0.7138307690620422,
+          "proposal": {
+            "source": "A7",
+            "long_mm": null,
+            "short_mm": null,
+            "mean_mm": null,
+            "box_mean_mm": 4.6,
+            "reason": "core_below_minus600_hu"
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "Naedbd4a572e8517686e70335a7fb7f3a",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "incomplete_prior_geometry"
+            ],
+            "candidates": [
+              {
+                "nodule_id": "N9877d30667865792b8aefa7ef108759f",
+                "distance_mm": 8.921935878969778
+              }
+            ],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        },
+        {
+          "nodule_id": "N65c81946b69f5fc296094688ac5a0cde",
+          "center_mm": [
+            -20.755443572998047,
+            89.87064361572266,
+            -141.84982299804688
+          ],
+          "det_score": 0.4399879574775696,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 6.6,
+            "short_mm": 4.6,
+            "mean_mm": 5.6,
+            "box_mean_mm": 5.2,
+            "reason": null
+          },
+          "lobe": "LUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N65c81946b69f5fc296094688ac5a0cde",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "incomplete_prior_geometry"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        },
+        {
+          "nodule_id": "N4eed869a6f6753298d6529504783a7e3",
+          "center_mm": [
+            46.19068908691406,
+            123.84414672851562,
+            -70.00137329101562
+          ],
+          "det_score": 0.3199707567691803,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 7.8,
+            "short_mm": 5.6,
+            "mean_mm": 6.7,
+            "box_mean_mm": 5.4,
+            "reason": null
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N4eed869a6f6753298d6529504783a7e3",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "incomplete_prior_geometry"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        },
+        {
+          "nodule_id": "Nd211b1f32d7d51fbb3326556e4137fc6",
+          "center_mm": [
+            47.519691467285156,
+            125.52299499511719,
+            -67.75009155273438
+          ],
+          "det_score": 0.12126888334751129,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 6.9,
+            "short_mm": 4.2,
+            "mean_mm": 5.6,
+            "box_mean_mm": 6.9,
+            "reason": null
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "Nd211b1f32d7d51fbb3326556e4137fc6",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "incomplete_prior_geometry"
+            ],
+            "candidates": [
+              {
+                "nodule_id": "N795651b129cd5f2dbcda57502c2ef230",
+                "distance_mm": 9.673006817284389
+              }
+            ],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        },
+        {
+          "nodule_id": "N1e2a67d77885528e8df191cc5c0196a7",
+          "center_mm": [
+            -18.288585662841797,
+            92.03872680664062,
+            -140.10665893554688
+          ],
+          "det_score": 0.06548520922660828,
+          "proposal": {
+            "source": "A7",
+            "long_mm": null,
+            "short_mm": null,
+            "mean_mm": null,
+            "box_mean_mm": 7.8,
+            "reason": "core_below_minus600_hu"
+          },
+          "lobe": "LUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N1e2a67d77885528e8df191cc5c0196a7",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "incomplete_prior_geometry"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        },
+        {
+          "nodule_id": "Nb1c3a958bfe5524a923e6a0c597b106f",
+          "center_mm": [
+            98.62251281738281,
+            156.57464599609375,
+            -70.73272705078125
+          ],
+          "det_score": 0.027272669598460197,
+          "proposal": {
+            "source": "A7",
+            "long_mm": 11.3,
+            "short_mm": 10.9,
+            "mean_mm": 11.1,
+            "box_mean_mm": 6.4,
+            "reason": null
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "Nb1c3a958bfe5524a923e6a0c597b106f",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "nearest_lung_outside_mask"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        },
+        {
+          "nodule_id": "N27c8aabb84ad578d946d6a32aec299d3",
+          "center_mm": [
+            58.04991912841797,
+            97.41035461425781,
+            -135.36285400390625
+          ],
+          "det_score": 0.025687135756015778,
+          "proposal": {
+            "source": "A7",
+            "long_mm": null,
+            "short_mm": null,
+            "mean_mm": null,
+            "box_mean_mm": 3.0,
+            "reason": "core_below_minus600_hu"
+          },
+          "lobe": "RUL (approximate)",
+          "long_mm": null,
+          "short_mm": null,
+          "mean_mm": null,
+          "volume_mm3": null,
+          "matching": {
+            "nodule_id": "N27c8aabb84ad578d946d6a32aec299d3",
+            "prior_nodule_id": null,
+            "status": "unresolved",
+            "confidence": "low",
+            "distance_mm": null,
+            "rule": "lobe-position-mutual-v1",
+            "flags": [
+              "incomplete_prior_geometry"
+            ],
+            "candidates": [],
+            "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+          }
+        }
+      ]
+    }
+  ]
+}

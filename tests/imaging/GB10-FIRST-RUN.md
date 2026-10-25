@@ -1,6 +1,6 @@
 # First GB10 run — hero T0 / G2
 
-Status: Mac CPU tests/smokes pass; **this runner and real detector inference are unverified on the event box**. Never install torch/MONAI on the Mac. Run only one heavy GPU job; do not use either coding Spark.
+Status: **event-box CLI G2 passed T0/T1/T2, Oct 25** on the locked Linux aarch64 stack, alongside the running LLM. First T0 failed because only the detector network was in eval mode; setting the `RetinaNetDetector` wrapper to eval fixed real inference. All sizes remain proposals, with null accepted sizes/assessments. Full timings, every candidate and failure reason: [`gb10-g2-results.json`](gb10-g2-results.json). Actual UI alignment remains unverified (no local Chromium/build); original-grid target CT/mask/box crops were inspected, not clinical boundaries.
 
 ## 1. Box preparation (once)
 
@@ -34,6 +34,10 @@ The runner checks Linux aarch64 GB10, free memory, offline flags, locked package
 
 If a run failed, inspect its job/error/cache before retrying. The runner never resets a study, cancels a job, overwrites confirmed evidence or mistakes an existing result for a fresh run. A 300 s timeout does not stop the worker's job.
 
+Event-box run used `~/.venvs/spark-md/bin/python`, `SPARKMD_KIT=$HOME/spark-md`, `SPARKMD_MODELS=$SPARKMD_KIT/models`, and isolated `SPARKMD_HOME=$HOME/spark-md-runtime-g2`. The original failed attempt remains in `$HOME/spark-md-runtime`; neither registry was reset. Run the command above sequentially with `--timepoint T0`, then `--timepoint T1`, then `--timepoint T2`, supplying the complete patient source root. The runner refuses existing completed/failed evidence, rather than treating it as a fresh run. Both smoke homes lack `day_offsets.csv`, so intervals remain unknown.
+
+All 18 candidates stayed visible/pending; 4 T1 and 3 T2 A7 proposals failed closed with `core_below_minus600_hu`. The highest-score hero linked T0→T1; T2 stayed unlinked with `incomplete_prior_geometry` (some prior candidates have no approximate lung/lobe frame). No confirmation, approval, growth, VDT or category was produced. The temporary smoke worker is stopped after evidence capture; caches/registries remain available for inspection.
+
 ## 3. Timing and audit checks
 
 Baseline only, from build/04 (Oct 24; **not event-box acceptance deadlines**):
@@ -46,7 +50,7 @@ Baseline only, from build/04 (Oct 24; **not event-box acceptance deadlines**):
 | Threshold lung split | Prototype ~2.3–2.7 s/study, laptop CPU; rebuilt Mac split 3.3–3.8 s on hero T0/T1/T2, Oct 25 |
 | A7, matching, key slices, cold imports | No per-stage GB10 measurement yet |
 
-Printed job `stage`/`elapsed_s` are sampled through the API, not exact profiler stage durations. Cache: `$SPARKMD_HOME/cache/<SeriesUID>/{candidates,nodules,lung_geometry,findings}.json`, `lung_sides.nii.gz`, `N*_proposal_mask.nii.gz`, `key_axial_N*.png`.
+Printed job `stage`/`elapsed_s` are sampled through the API, not exact profiler stage durations. `stage_timings.json` now records `perf_counter` wall time between pipeline stage callbacks: `segment` includes A7 + threshold lung split; `render` includes PNG, registry and cache writes. Intake and cold imports before the first stage are outside those stage timings; rules are intentionally not run before confirmation. Cache: `$SPARKMD_HOME/cache/<SeriesUID>/{candidates,nodules,lung_geometry,findings,stage_timings}.json`, `lung_sides.nii.gz`, `N*_proposal_mask.nii.gz`, `key_axial_N*.png`.
 
 All lobes say **approximate**: right superior/middle/inferior thirds; left superior/inferior halves, not fissures. Matching uses same-lobe lung-centered RAS positions, mutual nearest neighbors, ≤5 mm confident distance and ≥5 mm competitor margin; 5–10 mm or ambiguous/boundary/missing-frame cases are flagged and **not linked**. Every decision is in `nodules.json` and registry `agent_events` (`GET /api/agent-log?study_uid=<UID>&limit=100`); these direct registry audit writes do not themselves emit live SSE. Review low-confidence decisions before claiming longitudinal growth. Only confirmed diameters on a linked track feed growth/VDT/Lung-RADS.
 
