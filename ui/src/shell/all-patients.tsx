@@ -38,7 +38,7 @@ export function AllPatients({ expanded }: { expanded: boolean }) {
                   onClick={() => app.openStudy(rows[0].study_uid)}
                   className="flex h-8 w-full items-center gap-1.5 rounded-md px-2 text-left text-[13px] transition-colors hover:bg-sidebar-accent"
                 >
-                  <span className="min-w-0 flex-1 truncate font-mono tabular-nums">{patient_id}</span>
+                  <span className="min-w-0 flex-1 truncate font-mono tabular-nums">Patient {patient_id}</span>
                   <span className="text-[11px] text-muted-foreground">{rows.length} {rows.length === 1 ? "scan" : "scans"}</span>
                 </button>
               </li>

@@ -18,7 +18,7 @@ function StudyTabLabel({ uid }: { uid: string }) {
   if (!data) return <span>Study</span>
   return (
     <span className="flex min-w-0 items-baseline gap-1.5">
-      <span className="truncate font-medium">{data.patient_id}</span>
+      <span className="truncate font-medium">Patient {data.patient_id}</span>
       <span className="shrink-0 text-muted-foreground">· {data.timepoint}</span>
     </span>
   )

@@ -40,8 +40,7 @@ export function PriorityPatients({ expanded }: { expanded: boolean }) {
                   className="flex h-8 w-full items-center gap-1.5 rounded-md px-2 text-left text-[13px] transition-colors hover:bg-sidebar-accent"
                 >
                   <span className="min-w-0 flex-1 truncate">
-                    <span className="font-mono tabular-nums">{r.patient_id}</span>
-                    <span className="ml-1.5 text-[11px] text-muted-foreground">{r.timepoint}</span>
+                    <span className="font-mono tabular-nums">Patient {r.patient_id}</span>
                   </span>
                   <LungRadsBadge lr={r.lung_rads} />
                 </button>
