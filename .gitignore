@@ -12,3 +12,4 @@ wheelhouse/
 *.tar
 .DS_Store
 ._*
+*.tsbuildinfo
