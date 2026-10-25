@@ -1,4 +1,4 @@
-# UI handoff (agent U, Oct 25 ~13:10)
+# UI handoff (agent U, Oct 25 ~14:00)
 
 ## Done (all committed, `git log -- ui`)
 - 3D framing fixed on real anatomy (042e031): the bounding sphere skipped glb meshes nested under
@@ -31,7 +31,20 @@
 
 ## Waiting
 - G4 rehearsal 14:45 (real worker): banner + T1 assets check when T1 drops (T0 real assets verified).
-- V: real `/api/asr` + `/api/tts` on :8100, then re-run the voice E2E against it.
+- Real-mic + audible TTS check on the box display with Ty/Joyce (routes verified live).
+
+## Perf fix (41ab657, measured on :1 with real GL)
+- GPU process was ~100% CPU (continuous R3F loop; GL-on-EGL is CPU-bound). Now:
+  `frameloop="demand"` (drei CameraControls self-invalidates on change/rest, so drags + damped
+  tweens animate), `frameloop="never"` while the report sheet is open, `dpr={1}`, auto-rotate
+  removed (continuous animation is incompatible with demand), sheet/dialog overlays +
+  extras panel lost their backdrop-blur (plain scrim `bg-black/20`).
+- Measured (perf probe, real display): idle 0% · post-orbit settle 14.5% · sheet open 0.3%.
+  Canvas keeps its last frame while paused (verified in screenshots).
+- NOTE for Ty: 08 deviations by the perf order — auto-rotate gone, overlays unblurred.
+- Real voice chain verified on :8100: fake-device audio → real whisper.cpp (`command:null` on
+  tone, correct), phrase chip → real agent answer → `/api/tts` (real Qwen3-TTS). Real-mic +
+  audible playback still to check with Ty/Joyce on the box display.
 
 ## Run on the box
 ```bash
