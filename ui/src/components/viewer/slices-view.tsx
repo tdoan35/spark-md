@@ -58,6 +58,7 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
     return () => el.removeEventListener("wheel", onWheel)
   }, [stack])
 
+  // The mock names stack_NNN.jpg; the worker names stack_<i>.jpg with a raw index (08's `index_digits`).
   const url = (i: number) => (stack ? stack.url_pattern.replace("{i}", String(i).padStart(stack.index_digits, "0")) : null)
   // The worker writes key slices named for the nodule id; the mock uses per-study names.
   const keySliceUrl = (ks: KeySlice) => (ks.nodule_id && !ks.name.includes(ks.nodule_id) ? `/api/studies/${uid}/assets/key_axial_${ks.nodule_id}.png` : ks.url)

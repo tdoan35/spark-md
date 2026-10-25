@@ -153,6 +153,7 @@ if (hero) {
 }
 report.url = await ev("location.hash")
 report.canvas = await ev("(() => { const c=document.querySelector('canvas'); return c ? [c.width,c.height] : null })()")
+report.camBefore = await ev("(() => { const c=document.querySelector('canvas'); return c ? window.__cam ? window.__cam() : JSON.stringify([c.width,c.height]) : null })()")
 report.dbg = await ev("(() => { const t=document.createElement('canvas'); const g=t.getContext('webgl2'); return {webgl2: !!g, err: document.querySelector('main')?.innerText.includes('3D scene unavailable')} })()")
 report.gl = await ev(`(() => { const c=document.querySelector('canvas'); if(!c) return null; const g=c.getContext('webgl2'); if(!g) return 'no-context'; const d=g.getExtension('WEBGL_debug_renderer_info'); return { renderer: d ? g.getParameter(d.UNMASKED_RENDERER_WEBGL) : g.getParameter(g.RENDERER), vendor: d ? g.getParameter(d.UNMASKED_VENDOR_WEBGL) : g.getParameter(g.VENDOR) } })()`)
 report.studyBody = await ev("document.body.innerText.slice(600,2200)")
