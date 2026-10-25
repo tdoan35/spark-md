@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# whisper.cpp CUDA build (09 step 1): whisper-cli + whisper-server for bin/sparkmd-start --only asr.
+# Idempotent: rebuilds only when the server binary is missing or fails verification.
+# Build lives outside the repo in ~/sparkmd-voice (09; bin/sparkmd-lib.sh ASR_BIN default). No sudo.
+set -uo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/sparkmd-lib.sh"
+
+SRC="${SPARKMD_WHISPER_SRC:-$HOME/sparkmd-voice/whisper.cpp}"
+TARBALL="$ASR_MODEL_DIR/whisper.cpp-231638a.tar.gz"
+BUILD_LOG="$LOG_DIR/sparkmd-asr-build.log"
+
+verify() {  # 09: GB10 device line + the jfk transcript
+  local out
+  out="$("$SRC/build/bin/whisper-cli" -m "$ASR_MODEL_DIR/ggml-small.en.bin" -f "$SRC/samples/jfk.wav" -nt 2>&1)"
+  grep -q 'compute capability 12.1' <<<"$out" && grep -q 'fellow Americans' <<<"$out"
+}
+
+avail="$(mem_avail_gib)"
+(( avail >= MEM_FLOOR_GIB )) || { say FAIL asr-build "MemAvailable ${avail} GiB < ${MEM_FLOOR_GIB} GiB; free memory first"; summary; exit 1; }
+
+if [[ -x $ASR_BIN ]] && verify; then
+  say OK asr-build "already built and verified: $ASR_BIN"
+  summary; exit 0
+fi
+
+[[ -f $TARBALL ]] || { say FAIL asr-build "$TARBALL missing (drive copy)"; summary; exit 1; }
+[[ -x /usr/local/cuda/bin/nvcc ]] || { say FAIL asr-build "/usr/local/cuda/bin/nvcc missing"; summary; exit 1; }
+
+mkdir -p "$(dirname "$SRC")"
+[[ -d $SRC ]] || act tar xzf "$TARBALL" -C "$(dirname "$SRC")" || { say FAIL asr-build "tar extract failed"; summary; exit 1; }
+say OK asr-build "configuring + building (CUDA sm_121, -j$(nproc)); log $BUILD_LOG"
+act bash -c 'cd "$1" && PATH=/usr/local/cuda/bin:$PATH cmake -B build -DGGML_CUDA=1 -DCMAKE_CUDA_ARCHITECTURES=121 -DCMAKE_BUILD_TYPE=Release >>"$2" 2>&1 && cmake --build build -j $(nproc) --target whisper-cli whisper-server >>"$2" 2>&1' \
+  _ "$SRC" "$BUILD_LOG" || { say FAIL asr-build "build failed; tail $BUILD_LOG"; summary; exit 1; }
+[[ -x $ASR_BIN ]] || { say FAIL asr-build "$ASR_BIN missing after build; tail $BUILD_LOG"; summary; exit 1; }
+if verify; then say OK asr-build "verified: GB10 CUDA + jfk transcript ($ASR_BIN)"
+else say FAIL asr-build "verification failed; tail $BUILD_LOG"; summary; exit 1; fi
+summary

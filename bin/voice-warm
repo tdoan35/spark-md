@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# One warm-up TTS request after the container is up (09 step 5): the first request captures CUDA graphs,
+# so the demo's first spoken answer stays under ~1 s. Run after bin/sparkmd-start --only tts.
+set -uo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/sparkmd-lib.sh"
+
+OUT="${SPARKMD_TTS_WARM_WAV:-$LOG_DIR/tts-warmup.wav}"
+
+if ! c_tts; then
+  say WARN tts-warm "TTS not up on 127.0.0.1:8020 yet; waiting up to 120 s (bin/sparkmd-start --only tts first)"
+  wait_for 120 c_tts || { say FAIL tts-warm "TTS /health never answered; docker logs $TTS_CONTAINER"; summary; exit 1; }
+fi
+
+started=$SECONDS
+act curl -sf -m 60 http://127.0.0.1:8020/v1/audio/speech -H 'Content-Type: application/json' \
+  -d '{"model":"tts-1","input":"View reset.","voice":"aiden","response_format":"wav"}' -o "$OUT" \
+  || { say FAIL tts-warm "warm-up request failed; docker logs $TTS_CONTAINER"; summary; exit 1; }
+size="$(stat -c %s "$OUT" 2>/dev/null || echo 0)"
+(( size >= 10000 )) || { say FAIL tts-warm "warm-up wav too small (${size} B); docker logs $TTS_CONTAINER"; summary; exit 1; }
+say OK tts-warm "warm-up clip $OUT (${size} B in $((SECONDS-started)) s)"
+if c_asr; then say OK tts-warm "ASR is up too: send the first /inference before the demo to warm it"
+else say WARN tts-warm "ASR not up (bin/sparkmd-start --only asr); its first request also warms lazily"; fi
+summary

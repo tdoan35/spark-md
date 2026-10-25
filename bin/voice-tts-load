@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# TTS container image load + speaker config (09 step 5). Idempotent; pinned tag, never :latest.
+# Does NOT run the container: the model load is a ~5.4 GB GPU job — bin/sparkmd-start --only tts (Ty's call).
+set -uo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/sparkmd-lib.sh"
+
+TAR_DIR="${SPARKMD_TTS_TAR_DIR:-$HOME/spark-md/containers}"
+TAR="${SPARKMD_TTS_TAR:-$TAR_DIR/faster-qwen3-tts-dgx-spark-v6.15.0.tar}"
+IMAGE_TAG='faster-qwen3-tts.*:v6.15.0'        # as loaded from the tar (09); digest-pinned at docker run in sparkmd-start
+VOICES="${SPARKMD_TTS_VOICES:-$SPARKMD_MODELS/tts/voices}"
+
+have_image() { docker images --format '{{.Repository}}:{{.Tag}}' 2>/dev/null | grep -m1 "$IMAGE_TAG"; }
+
+if img="$(have_image)"; then
+  say OK tts-load "image already loaded: $img"
+else
+  avail="$(mem_avail_gib)"
+  (( avail >= MEM_FLOOR_GIB )) || { say FAIL tts-load "MemAvailable ${avail} GiB < ${MEM_FLOOR_GIB} GiB; free memory first"; summary; exit 1; }
+  [[ -f $TAR ]] || { say FAIL tts-load "$TAR missing (drive copy)"; summary; exit 1; }
+  [[ -f $TAR_DIR/SHA256SUMS.voice ]] || { say FAIL tts-load "$TAR_DIR/SHA256SUMS.voice missing"; summary; exit 1; }
+  say OK tts-load "verifying SHA256, then docker load (~7.7 GB, a minute or two)"
+  act bash -c 'cd "$1" && sha256sum -c SHA256SUMS.voice >>"$2" 2>&1 && docker load -i faster-qwen3-tts-dgx-spark-v6.15.0.tar >>"$2" 2>&1' \
+    _ "$TAR_DIR" "$LOG_DIR/sparkmd-tts-load.log" || { say FAIL tts-load "checksum or load failed; tail $LOG_DIR/sparkmd-tts-load.log"; summary; exit 1; }
+  img="$(have_image)" || { say FAIL tts-load "no ${IMAGE_TAG} image after load; tail $LOG_DIR/sparkmd-tts-load.log"; summary; exit 1; }
+  say OK tts-load "loaded $img"
+fi
+
+# Speaker config (09 step 5): aiden reference + voices.json; the server caches aiden.pt here on first use.
+[[ -f $VOICES/aiden_ref.wav && -f $VOICES/voices.json ]] || { say FAIL tts-load "$VOICES/aiden_ref.wav or voices.json missing"; summary; exit 1; }
+act mkdir -p "$TTS_CONFIG/speakers"
+for pair in "aiden_ref.wav:speakers/aiden_ref.wav" "voices.json:voices.json"; do
+  src="$VOICES/${pair%%:*}"; dst="$TTS_CONFIG/${pair#*:}"
+  if [[ -f $dst ]]; then say OK tts-load "config present: $dst"
+  else act cp "$src" "$dst" && say OK tts-load "copied $dst" || { say FAIL tts-load "cp $src -> $dst"; summary; exit 1; }
+  fi
+done
+hint "next (model load, GPU): bin/sparkmd-start --only tts, then bin/voice-warm"
+summary
