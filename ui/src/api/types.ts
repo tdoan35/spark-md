@@ -197,6 +197,8 @@ export interface AgentEvent {
   status?: number | null
   duration_ms?: number | null
   payload?: unknown
+  /** worker history rows carry the raw column; SSE frames flatten it */
+  payload_json?: string | null
 }
 
 export interface OutboxItem {

@@ -27,10 +27,16 @@ function SourceIcon({ source }: { source: AgentEvent["source"] }) {
   return <Info className="size-3.5 text-muted-foreground/70" />
 }
 
+function parseJson(s?: string | null): unknown {
+  if (!s) return null
+  try { return JSON.parse(s) } catch { return s }
+}
+
 export function EventRow({ ev, compact }: { ev: AgentEvent; compact?: boolean }) {
   const [open, setOpen] = useState(false)
   const args = (ev as AgentEvent & { args?: unknown }).args
-  const hasDetail = !!ev.payload || !!args || !!ev.tool
+  const payload = ev.payload ?? parseJson(ev.payload_json)
+  const hasDetail = !!payload || !!args || !!ev.tool
   return (
     <div className={cn("group rounded-md px-2 py-1.5 hover:bg-muted/60", ev.source === "agent_note" && "bg-run-soft/40 dark:bg-run-soft/30")}>
       <button
@@ -54,7 +60,7 @@ export function EventRow({ ev, compact }: { ev: AgentEvent; compact?: boolean })
       </button>
       {open && (
         <pre className="mt-1 max-h-40 overflow-auto rounded bg-muted/60 p-1.5 font-mono text-[10px] leading-snug text-muted-foreground">
-          {JSON.stringify(args ?? ev.payload ?? { tool: ev.tool, status: ev.status }, null, 1)}
+          {JSON.stringify(args ?? payload ?? { tool: ev.tool, status: ev.status }, null, 1)}
         </pre>
       )}
     </div>
