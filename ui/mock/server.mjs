@@ -315,7 +315,7 @@ function runJob(uid) {
       emit("worklist_changed", { reason: "status", study_uid: uid })
       const pending = [...state.nods.values()].filter((n) => n.study_uid === uid)
       agentEvent("agent_note", `${s.timepoint}: ${pending.length} candidate nodule${pending.length === 1 ? "" : "s"} proposed. Holding at the confirmation gate — no sizes, growth or category reported until the radiologist confirms.`, uid)
-      if (state.demo.replaying) state.demo.waiting_for = "confirm"
+      if (state.demo.replaying) { state.demo.waiting_for = "confirm"; emit("demo_state", state.demo) }
     }
   }
   job.timer = setTimeout(tick, JOB_STEP)
@@ -352,7 +352,7 @@ function confirmNodule(id, body) {
     emit("worklist_changed", { reason: "status", study_uid: s.study_uid })
     agentEvent("agent_note", `Confirmed by ${by}; drafting reports. Category ${s.assessment.lung_rads} from the rules engine (${s.assessment.rules_version}).`, s.study_uid)
     setTimeout(() => draftReports(s.study_uid), 600 / SPEED)
-    if (state.demo.replaying) state.demo.waiting_for = "agent"
+    if (state.demo.replaying) { state.demo.waiting_for = "agent"; emit("demo_state", state.demo) }
   }
   return {
     status: 200,
@@ -419,7 +419,7 @@ function draftReports(uid) {
   emit("study_updated", { study_uid: uid, status: s.status })
   emit("worklist_changed", { reason: "status", study_uid: uid })
   agentEvent("agent_note", "Drafts ready for review: radiology report and PCP letter. Approval is a human click — no tool can approve.", uid)
-  if (state.demo.replaying) state.demo.waiting_for = "approve"
+  if (state.demo.replaying) { state.demo.waiting_for = "approve"; emit("demo_state", state.demo) }
 }
 
 function dropTimepoint(patientId, timepoint) {
@@ -455,8 +455,10 @@ function replay(patientId, timepoints, speed, mode) {
     }
     const tp = tps[i++]
     state.demo.phase = `drop ${tp}`
+    state.demo.timepoint = tp
     dropTimepoint(patientId, tp)
     state.demo.waiting_for = "confirm"
+    emit("demo_state", state.demo)
     // The harness waits for the human; the demo script only advances if the timepoint was already done.
     const uid = studies.find((x) => x.patient_id === patientId && x.timepoint === tp)?.study_uid
     const wait = () => {
