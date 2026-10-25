@@ -239,7 +239,7 @@ Highest value first to keep: the spine (G3) → time machine → talk to the sca
 - **Harness:** OpenClaw (chosen) → a minimal custom loop inside OpenShell (not run; reopen only if OpenClaw blocks).
 - **Measurement:** A7 proposals + radiologist-confirmed diameters (decided). VISTA masks are not used for sizes.
 - **Imaging speed:** live → cached results labelled as such (10).
-- **UI on the box:** Electron with `use-angle=gl-egl`; fallback `--ozone-platform=x11`; last resort the same app in a browser at `http://127.0.0.1:8100/`.
+- **UI on the box:** Electron with the default ANGLE backend + `--ozone-platform=x11` (never `use-angle=gl-egl`: frames never reach the GB10 X11 screen, 84a9f17); last resort the same app in a browser at `http://127.0.0.1:8100/`.
 - **Coding agent:** Claude Code on the box → DeepSeek cluster through the Mac's SSH tunnel → agents on the Mac pushing to the box.
 - **Time:** if the box is unstable after 14:45, freeze what runs and record it.
 

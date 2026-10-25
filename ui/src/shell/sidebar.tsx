@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { useWorklist } from "@/api/hooks"
 import { useOutbox } from "@/api/hooks"
 import { usePref } from "@/lib/prefs"
+import { PriorityPatients } from "@/shell/priority-patients"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 function Item({ to, icon: Icon, label, count, expanded }: { to: string; icon: typeof ListChecks; label: string; count?: number; expanded: boolean }) {
@@ -65,6 +66,7 @@ export function Sidebar({ expanded }: { expanded: boolean }) {
           <Item to="/activity" icon={Activity} label="Agent activity" expanded={expanded} />
         </ul>
       </nav>
+      <PriorityPatients expanded={expanded} />
       <div className="mt-auto px-2">
         <button
           onClick={() => setExpanded((v) => !v)}
