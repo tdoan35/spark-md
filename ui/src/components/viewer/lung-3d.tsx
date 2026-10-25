@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ComponentRef } from "react"
-import { Canvas, useThree } from "@react-three/fiber"
+import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { CameraControls, useGLTF } from "@react-three/drei"
 import * as THREE from "three"
 import type { Findings, ViewerCommand } from "@/api/types"
@@ -66,6 +66,7 @@ function Nodules({
   const gltf = useGLTF(url, false, false)
   const scene = useMemo(() => gltf.scene.clone(true), [gltf])
   useEffect(() => {
+    scene.updateMatrixWorld(true)
     const centers = new Map<string, THREE.Vector3>()
     for (const n of nodules) {
       const node = scene.getObjectByName(n.nodule_id)
@@ -108,13 +109,14 @@ function Nodules({
 }
 
 function Controls({
-  findings, selected, command, ready, nodesRef,
+  findings, selected, command, ready, nodesRef, paused,
 }: {
   findings: Findings
   selected: string | null
   command: { command: ViewerCommand["command"]; nodule_id?: string } | null
   ready: number
   nodesRef: { current: Map<string, THREE.Vector3> }
+  paused: boolean
 }) {
   const ccObj = useRef<ComponentRef<typeof CameraControls> | null>(null)
   const shared = useRef({ focused: false, center: new THREE.Vector3(), radius: 140 })
@@ -123,14 +125,43 @@ function Controls({
   // and real anatomy is NOT origin-centred — a wrong center/home target frames empty space).
   const scene = useThree((s) => s.scene)
   const invalidate = useThree((s) => s.invalidate)
+  const setFrameloop = useThree((s) => s.setFrameloop)
+  const motion = useRef({ active: false, dragging: false, paused })
+  motion.current.paused = paused
+  const startMotion = () => {
+    motion.current.active = true
+    if (!motion.current.paused) setFrameloop("always")
+    invalidate()
+  }
+  const restMotion = () => {
+    if (motion.current.dragging) return
+    motion.current.active = false
+    setFrameloop(motion.current.paused ? "never" : "demand")
+    invalidate()
+  }
+  useEffect(() => {
+    setFrameloop(paused ? "never" : motion.current.active ? "always" : "demand")
+    if (!paused) invalidate()
+  }, [paused, setFrameloop, invalidate])
+  // ANGLE translation can saturate a CPU core at 60 draws/s on this box. Keep controls
+  // updating each frame, but cap expensive active WebGL drawing at 30 Hz.
+  const lastDraw = useRef(0)
+  useFrame(({ gl, scene: world, camera }) => {
+    if (motion.current.paused) return
+    const now = performance.now()
+    if (motion.current.active && now - lastDraw.current < 1000 / 30 - 1) return
+    lastDraw.current = now
+    gl.render(world, camera)
+  }, 1)
   useEffect(() => {
     const box = new THREE.Box3()
+    scene.updateMatrixWorld(true)
     scene.traverse((o) => {
       const m = o as THREE.Mesh
       if (m.isMesh) box.expandByObject(m)
     })
-    const sphere = new THREE.Sphere()
-    if (!box.isEmpty()) box.getBoundingSphere(sphere)
+    if (box.isEmpty()) return
+    const sphere = box.getBoundingSphere(new THREE.Sphere())
     shared.current.center.copy(sphere.center)
     shared.current.radius = Math.min(400, Math.max(100, sphere.radius || 140))
   }, [scene, findings.study_uid, ready, invalidate])
@@ -138,8 +169,10 @@ function Controls({
   const home = (cc2: ComponentRef<typeof CameraControls>) => {
     const fov = (35 * Math.PI) / 180
     const d = (shared.current.radius / Math.sin(fov / 2)) * 0.82
-    cc2.smoothTime = 0.28
-    void cc2.setLookAt(shared.current.center.x, shared.current.center.y, shared.current.center.z + d, shared.current.center.x, shared.current.center.y, shared.current.center.z, true)
+    cc2.smoothTime = 0.18
+    startMotion()
+    void cc2.setLookAt(shared.current.center.x, shared.current.center.y, shared.current.center.z + d, shared.current.center.x, shared.current.center.y, shared.current.center.z, true).then(restMotion)
+    invalidate()
   }
 
   const flyTo = (p: THREE.Vector3) => {
@@ -152,7 +185,9 @@ function Controls({
     const dist = THREE.MathUtils.clamp(shared.current.radius * 1.6, 160, 400)
     const pos = p.clone().addScaledVector(dir, dist)
     cc2.smoothTime = 0.28
-    void cc2.setLookAt(pos.x, pos.y, pos.z, p.x, p.y, p.z, true)
+    startMotion()
+    void cc2.setLookAt(pos.x, pos.y, pos.z, p.x, p.y, p.z, true).then(restMotion)
+    invalidate()
   }
 
   useEffect(() => {
@@ -174,9 +209,30 @@ function Controls({
     if (cc2 && !shared.current.focused) home(cc2)
     invalidate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [findings.study_uid, ready, selected])
+  }, [findings.study_uid, ready])
+  useEffect(() => invalidate(), [selected, invalidate])
   return (
-    <CameraControls ref={ccObj} makeDefault minDistance={40} maxDistance={900} />
+    <CameraControls
+      ref={ccObj}
+      makeDefault
+      enabled={!paused}
+      minDistance={40}
+      maxDistance={900}
+      onStart={() => {
+        motion.current.dragging = true
+        startMotion()
+      }}
+      onEnd={() => {
+        motion.current.dragging = false
+        if (ccObj.current?.active) startMotion()
+        else restMotion()
+      }}
+      onTransitionStart={startMotion}
+      onWake={startMotion}
+      onRest={restMotion}
+      onSleep={restMotion}
+      onChange={() => invalidate()}
+    />
   )
 }
 
@@ -203,7 +259,7 @@ export default function Lung3D({
   if (!findings || !lung || !nod)
     return <div className="grid h-full place-items-center text-[11px] text-white/50">No 3D assets for this study</div>
   // Demand frameloop: GL-on-EGL translation is CPU-bound on GB10, so a 60 fps loop burns a core.
-  // drei CameraControls invalidates on change/rest, so drags and damped tweens still animate.
+  // CameraControls renders continuously only during interaction/tweens, then returns to demand.
   return (
     <Canvas camera={{ fov: 35, near: 1, far: 5000, position: [0, 0, 600] }} gl={{ antialias: true }} dpr={1} frameloop={paused ? "never" : "demand"}>
       <color attach="background" args={["#0b0d10"]} />
@@ -212,7 +268,7 @@ export default function Lung3D({
       <directionalLight position={[-300, -200, -400]} intensity={0.5} />
       <Lung url={lung} onReady={bumpReady} />
       <Nodules url={nod} selected={selected} onSelect={onSelect} onReady={bumpReady} onNodes={handleNodes} nodules={findings.nodules} />
-      <Controls findings={findings} selected={selected} command={command} ready={ready} nodesRef={nodesRef} />
+      <Controls findings={findings} selected={selected} command={command} ready={ready} nodesRef={nodesRef} paused={!!paused} />
     </Canvas>
   )
 }

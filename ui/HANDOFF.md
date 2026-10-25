@@ -35,12 +35,16 @@
 
 ## Perf fix (41ab657, measured on :1 with real GL)
 - GPU process was ~100% CPU (continuous R3F loop; GL-on-EGL is CPU-bound). Now:
-  `frameloop="demand"` (drei CameraControls self-invalidates on change/rest, so drags + damped
-  tweens animate), `frameloop="never"` while the report sheet is open, `dpr={1}`, auto-rotate
-  removed (continuous animation is incompatible with demand), sheet/dialog overlays +
-  extras panel lost their backdrop-blur (plain scrim `bg-black/20`).
-- Measured (perf probe, real display): idle 0% · post-orbit settle 14.5% · sheet open 0.3%.
-  Canvas keeps its last frame while paused (verified in screenshots).
+  idle `frameloop="demand"`, active controls/tweens use `"always"` with WebGL draws capped at
+  30 Hz; rest/sleep returns to demand. `frameloop="never"` while the report sheet is open,
+  `dpr={1}`, auto-rotate removed, sheet/dialog overlays + extras use plain scrims.
+- Demand-mode regression fixed: `scene.updateMatrixWorld(true)` before bounds/node centres;
+  explicitly start the render loop for home/focus and control events. Home settles in <1 s.
+- Verified in the existing box window (CDP 9350, not headless): idle 0.4% GPU-process CPU;
+  dragging 16.1%, median draw interval 33.4 ms / p95 34.6 ms; settled/repeated Reset 0%,
+  sheet open 0.3% with zero canvas frames. No Confirm/Approve clicks.
+- Proof: `/tmp/sparkmd-demand9350-fresh-t1-1s.png`, `/tmp/sparkmd-demand9350-sheet.png`;
+  raw measurements `/tmp/sparkmd-demand9350-report.json`. Rebuilt `ui/dist`; Ty relaunches.
 - NOTE for Ty: 08 deviations by the perf order — auto-rotate gone, overlays unblurred.
 - Real voice chain verified on :8100: fake-device audio → real whisper.cpp (`command:null` on
   tone, correct), phrase chip → real agent answer → `/api/tts` (real Qwen3-TTS). Real-mic +
