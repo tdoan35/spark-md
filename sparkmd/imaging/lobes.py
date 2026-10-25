@@ -32,6 +32,13 @@ def _largest(mask):
     return labels == int(np.argmax(sizes))
 
 
+def _body_mask(hu):
+    body = np.empty(hu.shape, dtype=bool)
+    for k in range(hu.shape[2]):
+        body[:, :, k] = ndimage.binary_fill_holes(_largest(hu[:, :, k] > -400))
+    return body
+
+
 def _bounds(mask, affine):
     # Axis projections avoid materializing coordinates for every lung voxel.
     ends = []
@@ -100,7 +107,7 @@ class LungSplit:
         return label_from_geometry(center_ras_mm, side, self.geometry['sides'].get(side), inside_mask=inside_mask)
 
 
-def _airway(hu, body, voxel_mm3):
+def _airway(hu, body, voxel_mm3, spacing):
     air = (hu < -950) & body
     for k in range(hu.shape[2] - 1, max(-1, hu.shape[2] - 11), -1):
         outline = np.flatnonzero(body[:, :, k].any(axis=1))
@@ -111,8 +118,8 @@ def _airway(hu, body, voxel_mm3):
         candidates = []
         for label in range(1, count + 1):
             coords = np.argwhere(labels == label)
-            if 30 <= len(coords) * 1.5 ** 2 <= 800:
-                offset = abs(float(coords[:, 0].mean()) - midline) * 1.5
+            if 30 <= len(coords) * spacing[0] * spacing[1] <= 800:
+                offset = abs(float(coords[:, 0].mean()) - midline) * spacing[0]
                 if offset <= 15:  # explicit day-of definition of \"midline\"
                     candidates.append((offset, label))
         if candidates:
@@ -129,9 +136,7 @@ def split_lungs(volume):
     image = nib.as_closest_canonical(nib.Nifti1Image(volume.hu, volume.affine))
     image = resample_to_output(image, voxel_sizes=(1.5, 1.5, 1.5), order=1, cval=-1000)
     hu = np.asarray(image.dataobj, dtype=np.float32)
-    body = np.empty(hu.shape, dtype=bool)
-    for k in range(hu.shape[2]):
-        body[:, :, k] = ndimage.binary_fill_holes(_largest(hu[:, :, k] > -400))
+    body = _body_mask(hu)
     mask = (hu < -400) & body
     components, count = ndimage.label(mask)
     sizes = np.bincount(components.ravel())
@@ -141,7 +146,7 @@ def split_lungs(volume):
     mask = np.isin(components, keep)
     if not np.any(mask):
         raise ValueError('Threshold lung split failed: no >300 mL intrathoracic component')
-    airway, airway_status = _airway(hu, body, voxel_mm3)
+    airway, airway_status = _airway(hu, body, voxel_mm3, np.linalg.norm(image.affine[:3, :3], axis=0))
     if airway is not None:
         mask &= ~airway
     del hu, body, components
