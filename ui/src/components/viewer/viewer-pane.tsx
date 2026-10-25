@@ -120,7 +120,7 @@ export function ViewerPane({
           >
             <RotateCcw className="size-3.5" /> Reset
           </button>
-          <span className="font-mono text-[10px] text-white/40">Synthetic preview · placeholder numbers</span>
+          {findings?.placeholder && <span className="font-mono text-[10px] text-white/40">Synthetic preview · placeholder numbers</span>}
         </div>
         <div className="absolute inset-x-0 bottom-0 top-9">
           {mode === "3d" && (
