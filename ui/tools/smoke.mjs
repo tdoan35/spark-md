@@ -10,15 +10,17 @@ const PORT = Number(process.argv[2] ?? 8099)
 const SHOTS = process.argv[3] ?? "/tmp/sparkmd-shots"
 const UI = path.resolve(import.meta.dirname, "..", "dist")
 const WORKER = process.env.WORKER_URL ?? "http://127.0.0.1:8100"
-const API = process.env.MOCK_URL ?? WORKER // mock at 8101 or the real worker at 8100
+const API = process.env.API_BASE ?? process.env.MOCK_URL ?? WORKER // mock at 8101 or the real worker at 8100
 const SERVE_STATIC = process.env.SERVE_STATIC !== "0"
 
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".json": "application/json", ".glb": "model/gltf-binary" }
 
 const server = http.createServer((req, res) => {
+  if (process.env.TRACE) console.log("[http]", req.method, req.url)
   if (req.url.startsWith("/api/")) {
     const target = new URL(req.url, API)
     const up = http.request({ hostname: target.hostname, port: target.port, path: target.pathname + target.search, method: req.method, headers: { ...req.headers, host: target.host } }, (ur) => {
+      if (process.env.TRACE) console.log("[api-res]", req.url, ur.statusCode)
       res.writeHead(ur.statusCode, ur.headers)
       ur.pipe(res)
     })
@@ -28,14 +30,15 @@ const server = http.createServer((req, res) => {
     })
     req.pipe(up)
     if (target.pathname === "/api/events") req.socket.setTimeout(0)
+    if (process.env.TRACE) console.log("[api]", req.url, "->", target.href)
     return
   }
   if (!SERVE_STATIC) {
     res.writeHead(404)
     return res.end()
   }
-  let p = req.url.split("?")[0]
-  if (p === "/") p = "/index.html"
+  const raw = req.url.split("?")[0]
+  const p = raw === "/" ? "/index.html" : raw
   const file = path.join(UI, p)
   if (!file.startsWith(UI) || !fs.existsSync(file)) {
     res.writeHead(404)
@@ -45,6 +48,7 @@ const server = http.createServer((req, res) => {
   fs.createReadStream(file).pipe(res)
 })
 await new Promise((r) => server.listen(PORT, "127.0.0.1", r))
+console.log("static server on", PORT, "api ->", API)
 
 fs.mkdirSync(SHOTS, { recursive: true })
 const CDP_PORT = Number(process.env.CDP_PORT ?? 9333)
@@ -122,6 +126,7 @@ await send("Emulation.setDeviceMetricsOverride", { width: 1920, height: 1080, de
 await wait(4000)
 
 const report = {}
+report.debug = await ev("({href: location.href, title: document.title, last: Object.fromEntries(globalThis.__sparkmdLast ?? [])})")
 await ev("document.documentElement.classList.remove('dark')")
 report.bodyStart = await ev("document.body.innerText.slice(0,600)")
 report.rowsHtml = await ev("document.querySelector('tbody')?.innerHTML.slice(0,400) ?? null")
@@ -174,8 +179,9 @@ if (confirmBtn) {
 }
 
 // Report sheet + Approve via a real mouse click.
-report.sheetBtn = await clickText("Review & approve")
-if (!report.sheetBtn) report.sheetBtn = await clickText("View approved reports")
+const reviewPos = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>/Review\\b/.test(b.innerText) || b.innerText.includes('View approved')); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2, label: b.innerText} })()`)
+report.sheetBtn = !!reviewPos
+if (reviewPos) await click(reviewPos.x, reviewPos.y)
 await wait(900)
 await shot("07-sheet")
 const approveBtn = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>/^Approve$/.test(b.innerText.trim())); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2,disabled:b.disabled} })()`)

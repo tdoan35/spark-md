@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { viewerBus } from "@/api/viewer-bus"
-import type { Findings, StudyDetail } from "@/api/types"
+import type { Findings, KeySlice, StudyDetail } from "@/api/types"
 import { cn } from "@/lib/utils"
 import { mm } from "@/lib/format"
 import { ChevronLeft, ChevronRight, Columns2 } from "lucide-react"
@@ -59,13 +59,14 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
   }, [stack])
 
   const url = (i: number) => (stack ? stack.url_pattern.replace("{i}", String(i).padStart(stack.index_digits, "0")) : null)
+  // The worker writes key slices named for the nodule id; the mock uses per-study names.
+  const keySliceUrl = (ks: KeySlice) => (ks.nodule_id && !ks.name.includes(ks.nodule_id) ? `/api/studies/${uid}/assets/key_axial_${ks.nodule_id}.png` : ks.url)
 
   if (!findings) return <div className="grid h-full place-items-center text-[11px] text-white/50">Waiting for findings…</div>
 
   if (!stack) {
     const ks = findings.assets.key_slices ?? []
-    // The worker keys key slices by nodule id: /api/studies/<uid>/assets/key_axial_<nodule_id>.png
-    const urlFor = (name: string, k: { nodule_id: string | null }) => (k.nodule_id && name.includes(k.nodule_id) ? `/api/studies/${uid}/assets/key_axial_${k.nodule_id}.png` : name)
+
     const slice = ks.find((k) => k.nodule_id === selected) ?? ks[0]
     return (
       <div className="flex h-full flex-col">
@@ -77,7 +78,7 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
           {slice && (
             <div ref={wrap} className="relative" style={{ containerType: "size" }}>
               <div className="relative" style={{ width: "min(100cqw, calc(100cqh * 1))" }}>
-                <img src={urlFor(slice.url, slice)} alt={`Key slice for ${slice.nodule_id}`} className="block w-full" style={{ imageRendering: "pixelated", filter: color ? "none" : "grayscale(1)" }} onLoad={() => setLoading(false)} />
+                <img src={keySliceUrl(slice)} alt={`Key slice for ${slice.nodule_id}`} className="block w-full" style={{ imageRendering: "pixelated", filter: color ? "none" : "grayscale(1)" }} onLoad={() => setLoading(false)} />
                 <Bracket box={slice.box_px} w={512} h={512} color="var(--warn)" />
               </div>
             </div>

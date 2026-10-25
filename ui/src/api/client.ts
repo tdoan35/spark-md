@@ -31,6 +31,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
     ...init,
     headers: { "content-type": "application/json", ...(init?.headers ?? {}) },
   })
+  lastStatus.set(path, res.status)
   const text = await res.text()
   let body: unknown = null
   try {
@@ -41,6 +42,11 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   if (!res.ok) throw new ApiError(res.status, body, (body as { error?: string } | null)?.error)
   return body as T
 }
+
+// Diagnostic breadcrumb: the last response status per path, so a smoke run can tell "worker 502"
+// apart from "empty payload". Costs one Map write per request; never sent anywhere.
+export const lastStatus: Map<string, number> = new Map()
+;(globalThis as unknown as { __sparkmdLast: Map<string, number> }).__sparkmdLast = lastStatus
 
 export const api = {
   worklist: () => request<WorklistRow[]>("/api/worklist"),
