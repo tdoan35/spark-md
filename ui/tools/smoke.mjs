@@ -124,7 +124,7 @@ ws.addEventListener("message", (m) => {
   const msg = JSON.parse(m.data)
   if (msg.method === "Runtime.exceptionThrown") consoleErrors.push(msg.params.exceptionDetails.text + " " + (msg.params.exceptionDetails.exception?.description ?? ""))
 })
-await send("Emulation.setDeviceMetricsOverride", { width: 1920, height: 1080, deviceScaleFactor: 1, mobile: false })
+await send("Emulation.setDeviceMetricsOverride", { width: Number(process.env.WIDTH ?? 1920), height: Number(process.env.HEIGHT ?? 1080), deviceScaleFactor: 1, mobile: false })
 await wait(4000)
 
 const report = {}
@@ -135,6 +135,9 @@ report.rowsHtml = await ev("document.querySelector('tbody')?.innerHTML.slice(0,4
 report.rows = await ev("document.querySelectorAll('tbody tr').length")
 report.disclaimer = await ev("document.body.innerText.includes('Research demo, not for clinical use')")
 report.overflow = await ev("document.documentElement.scrollHeight > window.innerHeight")
+report.vScroll = await ev("document.documentElement.scrollHeight - window.innerHeight")
+report.hScroll = await ev("document.documentElement.scrollWidth - window.innerWidth")
+report.cols = await ev("[...document.querySelectorAll('main div')].filter(d=>getComputedStyle(d).display==='grid').slice(0,3).map(d=>getComputedStyle(d).gridTemplateColumns)")
 await shot("01-worklist")
 
 const hero = await ev(`(() => { const r=[...document.querySelectorAll('tbody tr')].find(r=>r.innerText.includes(${JSON.stringify(process.env.HERO ?? "134503")})); if(!r) return null; const b=r.getBoundingClientRect(); return {x:b.x+120,y:b.y+15} })()`)
@@ -146,6 +149,7 @@ if (hero) {
 report.url = await ev("location.hash")
 report.canvas = await ev("(() => { const c=document.querySelector('canvas'); return c ? [c.width,c.height] : null })()")
 report.studyBody = await ev("document.body.innerText.slice(600,2200)")
+report.colsStudy = await ev("[...document.querySelectorAll('main div')].filter(d=>getComputedStyle(d).display==='grid').slice(0,3).map(d=>getComputedStyle(d).gridTemplateColumns)")
 await shot("02-study")
 
 report.slicesClicked = await clickText("CT slices")

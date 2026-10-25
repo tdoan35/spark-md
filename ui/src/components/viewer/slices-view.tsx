@@ -106,15 +106,15 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
         <div className="flex h-full items-center justify-center gap-0">
           {[-2, -1, 0, 1, 2].map((o) => {
             const i = cur + o
-            if (i < 0 || i >= stack.count) return <div key={o} className="shrink-0" style={{ width: "14%" }} />
+            if (i < 0 || i >= stack.count) return <div key={o} className="shrink-0" style={{ width: Math.abs(o) === 1 ? "14%" : "8.5%" }} />
             return (
               <button
                 key={i}
                 onClick={() => o !== 0 && setIndex(i)}
                 className="relative shrink-0 overflow-hidden rounded"
                 style={{
-                  width: o === 0 ? "40%" : "14%",
-                  transform: `translateX(${o * (o === 0 ? 0 : 18)}%) scaleX(${Math.abs(o) === 1 ? 1.15 : 1.3}) rotateY(${o === 0 ? 0 : -o * 34}deg)`,
+                  width: Math.abs(o) === 0 ? "40%" : Math.abs(o) === 1 ? "14%" : "8.5%",
+                  transform: `translateX(${o * (Math.abs(o) === 1 ? 18 : 30)}%) scaleX(${Math.abs(o) === 1 ? 1.15 : 1.3}) rotateY(${o === 0 ? 0 : -o * 34}deg)`,
                   filter: o === 0 ? "none" : `brightness(${1 - 0.13 * Math.abs(o)})`,
                   zIndex: o === 0 ? 3 : 2,
                 }}
@@ -133,7 +133,7 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
           max={stack.count - 1}
           value={cur}
           onChange={(e) => setIndex(Number(e.target.value))}
-          className="absolute bottom-2.5 left-1/2 w-1/2 -translate-x-1/2 accent-[var(--warn)]"
+          className="absolute bottom-2.5 left-1/2 w-[46%] -translate-x-1/2 accent-[var(--warn)]"
           aria-label={`Slice ${cur + 1} of ${stack.count}`}
         />
         <div className="absolute right-1 top-1 flex flex-col gap-0.5">
