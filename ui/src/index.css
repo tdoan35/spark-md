@@ -54,7 +54,7 @@
 :root {
   --radius: 0.625rem;
   --win-radius: 10px;
-  --titlebar-h: 32px;
+  --titlebar-h: 40px;
   --footer-h: 28px;
   --sidebar-width: 240px;
   --inspector-w: 380px;

@@ -15,7 +15,13 @@ export type ShellTab = { id: string; path: string; uid: string | null; label: st
 /** A study tab label from the worker (patient · timepoint). */
 function StudyTabLabel({ uid }: { uid: string }) {
   const { data } = useStudy(uid)
-  return <span>{data ? `${data.patient_id} · ${data.timepoint}` : "Study"}</span>
+  if (!data) return <span>Study</span>
+  return (
+    <span className="flex min-w-0 items-baseline gap-1.5">
+      <span className="truncate font-medium">{data.patient_id}</span>
+      <span className="shrink-0 text-muted-foreground">· {data.timepoint}</span>
+    </span>
+  )
 }
 
 export function TitleBar({
@@ -43,6 +49,9 @@ export function TitleBar({
   useEffect(() => {
     document.documentElement.classList.toggle("maximized", maximized)
   }, [maximized])
+  useEffect(() => {
+    stripRef.current?.querySelector<HTMLElement>(`[data-tab="${activeId}"]`)?.scrollIntoView({ block: "nearest", inline: "nearest" })
+  }, [activeId, tabs.length])
 
   const close = (id: string) => {
     if (tabs.length === 1) {
@@ -97,7 +106,7 @@ export function TitleBar({
         {/* Size to the tabs, shrinking only on overflow so New tab follows the last tab. */}
         <div
           ref={stripRef}
-          className="scrollbar-none flex h-full min-w-0 flex-initial items-center gap-0.5 overflow-x-auto px-1"
+          className="scrollbar-none flex h-full min-w-0 flex-initial items-center gap-1.5 overflow-x-auto px-1"
           role="tablist"
           aria-label="Open studies"
         >
@@ -121,6 +130,7 @@ export function TitleBar({
                   if (e.button === 1) e.preventDefault()
                 }}
                 onKeyDown={(e) => {
+                  if (e.target !== e.currentTarget) return
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault()
                     navigate(t.path)
@@ -136,18 +146,18 @@ export function TitleBar({
                   }
                 }}
                 className={cn(
-                  "no-drag group flex h-7 max-w-52 shrink-0 cursor-default items-center gap-1.5 rounded-md px-2 text-xs",
-                  active ? "bg-background text-foreground shadow-xs" : "text-muted-foreground hover:bg-muted hover:text-foreground",
+                  "no-drag group flex h-8 min-w-[168px] max-w-52 shrink-0 cursor-default items-center gap-2 rounded-lg border px-3 text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset",
+                  active ? "border-border bg-background text-foreground" : "border-transparent text-muted-foreground hover:bg-muted hover:text-foreground",
                 )}
               >
-                <span className="min-w-0 truncate">{t.uid ? <StudyTabLabel uid={t.uid} /> : t.label}</span>
+                <span className="min-w-0 flex-1 truncate">{t.uid ? <StudyTabLabel uid={t.uid} /> : t.label}</span>
                 <button
                   aria-label="Close tab"
                   onClick={(e) => {
                     e.stopPropagation()
                     close(t.id)
                   }}
-                  className={cn("grid size-4 shrink-0 place-items-center rounded opacity-0 group-hover:opacity-100 hover:bg-muted", active && "opacity-60")}
+                  className="grid size-5 shrink-0 place-items-center rounded opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   <X className="size-3" />
                 </button>
