@@ -1,9 +1,8 @@
 import { NavLink } from "react-router"
-import { ListChecks, Inbox, Activity, ChevronRight } from "lucide-react"
+import { ListChecks, Inbox, Activity } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { useWorklist } from "@/api/hooks"
 import { useOutbox } from "@/api/hooks"
-import { usePref } from "@/lib/prefs"
 import { PriorityPatients } from "@/shell/priority-patients"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
@@ -41,7 +40,6 @@ function Item({ to, icon: Icon, label, count, expanded }: { to: string; icon: ty
 export function Sidebar({ expanded }: { expanded: boolean }) {
   const { data: worklist } = useWorklist()
   const { data: outbox } = useOutbox()
-  const [, setExpanded] = usePref("sparkmd-sidebar", true)
   const active = worklist?.filter((r) => r.status !== "approved").length ?? 0
   const unseen = outbox?.length ?? 0
 
@@ -67,15 +65,6 @@ export function Sidebar({ expanded }: { expanded: boolean }) {
         </ul>
       </nav>
       <PriorityPatients expanded={expanded} />
-      <div className="mt-auto px-2">
-        <button
-          onClick={() => setExpanded((v) => !v)}
-          className={cn("flex h-7 w-full items-center gap-1.5 rounded-md px-2 text-[11px] text-muted-foreground/70 hover:bg-sidebar-accent hover:text-foreground", !expanded && "justify-center px-0")}
-        >
-          <ChevronRight className={cn("size-3.5 transition-transform", expanded && "rotate-180")} />
-          {expanded && <span>Collapse</span>}
-        </button>
-      </div>
     </aside>
   )
 }
