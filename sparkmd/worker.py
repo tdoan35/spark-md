@@ -30,6 +30,7 @@ class Worker:
         self.events = Events()
         self.jobs = {}
         self.jobs_lock = threading.RLock()
+        self.analysis_lock = threading.Lock()
         self.stop = threading.Event()
         self.intake = Intake(self.registry, self.config.home, self.status, self.organized, self.log)
         self.threads = []
@@ -49,11 +50,15 @@ class Worker:
         with self.registry.transaction() as db:
             previous = db.execute('SELECT status FROM studies WHERE study_uid=?', (uid,)).fetchone()
             db.execute('UPDATE studies SET status=? WHERE study_uid=?', (status, uid))
-        if previous and previous['status'] != status:
+        if previous and (previous['status'] != status or status == 'received'):
             self.events.emit('study_updated', {'study_uid': uid, 'status': status})
             self.events.emit('worklist_changed', {'reason': 'status', 'study_uid': uid})
+            if status == 'received':
+                self.events.emit('worklist_changed', {'reason': 'received', 'study_uid': uid})
 
     def organized(self, uid):
+        with self.jobs_lock:
+            self.jobs = {key: job for key, job in self.jobs.items() if job['study_uid'] != uid}
         self.log('system', 'Study organized; agent triage requested', uid)
         self.trigger(uid)
 
@@ -126,6 +131,11 @@ class Worker:
         self.events.emit('job_progress', payload)
 
     def run_job(self, job, series):
+        # GB10 imaging jobs share unified memory; never run two GPU pipelines together.
+        with self.analysis_lock:
+            self._execute_job(job, series)
+
+    def _execute_job(self, job, series):
         uid = job['study_uid']
         try:
             self.status(uid, 'analyzing')

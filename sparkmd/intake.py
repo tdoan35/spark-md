@@ -71,10 +71,21 @@ class Intake:
             raise ValueError(reason)
         uid = next(iter(uids))
         old = self.registry.one('SELECT * FROM studies WHERE study_uid=?', (uid,))
-        existing = self.registry.one('SELECT COALESCE(SUM(n_instances),0) AS n FROM series WHERE study_uid=?', (uid,))['n']
-        incoming = sum(len(g['files']) for g in groups.values())
-        if old and incoming <= existing:
-            return uid
+        if old:
+            has_new = any(not (self.home/'studies'/uid/sid/f'{sop}.dcm').exists()
+                          for (_, sid), group in groups.items() for _, sop in group['files'])
+            if not has_new:
+                return uid
+            if old['status'] in ('analyzing', 'approved'):
+                raise ValueError('cannot extend a study while analyzing or after approval')
+            for series in self.registry.all('SELECT series_uid,path FROM series WHERE study_uid=?', (uid,)):
+                sid = series['series_uid']
+                files = sorted(Path(series['path']).glob('*.dcm'))
+                if not files:
+                    continue
+                group = groups.setdefault((uid, sid), {'ds': pydicom.dcmread(files[0], stop_before_pixels=True), 'files': []})
+                incoming_sops = {sop for _, sop in group['files']}
+                group['files'].extend((file, file.stem) for file in files if file.stem not in incoming_sops)
         rows = []
         for (_, sid), group in groups.items():
             ds = group['ds']
@@ -119,6 +130,12 @@ class Intake:
                 db.execute('INSERT OR IGNORE INTO patients(patient_id,sex) VALUES (?,?)', (patient, str(getattr(first, 'PatientSex', ''))))
                 db.execute('INSERT OR IGNORE INTO studies(study_uid,patient_id,study_date,received_at,inbox_path) VALUES (?,?,?,?,?)',
                            (uid, patient, str(getattr(first, 'StudyDate', '')), now(), str(path)))
+                if old:
+                    if db.execute("SELECT 1 FROM reports WHERE study_uid=? AND status='approved'", (uid,)).fetchone():
+                        raise ValueError('cannot extend an approved study')
+                    db.execute('DELETE FROM assessments WHERE study_uid=?', (uid,))
+                    db.execute('DELETE FROM reports WHERE study_uid=?', (uid,))
+                    db.execute('DELETE FROM nodules WHERE study_uid=?', (uid,))
                 for row in rows:
                     row.pop('structural')
                     columns = ','.join(row)
@@ -136,6 +153,11 @@ class Intake:
                             source.unlink()
                         else:
                             shutil.move(str(source), str(target))
+            if old:
+                for row in rows:
+                    cache = self.home/'cache'/row['series_uid']
+                    if cache.exists():
+                        shutil.rmtree(cache)
             self.status(uid, 'organized')
             self.on_organized(uid)
             return uid
@@ -163,3 +185,33 @@ class Intake:
                     except Exception as exc:
                         self.log('system', f'Intake failed: {exc}', None)
                     self.snapshots[directory] = (snapshot, since, True)
+
+    def reset(self, patient_ids=None, empty=False):
+        """Return selected DICOM to backlog; preserve cache unless empty is requested."""
+        studies = self.registry.all('SELECT * FROM studies ORDER BY patient_id,rank')
+        if patient_ids is not None:
+            studies = [s for s in studies if s['patient_id'] in patient_ids]
+        for study in studies:
+            source = self.home/'studies'/study['study_uid']
+            target = self.home/'backlog'/study['patient_id']/(study['timepoint'] or 'T0')
+            if source.exists():
+                target.mkdir(parents=True, exist_ok=True)
+                shutil.copytree(source, target, dirs_exist_ok=True)
+        with self.registry.transaction() as db:
+            for study in studies:
+                uid = study['study_uid']
+                for outbox in db.execute('SELECT o.id FROM outbox o JOIN reports r USING(report_id) WHERE r.study_uid=?', (uid,)).fetchall():
+                    for extension in ('json', 'html'):
+                        (self.home/'outbox'/f'{outbox["id"]}.{extension}').unlink(missing_ok=True)
+                if empty:
+                    for row in db.execute('SELECT series_uid FROM series WHERE study_uid=?', (uid,)).fetchall():
+                        cache = self.home/'cache'/row['series_uid']
+                        if cache.exists():
+                            shutil.rmtree(cache)
+                db.execute('UPDATE nodules SET track_id=NULL WHERE track_id IN (SELECT track_id FROM tracks WHERE first_study_uid=?)', (uid,))
+                db.execute('DELETE FROM studies WHERE study_uid=?', (uid,))
+        for study in studies:
+            source = self.home/'studies'/study['study_uid']
+            if source.exists():
+                shutil.rmtree(source)
+        return [study['study_uid'] for study in studies]

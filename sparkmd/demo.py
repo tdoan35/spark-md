@@ -1,7 +1,4 @@
 import asyncio
-import json
-from pathlib import Path
-import shutil
 import time
 
 from fastapi import Request
@@ -87,31 +84,12 @@ def install_demo(app, worker, gate):
             if any(j['state'] in ('queued', 'running') for j in worker.jobs.values()):
                 return JSONResponse({'error': 'analysis running'}, status_code=409)
             selected = body.get('patient_ids')
-            studies = worker.registry.all('SELECT * FROM studies ORDER BY patient_id,rank')
-            studies = [s for s in studies if selected is None or s['patient_id'] in selected]
-            # Preserve a reusable source before deleting any registry references.
-            for study in studies:
-                source = worker.config.home/'studies'/study['study_uid']
-                target = worker.config.home/'backlog'/study['patient_id']/study['timepoint']
-                if source.exists():
-                    target.mkdir(parents=True, exist_ok=True)
-                    shutil.copytree(source, target, dirs_exist_ok=True)
-                for series in worker.registry.all('SELECT series_uid FROM series WHERE study_uid=?', (study['study_uid'],)):
-                    if body.get('empty'):
-                        cache = worker.config.home/'cache'/series['series_uid']
-                        if cache.exists(): shutil.rmtree(cache)
-            with worker.registry.transaction() as db:
-                for study in studies:
-                    uid = study['study_uid']
-                    outboxes = db.execute('SELECT o.id FROM outbox o JOIN reports r USING(report_id) WHERE r.study_uid=?', (uid,)).fetchall()
-                    for outbox in outboxes:
-                        for extension in ('json', 'html'):
-                            (worker.config.home/'outbox'/f'{outbox["id"]}.{extension}').unlink(missing_ok=True)
-                    # Tracks are shared across exams: unlink nodules before cascading first_study.
-                    db.execute('UPDATE nodules SET track_id=NULL WHERE track_id IN (SELECT track_id FROM tracks WHERE first_study_uid=?)', (uid,))
-                    db.execute('DELETE FROM studies WHERE study_uid=?', (uid,))
-                # Agent log IDs intentionally never reset.
-            worker.jobs.clear()
+            if selected is None and not body.get('empty'):
+                selected = [path.name for path in (worker.config.home/'backlog').iterdir() if path.is_dir()]
+                if worker.config.fake_seed:
+                    selected.extend(row['patient_id'] for row in worker.registry.all("SELECT patient_id FROM patients WHERE cohort='fixture'"))
+            removed = await asyncio.to_thread(worker.intake.reset, selected, bool(body.get('empty')))
+            worker.jobs = {key: job for key, job in worker.jobs.items() if job['study_uid'] not in removed}
         if worker.config.fake_seed and not body.get('empty'):
             worker.seed()
         worker.events.emit('worklist_changed', {'reason': 'reset', 'study_uid': None})

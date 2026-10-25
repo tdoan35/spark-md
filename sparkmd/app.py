@@ -55,7 +55,7 @@ def create_app(config=None):
         yield
         worker.stop.set()
         for thread in worker.threads:
-            await asyncio.to_thread(thread.join, 16)
+            await asyncio.to_thread(thread.join)
         worker.registry.close()
 
     app = FastAPI(title='Spark MD research worker', lifespan=lifespan)
@@ -64,6 +64,12 @@ def create_app(config=None):
     @app.middleware('http')
     async def request_log(request, call_next):
         started = time.monotonic()
+        payload = None
+        if request.headers.get('content-type', '').startswith('application/json'):
+            try:
+                payload = json.loads(await request.body())
+            except (ValueError, UnicodeDecodeError):
+                pass
         response = await call_next(request)
         duration = round((time.monotonic()-started)*1000, 2)
         if caller_agent(request) and request.url.path.startswith('/api/'):
@@ -74,7 +80,7 @@ def create_app(config=None):
             path = Path(reqlog)
             path.parent.mkdir(parents=True, exist_ok=True)
             with worker.registry.lock, path.open('a') as output:
-                output.write(json.dumps({'method': request.method, 'path': request.url.path, 'status': response.status_code, 'duration_ms': duration})+'\n')
+                output.write(json.dumps({'method': request.method, 'path': request.url.path, 'body': payload, 'status': response.status_code, 'duration_ms': duration})+'\n')
         return response
 
     @app.exception_handler(ImportError)
@@ -230,6 +236,8 @@ def create_app(config=None):
                 obj, code = {'error': 'missing required arguments'}, 422
             else:
                 try:
+                    if name == 'run_analysis':
+                        args['wait_s'] = worker.config.mcp_wait
                     obj, code = await worker.call_tool(name, args, True)
                 except ImportError as exc:
                     obj, code = {'error': f'layer unavailable: {exc}'}, 503
@@ -238,10 +246,6 @@ def create_app(config=None):
             duration = round((time.monotonic()-started)*1000, 2)
             worker.log('tool_call', f'{name} -> {code} ({duration/1000:.3f}s)', args.get('study_uid') if isinstance(args, dict) else None,
                        {'tool': name, 'args': args, 'status': code, 'duration_ms': duration})
-            reqlog = os.environ.get('SPARKMD_REQLOG')
-            if reqlog:
-                with worker.registry.lock, Path(reqlog).open('a') as output:
-                    output.write(json.dumps({'method': 'POST', 'path': '/mcp', 'body': message, 'status': code})+'\n')
             response = {'content': [{'type': 'text', 'text': json.dumps(obj)}], 'isError': code >= 400}
         else:
             return JSONResponse({'jsonrpc': '2.0', 'id': rid, 'error': {'code': -32601, 'message': 'Method not found'}})
