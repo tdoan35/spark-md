@@ -5,7 +5,7 @@ Clips are cut together, so each one only needs its own beat. Everything shown is
 
 ## Ty: one-time setup before the agent starts
 1. OBS on the box: a scene with **Window Capture of the Spark MD Electron window only** (terminals, OBS and the agent's UI stay off-camera). 1920x1080, 30 fps, output folder `~/recordings/`, filename format `%CCYY%MM%DD-%hh%mm%ss`.
-2. Leave the OBS window open on the desktop next to the app with its **Controls** dock visible (the **Start Recording** / **Stop Recording** button). The agent clicks that button itself; OBS records only the Spark MD window, so the clicks don't show in the clips. Also leave one terminal open (any directory).
+2. Leave the OBS window open on the desktop next to the app with its **Controls** dock visible (the **Start Recording** / **Stop Recording** button). The agent clicks that button itself; OBS records only the Spark MD window, so the clicks don't show in the clips. The agent runs the launcher from its own shell on the box, not a desktop terminal.
 3. Theme light; voice muted unless the mic was tested. The agent (re)starts the app itself with the launcher command.
 4. For this submission video the computer-use agent operates the UI, including Confirm and Approve, standing in for the radiologist (Ty's decision, Oct 25). The product's gate is unchanged: only the loopback UI can confirm/approve; the AI agent in the sandbox cannot. In the live demo Joyce clicks.
 5. The computer-use agent needs internet, so these clips are recorded **online**. Don't show the network monitor in them. The unplug / "0 bytes sent" shot is a separate clip Ty and Joyce film by hand at the end (Clip 6).
@@ -20,11 +20,14 @@ HARD RULES
 1. You operate the UI as the radiologist would, including "Confirm all", "Confirm" and "Approve" when a clip says
    so. Before each of those clicks, pause ~1.5 s with the pointer on the button so the viewer sees it. Never edit
    a diameter (keep the proposed values) unless a clip says so.
-2. Terminal: the ONLY command you may type is the launcher, exactly:
-       DEMO_BASELINE=1 ~/spark-md-app/bin/sparkmd-demo --wait
-   It kills any running Spark MD app, restores the demo baseline (~15 s), starts a fresh app window, then prints
-   "Press Enter to start the hero replay..." and waits. Pressing Enter in that terminal starts the replay.
-   Never type anything else: no sudo, kill, reset, stop or rm. Never close the Spark MD window by hand.
+2. You are running ON the GB10 itself (user dell). Use your own shell/command tool directly; don't open or type
+   into a desktop terminal. You may run exactly two commands, nothing else (no sudo, kill, reset, stop, rm):
+   a) Launcher (kills any running Spark MD app, restores the demo baseline in ~15 s, opens a fresh app window on
+      the box display, then exits):
+        DEMO_BASELINE=1 ~/spark-md-app/bin/sparkmd-demo --no-replay
+   b) Start the hero replay (the new scan arrives):
+        curl -s -X POST http://127.0.0.1:8100/api/demo/replay -H 'Content-Type: application/json' -d '{"patient_id":"134503","timepoints":["T0","T1"]}'
+      It must return "replaying":true. Never close the Spark MD window by hand.
 3. Recording: click OBS's "Start Recording" button to start and "Stop Recording" to stop (OBS Controls dock).
    One clip per recording. After starting, switch back to the Spark MD window before acting. After stopping, say
    the clip name and the approximate length so Ty can label the file. After every launcher run, glance at the
@@ -41,13 +44,11 @@ Acknowledge, then wait for "Clip 1".
 ## Clip 1: a new scan arrives (~20 s)  → script 0:00-0:20
 ```
 Clip 1.
-0. In the terminal, run: DEMO_BASELINE=1 ~/spark-md-app/bin/sparkmd-demo --wait
-   Wait for "Press Enter to start the hero replay...". Do NOT press Enter yet. Check the OBS preview shows the new
-   Spark MD window (worklist). Bring the Spark MD window to the front; maximize it if it isn't.
+0. From your shell, run command (a), the launcher. Wait until it prints "done (no replay)". Check the OBS preview
+   shows the new Spark MD window (worklist). Bring the Spark MD window to the front; maximize it if it isn't.
 1. Click OBS "Start Recording". Back on Spark MD: hold on the worklist 3 s (patient rows; footer "Research demo,
    not for clinical use").
-2. Switch to the terminal and press Enter (the replay starts). Switch straight back to the Spark MD window.
-   Keep recording.
+2. From your shell, run command (b) (the replay starts; no window switch needed). Keep recording.
 3. When the replay banner "Time machine replay · 134503 · T0" appears and the hero row shows in the worklist,
    open the Agent activity panel (or the agent log on the study) and hold 5 s on the tool calls
    (get_study, select_series, run_analysis).
@@ -111,8 +112,8 @@ Clip 5. After the T0 approvals the replay drops T1 by itself; wait until its ban
 4. Wi-Fi back on, cable back in.
 
 ## Retakes
-Any clip can be redone: tell the agent "Retake from Clip 1". It re-runs the launcher (kills the app, restores the
-baseline in ~15 s, starts a fresh app), then replays from Clip 1, recording only the clip(s) being redone
+Any clip can be redone: tell the agent "Retake from Clip 1". It re-runs command (a) (kills the app, restores the
+baseline in ~15 s, starts a fresh app) and command (b) at Clip 1 step 2, then replays from Clip 1, recording only the clip(s) being redone
 (for later clips it performs the earlier steps unrecorded, including the Confirm/Approve clicks they need).
 
 ## Script accuracy notes for Joyce (match the product's real behavior)
