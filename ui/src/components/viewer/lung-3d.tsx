@@ -5,7 +5,8 @@ import * as THREE from "three"
 import type { Findings, ViewerCommand } from "@/api/types"
 import { Toggle } from "@/components/ui/toggle"
 import { cn } from "@/lib/utils"
-import { Rotate3d } from "lucide-react"
+import { Crosshair, Rotate3d } from "lucide-react"
+import { viewerBus } from "@/api/viewer-bus"
 
 /** RAS mm → three/glTF: x = patient Left (−R), y = Superior, z = Anterior. Right-handed, mm, not recentred. */
 /** Worker assets are paths; a relative URL resolves against the current page's origin and hash route. */
@@ -40,7 +41,7 @@ type ToggleLayer = "vessels" | "skeleton"
 const LAYERS: Layer[] = ["lungs", "airways", "vessels", "skeleton"]
 const TOGGLES: ToggleLayer[] = ["vessels", "skeleton"]
 const LAYER_STYLE: Record<Layer, { color: string; alpha: number }> = {
-  lungs: { color: "#9db8d8", alpha: 1 },
+  lungs: { color: "#9db8d8", alpha: 0.4 }, // lighter than the layers so vessels read through it
   airways: { color: "#d8e6f2", alpha: 1.7 },
   vessels: { color: "#e3a3ae", alpha: 2.2 },
   skeleton: { color: "#efe4cf", alpha: 0.9 },
@@ -48,6 +49,13 @@ const LAYER_STYLE: Record<Layer, { color: string; alpha: number }> = {
 const LUNG_ALPHA = 0.5
 const TOGGLE_CLASS =
   "h-6 rounded-md bg-white/5 px-1.5 text-[11px] font-normal text-white/50 hover:bg-white/10 hover:text-white data-[state=on]:bg-white/15 data-[state=on]:text-white"
+/**
+ * Fixed draw order per layer. Per-object depth sorting flips between these nested meshes as the
+ * camera orbits (their centres are mm apart), so whole layers popped over/under the lungs. Bone is
+ * drawn first and writes depth, so ribs in front hide the lung and the lung covers the spine behind.
+ * Both lungs share an order and still sort against each other.
+ */
+const LAYER_ORDER: Record<Layer, number> = { skeleton: 0, vessels: 1, lungs: 2, airways: 3 }
 /** Skeleton alpha multiplier while a nodule is focused, so the ribs don't sit between camera and nodule. */
 const SKELETON_FOCUSED = 0.25
 
@@ -84,11 +92,11 @@ function Lung({
         uniforms: { uColor: { value: new THREE.Color(LAYER_STYLE[layer].color) }, uAlpha: { value: LUNG_ALPHA * LAYER_STYLE[layer].alpha } },
         transparent: true,
         side: THREE.DoubleSide,
-        depthWrite: false,
+        depthWrite: layer === "skeleton",
       })
       m.material = mat
       m.userData.layer = layer
-      if (layer === "airways") m.renderOrder = 1
+      m.renderOrder = LAYER_ORDER[layer]
       if (layer === "skeleton") skeletonMats.current.push(mat)
     })
     onLayers(LAYERS.filter((l) => present.has(l)))
@@ -103,6 +111,12 @@ function Lung({
   useFrame((_, delta) => {
     const mats = skeletonMats.current
     if (!mats.length) return
+    // Focused: faint ribs must not punch depth holes in the lung around the nodule.
+    const depth = !focusRef.current
+    if (mats[0].depthWrite !== depth) {
+      for (const m of mats) m.depthWrite = depth
+      invalidate()
+    }
     const target = LUNG_ALPHA * (focusRef.current ? SKELETON_FOCUSED : LAYER_STYLE.skeleton.alpha)
     const cur = mats[0].uniforms.uAlpha.value as number
     if (cur === target) return
@@ -394,6 +408,10 @@ export default function Lung3D({
   // Demand frameloop: GL-on-EGL translation is CPU-bound on GB10, so a 60 fps loop burns a core.
   // CameraControls renders continuously only during interaction/tweens, then returns to demand.
   const visible = shown === findings.study_uid
+  // Focus target: the selected nodule, else the assessment's driver, else the first one placed.
+  const focusId =
+    [selected, findings.assessment?.driver_nodule_id].find((id) => id && findings.nodules.some((n) => n.nodule_id === id && n.center_mm)) ??
+    findings.nodules.find((n) => n.center_mm)?.nodule_id
   return (
     <div className="relative h-full">
       <div className="h-full" style={{ opacity: visible ? 1 : 0, transition: visible ? "opacity 0.4s ease-out" : "none" }}>
@@ -408,6 +426,15 @@ export default function Lung3D({
         </Canvas>
       </div>
       <div className="absolute right-2.5 top-2 flex gap-1">
+        {focusId && (
+          <button
+            onClick={() => viewerBus.emit({ command: "show_nodule", study_uid: findings.study_uid, nodule_id: focusId })}
+            className="flex h-6 items-center gap-1 rounded-md bg-white/5 px-1.5 text-[11px] text-white/60 hover:bg-white/10 hover:text-white"
+            aria-label="Focus nodule"
+          >
+            <Crosshair className="size-3.5" /> Focus nodule
+          </button>
+        )}
         <Toggle size="sm" pressed={orbit} onPressedChange={setOrbit} className={TOGGLE_CLASS} aria-label="Auto-orbit">
           <Rotate3d className="size-3.5" /> Orbit
         </Toggle>
