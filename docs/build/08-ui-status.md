@@ -68,3 +68,50 @@ Captures: `/tmp/sm-mock/*.png`, `/tmp/sm-worker/*.png` (not committed).
 Captures archived in `docs/benchmarks/2026-10-25-ui-shots/` (worklist, study 3D, slices, compare,
 chat, confirmed, T1 prior strip, report sheet, inbox, inspector collapsed) — mock + fake-imaging
 worker runs on the Mac, Oct 25.
+
+## Rounded window corners (Oct 25, linux arm64 box)
+
+- `electron/main.cjs`: `transparent: true` (opaque `backgroundColor` removed — it would
+  defeat transparency); CSS owns the corner shape, so the rounding is identical on every
+  platform instead of relying on Win11/macOS/WM decoration.
+- `src/index.css`: `--win-radius: 10px`; `body` is now transparent, `#root` is the opaque
+  rounded backdrop; title bar gets `rounded-t`, footer `rounded-b`, sidebar `rounded-tl/bl`
+  (it spans `inset-y-0` under both bars; without its own rounding its square paint showed
+  through the rounded cutouts). `html.maximized` zeroes the
+  radius — the TitleBar toggles it from the existing `window-state` IPC (initial state via
+  `sparkmd.state()` plus the event stream), so maximized/fullscreen windows are square with
+  no desktop notches.
+- Verified headless on the box (`--ozone-platform=headless`, mock worker 8101, real
+  `main.cjs` over CDP): computed radii 10 px on `#root` (all corners), header top, footer
+  bottom, sidebar left; `body` fully transparent; worklist renders 5 rows, 0 console
+  errors, 0 blocked requests; `html.maximized` flips header radius to 0 px. Screenshot
+  corner pixels: all four window corners alpha ≤ 27 (antialiasing edge only), mid-top and
+  center fully opaque — the desktop really shows through the rounded corners.
+
+## Real assets, framing, netstats, voice (Oct 25, box, ~13:10–13:30)
+
+- **3D framing fixed on real anatomy** (commit 042e031). Cause: the lung bounding sphere only
+  counted meshes whose direct parent was the R3F scene; real glbs nest meshes under Group nodes,
+  so the sphere stayed empty → home targeted (0,0,0) with fallback r=140 while the real T0 lung
+  glb has center (−17.3, −206.9, 165.3), radius 206.2 → the viewer rendered blank. Fix: sphere over
+  every mesh, re-home after each glb loads, `show_nodule` flies to the glb node bbox centre (=
+  `rasToThree(center_mm)`, both real T0 nodes exact to <0.1 mm) and warns past 2 mm. Verified via
+  `tools/realworker.mjs` (read-only CDP probe; never clicks Confirm/Approve): lung centred with
+  margins at 61 fps, RUL nodule upper/screen-left (patient right), LLL lower/screen-right (patient
+  left) in the anterior home view, 0 non-loopback requests. Shot: `/tmp/shots-realworker-fixed/02-study-3d.png`.
+- **Slice stack on real T0**: 151-slice carousel loads (`stack_*.jpg`), key-slice `box_px` renders.
+- **Net monitor live**: W's `GET /api/netstats` + SSE `net_stats` verified through the System page
+  (96.65 MB sent / 38.28 MB recv, per-iface rows, sparkline over 2 s frames, "Link up"), 0 non-loopback.
+- **Voice (09) UI complete** (commit 0679ecf): hold mic/Space → same-origin worklet
+  (`public/voice-capture-worklet.js`; Electron refuses blob:-URL worklet modules — root-caused
+  headless) → 16 kHz mono s16 WAV → `/api/asr` (V's client) → transcript bubble → `submit()`;
+  TTS speaks after `done` (V's `src/voice/tts.ts`), mute persisted, playback stops on capture.
+  Fake-media E2E: WAV header verified at the server, TTS fires after done, 0 non-loopback.
+  Real `/api/asr` (422 on bad wav) + `/api/tts` (200) are up on :8100; real-chain run logged below.
+- **Mock replay banner fix** (e0955ab): the mock set `waiting_for`/`phase` without emitting
+  `demo_state`, so the banner stuck at "dropping". Now emits on every transition + sets `timepoint`;
+  verified banner text "Time machine replay · 134503 · T0 · waiting for radiologist confirmation ·
+  cached results · 2×". Smoke re-run: full T0→T1 replay, confirms, sheet, 121 requests / 0 non-loopback.
+- **Open**: T1 real assets + banner during the 14:45 G4 rehearsal on the real worker; real-mic
+  capture on the box display (fake-device only so far); polish agent's `index.css` must re-add
+  `--radius: 0.625rem` (see HANDOFF "For Ty").
