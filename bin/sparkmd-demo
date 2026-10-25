@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# One-command demo launch: reset -> relaunch the single Electron window -> pause -> start the hero replay.
+# The replay never confirms or approves (10); Joyce does every human step. Works offline (loopback only).
+#   bin/sparkmd-demo                 reset, launch, wait DEMO_DELAY_S (default 10) after the page loads, replay T0,T1
+#   DEMO_DELAY_S=0 bin/sparkmd-demo  replay as soon as the window is up
+#   bin/sparkmd-demo --wait          reset + launch, then wait for Enter before starting the replay
+#   bin/sparkmd-demo --no-replay     reset + launch only
+set -uo pipefail
+API=${SPARKMD_API:-http://127.0.0.1:8100}
+UI_DIR=${SPARKMD_UI_DIR:-$HOME/spark-md-app/ui}
+PORT=${DEMO_CDP_PORT:-9350}
+DELAY=${DEMO_DELAY_S:-10}
+TPS=${DEMO_TIMEPOINTS:-'["T0","T1"]'}
+mode=${1:-auto}
+
+say() { printf '%s %s\n' "$(date +%H:%M:%S)" "$*"; }
+post() { curl -s -m 30 -X POST "$API$1" -H 'Content-Type: application/json' -d "$2"; }
+
+curl -s -m 3 "$API/api/health" >/dev/null || { say "FAIL worker not answering at $API (bin/sparkmd-start first)"; exit 1; }
+
+say "stop any running replay, reset demo (re-seeds cohort, zeroes network counters)"
+post /api/demo/stop '{}' >/dev/null
+out=$(post /api/demo/reset '{}') || { say "FAIL reset"; exit 1; }
+say "reset: ${out:0:160}"
+
+say "relaunch Electron (single window, CDP $PORT)"
+tmux kill-session -t sparkmd-ui 2>/dev/null
+pkill -x electron 2>/dev/null
+sleep 2
+tmux new-session -d -s sparkmd-ui -c "$UI_DIR" \
+  "DISPLAY=${DISPLAY:-:1} XAUTHORITY=${XAUTHORITY:-/run/user/$(id -u)/gdm/Xauthority} SPARKMD_UI_URL=$API/ ./node_modules/electron/dist/electron --ozone-platform=x11 --remote-debugging-address=127.0.0.1 --remote-debugging-port=$PORT --user-data-dir=$HOME/.config/spark-md-ui-desktop . 2>&1 | tee $HOME/logs/sparkmd-ui.log"
+for _ in $(seq 1 40); do
+  curl -s -m 1 "http://127.0.0.1:$PORT/json/list" | grep -q '"type": "page"' && break
+  sleep 0.5
+done
+curl -s -m 1 "http://127.0.0.1:$PORT/json/list" | grep -q '"type": "page"' || { say "FAIL Electron window did not come up (see ~/logs/sparkmd-ui.log)"; exit 1; }
+say "window up"
+
+case "$mode" in
+  --no-replay) say "done (no replay)"; exit 0 ;;
+  --wait) read -r -p "Press Enter to start the hero replay... " _ ;;
+  *) [ "$DELAY" -gt 0 ] && { say "opening shot: replay starts in ${DELAY}s"; sleep "$DELAY"; } ;;
+esac
+
+out=$(post /api/demo/replay "{\"patient_id\":\"134503\",\"timepoints\":$TPS}")
+say "replay: ${out:0:160}"
+case "$out" in *'"replaying":true'*|*'"replaying": true'*) exit 0 ;; *) say "FAIL replay did not start"; exit 1 ;; esac
