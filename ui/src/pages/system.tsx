@@ -17,7 +17,7 @@ export function Sparkline({ series }: { series: number[] }) {
 
 export function SystemPage() {
   const { status } = useApp().sse
-  const { data } = useNetstats()
+  const { data, isError } = useNetstats()
   const [hist, setHist] = useState<number[]>([])
   useEffect(() => {
     if (!data) return
@@ -29,7 +29,7 @@ export function SystemPage() {
     <div className="flex h-full min-h-0 flex-col gap-4 px-6 pb-4 pt-5">
       <div>
         <h1 className="flex items-center gap-2 text-[15px] font-semibold"><Server className="size-4 text-muted-foreground" /> System</h1>
-        <p className="mt-0.5 text-xs text-muted-foreground">Air-gap monitor · bytes crossing physical interfaces since boot.</p>
+        <p className="mt-0.5 text-xs text-muted-foreground">Air-gap monitor · bytes crossing physical interfaces since the last baseline (worker start, reset or cable unplug).</p>
       </div>
 
       <section className="rounded-lg border p-4">
@@ -39,23 +39,24 @@ export function SystemPage() {
           </div>
           <span className={`flex items-center gap-1 text-[11px] ${data?.link_up ? "text-ok" : "text-muted-foreground"}`}>
             {data?.link_up ? <Wifi className="size-3" /> : <WifiOff className="size-3" />}
-            {data?.link_up ? "Link up (internal)" : "No link"}
+            {!data ? (isError ? "Monitor unavailable" : "Reading…") : data.link_up ? "Link up" : "Link down · unplugged"}
           </span>
         </div>
         <div className="flex items-baseline gap-3">
-          <div className="font-mono text-4xl tabular-nums">{bytes(data?.tx_bytes ?? 0)}</div>
+          <div className="font-mono text-4xl tabular-nums">{data ? bytes(data.tx_bytes) : "—"}</div>
           <div className="text-xs text-muted-foreground">sent on external interfaces</div>
         </div>
-        <div className="mt-1 font-mono text-[11px] text-muted-foreground">{bytes(data?.rx_bytes ?? 0)} received · since {data?.since ? new Date(data.since).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "—"}</div>
+        <div className="mt-1 font-mono text-[11px] text-muted-foreground">{data ? bytes(data.rx_bytes) : "—"} received · since {data?.since ? new Date(data.since).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "—"}</div>
         <div className="mt-3"><Sparkline series={hist.length ? hist : [0, 0, 0]} /></div>
         <ul className="mt-2 space-y-0.5">
           {(data?.interfaces ?? []).map((i) => (
             <li key={i.name} className="flex items-center justify-between font-mono text-[11px] text-muted-foreground">
-              <span>{i.name}</span>
-              <span className="tabular-nums">↑ {bytes(i.tx_bytes)} ↓ {bytes(i.rx_bytes)}</span>
+              <span>{i.name}{i.up === false && " · down"}</span>
+              <span className="tabular-nums">↑ {bytes(i.tx_bytes)}{i.rx_bytes != null && <> ↓ {bytes(i.rx_bytes)}</>}</span>
             </li>
           ))}
-          {!data?.interfaces?.length && <li className="text-[11px] text-muted-foreground">No physical interfaces reported.</li>}
+          {data && !data.interfaces?.length && <li className="text-[11px] text-muted-foreground">No physical interfaces reported.</li>}
+          {!data && isError && <li className="text-[11px] text-muted-foreground">Worker has no /api/netstats yet — no byte count shown.</li>}
         </ul>
       </section>
 
@@ -77,7 +78,7 @@ export function SystemPage() {
         </div>
       </section>
       <p className="mt-auto text-[11px] text-muted-foreground/70">
-        Placeholder counters in mock mode. In the product, every byte here should be 0 — research demo, not for clinical use.
+        Real counters from the worker. A connected cable carries ARP/mDNS/DHCP chatter, so unplug to see the count hold from that moment. Research demo, not for clinical use.
       </p>
     </div>
   )

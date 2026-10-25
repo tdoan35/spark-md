@@ -218,7 +218,8 @@ export interface NetStats {
   tx_bytes: number
   rx_bytes: number
   since: string
-  interfaces: { name: string; tx_bytes: number; rx_bytes: number }[]
+  /** 10: physical interfaces only (`/sys/class/net/<if>/device`) */
+  interfaces: { name: string; up?: boolean; tx_bytes: number; rx_bytes?: number }[]
   link_up: boolean
 }
 
