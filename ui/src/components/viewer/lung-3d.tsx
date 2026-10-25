@@ -5,6 +5,7 @@ import * as THREE from "three"
 import type { Findings, ViewerCommand } from "@/api/types"
 
 /** RAS mm → three/glTF: x = patient Left (−R), y = Superior, z = Anterior. Right-handed, mm, not recentred. */
+/** Worker assets are paths; a relative URL resolves against the current page's origin and hash route. */
 function resolveAsset(url: string) {
   return url.startsWith("/") ? url : `/${url}`
 }
