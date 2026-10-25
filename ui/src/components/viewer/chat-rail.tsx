@@ -87,14 +87,20 @@ export function ChatRail({ uid }: { uid: string }) {
     const upd = (f: (t: Turn) => Turn) => setTurns((all) => all.map((t) => (t.id === id ? f(t) : t)))
     // /api/ask owns deterministic viewer actions for both typed and spoken requests (09).
     let acc = ""
+    let completed = false
     try {
       for await (const ev of ask(uid, question, c.signal)) {
         if (ev.event === "delta") {
           acc += ev.data.text ?? ""
           upd((t) => ({ ...t, text: t.text + (ev.data.text ?? "") }))
         } else if (ev.event === "tool") upd((t) => ({ ...t, tools: [...t.tools, String(ev.data.tool ?? "tool")] }))
-        else if (ev.event === "error") upd((t) => ({ ...t, status: "error", error: ev.data.message ?? "error" }))
+        else if (ev.event === "error") throw new Error(ev.data.message ?? "Answer failed")
+        else if (ev.event === "done") {
+          if (ev.data.ok !== true) throw new Error("Answer did not complete successfully.")
+          completed = true
+        }
       }
+      if (!completed) throw new Error("Answer stream ended before completion.")
       upd((t) => (t.status === "streaming" ? { ...t, status: "done" } : t))
       // 09: speak the answer only after `done` and only when not muted; failures stay silent.
       if (!c.signal.aborted && voiceOn && acc.trim()) void tts.speak(acc)
@@ -153,7 +159,7 @@ export function ChatRail({ uid }: { uid: string }) {
         e.preventDefault()
         pttHandlers.current.start()
       }
-      if (e.key === "Escape" && busy) {
+      if (e.key === "Escape") {
         ctl.current?.abort()
         tts.stop()
       }
@@ -171,10 +177,12 @@ export function ChatRail({ uid }: { uid: string }) {
       window.removeEventListener("keydown", down)
       window.removeEventListener("keyup", up)
       window.removeEventListener("blur", blur)
+      ctl.current?.abort()
       pttRef.current?.abort()
       tts.stop()
     }
-  }, [busy])
+    // Busy transitions must not cancel the speech requested by a completed answer.
+  }, [])
 
   useEffect(() => {
     if (!resizing) return
@@ -326,7 +334,7 @@ export function ChatRail({ uid }: { uid: string }) {
               aria-label={voiceOn ? "Mute spoken answers" : "Unmute spoken answers"}
               aria-pressed={voiceOn}
               onClick={() => {
-                tts.setMuted(!voiceOn) // muting also stops the current clip
+                tts.setMuted(voiceOn) // muting also cancels pending synthesis
                 setVoiceOn(!voiceOn)
               }}
             >
@@ -334,7 +342,7 @@ export function ChatRail({ uid }: { uid: string }) {
             </Button>
             <div className="ml-auto flex items-center gap-1">
               {busy ? (
-                <Button size="icon" variant="secondary" className="size-7 rounded-full" aria-label="Stop" onClick={() => ctl.current?.abort()}>
+                <Button size="icon" variant="secondary" className="size-7 rounded-full" aria-label="Stop" onClick={() => { ctl.current?.abort(); tts.stop() }}>
                   <Square className="size-3" />
                 </Button>
               ) : (

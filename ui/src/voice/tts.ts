@@ -6,6 +6,7 @@ const RATE = 24000
 class TtsPlayer {
   private ctx: AudioContext | null = null
   private src: AudioBufferSourceNode | null = null
+  private pending: AbortController | null = null
   private muted = false
   playing = false
   onPlaying: ((playing: boolean) => void) | null = null
@@ -15,8 +16,10 @@ class TtsPlayer {
     if (muted) this.stop()
   }
 
-  /** Stop the current clip (push-to-talk start, a new question, unmount). */
+  /** Cancel pending synthesis and stop playback (push-to-talk, a new question, Escape or unmount). */
   stop() {
+    this.pending?.abort()
+    this.pending = null
     if (this.src) {
       try {
         this.src.stop()
@@ -34,46 +37,52 @@ class TtsPlayer {
   /** Speak `text` (the worker normalises it: markdown, Lung-RADS, ≤ 2 sentences).
  *  Any failure — 502, network, empty clip — means text only; never a toast. */
   async speak(text: string): Promise<void> {
+    this.stop()
     const t0 = performance.now()
     if (this.muted || !text.trim()) return
-    let res: Response
+    const request = new AbortController()
+    this.pending = request
     try {
-      res = await fetch(`${API_BASE}/api/tts`, {
+      const res = await fetch(`${API_BASE}/api/tts`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ text }),
+        signal: request.signal,
       })
-    } catch {
-      return
-    }
-    if (!res.ok) return // 502 upstream / 422: the text answer already on screen is the answer
-    const raw = await res.arrayBuffer().catch(() => null)
-    if (!raw || raw.byteLength < 2) return
-    if (!this.ctx) this.ctx = new AudioContext({ sampleRate: RATE })
-    const ctx = this.ctx
-    if (ctx.state === "suspended") await ctx.resume().catch(() => undefined)
-    const pcm = new Int16Array(raw)
-    const buf = ctx.createBuffer(1, pcm.length, RATE)
-    const f = buf.getChannelData(0)
-    for (let i = 0; i < pcm.length; i++) f[i] = pcm[i] / 32768
-    this.stop()
-    const src = ctx.createBufferSource()
-    src.buffer = buf
-    src.connect(ctx.destination)
-    src.onended = () => {
-      if (this.src === src) {
-        this.src = null
-        this.playing = false
-        this.onPlaying?.(false)
+      if (!res.ok) return // The text answer already on screen remains available.
+      const raw = await res.arrayBuffer()
+      if (request.signal.aborted || this.pending !== request || this.muted || raw.byteLength < 2) return
+      if (!this.ctx) this.ctx = new AudioContext({ sampleRate: RATE })
+      const ctx = this.ctx
+      if (ctx.state === "suspended") await ctx.resume()
+      // Stop/mute can happen while the response body or audio context is still pending.
+      if (request.signal.aborted || this.pending !== request || this.muted) return
+      const pcm = new Int16Array(raw)
+      const buf = ctx.createBuffer(1, pcm.length, RATE)
+      const f = buf.getChannelData(0)
+      for (let i = 0; i < pcm.length; i++) f[i] = pcm[i] / 32768
+      const src = ctx.createBufferSource()
+      src.buffer = buf
+      src.connect(ctx.destination)
+      src.onended = () => {
+        if (this.src === src) {
+          this.src = null
+          this.playing = false
+          this.onPlaying?.(false)
+        }
       }
+      this.src = src
+      this.playing = true
+      this.onPlaying?.(true)
+      src.start()
+      console.info(
+        `[voice] tts first audio +${Math.round(performance.now() - t0)}ms, clip ${(pcm.length / RATE).toFixed(1)}s`,
+      )
+    } catch {
+      // Cancellation, unavailable synthesis or audio output leaves the answer text-only.
+    } finally {
+      if (this.pending === request) this.pending = null
     }
-    this.src = src
-    this.playing = true
-    this.onPlaying?.(true)
-    src.start()
-    console.info(
-      `[voice] tts first audio +${Math.round(performance.now() - t0)}ms, clip ${(pcm.length / RATE).toFixed(1)}s`,
-    )
   }
 }
 
