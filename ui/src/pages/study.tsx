@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { Skeleton } from "@/components/ui/skeleton"
-import { AlertTriangle, Check, ChevronDown, ChevronRight, Loader2, Sparkles, Activity, PanelRight } from "lucide-react"
+import { AlertTriangle, Check, ChevronDown, ChevronRight, Loader2, Activity, PanelRight } from "lucide-react"
 import { toast } from "sonner"
 import { StudyActivity } from "@/components/agent-log"
 import { ViewerPane } from "@/components/viewer/viewer-pane"
@@ -154,7 +154,7 @@ function Inspector({ uid, tab, setTab, findings, selected, setSelected }: { uid:
           {status === "live" ? "Live" : status === "down" ? "Offline" : "Connecting"}
         </span>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto pb-3">
+      <div className={cn("min-h-0 flex-1 overflow-y-auto", tab !== "assessment" && "pb-3")}>
         {tab === "assessment" ? (
           <Assessment findings={findings} selected={selected} setSelected={setSelected} />
         ) : (
@@ -170,8 +170,9 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
   const [openRules, setOpenRules] = useState(false)
   const { data: study } = useStudy(findings?.study_uid ?? null)
   if (!findings) return <div className="flex items-center gap-2 text-xs text-muted-foreground"><Loader2 className="size-3 animate-spin" /> Waiting for findings…</div>
+  // Full-height column so the Sybil card sits at the panel bottom, and stays pinned there when the list scrolls.
   return (
-    <div className="space-y-3">
+    <div className="flex min-h-full flex-col gap-3">
       {a ? (
         <div>
           <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Management</div>
@@ -217,9 +218,8 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
           </div>
         </div>
       )}
-      <RiskCard studyUid={findings.study_uid} patientId={findings.patient_id} timepoint={findings.timepoint} />
-      <div className="flex items-center gap-1.5 pt-1 text-[10px] text-muted-foreground/70">
-        <Sparkles className="size-3" /> Every number comes from the worker · research demo, not for clinical use
+      <div className="sticky bottom-0 mt-auto bg-background pb-3 pt-1">
+        <RiskCard studyUid={findings.study_uid} patientId={findings.patient_id} timepoint={findings.timepoint} />
       </div>
     </div>
   )

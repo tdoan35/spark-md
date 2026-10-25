@@ -34,7 +34,7 @@ export function RiskCard({ studyUid, patientId, timepoint }: RiskCardProps) {
   const trend = patient.screens.slice(0, currentIndex + 1)
 
   return (
-    <Card size="sm" aria-label="Sybil research risk" className="gap-2 rounded-lg bg-muted/30 text-muted-foreground shadow-none">
+    <Card size="sm" aria-label="Sybil research risk" className="gap-2 rounded-lg border bg-muted/30 text-muted-foreground shadow-none ring-0">
       <CardHeader className="flex flex-row items-center justify-between gap-2">
         <h3 className="text-xs font-medium">Sybil risk estimate</h3>
       </CardHeader>
