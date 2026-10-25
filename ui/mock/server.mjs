@@ -827,17 +827,21 @@ const server = http.createServer(async (req, res) => {
       r.status = "approved"
       r.approved_by = String(b.approver ?? "").trim() || "Dr. Joyce (demo)"
       r.approved_at = now()
-      const o = { id: outboxSeq++, ts: now(), report_id: r.report_id, study_uid: r.study_uid, patient_id: s?.patient_id ?? null, recipient: r.kind === "pcp_letter" ? "PCP — Dr. Alvarez" : "EHR inbox", subject: `${r.kind === "pcp_letter" ? "Screening letter" : "CT report"} · ${s?.patient_id ?? ""} ${s?.timepoint ?? ""}`, kind: r.kind }
-      state.outbox.push(o)
-      agentEvent("system", `Approved ${r.kind.replace("_", " ")} by ${r.approved_by} — delivered to ${o.recipient}`, r.study_uid)
-      emit("outbox_delivered", { outbox_id: o.id, report_id: r.report_id, study_uid: r.study_uid, patient_id: o.patient_id, recipient: o.recipient, subject: o.subject })
+      // Like the worker: only a pcp_letter is delivered (outbox row + outbox_delivered); payload = the approved report.
+      let o = null
+      if (r.kind === "pcp_letter") {
+        o = { id: outboxSeq++, ts: now(), report_id: r.report_id, study_uid: r.study_uid, patient_id: s?.patient_id ?? null, recipient: "Primary care physician", subject: "Lung CT screening follow-up", payload: { ...r } }
+        state.outbox.push(o)
+        emit("outbox_delivered", { outbox_id: o.id, report_id: r.report_id, study_uid: r.study_uid, patient_id: o.patient_id, recipient: o.recipient, subject: o.subject })
+      }
+      agentEvent("system", `Approved ${r.kind.replace("_", " ")} by ${r.approved_by}${o ? ` — delivered to ${o.recipient}` : ""}`, r.study_uid)
       emit("report_saved", { study_uid: r.study_uid, report_id: r.report_id, kind: r.kind, version: r.version, status: "approved" })
       if (s && state.reports.filter((x) => x.study_uid === s.study_uid).every((x) => x.status === "approved")) {
         s.status = "approved"
         emit("study_updated", { study_uid: s.study_uid, status: s.status })
         emit("worklist_changed", { reason: "status", study_uid: s.study_uid })
       }
-      return json(res, 200, { report: r, outbox_id: o.id, already_approved: false })
+      return json(res, 200, { report: r, outbox_id: o?.id ?? null, already_approved: false })
     }
     const rep = p.match(/^\/api\/studies\/([^/]+)\/reports$/)
     if (rep && m === "POST") {

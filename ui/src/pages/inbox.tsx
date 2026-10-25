@@ -1,3 +1,5 @@
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 import { useState } from "react"
 import { Inbox, CheckCheck, FileText } from "lucide-react"
 import { useOutbox, useWorklist } from "@/api/hooks"
@@ -53,9 +55,16 @@ export function InboxPage() {
               </div>
               <div className="flex-1 overflow-y-auto px-5 py-4 text-[13px] leading-relaxed">
                 <div className="mb-2 flex items-center gap-1.5 text-[11px] text-muted-foreground"><FileText className="size-3.5" /> Letter body (stored in outbox payload)</div>
-                <p className="text-muted-foreground">
-                  This {sel.kind === "pcp_letter" ? "PCP letter" : "radiology report"} was approved by a radiologist in the app and written to the mock EHR outbox. Open the study to read the full text.
-                </p>
+                {sel.payload?.markdown ? (
+                  <article className="report-md">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>{sel.payload.markdown}</ReactMarkdown>
+                    <div className="mt-3 border-t pt-2 font-mono text-[10px] text-muted-foreground">approved by {sel.payload.approved_by ?? "—"} · {hm(sel.payload.approved_at ?? sel.ts)}</div>
+                  </article>
+                ) : (
+                  <p className="text-muted-foreground">
+                    This {(sel.kind ?? sel.payload?.kind) === "pcp_letter" ? "PCP letter" : "radiology report"} was approved by a radiologist in the app and written to the mock EHR outbox. Open the study to read the full text.
+                  </p>
+                )}
               </div>
             </div>
           )}

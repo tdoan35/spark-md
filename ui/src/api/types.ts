@@ -210,6 +210,8 @@ export interface OutboxItem {
   recipient: string
   subject?: string | null
   kind?: ReportKind
+  /** the approved report as delivered (worker stores the full row) */
+  payload?: Partial<Report> | null
 }
 
 export interface NetStats {
