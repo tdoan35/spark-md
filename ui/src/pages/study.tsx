@@ -33,7 +33,8 @@ export function StudyPage({ uid }: { uid: string }) {
 
   const inspectorRef = useRef<HTMLDivElement>(null)
 
-  if (isError) return <div className="grid h-full place-items-center text-sm text-muted-foreground">Study not found — it may have been reset.</div>
+  // Keep the page (and an open review sheet) through a transient worker restart; error only with no data.
+  if (isError && !study) return <div className="grid h-full place-items-center text-sm text-muted-foreground">Study not found — it may have been reset.</div>
   if (isLoading || !study)
     return (
       <div className="flex h-full flex-col gap-3 p-5">

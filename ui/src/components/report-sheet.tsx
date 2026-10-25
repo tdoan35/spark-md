@@ -73,6 +73,8 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
       <SheetContent
         side="right"
         className="w-[480px] gap-0 p-0 data-[side=right]:top-(--titlebar-h)! data-[side=right]:bottom-(--footer-h)! data-[side=right]:h-auto!"
+        // Close only via the X / Escape, so a stray click beside the sheet never drops the review.
+        onInteractOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => {
           e.preventDefault()
           requestAnimationFrame(() => (document.getElementById("approver-input") as HTMLInputElement | null)?.focus())
@@ -129,8 +131,12 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
                 <Button
                   disabled={!active || pending || !approver.trim()}
                   onClick={(e) => {
-                    // Mouse only: ignore keyboard-synthesised clicks (e.detail === 0).
-                    if (e.detail === 0) return
+                    // Mouse only: ignore keyboard-synthesised clicks (e.detail === 0), but say so.
+                    console.info(`[sparkmd] approve click detail=${e.detail} report=${active?.report_id ?? "none"}`)
+                    if (e.detail === 0) {
+                      toast.info("Approve needs a mouse click", { description: "Keyboard activation is ignored by design." })
+                      return
+                    }
                     void approve()
                   }}
                 >
