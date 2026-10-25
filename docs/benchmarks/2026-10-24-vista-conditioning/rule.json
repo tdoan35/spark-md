@@ -1,0 +1,44 @@
+{
+  "version": "conditioning-direct-v1",
+  "machine": "ty-omarchy RTX 3080, exploratory; GB10 confirmation pending",
+  "targets": [
+    "LIDC-IDRI-0052-n1-c0",
+    "LIDC-IDRI-0447-n1-c1",
+    "LIDC-IDRI-0884-n2-c0",
+    "hero-134503-T0"
+  ],
+  "selection": "diagnostic previous moderate/bad/good reader agreement plus hero failure; not held-out performance validation",
+  "input": "exact previous 64 mm crops, identical physical positive, no negative prompts",
+  "conditions": [
+    [
+      "point1",
+      null,
+      1
+    ],
+    [
+      "zero133",
+      133,
+      1
+    ],
+    [
+      "tumor23_regular",
+      23,
+      1
+    ],
+    [
+      "tumor23_special",
+      23,
+      3
+    ],
+    [
+      "point3",
+      null,
+      3
+    ]
+  ],
+  "network": "monai vista3d132; strict original unprefixed weights; no parameter edits",
+  "pipeline": "vendor preprocessing/inferer/postprocessing reproduced directly without transformers; control compared to GB10 HF baseline",
+  "decode": "point-only label 1; class prompted label 23 or 133, 255 remains uncomputed",
+  "postprocessing": "native VistaPostTransformd + invert; no additional cleanup",
+  "accepted_for_patient_findings": false
+}

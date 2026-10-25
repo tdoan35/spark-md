@@ -1,0 +1,104 @@
+{
+  "path": "tmp/vista-conditioning-20261024-02/hero-134503-T0/zero133.nii.gz",
+  "shape": [
+    114,
+    114,
+    32
+  ],
+  "affine": [
+    [
+      0.0,
+      -0.5625,
+      0.0,
+      -28.46875
+    ],
+    [
+      -0.5625,
+      0.0,
+      0.0,
+      225.09375
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      -263.29998779296875
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "labels": {
+    "0": 414905,
+    "1": 967
+  },
+  "same_shape": true,
+  "same_affine": true,
+  "naive_positive_voxels": 967,
+  "foreground_voxels": 967,
+  "uncomputed_voxels": 0,
+  "foreground_bbox_voxels": [
+    [
+      50,
+      50,
+      14
+    ],
+    [
+      67,
+      67,
+      19
+    ]
+  ],
+  "foreground_volume_mm3": 611.9296875,
+  "foreground_bbox_extent_mm": [
+    10.125,
+    10.125,
+    12.0
+  ],
+  "foreground_components": 1,
+  "foreground_at_prompt": true,
+  "nearest_foreground_to_prompt_mm": 0.0,
+  "pipeline_s": 0.17686495299858507,
+  "sha256": "f8a767be48498042edc52c0746e9c979cfdfb2b4b1dc04e012e3de786f6316d5",
+  "native_labels": [
+    0.0,
+    133.0
+  ],
+  "foreground_label": 133,
+  "trace": {
+    "point_head_labels": [
+      [
+        1
+      ]
+    ],
+    "point_head_class_vector": [
+      [
+        133
+      ]
+    ]
+  },
+  "processed_point": [
+    19.5,
+    19.5,
+    21.333333333333332
+  ],
+  "input_point_flag": 1,
+  "preprocessed_point_labels": [
+    1
+  ],
+  "peak_gpu_allocated_gib": 2.4141345024108887,
+  "review": {
+    "technical_pass": true,
+    "reasons": [],
+    "crop_edge_clearance_mm": 25.0,
+    "touches_crop_face": false,
+    "accepted_for_patient_findings": false,
+    "boundary_accuracy": "unverified; no independent contour reference"
+  },
+  "dice_vs_gb10_point_baseline": 0.7242744063324539,
+  "per_reader": [],
+  "median_reader_dice": null
+}

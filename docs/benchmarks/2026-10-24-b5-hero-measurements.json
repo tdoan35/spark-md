@@ -1,0 +1,104 @@
+{
+ "134503": {
+  "T0": {
+   "n_voxels": 47,
+   "long_mm": 4.56,
+   "short_mm": 4.55,
+   "mean_dia_mm": 4.56,
+   "volume_mm3": 29.7,
+   "mean_hu": -88.7,
+   "solid_frac": 0.872,
+   "type_heuristic": "part_solid",
+   "score": 0.99951171875,
+   "farina_dist_mm": 2.1,
+   "day": 23,
+   "nlst_long_mm": 7,
+   "nlst_perp_mm": 5,
+   "nlst_mean_mm": 6.0
+  },
+  "T1": {
+   "n_voxels": 238,
+   "long_mm": 10.16,
+   "short_mm": 6.72,
+   "mean_dia_mm": 8.44,
+   "volume_mm3": 174.5,
+   "mean_hu": -18.3,
+   "solid_frac": 0.95,
+   "type_heuristic": "solid",
+   "score": 0.9990234375,
+   "farina_dist_mm": 4.0,
+   "day": 380,
+   "nlst_long_mm": 10,
+   "nlst_perp_mm": 8,
+   "nlst_mean_mm": 9.0
+  },
+  "T2": {
+   "n_voxels": 1007,
+   "long_mm": 17.02,
+   "short_mm": 12.31,
+   "mean_dia_mm": 14.67,
+   "volume_mm3": 836.7,
+   "mean_hu": -19.4,
+   "solid_frac": 0.937,
+   "type_heuristic": "solid",
+   "score": 0.9995608925819397,
+   "farina_dist_mm": 5.6,
+   "day": 800,
+   "nlst_long_mm": 14,
+   "nlst_perp_mm": 14,
+   "nlst_mean_mm": 14.0
+  },
+  "growth_T0-T1": {
+   "interval_days": 357,
+   "delta_mean_mm": 3.88,
+   "delta_volume_mm3": 144.8,
+   "vdt_days": 139.7,
+   "growing": true
+  },
+  "growth_T1-T2": {
+   "interval_days": 420,
+   "delta_mean_mm": 6.23,
+   "delta_volume_mm3": 662.2,
+   "vdt_days": 185.7,
+   "growing": true
+  }
+ },
+ "113820": {},
+ "109965": {
+  "T0": {
+   "n_voxels": 25,
+   "long_mm": 8.0,
+   "short_mm": 2.66,
+   "mean_dia_mm": 5.33,
+   "volume_mm3": 22.0,
+   "mean_hu": -122.2,
+   "solid_frac": 0.84,
+   "type_heuristic": "part_solid",
+   "score": 0.9986489415168762,
+   "farina_dist_mm": 2.3,
+   "day": 0,
+   "nlst_long_mm": 14,
+   "nlst_perp_mm": 12,
+   "nlst_mean_mm": 13.0
+  }
+ },
+ "106194": {
+  "T2": {
+   "n_voxels": 48,
+   "long_mm": 7.5,
+   "short_mm": 4.22,
+   "mean_dia_mm": 5.86,
+   "volume_mm3": 59.3,
+   "mean_hu": -182.7,
+   "solid_frac": 0.792,
+   "type_heuristic": "part_solid",
+   "score": 0.95743727684021,
+   "farina_dist_mm": 4.7,
+   "day": 729,
+   "nlst_long_mm": 17,
+   "nlst_perp_mm": 14,
+   "nlst_mean_mm": 15.5
+  }
+ },
+ "106000": {}
+}

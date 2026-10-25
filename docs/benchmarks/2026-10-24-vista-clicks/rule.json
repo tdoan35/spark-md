@@ -1,0 +1,44 @@
+{
+  "version": "clicks-assisted-v1",
+  "machine": "ty-omarchy RTX 3080 diagnostic; GB10 unverified",
+  "purpose": "annotation-assisted capability diagnosis: can stronger explicit guidance outline the target at all",
+  "targets": [
+    "LIDC-IDRI-0052-n1-c0",
+    "LIDC-IDRI-0447-n1-c1",
+    "LIDC-IDRI-0884-n2-c0"
+  ],
+  "selection": "previous moderate/bad/good reader-agreement diagnostic targets; not held-out validation",
+  "crop": "identical previous 64 mm crop files, sha256-verified against the conditioning run jobs",
+  "guide_reader": "first reference file per group; clicks derive ONLY from it",
+  "heldout_readers": "remaining reference files of the group score every mask",
+  "conditions": {
+    "auto1": [
+      1,
+      0
+    ],
+    "g1p0n": [
+      1,
+      0
+    ],
+    "g1p4n": [
+      1,
+      4
+    ],
+    "g3p8n": [
+      3,
+      8
+    ],
+    "g5p16n": [
+      5,
+      16
+    ]
+  },
+  "auto1": "fixed automatic single positive preserved unchanged (baseline control, no reader information)",
+  "positive_sampling": "farthest-point sampling in physical mm over guide-mask voxels, seeded at deepest physical-EDT voxel, ties -> smallest linear index",
+  "negative_sampling": "candidates: physical distance to guide mask in (2,4] mm (near-boundary shell so negatives counter boundary leakage), inside the 64 mm crop, outside EVERY annotated group of the case (all readers, all groups); farthest-point sampling in physical mm, seeded at the minimum-distance candidate, ties -> smallest linear index; larger budgets densify the same ring",
+  "prompts": "flag1 positives, flag0 negatives (vendor inferer documents 0=negative,1=positive); no class prompts; no mask cleanup",
+  "decode": "point-only label 1 foreground; 255 uncomputed",
+  "postprocessing": "native VistaPostTransformd + invert; no additional cleanup",
+  "point_delivery": "point-head hook must deliver exactly the input multiset of labels, else abort",
+  "accepted_for_patient_findings": false
+}

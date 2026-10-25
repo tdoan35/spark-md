@@ -1,0 +1,2658 @@
+{
+  "LIDC-IDRI-0052-n1-c0": {
+    "point1": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0052-n1-c0/point1.nii.gz",
+      "shape": [
+        87,
+        87,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.7421879768371582,
+          0.0,
+          -9.740775108337402
+        ],
+        [
+          -0.7421879768371582,
+          0.0,
+          0.0,
+          42.15303421020508
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -280.75
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 393084,
+        "1": 504
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 504,
+      "foreground_voxels": 504,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          40,
+          40,
+          23
+        ],
+        [
+          49,
+          53,
+          29
+        ]
+      ],
+      "foreground_volume_mm3": 347.03108556582947,
+      "foreground_bbox_extent_mm": [
+        7.421879768371582,
+        10.390631675720215,
+        8.75
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.4822355010001047,
+      "sha256": "8e40917a1b239ef6ef62970574582a8623b7ffa6ccbfece1d40c432d96d290b1",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        20.734360694885243,
+        20.239568710327145,
+        20.83333333333333
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.414189338684082,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 24.8632972240448,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 1.0,
+      "per_reader": [
+        {
+          "dice": 0.5303210463733651,
+          "iou": 0.36084142394822005,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 232.04262526865998,
+          "relative_volume_error": 0.49554896142433225,
+          "assd_mm": 1.1402293070784832,
+          "hd95_pooled_mm": 2.65912208697532,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5892018779342723,
+          "iou": 0.4176372712146423,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 239.61671689463998,
+          "relative_volume_error": 0.4482758620689655,
+          "assd_mm": 1.0183394207502776,
+          "hd95_pooled_mm": 2.5133615377519223,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5389876880984952,
+          "iou": 0.36891385767790263,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 156.30170900885997,
+          "relative_volume_error": 1.2202643171806167,
+          "assd_mm": 1.0998932628255376,
+          "hd95_pooled_mm": 2.9074683333401796,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5935483870967742,
+          "iou": 0.42201834862385323,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 293.32391206067996,
+          "relative_volume_error": 0.18309859154929575,
+          "assd_mm": 1.0054648863313393,
+          "hd95_pooled_mm": 2.4432036793423357,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.5640947830163837
+    },
+    "zero133": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0052-n1-c0/zero133.nii.gz",
+      "shape": [
+        87,
+        87,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.7421879768371582,
+          0.0,
+          -9.740775108337402
+        ],
+        [
+          -0.7421879768371582,
+          0.0,
+          0.0,
+          42.15303421020508
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -280.75
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 392228,
+        "1": 1360
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 1360,
+      "foreground_voxels": 1360,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          36,
+          36,
+          20
+        ],
+        [
+          51,
+          55,
+          30
+        ]
+      ],
+      "foreground_volume_mm3": 936.4330880347779,
+      "foreground_bbox_extent_mm": [
+        11.875007629394531,
+        14.843759536743164,
+        13.75
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.18523374999858788,
+      "sha256": "86073fbdb79bc7ccfd215d2a999a8363b4685df79fdb8a3d1a832d553f7dc214",
+      "native_labels": [
+        0.0,
+        133.0
+      ],
+      "foreground_label": 133,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            133
+          ]
+        ]
+      },
+      "processed_point": [
+        20.734360694885243,
+        20.239568710327145,
+        20.83333333333333
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.4141907691955566,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 23.378921270370483,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.5407725321888412,
+      "per_reader": [
+        {
+          "dice": 0.37477902180318207,
+          "iou": 0.23060188542422044,
+          "prediction_volume_mm3": 936.4331464847999,
+          "reference_volume_mm3": 232.04262526865998,
+          "relative_volume_error": 3.035608308605341,
+          "assd_mm": 2.1942556616466353,
+          "hd95_pooled_mm": 5.248061677152784,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.38992974238875877,
+          "iou": 0.2421818181818182,
+          "prediction_volume_mm3": 936.4331464847999,
+          "reference_volume_mm3": 239.61671689463998,
+          "relative_volume_error": 2.9080459770114944,
+          "assd_mm": 2.1768835567537703,
+          "hd95_pooled_mm": 5.106892302015378,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.2835538752362949,
+          "iou": 0.16519823788546256,
+          "prediction_volume_mm3": 936.4331464847999,
+          "reference_volume_mm3": 156.30170900885997,
+          "relative_volume_error": 4.991189427312776,
+          "assd_mm": 2.614169043174283,
+          "hd95_pooled_mm": 5.518571497534555,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.4322508398656215,
+          "iou": 0.2757142857142857,
+          "prediction_volume_mm3": 936.4331464847999,
+          "reference_volume_mm3": 293.32391206067996,
+          "relative_volume_error": 2.192488262910798,
+          "assd_mm": 1.9360507333622416,
+          "hd95_pooled_mm": 4.766075311492843,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.3823543820959704
+    },
+    "tumor23_regular": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0052-n1-c0/tumor23_regular.nii.gz",
+      "shape": [
+        87,
+        87,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.7421879768371582,
+          0.0,
+          -9.740775108337402
+        ],
+        [
+          -0.7421879768371582,
+          0.0,
+          0.0,
+          42.15303421020508
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -280.75
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 393084,
+        "1": 504
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 504,
+      "foreground_voxels": 504,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          40,
+          40,
+          23
+        ],
+        [
+          49,
+          53,
+          29
+        ]
+      ],
+      "foreground_volume_mm3": 347.03108556582947,
+      "foreground_bbox_extent_mm": [
+        7.421879768371582,
+        10.390631675720215,
+        8.75
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.31008815800305456,
+      "sha256": "8e40917a1b239ef6ef62970574582a8623b7ffa6ccbfece1d40c432d96d290b1",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        20.734360694885243,
+        20.239568710327145,
+        20.83333333333333
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.641091823577881,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 24.8632972240448,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 1.0,
+      "per_reader": [
+        {
+          "dice": 0.5303210463733651,
+          "iou": 0.36084142394822005,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 232.04262526865998,
+          "relative_volume_error": 0.49554896142433225,
+          "assd_mm": 1.1402293070784832,
+          "hd95_pooled_mm": 2.65912208697532,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5892018779342723,
+          "iou": 0.4176372712146423,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 239.61671689463998,
+          "relative_volume_error": 0.4482758620689655,
+          "assd_mm": 1.0183394207502776,
+          "hd95_pooled_mm": 2.5133615377519223,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5389876880984952,
+          "iou": 0.36891385767790263,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 156.30170900885997,
+          "relative_volume_error": 1.2202643171806167,
+          "assd_mm": 1.0998932628255376,
+          "hd95_pooled_mm": 2.9074683333401796,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5935483870967742,
+          "iou": 0.42201834862385323,
+          "prediction_volume_mm3": 347.03110722671994,
+          "reference_volume_mm3": 293.32391206067996,
+          "relative_volume_error": 0.18309859154929575,
+          "assd_mm": 1.0054648863313393,
+          "hd95_pooled_mm": 2.4432036793423357,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.5640947830163837
+    },
+    "tumor23_special": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0052-n1-c0/tumor23_special.nii.gz",
+      "shape": [
+        87,
+        87,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.7421879768371582,
+          0.0,
+          -9.740775108337402
+        ],
+        [
+          -0.7421879768371582,
+          0.0,
+          0.0,
+          42.15303421020508
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -280.75
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 392988,
+        "1": 600
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 600,
+      "foreground_voxels": 600,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          38,
+          40,
+          23
+        ],
+        [
+          51,
+          53,
+          29
+        ]
+      ],
+      "foreground_volume_mm3": 413.13224472122556,
+      "foreground_bbox_extent_mm": [
+        10.390631675720215,
+        10.390631675720215,
+        8.75
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.3069547020022583,
+      "sha256": "0c79671f7c448596f30e1c2590c2cdd8b9b805c5b9b45a590fab529b6369b21f",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        20.734360694885243,
+        20.239568710327145,
+        20.83333333333333
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.641091823577881,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 24.8632972240448,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.8985507246376812,
+      "per_reader": [
+        {
+          "dice": 0.5336179295624333,
+          "iou": 0.363901018922853,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 232.04262526865998,
+          "relative_volume_error": 0.7804154302670623,
+          "assd_mm": 1.1527400423135887,
+          "hd95_pooled_mm": 2.9074683333401916,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5970464135021097,
+          "iou": 0.4255639097744361,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 239.61671689463998,
+          "relative_volume_error": 0.7241379310344827,
+          "assd_mm": 1.0241202759917662,
+          "hd95_pooled_mm": 2.65399413829637,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5030229746070133,
+          "iou": 0.3360258481421648,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 156.30170900885997,
+          "relative_volume_error": 1.643171806167401,
+          "assd_mm": 1.2337561479315964,
+          "hd95_pooled_mm": 3.1488370062916626,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.6081871345029239,
+          "iou": 0.4369747899159664,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 293.32391206067996,
+          "relative_volume_error": 0.408450704225352,
+          "assd_mm": 0.9667587287988402,
+          "hd95_pooled_mm": 2.5,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.5653321715322714
+    },
+    "point3": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0052-n1-c0/point3.nii.gz",
+      "shape": [
+        87,
+        87,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.7421879768371582,
+          0.0,
+          -9.740775108337402
+        ],
+        [
+          -0.7421879768371582,
+          0.0,
+          0.0,
+          42.15303421020508
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -280.75
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 392988,
+        "1": 600
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 600,
+      "foreground_voxels": 600,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          38,
+          40,
+          23
+        ],
+        [
+          51,
+          53,
+          29
+        ]
+      ],
+      "foreground_volume_mm3": 413.13224472122556,
+      "foreground_bbox_extent_mm": [
+        10.390631675720215,
+        10.390631675720215,
+        8.75
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.18379926700072247,
+      "sha256": "0c79671f7c448596f30e1c2590c2cdd8b9b805c5b9b45a590fab529b6369b21f",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        20.734360694885243,
+        20.239568710327145,
+        20.83333333333333
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.414189338684082,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 24.8632972240448,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.8985507246376812,
+      "per_reader": [
+        {
+          "dice": 0.5336179295624333,
+          "iou": 0.363901018922853,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 232.04262526865998,
+          "relative_volume_error": 0.7804154302670623,
+          "assd_mm": 1.1527400423135887,
+          "hd95_pooled_mm": 2.9074683333401916,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5970464135021097,
+          "iou": 0.4255639097744361,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 239.61671689463998,
+          "relative_volume_error": 0.7241379310344827,
+          "assd_mm": 1.0241202759917662,
+          "hd95_pooled_mm": 2.65399413829637,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.5030229746070133,
+          "iou": 0.3360258481421648,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 156.30170900885997,
+          "relative_volume_error": 1.643171806167401,
+          "assd_mm": 1.2337561479315964,
+          "hd95_pooled_mm": 3.1488370062916626,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.6081871345029239,
+          "iou": 0.4369747899159664,
+          "prediction_volume_mm3": 413.1322705079999,
+          "reference_volume_mm3": 293.32391206067996,
+          "relative_volume_error": 0.408450704225352,
+          "assd_mm": 0.9667587287988402,
+          "hd95_pooled_mm": 2.5,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.5653321715322714
+    }
+  },
+  "LIDC-IDRI-0447-n1-c1": {
+    "point1": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0447-n1-c1/point1.nii.gz",
+      "shape": [
+        117,
+        117,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5488280057907104,
+          0.0,
+          -2.743320941925049
+        ],
+        [
+          -0.5488280057907104,
+          0.0,
+          0.0,
+          -43.1765251159668
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -155.25
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 699896,
+        "1": 11932
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 11932,
+      "foreground_voxels": 11932,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          35,
+          43,
+          14
+        ],
+        [
+          75,
+          88,
+          37
+        ]
+      ],
+      "foreground_volume_mm3": 4492.579663808204,
+      "foreground_bbox_extent_mm": [
+        22.50194823741913,
+        25.24608826637268,
+        30.0
+      ],
+      "foreground_components": 7,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.1825860230019316,
+      "sha256": "732c7e839df003dbdd9d69ef7f0fc94d83824033a72dbc7b0acb5b7189ebb5a6",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        20.046879768371575,
+        20.412765105565384,
+        21.66666666666666
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.41414737701416,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_extent_exceeds_detector_limit",
+          "foreground_volume_exceeds_detector_limit"
+        ],
+        "crop_edge_clearance_mm": 15.641598165035248,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.9959782153330541,
+      "per_reader": [
+        {
+          "dice": 0.014311865535030787,
+          "iou": 0.007207509218907141,
+          "prediction_volume_mm3": 4492.579569005359,
+          "reference_volume_mm3": 32.380308660279994,
+          "relative_volume_error": 137.74418604651163,
+          "assd_mm": 9.414958763264393,
+          "hd95_pooled_mm": 15.391196957173559,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.03264633140972795,
+          "iou": 0.01659403285283272,
+          "prediction_volume_mm3": 4492.579569005359,
+          "reference_volume_mm3": 74.55001296203999,
+          "relative_volume_error": 59.26262626262626,
+          "assd_mm": 8.562777267309162,
+          "hd95_pooled_mm": 14.848732923505633,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.011664722546242293,
+          "iou": 0.005866577271203486,
+          "prediction_volume_mm3": 4492.579569005359,
+          "reference_volume_mm3": 26.35606518859999,
+          "relative_volume_error": 169.45714285714286,
+          "assd_mm": 9.462988975888466,
+          "hd95_pooled_mm": 15.35204576251577,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.014311865535030787
+    },
+    "zero133": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0447-n1-c1/zero133.nii.gz",
+      "shape": [
+        117,
+        117,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5488280057907104,
+          0.0,
+          -2.743320941925049
+        ],
+        [
+          -0.5488280057907104,
+          0.0,
+          0.0,
+          -43.1765251159668
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -155.25
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 694791,
+        "1": 17037
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 17037,
+      "foreground_voxels": 17037,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          40,
+          35,
+          17
+        ],
+        [
+          83,
+          83,
+          34
+        ]
+      ],
+      "foreground_volume_mm3": 6414.689887051657,
+      "foreground_bbox_extent_mm": [
+        24.14843225479126,
+        26.892572283744812,
+        22.5
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.1842086010001367,
+      "sha256": "c8270bd13042949b4d3bf67f72c64b088ac32f1fad3c18abe873cd8fb7becc3b",
+      "native_labels": [
+        0.0,
+        133.0
+      ],
+      "foreground_label": 133,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            133
+          ]
+        ]
+      },
+      "processed_point": [
+        20.046879768371575,
+        20.412765105565384,
+        21.66666666666666
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.4141488075256348,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_extent_exceeds_detector_limit",
+          "foreground_volume_exceeds_detector_limit"
+        ],
+        "crop_edge_clearance_mm": 18.3857381939888,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.5643485763589301,
+      "per_reader": [
+        {
+          "dice": 0.010044968755475092,
+          "iou": 0.005047837060515349,
+          "prediction_volume_mm3": 6414.689751688258,
+          "reference_volume_mm3": 32.380308660279994,
+          "relative_volume_error": 197.1046511627907,
+          "assd_mm": 9.519090726304572,
+          "hd95_pooled_mm": 12.267871202894014,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.022976501305483028,
+          "iou": 0.01162176439513999,
+          "prediction_volume_mm3": 6414.689751688258,
+          "reference_volume_mm3": 74.55001296203999,
+          "relative_volume_error": 85.04545454545455,
+          "assd_mm": 8.607604270857518,
+          "hd95_pooled_mm": 11.082323328709736,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.008183784415736249,
+          "iou": 0.0041087045841404005,
+          "prediction_volume_mm3": 6414.689751688258,
+          "reference_volume_mm3": 26.35606518859999,
+          "relative_volume_error": 242.38571428571427,
+          "assd_mm": 9.516025512309952,
+          "hd95_pooled_mm": 12.287474555811684,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.010044968755475092
+    },
+    "tumor23_regular": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0447-n1-c1/tumor23_regular.nii.gz",
+      "shape": [
+        117,
+        117,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5488280057907104,
+          0.0,
+          -2.743320941925049
+        ],
+        [
+          -0.5488280057907104,
+          0.0,
+          0.0,
+          -43.1765251159668
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -155.25
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 699683,
+        "1": 12145
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 12145,
+      "foreground_voxels": 12145,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          13,
+          13,
+          8
+        ],
+        [
+          80,
+          107,
+          37
+        ]
+      ],
+      "foreground_volume_mm3": 4572.777406717284,
+      "foreground_bbox_extent_mm": [
+        37.32030439376831,
+        52.13866055011749,
+        37.5
+      ],
+      "foreground_components": 23,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.2997106930015434,
+      "sha256": "1795cfd4e4cce28bffd43e4097dd288faa3b19161800b692d99a7f5fb874827a",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        20.046879768371575,
+        20.412765105565384,
+        21.66666666666666
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.641049861907959,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_extent_exceeds_detector_limit",
+          "foreground_volume_exceeds_detector_limit"
+        ],
+        "crop_edge_clearance_mm": 5.213866055011749,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.9871693725864717,
+      "per_reader": [
+        {
+          "dice": 0.014062627749161966,
+          "iou": 0.00708110333470564,
+          "prediction_volume_mm3": 4572.777310222099,
+          "reference_volume_mm3": 32.380308660279994,
+          "relative_volume_error": 140.22093023255815,
+          "assd_mm": 10.38561333218921,
+          "hd95_pooled_mm": 21.61330383536561,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.032082962002754595,
+          "iou": 0.016303005351996705,
+          "prediction_volume_mm3": 4572.777310222099,
+          "reference_volume_mm3": 74.55001296203999,
+          "relative_volume_error": 60.33838383838384,
+          "assd_mm": 9.50634862610938,
+          "hd95_pooled_mm": 20.373309254623514,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.011461318051575931,
+          "iou": 0.005763688760806916,
+          "prediction_volume_mm3": 4572.777310222099,
+          "reference_volume_mm3": 26.35606518859999,
+          "relative_volume_error": 172.5,
+          "assd_mm": 10.420919598551798,
+          "hd95_pooled_mm": 21.717680818810397,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.014062627749161966
+    },
+    "tumor23_special": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0447-n1-c1/tumor23_special.nii.gz",
+      "shape": [
+        117,
+        117,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5488280057907104,
+          0.0,
+          -2.743320941925049
+        ],
+        [
+          -0.5488280057907104,
+          0.0,
+          0.0,
+          -43.1765251159668
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -155.25
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 614865,
+        "1": 96963
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 96963,
+      "foreground_voxels": 96963,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          0,
+          7,
+          0
+        ],
+        [
+          116,
+          113,
+          51
+        ]
+      ],
+      "foreground_volume_mm3": 36508.045754428,
+      "foreground_bbox_extent_mm": [
+        64.21287667751312,
+        58.72459661960602,
+        65.0
+      ],
+      "foreground_components": 21,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.3021296379993146,
+      "sha256": "224ca0e8a7977b656d0b1e5ec2ac43f77139387ebb9d420972c0ec8f05c60b46",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        20.046879768371575,
+        20.412765105565384,
+        21.66666666666666
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.641049861907959,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_extent_exceeds_detector_limit",
+          "foreground_volume_exceeds_detector_limit",
+          "foreground_too_close_to_crop_edge"
+        ],
+        "crop_edge_clearance_mm": 0.2744140028953552,
+        "touches_crop_face": true,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.16400216710590354,
+      "per_reader": [
+        {
+          "dice": 0.0017723005904233943,
+          "iou": 0.0008869362540350443,
+          "prediction_volume_mm3": 36508.04498403173,
+          "reference_volume_mm3": 32.380308660279994,
+          "relative_volume_error": 1126.4767441860465,
+          "assd_mm": 25.867033108690194,
+          "hd95_pooled_mm": 40.945390259460865,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.004075709389569889,
+          "iou": 0.002042016026731846,
+          "prediction_volume_mm3": 36508.04498403173,
+          "reference_volume_mm3": 74.55001296203999,
+          "relative_volume_error": 488.7121212121212,
+          "assd_mm": 25.185235463351567,
+          "hd95_pooled_mm": 40.307566664571006,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.0014428081168262343,
+          "iou": 0.0007219248579355012,
+          "prediction_volume_mm3": 36508.04498403173,
+          "reference_volume_mm3": 26.35606518859999,
+          "relative_volume_error": 1384.1857142857143,
+          "assd_mm": 25.87863724858082,
+          "hd95_pooled_mm": 40.89100423519051,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.0017723005904233943
+    },
+    "point3": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0447-n1-c1/point3.nii.gz",
+      "shape": [
+        117,
+        117,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5488280057907104,
+          0.0,
+          -2.743320941925049
+        ],
+        [
+          -0.5488280057907104,
+          0.0,
+          0.0,
+          -43.1765251159668
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -155.25
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 615060,
+        "1": 96768
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 96768,
+      "foreground_voxels": 96768,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          0,
+          7,
+          0
+        ],
+        [
+          116,
+          113,
+          51
+        ]
+      ],
+      "foreground_volume_mm3": 36434.62528556757,
+      "foreground_bbox_extent_mm": [
+        64.21287667751312,
+        58.72459661960602,
+        65.0
+      ],
+      "foreground_components": 7,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.18726382900058525,
+      "sha256": "279f2c738e8a372570b90b3da4b1d05b23419d46043bbfa6831491156faef5cc",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        20.046879768371575,
+        20.412765105565384,
+        21.66666666666666
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.41414737701416,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_extent_exceeds_detector_limit",
+          "foreground_volume_exceeds_detector_limit",
+          "foreground_too_close_to_crop_edge"
+        ],
+        "crop_edge_clearance_mm": 0.2744140028953552,
+        "touches_crop_face": true,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.16429635898662448,
+      "per_reader": [
+        {
+          "dice": 0.001775868833501972,
+          "iou": 0.0008887235449735449,
+          "prediction_volume_mm3": 36434.62451672063,
+          "reference_volume_mm3": 32.380308660279994,
+          "relative_volume_error": 1124.2093023255813,
+          "assd_mm": 25.85601755760215,
+          "hd95_pooled_mm": 40.96530718755393,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.0040839056989047705,
+          "iou": 0.0020461309523809525,
+          "prediction_volume_mm3": 36434.62451672063,
+          "reference_volume_mm3": 74.55001296203999,
+          "relative_volume_error": 487.72727272727275,
+          "assd_mm": 25.176507121990863,
+          "hd95_pooled_mm": 40.33406381945199,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.0014457134595923088,
+          "iou": 0.0007233796296296296,
+          "prediction_volume_mm3": 36434.62451672063,
+          "reference_volume_mm3": 26.35606518859999,
+          "relative_volume_error": 1381.4,
+          "assd_mm": 25.869425088358067,
+          "hd95_pooled_mm": 40.90631366630095,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.001775868833501972
+    }
+  },
+  "LIDC-IDRI-0884-n2-c0": {
+    "point1": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0884-n2-c0/point1.nii.gz",
+      "shape": [
+        97,
+        97,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.6640620231628418,
+          0.0,
+          -24.127975463867188
+        ],
+        [
+          -0.6640620231628418,
+          0.0,
+          0.0,
+          20.80790901184082
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -115.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 484760,
+        "1": 4508
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 4508,
+      "foreground_voxels": 4508,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          38,
+          40,
+          18
+        ],
+        [
+          64,
+          66,
+          33
+        ]
+      ],
+      "foreground_volume_mm3": 2484.913118371159,
+      "foreground_bbox_extent_mm": [
+        17.92967462539673,
+        17.92967462539673,
+        20.0
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.17742575400188798,
+      "sha256": "358e79a1aeb6691a17b56a88e6cfbdd343adcefff4913bbfb212bd29827124c4",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        19.42189121246338,
+        20.307307243347168,
+        21.66666666666666
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.41414737701416,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 20.253891706466675,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.9978952032790517,
+      "per_reader": [
+        {
+          "dice": 0.7814739544336292,
+          "iou": 0.6413272471910112,
+          "prediction_volume_mm3": 2484.9129450209407,
+          "reference_volume_mm3": 2668.4701789810056,
+          "relative_volume_error": -0.06878744061144393,
+          "assd_mm": 0.9278848297306226,
+          "hd95_pooled_mm": 2.621470274189943,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7520749095552245,
+          "iou": 0.6026603001364257,
+          "prediction_volume_mm3": 2484.9129450209407,
+          "reference_volume_mm3": 2695.4801022964507,
+          "relative_volume_error": -0.07811860940695292,
+          "assd_mm": 1.0669846321982692,
+          "hd95_pooled_mm": 2.8308856139688876,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7371904141181189,
+          "iou": 0.5837700492297919,
+          "prediction_volume_mm3": 2484.9129450209407,
+          "reference_volume_mm3": 3012.4332840593256,
+          "relative_volume_error": -0.17511436413540715,
+          "assd_mm": 1.153420028650883,
+          "hd95_pooled_mm": 3.0098391613752433,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7647000298477763,
+          "iou": 0.6190399484536082,
+          "prediction_volume_mm3": 2484.9129450209407,
+          "reference_volume_mm3": 3055.4286721941157,
+          "relative_volume_error": -0.18672199170124482,
+          "assd_mm": 1.0089347495632286,
+          "hd95_pooled_mm": 2.907729646858526,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.7583874697015004
+    },
+    "zero133": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0884-n2-c0/zero133.nii.gz",
+      "shape": [
+        97,
+        97,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.6640620231628418,
+          0.0,
+          -24.127975463867188
+        ],
+        [
+          -0.6640620231628418,
+          0.0,
+          0.0,
+          20.80790901184082
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -115.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 484070,
+        "1": 5198
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 5198,
+      "foreground_voxels": 5198,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          38,
+          38,
+          18
+        ],
+        [
+          64,
+          66,
+          33
+        ]
+      ],
+      "foreground_volume_mm3": 2865.2569630198054,
+      "foreground_bbox_extent_mm": [
+        17.92967462539673,
+        19.257798671722412,
+        20.0
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.17664480799794546,
+      "sha256": "1b20e2f46a9fc0741def3af48aaf1abcf7021e538700051c8c2157ddb5d25175",
+      "native_labels": [
+        0.0,
+        133.0
+      ],
+      "foreground_label": 133,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            133
+          ]
+        ]
+      },
+      "processed_point": [
+        19.42189121246338,
+        20.307307243347168,
+        21.66666666666666
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.4141488075256348,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 20.253891706466675,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.8881341977976742,
+      "per_reader": [
+        {
+          "dice": 0.7259687219842614,
+          "iou": 0.5698201720093823,
+          "prediction_volume_mm3": 2865.256763136391,
+          "reference_volume_mm3": 2668.4701789810056,
+          "relative_volume_error": 0.07374509398884532,
+          "assd_mm": 1.19604313744629,
+          "hd95_pooled_mm": 2.907729646858526,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.6944885011895321,
+          "iou": 0.5319665907365224,
+          "prediction_volume_mm3": 2865.256763136391,
+          "reference_volume_mm3": 2695.4801022964507,
+          "relative_volume_error": 0.06298568507157465,
+          "assd_mm": 1.365141318455588,
+          "hd95_pooled_mm": 3.2221214745692057,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.6846103348025884,
+          "iou": 0.520461999144446,
+          "prediction_volume_mm3": 2865.256763136391,
+          "reference_volume_mm3": 3012.4332840593256,
+          "relative_volume_error": -0.04885635864592863,
+          "assd_mm": 1.4240739476937525,
+          "hd95_pooled_mm": 3.3762018318001346,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7252583558327902,
+          "iou": 0.5689453695588665,
+          "prediction_volume_mm3": 2865.256763136391,
+          "reference_volume_mm3": 3055.4286721941157,
+          "relative_volume_error": -0.06224066390041494,
+          "assd_mm": 1.2105127189555402,
+          "hd95_pooled_mm": 3.1966865749703928,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.7098734285111612
+    },
+    "tumor23_regular": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0884-n2-c0/tumor23_regular.nii.gz",
+      "shape": [
+        97,
+        97,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.6640620231628418,
+          0.0,
+          -24.127975463867188
+        ],
+        [
+          -0.6640620231628418,
+          0.0,
+          0.0,
+          20.80790901184082
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -115.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 484562,
+        "1": 4706
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 4706,
+      "foreground_voxels": 4706,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          11,
+          40,
+          18
+        ],
+        [
+          84,
+          96,
+          36
+        ]
+      ],
+      "foreground_volume_mm3": 2594.0552650964223,
+      "foreground_bbox_extent_mm": [
+        49.14058971405029,
+        37.85153532028198,
+        23.75
+      ],
+      "foreground_components": 8,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.2932396360010898,
+      "sha256": "ebe4bb8ab37aadf8610dae0496d6962d8a4669f46d5e08e2d44d050340b8ffa1",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        19.42189121246338,
+        20.307307243347168,
+        21.66666666666666
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.641049861907959,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_too_close_to_crop_edge"
+        ],
+        "crop_edge_clearance_mm": 0.3320310115814209,
+        "touches_crop_face": true,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.9764769647696477,
+      "per_reader": [
+        {
+          "dice": 0.7652665758877134,
+          "iou": 0.6197828299966067,
+          "prediction_volume_mm3": 2594.0550841323306,
+          "reference_volume_mm3": 2668.4701789810056,
+          "relative_volume_error": -0.027886800247882704,
+          "assd_mm": 2.195799673347485,
+          "hd95_pooled_mm": 18.120046348282163,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.736556898707795,
+          "iou": 0.582975915539426,
+          "prediction_volume_mm3": 2594.0550841323306,
+          "reference_volume_mm3": 2695.4801022964507,
+          "relative_volume_error": -0.03762781186094066,
+          "assd_mm": 2.3305381312522884,
+          "hd95_pooled_mm": 18.20017024594782,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7228394454822534,
+          "iou": 0.5659738260200154,
+          "prediction_volume_mm3": 2594.0550841323306,
+          "reference_volume_mm3": 3012.4332840593256,
+          "relative_volume_error": -0.13888380603842632,
+          "assd_mm": 2.322433276497801,
+          "hd95_pooled_mm": 17.280874262682552,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7499268221289882,
+          "iou": 0.5999063378083047,
+          "prediction_volume_mm3": 2594.0550841323306,
+          "reference_volume_mm3": 3055.4286721941157,
+          "relative_volume_error": -0.15100126285405013,
+          "assd_mm": 2.1107885439995915,
+          "hd95_pooled_mm": 15.845273968170995,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.7432418604183916
+    },
+    "tumor23_special": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0884-n2-c0/tumor23_special.nii.gz",
+      "shape": [
+        97,
+        97,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.6640620231628418,
+          0.0,
+          -24.127975463867188
+        ],
+        [
+          -0.6640620231628418,
+          0.0,
+          0.0,
+          20.80790901184082
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -115.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 483010,
+        "1": 6258
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 6258,
+      "foreground_voxels": 6258,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          11,
+          38,
+          17
+        ],
+        [
+          84,
+          96,
+          36
+        ]
+      ],
+      "foreground_volume_mm3": 3449.553304074248,
+      "foreground_bbox_extent_mm": [
+        49.14058971405029,
+        39.179659366607666,
+        25.0
+      ],
+      "foreground_components": 8,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.30039314399982686,
+      "sha256": "bb48fab65a3b9eb0ba8b41ddfe788dd7f327ead6a0141f253ee94ad176cb7fe1",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        19.42189121246338,
+        20.307307243347168,
+        21.66666666666666
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.641049861907959,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_too_close_to_crop_edge"
+        ],
+        "crop_edge_clearance_mm": 0.3320310115814209,
+        "touches_crop_face": true,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.835297392595342,
+      "per_reader": [
+        {
+          "dice": 0.755743760699162,
+          "iou": 0.6073859522085445,
+          "prediction_volume_mm3": 3449.5530634296906,
+          "reference_volume_mm3": 2668.4701789810056,
+          "relative_volume_error": 0.2927081181574056,
+          "assd_mm": 2.202456379488284,
+          "hd95_pooled_mm": 17.246435065542187,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7343021169716542,
+          "iou": 0.5801559177888023,
+          "prediction_volume_mm3": 3449.5530634296906,
+          "reference_volume_mm3": 2695.4801022964507,
+          "relative_volume_error": 0.2797546012269938,
+          "assd_mm": 2.2966457491036785,
+          "hd95_pooled_mm": 17.31843280302477,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7315533566493219,
+          "iou": 0.5767316745124411,
+          "prediction_volume_mm3": 3449.5530634296906,
+          "reference_volume_mm3": 3012.4332840593256,
+          "relative_volume_error": 0.14510521500457463,
+          "assd_mm": 2.252632115555448,
+          "hd95_pooled_mm": 16.080944085845527,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7675620710109313,
+          "iou": 0.6227997799779978,
+          "prediction_volume_mm3": 3449.5530634296906,
+          "reference_volume_mm3": 3055.4286721941157,
+          "relative_volume_error": 0.12899152083709176,
+          "assd_mm": 2.0173830258815566,
+          "hd95_pooled_mm": 5.971391856359407,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.7450229388354082
+    },
+    "point3": {
+      "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0884-n2-c0/point3.nii.gz",
+      "shape": [
+        97,
+        97,
+        52
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.6640620231628418,
+          0.0,
+          -24.127975463867188
+        ],
+        [
+          -0.6640620231628418,
+          0.0,
+          0.0,
+          20.80790901184082
+        ],
+        [
+          0.0,
+          0.0,
+          1.25,
+          -115.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 483196,
+        "1": 6072
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 6072,
+      "foreground_voxels": 6072,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          38,
+          38,
+          17
+        ],
+        [
+          64,
+          73,
+          34
+        ]
+      ],
+      "foreground_volume_mm3": 3347.025832908091,
+      "foreground_bbox_extent_mm": [
+        17.92967462539673,
+        23.906232833862305,
+        22.5
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.17971559499710565,
+      "sha256": "7b7f93669577a8c0a6d4a2a93bd25dfc7e8bdcb66c0d398c267dea3cb7a24c9b",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        19.42189121246338,
+        20.307307243347168,
+        21.66666666666666
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.41414737701416,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 15.605457544326782,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.8499669530733642,
+      "per_reader": [
+        {
+          "dice": 0.7686245761935306,
+          "iou": 0.6242000297663343,
+          "prediction_volume_mm3": 3347.0255994159606,
+          "reference_volume_mm3": 2668.4701789810056,
+          "relative_volume_error": 0.25428630448254497,
+          "assd_mm": 1.0568299355490929,
+          "hd95_pooled_mm": 2.586692548379881,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7467615398649882,
+          "iou": 0.595865482602999,
+          "prediction_volume_mm3": 3347.0255994159606,
+          "reference_volume_mm3": 2695.4801022964507,
+          "relative_volume_error": 0.24171779141104288,
+          "assd_mm": 1.1541324355393927,
+          "hd95_pooled_mm": 2.8268328677691628,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7433474906821531,
+          "iou": 0.5915298661884398,
+          "prediction_volume_mm3": 3347.0255994159606,
+          "reference_volume_mm3": 3012.4332840593256,
+          "relative_volume_error": 0.11107044830741075,
+          "assd_mm": 1.1860365762311968,
+          "hd95_pooled_mm": 2.935669163496464,
+          "boundary_status": "ok"
+        },
+        {
+          "dice": 0.7803702109341369,
+          "iou": 0.6398418749117606,
+          "prediction_volume_mm3": 3347.0255994159606,
+          "reference_volume_mm3": 3055.4286721941157,
+          "relative_volume_error": 0.09543568464730301,
+          "assd_mm": 1.0082820435673676,
+          "hd95_pooled_mm": 2.8173764599698123,
+          "boundary_status": "ok"
+        }
+      ],
+      "median_reader_dice": 0.7576930580292593
+    }
+  },
+  "hero-134503-T0": {
+    "point1": {
+      "path": "tmp/vista-conditioning-20261024-02/hero-134503-T0/point1.nii.gz",
+      "shape": [
+        114,
+        114,
+        32
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5625,
+          0.0,
+          -28.46875
+        ],
+        [
+          -0.5625,
+          0.0,
+          0.0,
+          225.09375
+        ],
+        [
+          0.0,
+          0.0,
+          2.0,
+          -263.29998779296875
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 415323,
+        "1": 549
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 549,
+      "foreground_voxels": 549,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          50,
+          50,
+          14
+        ],
+        [
+          65,
+          65,
+          19
+        ]
+      ],
+      "foreground_volume_mm3": 347.4140625,
+      "foreground_bbox_extent_mm": [
+        9.0,
+        9.0,
+        12.0
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.17319969199888874,
+      "sha256": "10575765dc3ebac4ad5527796ea3458dbbca5120fcf430f48bfb234c20e1864b",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        19.5,
+        19.5,
+        21.333333333333332
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.414133071899414,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 25.0,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 1.0,
+      "per_reader": [],
+      "median_reader_dice": null
+    },
+    "zero133": {
+      "path": "tmp/vista-conditioning-20261024-02/hero-134503-T0/zero133.nii.gz",
+      "shape": [
+        114,
+        114,
+        32
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5625,
+          0.0,
+          -28.46875
+        ],
+        [
+          -0.5625,
+          0.0,
+          0.0,
+          225.09375
+        ],
+        [
+          0.0,
+          0.0,
+          2.0,
+          -263.29998779296875
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 414905,
+        "1": 967
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 967,
+      "foreground_voxels": 967,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          50,
+          50,
+          14
+        ],
+        [
+          67,
+          67,
+          19
+        ]
+      ],
+      "foreground_volume_mm3": 611.9296875,
+      "foreground_bbox_extent_mm": [
+        10.125,
+        10.125,
+        12.0
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.17686495299858507,
+      "sha256": "f8a767be48498042edc52c0746e9c979cfdfb2b4b1dc04e012e3de786f6316d5",
+      "native_labels": [
+        0.0,
+        133.0
+      ],
+      "foreground_label": 133,
+      "trace": {
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            133
+          ]
+        ]
+      },
+      "processed_point": [
+        19.5,
+        19.5,
+        21.333333333333332
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.4141345024108887,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 25.0,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.7242744063324539,
+      "per_reader": [],
+      "median_reader_dice": null
+    },
+    "tumor23_regular": {
+      "path": "tmp/vista-conditioning-20261024-02/hero-134503-T0/tumor23_regular.nii.gz",
+      "shape": [
+        114,
+        114,
+        32
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5625,
+          0.0,
+          -28.46875
+        ],
+        [
+          -0.5625,
+          0.0,
+          0.0,
+          225.09375
+        ],
+        [
+          0.0,
+          0.0,
+          2.0,
+          -263.29998779296875
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 414994,
+        "1": 878
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 878,
+      "foreground_voxels": 878,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          15,
+          7,
+          5
+        ],
+        [
+          81,
+          65,
+          19
+        ]
+      ],
+      "foreground_volume_mm3": 555.609375,
+      "foreground_bbox_extent_mm": [
+        37.6875,
+        33.1875,
+        30.0
+      ],
+      "foreground_components": 12,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.2897400980000384,
+      "sha256": "3a3d5c5b1d06ab249f584b334e17f7f017e4f088a80973beb22c23f30c6a0dd3",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            1
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        19.5,
+        19.5,
+        21.333333333333332
+      ],
+      "input_point_flag": 1,
+      "preprocessed_point_labels": [
+        1
+      ],
+      "peak_gpu_allocated_gib": 2.641035556793213,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_extent_exceeds_detector_limit",
+          "foreground_too_close_to_crop_edge"
+        ],
+        "crop_edge_clearance_mm": 4.21875,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.7694463910301331,
+      "per_reader": [],
+      "median_reader_dice": null
+    },
+    "tumor23_special": {
+      "path": "tmp/vista-conditioning-20261024-02/hero-134503-T0/tumor23_special.nii.gz",
+      "shape": [
+        114,
+        114,
+        32
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5625,
+          0.0,
+          -28.46875
+        ],
+        [
+          -0.5625,
+          0.0,
+          0.0,
+          225.09375
+        ],
+        [
+          0.0,
+          0.0,
+          2.0,
+          -263.29998779296875
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 414930,
+        "1": 942
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 942,
+      "foreground_voxels": 942,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          15,
+          7,
+          5
+        ],
+        [
+          81,
+          65,
+          18
+        ]
+      ],
+      "foreground_volume_mm3": 596.109375,
+      "foreground_bbox_extent_mm": [
+        37.6875,
+        33.1875,
+        28.0
+      ],
+      "foreground_components": 12,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.28891953700076556,
+      "sha256": "4a2029bf24520e15f6b6ff5f83613c3cd9407dd47bf792e55c8c3549df182cba",
+      "native_labels": [
+        0.0,
+        23.0
+      ],
+      "foreground_label": 23,
+      "trace": {
+        "class_head_calls": 1,
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": [
+          [
+            23
+          ]
+        ]
+      },
+      "processed_point": [
+        19.5,
+        19.5,
+        21.333333333333332
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.641035556793213,
+      "review": {
+        "technical_pass": false,
+        "reasons": [
+          "foreground_extent_exceeds_detector_limit",
+          "foreground_too_close_to_crop_edge"
+        ],
+        "crop_edge_clearance_mm": 4.21875,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.7002012072434608,
+      "per_reader": [],
+      "median_reader_dice": null
+    },
+    "point3": {
+      "path": "tmp/vista-conditioning-20261024-02/hero-134503-T0/point3.nii.gz",
+      "shape": [
+        114,
+        114,
+        32
+      ],
+      "affine": [
+        [
+          0.0,
+          -0.5625,
+          0.0,
+          -28.46875
+        ],
+        [
+          -0.5625,
+          0.0,
+          0.0,
+          225.09375
+        ],
+        [
+          0.0,
+          0.0,
+          2.0,
+          -263.29998779296875
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "labels": {
+        "0": 415259,
+        "1": 613
+      },
+      "same_shape": true,
+      "same_affine": true,
+      "naive_positive_voxels": 613,
+      "foreground_voxels": 613,
+      "uncomputed_voxels": 0,
+      "foreground_bbox_voxels": [
+        [
+          50,
+          50,
+          14
+        ],
+        [
+          65,
+          65,
+          18
+        ]
+      ],
+      "foreground_volume_mm3": 387.9140625,
+      "foreground_bbox_extent_mm": [
+        9.0,
+        9.0,
+        10.0
+      ],
+      "foreground_components": 1,
+      "foreground_at_prompt": true,
+      "nearest_foreground_to_prompt_mm": 0.0,
+      "pipeline_s": 0.17936511099833297,
+      "sha256": "6362ab1879efd81a2079a13bc133160512b5929012c061edd31c3303a9c3cb18",
+      "native_labels": [
+        0.0,
+        1.0
+      ],
+      "foreground_label": 1,
+      "trace": {
+        "point_head_labels": [
+          [
+            3
+          ]
+        ],
+        "point_head_class_vector": null
+      },
+      "processed_point": [
+        19.5,
+        19.5,
+        21.333333333333332
+      ],
+      "input_point_flag": 3,
+      "preprocessed_point_labels": [
+        3
+      ],
+      "peak_gpu_allocated_gib": 2.414133071899414,
+      "review": {
+        "technical_pass": true,
+        "reasons": [],
+        "crop_edge_clearance_mm": 27.0,
+        "touches_crop_face": false,
+        "accepted_for_patient_findings": false,
+        "boundary_accuracy": "unverified; no independent contour reference"
+      },
+      "dice_vs_gb10_point_baseline": 0.8984509466437177,
+      "per_reader": [],
+      "median_reader_dice": null
+    }
+  }
+}

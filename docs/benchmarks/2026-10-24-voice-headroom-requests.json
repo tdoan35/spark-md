@@ -1,0 +1,22 @@
+{
+  "llm": {
+    "usage": {
+      "prompt_tokens": 22,
+      "completion_tokens": 600,
+      "total_tokens": 622,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "has_answer": true
+  },
+  "tts": {
+    "pcm_bytes": 188160
+  },
+  "asr": {
+    "text": " Compare it to last year.\n"
+  }
+}

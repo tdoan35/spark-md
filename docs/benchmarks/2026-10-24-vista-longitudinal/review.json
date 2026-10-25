@@ -1,0 +1,16 @@
+{
+  "sequence_accepted_for_growth": false,
+  "reason": "Both frozen rules fail T0; no independent boundary validation; raw growth outputs must not be used as findings",
+  "T0": {
+    "v1": "wrong seed on heart boundary, enormous output",
+    "v2": "seed inside detector box and actual nodule, but enormous lung-scale output; one negative retained"
+  },
+  "T1": "localized in inspected planes, independent accuracy unverified",
+  "T2": "localized in inspected planes, independent accuracy unverified",
+  "historical_T0_fallback": "invalidated as tracked-nodule measurement; raw data retained",
+  "T1_T2_vdt_sensitivity": {
+    "v1_days": 334.7119804378168,
+    "v2_days": 260.14383613475627,
+    "interpretation": "exploratory, prompt/seed dependent; not accepted patient evidence"
+  }
+}

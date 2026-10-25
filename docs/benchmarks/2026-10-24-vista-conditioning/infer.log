@@ -1,0 +1,24 @@
+nvImageCodec is not available; skipping pydicom decoder plugin registration.
+NvImgCodecPydicomReader: nvImageCodec decoder plugin did not register successfully. Falling back to default pydicom decoders.
+monai.transforms.spatial.dictionary Orientationd.__init__:labels: Current default value of argument `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` was changed in version None from `labels=(('L', 'R'), ('P', 'A'), ('I', 'S'))` to `labels=None`. Default value changed to None meaning that the transform now uses the 'space' of a meta-tensor, if applicable, to determine appropriate axis labels.
+Setting affine, but the applied meta contains an affine. This will be overwritten.
+FINISHED LIDC-IDRI-0052-n1-c0 point1 voxels 504 Dice 0.5640947830163837 baseline 1.0 trace {'point_head_labels': [[1]], 'point_head_class_vector': None}
+FINISHED LIDC-IDRI-0052-n1-c0 zero133 voxels 1360 Dice 0.3823543820959704 baseline 0.5407725321888412 trace {'point_head_labels': [[1]], 'point_head_class_vector': [[133]]}
+FINISHED LIDC-IDRI-0052-n1-c0 tumor23_regular voxels 504 Dice 0.5640947830163837 baseline 1.0 trace {'class_head_calls': 1, 'point_head_labels': [[1]], 'point_head_class_vector': [[23]]}
+FINISHED LIDC-IDRI-0052-n1-c0 tumor23_special voxels 600 Dice 0.5653321715322714 baseline 0.8985507246376812 trace {'class_head_calls': 1, 'point_head_labels': [[3]], 'point_head_class_vector': [[23]]}
+FINISHED LIDC-IDRI-0052-n1-c0 point3 voxels 600 Dice 0.5653321715322714 baseline 0.8985507246376812 trace {'point_head_labels': [[3]], 'point_head_class_vector': None}
+FINISHED LIDC-IDRI-0447-n1-c1 point1 voxels 11932 Dice 0.014311865535030787 baseline 0.9959782153330541 trace {'point_head_labels': [[1]], 'point_head_class_vector': None}
+FINISHED LIDC-IDRI-0447-n1-c1 zero133 voxels 17037 Dice 0.010044968755475092 baseline 0.5643485763589301 trace {'point_head_labels': [[1]], 'point_head_class_vector': [[133]]}
+FINISHED LIDC-IDRI-0447-n1-c1 tumor23_regular voxels 12145 Dice 0.014062627749161966 baseline 0.9871693725864717 trace {'class_head_calls': 1, 'point_head_labels': [[1]], 'point_head_class_vector': [[23]]}
+FINISHED LIDC-IDRI-0447-n1-c1 tumor23_special voxels 96963 Dice 0.0017723005904233943 baseline 0.16400216710590354 trace {'class_head_calls': 1, 'point_head_labels': [[3]], 'point_head_class_vector': [[23]]}
+FINISHED LIDC-IDRI-0447-n1-c1 point3 voxels 96768 Dice 0.001775868833501972 baseline 0.16429635898662448 trace {'point_head_labels': [[3]], 'point_head_class_vector': None}
+FINISHED LIDC-IDRI-0884-n2-c0 point1 voxels 4508 Dice 0.7583874697015004 baseline 0.9978952032790517 trace {'point_head_labels': [[1]], 'point_head_class_vector': None}
+FINISHED LIDC-IDRI-0884-n2-c0 zero133 voxels 5198 Dice 0.7098734285111612 baseline 0.8881341977976742 trace {'point_head_labels': [[1]], 'point_head_class_vector': [[133]]}
+FINISHED LIDC-IDRI-0884-n2-c0 tumor23_regular voxels 4706 Dice 0.7432418604183916 baseline 0.9764769647696477 trace {'class_head_calls': 1, 'point_head_labels': [[1]], 'point_head_class_vector': [[23]]}
+FINISHED LIDC-IDRI-0884-n2-c0 tumor23_special voxels 6258 Dice 0.7450229388354082 baseline 0.835297392595342 trace {'class_head_calls': 1, 'point_head_labels': [[3]], 'point_head_class_vector': [[23]]}
+FINISHED LIDC-IDRI-0884-n2-c0 point3 voxels 6072 Dice 0.7576930580292593 baseline 0.8499669530733642 trace {'point_head_labels': [[3]], 'point_head_class_vector': None}
+FINISHED hero-134503-T0 point1 voxels 549 Dice None baseline 1.0 trace {'point_head_labels': [[1]], 'point_head_class_vector': None}
+FINISHED hero-134503-T0 zero133 voxels 967 Dice None baseline 0.7242744063324539 trace {'point_head_labels': [[1]], 'point_head_class_vector': [[133]]}
+FINISHED hero-134503-T0 tumor23_regular voxels 878 Dice None baseline 0.7694463910301331 trace {'class_head_calls': 1, 'point_head_labels': [[1]], 'point_head_class_vector': [[23]]}
+FINISHED hero-134503-T0 tumor23_special voxels 942 Dice None baseline 0.7002012072434608 trace {'class_head_calls': 1, 'point_head_labels': [[3]], 'point_head_class_vector': [[23]]}
+FINISHED hero-134503-T0 point3 voxels 613 Dice None baseline 0.8984509466437177 trace {'point_head_labels': [[3]], 'point_head_class_vector': None}

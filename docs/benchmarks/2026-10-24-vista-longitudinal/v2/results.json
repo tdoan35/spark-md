@@ -1,0 +1,657 @@
+{
+  "rule": {
+    "version": "hero-two-pass-box-v2",
+    "foreground": "first maximum physical EDT voxel in HU >= -400 component nearest detector center, restricted to its predicted physical box; no opening",
+    "negative_pool": "first-pass label 1 AND HU > -400 AND distance outside detector-box seed > 4 mm AND distance from centered point > 12 mm",
+    "negative_selection": "nearest eligible voxel to centered point; farthest eligible voxel from first negative; numpy argmin/argmax ordering; omit duplicate",
+    "empty_negative_pool": "centered foreground only; no invented negatives",
+    "initial_pass": "corrected detector point, label 1",
+    "final_pass": "centered point label 1, up to two negatives label 0",
+    "mask": "label == 1; no morphology, clipping, or component removal",
+    "fallback_parameters": "v2 prompt seed is not legacy measurement fallback; threshold -400 inside detector box; 6-connected component nearest center",
+    "days": {
+      "T0": 23,
+      "T1": 380,
+      "T2": 800
+    },
+    "nlst_reported_mean_mm": {
+      "T0": 6,
+      "T1": 9,
+      "T2": 14
+    }
+  },
+  "results": {
+    "T0": {
+      "initial": {
+        "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T0/initial/134503_42269693/134503_42269693_seg.nii.gz",
+        "shape": [
+          512,
+          512,
+          151
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5625,
+            0.0,
+            157.71875
+          ],
+          [
+            -0.5625,
+            0.0,
+            0.0,
+            320.71875
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -349.29998779296875
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "labels": {
+          "0.0": 10389060,
+          "1.0": 1095004,
+          "255.0": 28099680
+        },
+        "same_shape": true,
+        "same_affine": true,
+        "naive_positive_voxels": 29194684,
+        "foreground_voxels": 1095004,
+        "uncomputed_voxels": 28099680,
+        "foreground_bbox_voxels": [
+          [
+            111,
+            239,
+            25
+          ],
+          [
+            380,
+            451,
+            106
+          ]
+        ],
+        "foreground_volume_mm3": 692932.21875,
+        "foreground_bbox_extent_mm": [
+          151.875,
+          119.8125,
+          164.0
+        ],
+        "foreground_components": 5,
+        "foreground_at_prompt": true,
+        "nearest_foreground_to_prompt_mm": 0.0,
+        "pipeline_s": 3.170953000895679,
+        "sha256": "7f9faa66f6c77fac61a49d02bb1d4e979dd576ce41b0d0125ea9630b90b88380"
+      },
+      "final": {
+        "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T0/final/134503_42269693/134503_42269693_seg.nii.gz",
+        "shape": [
+          512,
+          512,
+          151
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5625,
+            0.0,
+            157.71875
+          ],
+          [
+            -0.5625,
+            0.0,
+            0.0,
+            320.71875
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -349.29998779296875
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "labels": {
+          "0.0": 17702452,
+          "1.0": 1548780,
+          "255.0": 20332512
+        },
+        "same_shape": true,
+        "same_affine": true,
+        "naive_positive_voxels": 21881292,
+        "foreground_voxels": 1548780,
+        "uncomputed_voxels": 20332512,
+        "foreground_bbox_voxels": [
+          [
+            111,
+            239,
+            24
+          ],
+          [
+            390,
+            451,
+            136
+          ]
+        ],
+        "foreground_volume_mm3": 980087.34375,
+        "foreground_bbox_extent_mm": [
+          157.5,
+          119.8125,
+          226.0
+        ],
+        "foreground_components": 1,
+        "foreground_at_prompt": true,
+        "nearest_foreground_to_prompt_mm": 0.0,
+        "pipeline_s": 2.1475859661586583,
+        "sha256": "39145cf557bd556ff4b894831d951d3f2698721114e3cf5f909bf493539436ca",
+        "volume_mm3": 980087.34375,
+        "pca_extents_mm": [
+          256.4350819483041,
+          145.17395896818664,
+          94.18695835234082
+        ],
+        "pca_mean_extent_mm": 200.80452045824538,
+        "bbox_extent_mm": [
+          157.5,
+          119.8125,
+          226.0
+        ],
+        "mean_hu": -866.8479614257812,
+        "components": 1,
+        "prompt_component_voxels": 1548780,
+        "prompt_component_volume_mm3": 980087.34375,
+        "prompt_component_extent_mm": [
+          157.5,
+          119.8125,
+          226.0
+        ],
+        "fallback_coverage": 1.0,
+        "fallback_dice": 0.00023370504486555828,
+        "negative_points_in_foreground": [
+          true,
+          false
+        ]
+      },
+      "prompts": {
+        "points": [
+          [
+            230,
+            391,
+            59
+          ],
+          [
+            209,
+            388,
+            58
+          ],
+          [
+            369,
+            412,
+            106
+          ]
+        ],
+        "point_labels": [
+          1,
+          0,
+          0
+        ],
+        "eligible_negatives": 25686,
+        "points_hu": [
+          92.0,
+          -387.0,
+          -388.0
+        ]
+      },
+      "fallback": {
+        "volume_mm3": 114.5390625,
+        "pca_extents_mm": [
+          6.089838141614462,
+          5.91296260144044,
+          4.953798852882256
+        ],
+        "pca_mean_extent_mm": 6.001400371527451,
+        "bbox_extent_mm": [
+          6.1875,
+          5.625,
+          6.0
+        ],
+        "mean_hu": -121.34806823730469
+      }
+    },
+    "T1": {
+      "initial": {
+        "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T1/initial/134503_96105794/134503_96105794_seg.nii.gz",
+        "shape": [
+          512,
+          512,
+          158
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.60546875,
+            0.0,
+            144.697265625
+          ],
+          [
+            -0.60546875,
+            0.0,
+            0.0,
+            327.697265625
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -350.29998779296875
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "labels": {
+          "0.0": 9644531,
+          "1.0": 2413,
+          "255.0": 31771808
+        },
+        "same_shape": true,
+        "same_affine": true,
+        "naive_positive_voxels": 31774221,
+        "foreground_voxels": 2413,
+        "uncomputed_voxels": 31771808,
+        "foreground_bbox_voxels": [
+          [
+            212,
+            373,
+            64
+          ],
+          [
+            236,
+            397,
+            70
+          ]
+        ],
+        "foreground_volume_mm3": 1769.1749572753906,
+        "foreground_bbox_extent_mm": [
+          15.13671875,
+          15.13671875,
+          14.0
+        ],
+        "foreground_components": 1,
+        "foreground_at_prompt": true,
+        "nearest_foreground_to_prompt_mm": 0.0,
+        "pipeline_s": 1.7762239896692336,
+        "sha256": "5cf57528d45bb73b23cff6073805f11c46017955401dc45c7d5271d02462a9a5"
+      },
+      "final": {
+        "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T1/final/134503_96105794/134503_96105794_seg.nii.gz",
+        "shape": [
+          512,
+          512,
+          158
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.60546875,
+            0.0,
+            144.697265625
+          ],
+          [
+            -0.60546875,
+            0.0,
+            0.0,
+            327.697265625
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -350.29998779296875
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "labels": {
+          "0.0": 9646145,
+          "1.0": 799,
+          "255.0": 31771808
+        },
+        "same_shape": true,
+        "same_affine": true,
+        "naive_positive_voxels": 31772607,
+        "foreground_voxels": 799,
+        "uncomputed_voxels": 31771808,
+        "foreground_bbox_voxels": [
+          [
+            217,
+            378,
+            64
+          ],
+          [
+            236,
+            395,
+            68
+          ]
+        ],
+        "foreground_volume_mm3": 585.8146667480469,
+        "foreground_bbox_extent_mm": [
+          12.109375,
+          10.8984375,
+          10.0
+        ],
+        "foreground_components": 1,
+        "foreground_at_prompt": true,
+        "nearest_foreground_to_prompt_mm": 0.0,
+        "pipeline_s": 1.7629878539592028,
+        "sha256": "a3da48f0c80b2f784859563ca9de637a0e4edbd8b8eaea10eedbbcbf9602e2cd",
+        "volume_mm3": 585.8146667480469,
+        "pca_extents_mm": [
+          10.983604002997625,
+          11.44752276417578,
+          9.135079586390958
+        ],
+        "pca_mean_extent_mm": 11.215563383586701,
+        "bbox_extent_mm": [
+          12.109375,
+          10.8984375,
+          10.0
+        ],
+        "mean_hu": -286.2415466308594,
+        "components": 1,
+        "prompt_component_voxels": 799,
+        "prompt_component_volume_mm3": 585.8146667480469,
+        "prompt_component_extent_mm": [
+          12.109375,
+          10.8984375,
+          10.0
+        ],
+        "fallback_coverage": 0.9126637554585153,
+        "fallback_dice": 0.6650755767700876,
+        "negative_points_in_foreground": []
+      },
+      "prompts": {
+        "points": [
+          [
+            228,
+            386,
+            66
+          ]
+        ],
+        "point_labels": [
+          1
+        ],
+        "eligible_negatives": 0,
+        "points_hu": [
+          56.0
+        ]
+      },
+      "fallback": {
+        "volume_mm3": 335.79864501953125,
+        "pca_extents_mm": [
+          10.833925905373569,
+          8.852196005292665,
+          8.816459014616107
+        ],
+        "pca_mean_extent_mm": 9.843060955333117,
+        "bbox_extent_mm": [
+          9.6875,
+          9.6875,
+          8.0
+        ],
+        "mean_hu": -86.35371398925781
+      }
+    },
+    "T2": {
+      "initial": {
+        "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T2/initial/134503_45037002/134503_45037002_seg.nii.gz",
+        "shape": [
+          512,
+          512,
+          152
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.64453125,
+            0.0,
+            182.677734375
+          ],
+          [
+            -0.64453125,
+            0.0,
+            0.0,
+            334.677734375
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -336.3999938964844
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "labels": {
+          "0.0": 8457397,
+          "1.0": 10571,
+          "255.0": 31377920
+        },
+        "same_shape": true,
+        "same_affine": true,
+        "naive_positive_voxels": 31388491,
+        "foreground_voxels": 10571,
+        "uncomputed_voxels": 31377920,
+        "foreground_bbox_voxels": [
+          [
+            125,
+            365,
+            44
+          ],
+          [
+            236,
+            408,
+            74
+          ]
+        ],
+        "foreground_volume_mm3": 8782.820892333983,
+        "foreground_bbox_extent_mm": [
+          72.1875,
+          28.359375,
+          62.0
+        ],
+        "foreground_components": 6,
+        "foreground_at_prompt": true,
+        "nearest_foreground_to_prompt_mm": 0.0,
+        "pipeline_s": 1.762395216152072,
+        "sha256": "d33c373b5930801459b2462d1f88bf3a334b49fcc1cc1c9e05bf2cbba7cba537"
+      },
+      "final": {
+        "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T2/final/134503_45037002/134503_45037002_seg.nii.gz",
+        "shape": [
+          512,
+          512,
+          152
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.64453125,
+            0.0,
+            182.677734375
+          ],
+          [
+            -0.64453125,
+            0.0,
+            0.0,
+            334.677734375
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -336.3999938964844
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "labels": {
+          "0.0": 11499513,
+          "1.0": 2159,
+          "255.0": 28344216
+        },
+        "same_shape": true,
+        "same_affine": true,
+        "naive_positive_voxels": 28346375,
+        "foreground_voxels": 2159,
+        "uncomputed_voxels": 28344216,
+        "foreground_bbox_voxels": [
+          [
+            206,
+            374,
+            63
+          ],
+          [
+            233,
+            399,
+            70
+          ]
+        ],
+        "foreground_volume_mm3": 1793.7858581542966,
+        "foreground_bbox_extent_mm": [
+          18.046875,
+          16.7578125,
+          16.0
+        ],
+        "foreground_components": 1,
+        "foreground_at_prompt": true,
+        "nearest_foreground_to_prompt_mm": 0.0,
+        "pipeline_s": 2.21593497088179,
+        "sha256": "a04d3efd01793a09153fcf4ca72e7ca06c0130fe5b8df429fdefd3dd3b3ac8ce",
+        "volume_mm3": 1793.7858581542966,
+        "pca_extents_mm": [
+          19.892137108825253,
+          15.605634442823746,
+          12.921674209411012
+        ],
+        "pca_mean_extent_mm": 17.748885775824498,
+        "bbox_extent_mm": [
+          18.046875,
+          16.7578125,
+          16.0
+        ],
+        "mean_hu": -305.1130065917969,
+        "components": 1,
+        "prompt_component_voxels": 2159,
+        "prompt_component_volume_mm3": 1793.7858581542966,
+        "prompt_component_extent_mm": [
+          18.046875,
+          16.7578125,
+          16.0
+        ],
+        "fallback_coverage": 0.9682151589242054,
+        "fallback_dice": 0.532079274437353,
+        "negative_points_in_foreground": [
+          false,
+          false
+        ]
+      },
+      "prompts": {
+        "points": [
+          [
+            220,
+            385,
+            66
+          ],
+          [
+            218,
+            369,
+            63
+          ],
+          [
+            127,
+            376,
+            53
+          ]
+        ],
+        "point_labels": [
+          1,
+          0,
+          0
+        ],
+        "eligible_negatives": 163,
+        "points_hu": [
+          54.0,
+          -293.0,
+          -374.0
+        ]
+      },
+      "fallback": {
+        "volume_mm3": 679.6279907226561,
+        "pca_extents_mm": [
+          16.47867331938803,
+          11.079233527967585,
+          10.575042829286105
+        ],
+        "pca_mean_extent_mm": 13.778953423677807,
+        "bbox_extent_mm": [
+          12.24609375,
+          10.3125,
+          12.0
+        ],
+        "mean_hu": -31.33863067626953
+      }
+    }
+  },
+  "growth": {
+    "T0-T1": {
+      "interval_days": 357,
+      "volume_ratio": 0.000597716795838429,
+      "vdt_days": null,
+      "pca_mean_extent_delta_mm": -189.58895707465868
+    },
+    "T1-T2": {
+      "interval_days": 420,
+      "volume_ratio": 3.062036442535479,
+      "vdt_days": 260.14383613475627,
+      "pca_mean_extent_delta_mm": 6.533322392237796
+    }
+  },
+  "model_load_s": 5.927880122791976,
+  "min_available_gib": 62.727413177490234,
+  "versions": {
+    "torch": "2.14.1",
+    "monai": "1.6.1",
+    "transformers": "4.46.3",
+    "nibabel": "5.4.2",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1"
+  },
+  "torch_cuda_version": "2.14.1+cu130"
+}

@@ -1,0 +1,692 @@
+[
+ {
+  "id": "LIDC-IDRI-0018_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0018_53790263.nii.gz",
+  "box_lps": [
+   -99.89102172851562,
+   24.688072204589844,
+   -169.68341064453125,
+   5.068328857421875,
+   5.0735626220703125,
+   5.163726806640625
+  ],
+  "box_score": 0.974190354347229,
+  "box_to_consensus_mm": 1.8954444673483584,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 73.86387707669371
+ },
+ {
+  "id": "LIDC-IDRI-0018_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0018_53790263.nii.gz",
+  "box_lps": [
+   129.7967071533203,
+   13.985664367675781,
+   -127.88912963867188,
+   10.591331481933594,
+   10.593338012695312,
+   10.63323974609375
+  ],
+  "box_score": 0.9985895752906799,
+  "box_to_consensus_mm": 4.7281006070639515,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 615.1648269969417
+ },
+ {
+  "id": "LIDC-IDRI-0018_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0018_53790263.nii.gz",
+  "box_lps": [
+   91.76383972167969,
+   -20.48706817626953,
+   -119.20352172851562,
+   6.032524108886719,
+   6.0854034423828125,
+   6.177642822265625
+  ],
+  "box_score": 0.9654463529586792,
+  "box_to_consensus_mm": 1.9939308460039564,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n3_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n3_r2.nii.gz"
+  ],
+  "consensus_mm3": 142.21552452079834
+ },
+ {
+  "id": "LIDC-IDRI-0018_n4",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0018_53790263.nii.gz",
+  "box_lps": [
+   80.50602722167969,
+   33.45781326293945,
+   -45.93218994140625,
+   17.518165588378906,
+   17.603919982910156,
+   17.40032958984375
+  ],
+  "box_score": 0.999208390712738,
+  "box_to_consensus_mm": 4.273011829633601,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n4_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n4_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n4_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0018/n4_r3.nii.gz"
+  ],
+  "consensus_mm3": 2841.0031526364132
+ },
+ {
+  "id": "LIDC-IDRI-0037_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0037_14943829.nii.gz",
+  "box_lps": [
+   115.83232879638672,
+   17.608627319335938,
+   -152.7810821533203,
+   13.712249755859375,
+   13.7760009765625,
+   13.688140869140625
+  ],
+  "box_score": 0.9986489415168762,
+  "box_to_consensus_mm": 4.455416685774186,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0037/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0037/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0037/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0037/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 1432.6171875
+ },
+ {
+  "id": "LIDC-IDRI-0037_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0037_14943829.nii.gz",
+  "box_lps": [
+   98.04649353027344,
+   65.1170883178711,
+   -90.764404296875,
+   7.1138153076171875,
+   7.2229766845703125,
+   7.26434326171875
+  ],
+  "box_score": 0.9958337545394897,
+  "box_to_consensus_mm": 2.604336024642424,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0037/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0037/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0037/n2_r2.nii.gz"
+  ],
+  "consensus_mm3": 130.859375
+ },
+ {
+  "id": "LIDC-IDRI-0047_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0047_48468025.nii.gz",
+  "box_lps": [
+   -80.713623046875,
+   18.575408935546875,
+   -183.6479949951172,
+   11.95257568359375,
+   12.096954345703125,
+   12.030242919921875
+  ],
+  "box_score": 0.9989657402038574,
+  "box_to_consensus_mm": 4.46376397513404,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0047/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0047/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0047/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0047/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 953.67431640625
+ },
+ {
+  "id": "LIDC-IDRI-0124_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   -28.16686248779297,
+   37.08538055419922,
+   -167.07943725585938,
+   6.1001129150390625,
+   6.1053009033203125,
+   6.0842437744140625
+  ],
+  "box_score": 0.9960082769393921,
+  "box_to_consensus_mm": 2.027715548830885,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n2_r2.nii.gz"
+  ],
+  "consensus_mm3": 106.8115234375
+ },
+ {
+  "id": "LIDC-IDRI-0124_n5",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   -138.9369659423828,
+   -22.90935516357422,
+   -150.93682861328125,
+   4.512664794921875,
+   4.5607452392578125,
+   4.4261932373046875
+  ],
+  "box_score": 0.9603611826896667,
+  "box_to_consensus_mm": 2.309738576006128,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n5_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n5_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n5_r2.nii.gz"
+  ],
+  "consensus_mm3": 42.724609375
+ },
+ {
+  "id": "LIDC-IDRI-0124_n6",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   96.54521942138672,
+   21.236053466796875,
+   -136.65171813964844,
+   9.547897338867188,
+   9.589569091796875,
+   9.499359130859375
+  ],
+  "box_score": 0.998472273349762,
+  "box_to_consensus_mm": 4.489569393195689,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n6_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n6_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n6_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n6_r3.nii.gz"
+  ],
+  "consensus_mm3": 415.0390625
+ },
+ {
+  "id": "LIDC-IDRI-0124_n8",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   81.45315551757812,
+   -32.20941162109375,
+   -108.04969787597656,
+   5.034187316894531,
+   5.00701904296875,
+   5.05938720703125
+  ],
+  "box_score": 0.9850285053253174,
+  "box_to_consensus_mm": 2.0309857956700488,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n8_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n8_r1.nii.gz"
+  ],
+  "consensus_mm3": 71.71630859375
+ },
+ {
+  "id": "LIDC-IDRI-0124_n9",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   -107.24203491210938,
+   -18.684097290039062,
+   -104.22935485839844,
+   6.063720703125,
+   6.093292236328125,
+   6.099578857421875
+  ],
+  "box_score": 0.9933589100837708,
+  "box_to_consensus_mm": 1.7464372246057014,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n9_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n9_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n9_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n9_r3.nii.gz"
+  ],
+  "consensus_mm3": 103.759765625
+ },
+ {
+  "id": "LIDC-IDRI-0124_n12",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   58.503509521484375,
+   40.25200653076172,
+   -94.97764587402344,
+   4.28790283203125,
+   4.3180999755859375,
+   4.271881103515625
+  ],
+  "box_score": 0.8756807446479797,
+  "box_to_consensus_mm": 2.337495325017212,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n12_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n12_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n12_r2.nii.gz"
+  ],
+  "consensus_mm3": 35.09521484375
+ },
+ {
+  "id": "LIDC-IDRI-0124_n13",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   -67.23265075683594,
+   49.10314178466797,
+   -90.4412841796875,
+   6.597625732421875,
+   6.6123199462890625,
+   6.5772705078125
+  ],
+  "box_score": 0.9938010573387146,
+  "box_to_consensus_mm": 2.076352106807901,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n13_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n13_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n13_r2.nii.gz"
+  ],
+  "consensus_mm3": 96.13037109375
+ },
+ {
+  "id": "LIDC-IDRI-0124_n14",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   69.9999008178711,
+   9.203163146972656,
+   -84.5516586303711,
+   6.32940673828125,
+   6.3214263916015625,
+   6.2801666259765625
+  ],
+  "box_score": 0.996656060218811,
+  "box_to_consensus_mm": 1.9704737013089977,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n14_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n14_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n14_r2.nii.gz"
+  ],
+  "consensus_mm3": 94.6044921875
+ },
+ {
+  "id": "LIDC-IDRI-0124_n15",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0124_90693667.nii.gz",
+  "box_lps": [
+   40.89607238769531,
+   54.690834045410156,
+   -84.06089782714844,
+   6.9146728515625,
+   6.9560089111328125,
+   6.827789306640625
+  ],
+  "box_score": 0.9985632300376892,
+  "box_to_consensus_mm": 2.168839784448634,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n15_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n15_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n15_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0124/n15_r3.nii.gz"
+  ],
+  "consensus_mm3": 161.7431640625
+ },
+ {
+  "id": "LIDC-IDRI-0207_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0207_82668595.nii.gz",
+  "box_lps": [
+   -60.832496643066406,
+   -2.1155776977539062,
+   -245.85171508789062,
+   15.278549194335938,
+   15.212844848632812,
+   15.2818603515625
+  ],
+  "box_score": 0.7391400933265686,
+  "box_to_consensus_mm": 3.815756781248166,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0207/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0207/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0207/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 1384.6815735573077
+ },
+ {
+  "id": "LIDC-IDRI-0303_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0303_43504919.nii.gz",
+  "box_lps": [
+   -72.57464599609375,
+   -98.39653015136719,
+   -264.04010009765625,
+   28.53326416015625,
+   28.709938049316406,
+   28.767852783203125
+  ],
+  "box_score": 0.9994224309921265,
+  "box_to_consensus_mm": 9.353189720688016,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0303/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0303/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0303/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 13309.086994171144
+ },
+ {
+  "id": "LIDC-IDRI-0460_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0460_36888233.nii.gz",
+  "box_lps": [
+   -67.38392639160156,
+   -81.92488098144531,
+   -169.57989501953125,
+   4.448638916015625,
+   4.448699951171875,
+   4.4501953125
+  ],
+  "box_score": 0.9915870428085327,
+  "box_to_consensus_mm": 2.1476708502272293,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0460/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0460/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0460/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 54.69131469726562
+ },
+ {
+  "id": "LIDC-IDRI-0460_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0460_36888233.nii.gz",
+  "box_lps": [
+   -69.21864318847656,
+   -64.30508422851562,
+   -162.4720458984375,
+   4.145050048828125,
+   4.160430908203125,
+   4.13653564453125
+  ],
+  "box_score": 0.954562783241272,
+  "box_to_consensus_mm": 2.511318433317459,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0460/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0460/n2_r1.nii.gz"
+  ],
+  "consensus_mm3": 63.96102905273436
+ },
+ {
+  "id": "LIDC-IDRI-0522_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0522_39810470.nii.gz",
+  "box_lps": [
+   -43.625,
+   111.875,
+   -553.0,
+   4.75,
+   4.9375,
+   5.0
+  ],
+  "box_score": 0.9931640625,
+  "box_to_consensus_mm": 2.3927823884082953,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0522/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0522/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0522/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 56.953304290771484
+ },
+ {
+  "id": "LIDC-IDRI-0553_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0553_00041756.nii.gz",
+  "box_lps": [
+   -54.187896728515625,
+   -66.9786148071289,
+   -58.35572814941406,
+   4.695068359375,
+   4.7376861572265625,
+   4.73040771484375
+  ],
+  "box_score": 0.824603259563446,
+  "box_to_consensus_mm": 1.6736849346928344,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0553/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0553/n1_r1.nii.gz"
+  ],
+  "consensus_mm3": 104.31589179210945
+ },
+ {
+  "id": "LIDC-IDRI-0553_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0553_00041756.nii.gz",
+  "box_lps": [
+   -74.61424255371094,
+   5.302436828613281,
+   -38.9774169921875,
+   12.782989501953125,
+   12.910781860351562,
+   12.8192138671875
+  ],
+  "box_score": 0.9620718955993652,
+  "box_to_consensus_mm": 4.105348672700643,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0553/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0553/n2_r1.nii.gz"
+  ],
+  "consensus_mm3": 851.7409778669266
+ },
+ {
+  "id": "LIDC-IDRI-0635_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0635_16257742.nii.gz",
+  "box_lps": [
+   -74.72581481933594,
+   58.33277893066406,
+   -1200.3468017578125,
+   13.54168701171875,
+   13.5626220703125,
+   13.497802734375
+  ],
+  "box_score": 0.9995063543319702,
+  "box_to_consensus_mm": 4.611466127479599,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0635/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0635/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0635/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0635/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 1318.0702918079028
+ },
+ {
+  "id": "LIDC-IDRI-0666_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0666_88090366.nii.gz",
+  "box_lps": [
+   -25.25,
+   75.125,
+   -92.75,
+   3.875,
+   3.8125,
+   3.6875
+  ],
+  "box_score": 0.363037109375,
+  "box_to_consensus_mm": 2.6557399131111175,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0666/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0666/n3_r1.nii.gz"
+  ],
+  "consensus_mm3": 38.28125
+ },
+ {
+  "id": "LIDC-IDRI-0727_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0727_94922594.nii.gz",
+  "box_lps": [
+   117.85516357421875,
+   -78.77867126464844,
+   -167.717529296875,
+   4.32232666015625,
+   4.311981201171875,
+   4.170257568359375
+  ],
+  "box_score": 0.9990960359573364,
+  "box_to_consensus_mm": 2.1783417712341597,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0727/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0727/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0727/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0727/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 33.06198120117187
+ },
+ {
+  "id": "LIDC-IDRI-0741_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0741_60101595.nii.gz",
+  "box_lps": [
+   121.63804626464844,
+   -85.40190124511719,
+   -236.7129669189453,
+   12.700531005859375,
+   12.761070251464844,
+   12.772918701171875
+  ],
+  "box_score": 0.981788158416748,
+  "box_to_consensus_mm": 4.719215394310403,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 1034.9332809448242
+ },
+ {
+  "id": "LIDC-IDRI-0741_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0741_60101595.nii.gz",
+  "box_lps": [
+   89.26715850830078,
+   -75.16780090332031,
+   -227.24212646484375,
+   8.007659912109375,
+   8.113189697265625,
+   7.77191162109375
+  ],
+  "box_score": 0.7397046089172363,
+  "box_to_consensus_mm": 2.716207332777607,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n3_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n3_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n3_r3.nii.gz"
+  ],
+  "consensus_mm3": 183.63431549072266
+ },
+ {
+  "id": "LIDC-IDRI-0741_n5",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0741_60101595.nii.gz",
+  "box_lps": [
+   -62.0233154296875,
+   -175.39053344726562,
+   -211.3263702392578,
+   6.3519287109375,
+   6.416015625,
+   6.376739501953125
+  ],
+  "box_score": 0.9944612979888916,
+  "box_to_consensus_mm": 1.924446047970748,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n5_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n5_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0741/n5_r2.nii.gz"
+  ],
+  "consensus_mm3": 110.39288330078125
+ },
+ {
+  "id": "LIDC-IDRI-0766_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0766_19605661.nii.gz",
+  "box_lps": [
+   -127.73355102539062,
+   124.48847961425781,
+   -471.35760498046875,
+   11.02752685546875,
+   11.05035400390625,
+   10.951904296875
+  ],
+  "box_score": 0.9987922310829163,
+  "box_to_consensus_mm": 4.582266973691745,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0766/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0766/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0766/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0766/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 661.468505859375
+ },
+ {
+  "id": "LIDC-IDRI-0791_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/holdout/vols/LIDC-IDRI-0791_79354155.nii.gz",
+  "box_lps": [
+   -109.92972564697266,
+   -99.12887573242188,
+   -209.54324340820312,
+   15.011093139648438,
+   15.230262756347656,
+   14.978271484375
+  ],
+  "box_score": 0.9994274377822876,
+  "box_to_consensus_mm": 4.5267881784252,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0791/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0791/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0791/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/holdout/masks/LIDC-IDRI-0791/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 2027.1460342407227
+ }
+]

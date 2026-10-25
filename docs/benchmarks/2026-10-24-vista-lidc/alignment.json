@@ -1,0 +1,58 @@
+{
+  "LIDC-IDRI-0052": {
+    "ct_series_match": true,
+    "nifti_shape_affine_match": true,
+    "all_3_ct_hu_hashes_match": true,
+    "seg_frames_verified": 87,
+    "max_frame_position_error_mm": 6.7082039423770115e-06,
+    "seg_frames_reoriented": 0
+  },
+  "LIDC-IDRI-0080": {
+    "ct_series_match": true,
+    "nifti_shape_affine_match": true,
+    "all_3_ct_hu_hashes_match": true,
+    "seg_frames_verified": 99,
+    "max_frame_position_error_mm": 0.0,
+    "seg_frames_reoriented": 0
+  },
+  "LIDC-IDRI-0206": {
+    "ct_series_match": true,
+    "nifti_shape_affine_match": true,
+    "all_3_ct_hu_hashes_match": true,
+    "seg_frames_verified": 65,
+    "max_frame_position_error_mm": 3.0000000048710265e-06,
+    "seg_frames_reoriented": 0
+  },
+  "LIDC-IDRI-0447": {
+    "ct_series_match": true,
+    "nifti_shape_affine_match": true,
+    "all_3_ct_hu_hashes_match": true,
+    "seg_frames_verified": 52,
+    "max_frame_position_error_mm": 4.242640686003007e-06,
+    "seg_frames_reoriented": 0
+  },
+  "LIDC-IDRI-0473": {
+    "ct_series_match": true,
+    "nifti_shape_affine_match": true,
+    "all_3_ct_hu_hashes_match": true,
+    "seg_frames_verified": 48,
+    "max_frame_position_error_mm": 1.5000000033182914e-05,
+    "seg_frames_reoriented": 0
+  },
+  "LIDC-IDRI-0606": {
+    "ct_series_match": true,
+    "nifti_shape_affine_match": true,
+    "all_3_ct_hu_hashes_match": true,
+    "seg_frames_verified": 145,
+    "max_frame_position_error_mm": 2.9115121663075127e-05,
+    "seg_frames_reoriented": 0
+  },
+  "LIDC-IDRI-0884": {
+    "ct_series_match": true,
+    "nifti_shape_affine_match": true,
+    "all_3_ct_hu_hashes_match": true,
+    "seg_frames_verified": 76,
+    "max_frame_position_error_mm": 4.24264066672193e-06,
+    "seg_frames_reoriented": 0
+  }
+}

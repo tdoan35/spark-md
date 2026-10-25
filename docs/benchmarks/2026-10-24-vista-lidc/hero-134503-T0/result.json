@@ -1,0 +1,230 @@
+{
+  "48": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/size-48/input-48/input-48_seg.nii.gz",
+    "shape": [
+      86,
+      86,
+      24
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.5625,
+        0.0,
+        -36.34375
+      ],
+      [
+        -0.5625,
+        0.0,
+        0.0,
+        217.21875
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        -255.29998779296875
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 176982,
+      "1.0": 522
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 522,
+    "foreground_voxels": 522,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        36,
+        36,
+        10
+      ],
+      [
+        51,
+        51,
+        13
+      ]
+    ],
+    "foreground_volume_mm3": 330.328125,
+    "foreground_bbox_extent_mm": [
+      9.0,
+      9.0,
+      8.0
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.3152188239619136,
+    "sha256": "3ed2897e8d1f02258ca14a0c81326a175b5fce3014f76f8fff1684a935f3e2f9",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": 19.40625,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/prediction-48.npz",
+    "coords_sha256": "50271a87b4bae1d21d7670b4e9d1bd1f17837ffe54a80a7eb334cc358cd49e3b"
+  },
+  "64": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/size-64/input-64/input-64_seg.nii.gz",
+    "shape": [
+      114,
+      114,
+      32
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.5625,
+        0.0,
+        -28.46875
+      ],
+      [
+        -0.5625,
+        0.0,
+        0.0,
+        225.09375
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        -263.29998779296875
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 415323,
+      "1.0": 549
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 549,
+    "foreground_voxels": 549,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        50,
+        50,
+        14
+      ],
+      [
+        65,
+        65,
+        19
+      ]
+    ],
+    "foreground_volume_mm3": 347.4140625,
+    "foreground_bbox_extent_mm": [
+      9.0,
+      9.0,
+      12.0
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.326916117221117,
+    "sha256": "90b449007f00fc9d76b9210b364696085aa9ecd65eb80658d7448eaf449f41ea",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": 25.0,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/prediction-64.npz",
+    "coords_sha256": "848aaf37b6b612f22ddfe730ecde1175b78c52a251bc347b0fa20ff2db1a5fae"
+  },
+  "96": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/size-96/input-96/input-96_seg.nii.gz",
+    "shape": [
+      171,
+      171,
+      48
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.5625,
+        0.0,
+        -12.15625
+      ],
+      [
+        -0.5625,
+        0.0,
+        0.0,
+        240.84375
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        -279.29998779296875
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 1403354,
+      "1.0": 214
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 214,
+    "foreground_voxels": 214,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        82,
+        82,
+        23
+      ],
+      [
+        92,
+        92,
+        25
+      ]
+    ],
+    "foreground_volume_mm3": 135.421875,
+    "foreground_bbox_extent_mm": [
+      6.1875,
+      6.1875,
+      6.0
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.3494152263738215,
+    "sha256": "22e063d40ff6863287b9167596a7959970137d44982d48617ad93f4f3dadcbd2",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": 44.15625,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/prediction-96.npz",
+    "coords_sha256": "84575cba50f7d2ad6e6bd65a1ccfa9aba72da76689e18dc2693b635bedeb56bd"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "same_mask": {
+    "dice": 1.0,
+    "iou": 1.0,
+    "prediction_volume_mm3": 0.9799999999999999,
+    "reference_volume_mm3": 0.9799999999999999,
+    "relative_volume_error": 0.0,
+    "assd_mm": 0.0,
+    "hd95_pooled_mm": 0.0,
+    "boundary_status": "ok"
+  },
+  "one_slice_shift_2mm": {
+    "dice": 0.0,
+    "iou": 0.0,
+    "prediction_volume_mm3": 0.9799999999999999,
+    "reference_volume_mm3": 0.9799999999999999,
+    "relative_volume_error": 0.0,
+    "assd_mm": 2.0,
+    "hd95_pooled_mm": 2.0,
+    "boundary_status": "ok"
+  },
+  "passed": true
+}

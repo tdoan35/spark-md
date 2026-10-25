@@ -1,0 +1,26 @@
+{
+  "version": "hero-crop64-v1",
+  "crop_side_mm": 64.0,
+  "crop_center": "corrected detector center in original voxels",
+  "crop_grid": "ceil(64 / original axis spacing) voxels per axis; start floor(center - count/2); intersect image bounds; no padding/rescaling",
+  "foreground": "deepest physical-EDT voxel of HU >= -400 component nearest center, restricted to detector box, no opening",
+  "conditions": [
+    "full_positive_only",
+    "crop64_positive_only"
+  ],
+  "prompts": "same original-space positive point, local point = original - crop_start; no negative or class prompts",
+  "mask": "label == 1; preserve all output labels; no component cleanup",
+  "restore": "paste crop labels into original index block; preserve original affine; outside crop = 255 (not evaluated)",
+  "technical_gates": {
+    "foreground_contains_positive": true,
+    "allowed_labels": [
+      0,
+      1,
+      255
+    ],
+    "crop_min_foreground_edge_clearance_mm": 5.0,
+    "max_bbox_axis_factor_vs_largest_detector_axis": 3.0,
+    "max_volume_factor_vs_detector_box_volume": 4.0
+  },
+  "validation": "research gross-failure gates only; no independent contour ground truth or clinical diameter/category output"
+}

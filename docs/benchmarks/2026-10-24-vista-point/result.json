@@ -1,0 +1,69 @@
+{
+  "path": "/home/ty/spark-md-b/vista-probe-20261024-01/segmentation/134503_45037002/134503_45037002_seg.nii.gz",
+  "shape": [
+    512,
+    512,
+    152
+  ],
+  "affine": [
+    [
+      0.0,
+      -0.64453125,
+      0.0,
+      182.677734375
+    ],
+    [
+      -0.64453125,
+      0.0,
+      0.0,
+      334.677734375
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      -336.3999938964844
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "labels": {
+    "0.0": 8457397,
+    "1.0": 10571,
+    "255.0": 31377920
+  },
+  "same_shape": true,
+  "same_affine": true,
+  "naive_positive_voxels": 31388491,
+  "foreground_voxels": 10571,
+  "uncomputed_voxels": 31377920,
+  "foreground_bbox_voxels": [
+    [
+      125,
+      365,
+      44
+    ],
+    [
+      236,
+      408,
+      74
+    ]
+  ],
+  "foreground_volume_mm3": 8782.820892333983,
+  "foreground_bbox_extent_mm": [
+    72.1875,
+    28.359375,
+    62.0
+  ],
+  "foreground_components": 6,
+  "foreground_at_prompt": true,
+  "nearest_foreground_to_prompt_mm": 1.0452802162919326,
+  "model_load_s": 6.695013530086726,
+  "pipeline_s": 3.963034762069583,
+  "min_available_gib": 67.17289733886719,
+  "torch": "2.14.1+cu130"
+}

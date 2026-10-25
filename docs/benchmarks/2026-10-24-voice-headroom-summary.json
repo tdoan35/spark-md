@@ -1,0 +1,30 @@
+{
+  "baseline": {
+    "min_available_gib": 69.19455337524414,
+    "max_swap_used_gib": 0.0851593017578125
+  },
+  "cleanup": {
+    "min_available_gib": 38.42656707763672,
+    "max_swap_used_gib": 0.08515167236328125
+  },
+  "concurrent_generation": {
+    "min_available_gib": 38.402225494384766,
+    "max_swap_used_gib": 0.08515167236328125
+  },
+  "imaging_reservation": {
+    "min_available_gib": 36.83921432495117,
+    "max_swap_used_gib": 0.0851593017578125
+  },
+  "reservation_idle": {
+    "min_available_gib": 38.310951232910156,
+    "max_swap_used_gib": 0.08515167236328125
+  },
+  "voice_startup": {
+    "min_available_gib": 60.925228118896484,
+    "max_swap_used_gib": 0.0851593017578125
+  },
+  "voice_warm": {
+    "min_available_gib": 61.559627532958984,
+    "max_swap_used_gib": 0.08515548706054688
+  }
+}

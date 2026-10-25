@@ -1,0 +1,8 @@
+{
+  "technical_sequence_pass": true,
+  "accepted_for_patient_findings": false,
+  "visual_review": "Three cropped outputs localized around target in inspected axial/coronal/sagittal views; no crop truncation detected; independent boundary accuracy unverified",
+  "historical_T0_fallback_reinstated": false,
+  "growth_or_category_recomputed": false,
+  "interpretation": "Local input removes gross lung-scale T0 failure in this run; context/padding/resampling alignment effects not isolated; not proof of accurate sizing"
+}

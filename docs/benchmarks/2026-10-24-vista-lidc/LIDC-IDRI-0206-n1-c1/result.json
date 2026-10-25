@@ -1,0 +1,239 @@
+{
+  "48": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0206-n1-c1/size-48/input-48/input-48_seg.nii.gz",
+    "shape": [
+      64,
+      64,
+      39
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.7519530057907104,
+        0.0,
+        -116.83316040039062
+      ],
+      [
+        -0.7519530057907104,
+        0.0,
+        0.0,
+        30.830102920532227
+      ],
+      [
+        0.0,
+        0.0,
+        1.25,
+        -324.5
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 154176,
+      "1.0": 5568
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 5568,
+    "foreground_voxels": 5568,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        19,
+        23,
+        12
+      ],
+      [
+        50,
+        56,
+        29
+      ]
+    ],
+    "foreground_volume_mm3": 3935.4159275070824,
+    "foreground_bbox_extent_mm": [
+      24.062496185302734,
+      25.566402196884155,
+      22.5
+    ],
+    "foreground_components": 2,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.32961991988122463,
+    "sha256": "7202b4238af69283b55cea8ffc544974344d08edbbe4d1ce9c19000fd96e436c",
+    "review": {
+      "technical_pass": false,
+      "reasons": [
+        "foreground_extent_exceeds_detector_limit",
+        "foreground_volume_exceeds_detector_limit"
+      ],
+      "crop_edge_clearance_mm": 5.639647543430328,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0206-n1-c1/prediction-48.npz",
+    "coords_sha256": "6eea1552139cef2fa7c8158f6e01fe682c4da4522b9603bf5b1641f9d4791101"
+  },
+  "64": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0206-n1-c1/size-64/input-64/input-64_seg.nii.gz",
+    "shape": [
+      86,
+      86,
+      52
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.7519530057907104,
+        0.0,
+        -108.56167602539062
+      ],
+      [
+        -0.7519530057907104,
+        0.0,
+        0.0,
+        39.101585388183594
+      ],
+      [
+        0.0,
+        0.0,
+        1.25,
+        -332.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 379504,
+      "1.0": 5088
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 5088,
+    "foreground_voxels": 5088,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        33,
+        39,
+        17
+      ],
+      [
+        64,
+        68,
+        35
+      ]
+    ],
+    "foreground_volume_mm3": 3596.1559337564718,
+    "foreground_bbox_extent_mm": [
+      24.062496185302734,
+      22.558590173721313,
+      23.75
+    ],
+    "foreground_components": 2,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.3345990260131657,
+    "sha256": "385d0372ba00416f8ec346a4cda99298de566bfdb2fb7337f01f2121679162b8",
+    "review": {
+      "technical_pass": false,
+      "reasons": [
+        "foreground_extent_exceeds_detector_limit",
+        "foreground_volume_exceeds_detector_limit"
+      ],
+      "crop_edge_clearance_mm": 13.159177601337433,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0206-n1-c1/prediction-64.npz",
+    "coords_sha256": "1e2ad6e61a159c2345f83394f5024d8314e79515b2ebc5851d1dd7610503fe38"
+  },
+  "96": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0206-n1-c1/size-96/input-96/input-96_seg.nii.gz",
+    "shape": [
+      128,
+      128,
+      77
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.7519530057907104,
+        0.0,
+        -92.77066040039062
+      ],
+      [
+        -0.7519530057907104,
+        0.0,
+        0.0,
+        54.892601013183594
+      ],
+      [
+        0.0,
+        0.0,
+        1.25,
+        -348.25
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 1256084,
+      "1.0": 5484
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 5484,
+    "foreground_voxels": 5484,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        53,
+        57,
+        31
+      ],
+      [
+        86,
+        86,
+        51
+      ]
+    ],
+    "foreground_volume_mm3": 3876.0454286007252,
+    "foreground_bbox_extent_mm": [
+      25.566402196884155,
+      22.558590173721313,
+      26.25
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.3434108840301633,
+    "sha256": "14959effea24325bb396c6b667c769d7873c6c96c5e77122f51bcd37b9132e0a",
+    "review": {
+      "technical_pass": false,
+      "reasons": [
+        "foreground_extent_exceeds_detector_limit",
+        "foreground_volume_exceeds_detector_limit"
+      ],
+      "crop_edge_clearance_mm": 31.206049740314484,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0206-n1-c1/prediction-96.npz",
+    "coords_sha256": "1762535877a34eb32447d2b18d7fd246be9fac1f63ce62e87c1a0cda48862881"
+  }
+}

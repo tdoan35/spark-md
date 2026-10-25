@@ -1,0 +1,140 @@
+{
+  "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0447-n1-c1/tumor23_special.nii.gz",
+  "shape": [
+    117,
+    117,
+    52
+  ],
+  "affine": [
+    [
+      0.0,
+      -0.5488280057907104,
+      0.0,
+      -2.743320941925049
+    ],
+    [
+      -0.5488280057907104,
+      0.0,
+      0.0,
+      -43.1765251159668
+    ],
+    [
+      0.0,
+      0.0,
+      1.25,
+      -155.25
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "labels": {
+    "0": 614865,
+    "1": 96963
+  },
+  "same_shape": true,
+  "same_affine": true,
+  "naive_positive_voxels": 96963,
+  "foreground_voxels": 96963,
+  "uncomputed_voxels": 0,
+  "foreground_bbox_voxels": [
+    [
+      0,
+      7,
+      0
+    ],
+    [
+      116,
+      113,
+      51
+    ]
+  ],
+  "foreground_volume_mm3": 36508.045754428,
+  "foreground_bbox_extent_mm": [
+    64.21287667751312,
+    58.72459661960602,
+    65.0
+  ],
+  "foreground_components": 21,
+  "foreground_at_prompt": true,
+  "nearest_foreground_to_prompt_mm": 0.0,
+  "pipeline_s": 0.3021296379993146,
+  "sha256": "224ca0e8a7977b656d0b1e5ec2ac43f77139387ebb9d420972c0ec8f05c60b46",
+  "native_labels": [
+    0.0,
+    23.0
+  ],
+  "foreground_label": 23,
+  "trace": {
+    "class_head_calls": 1,
+    "point_head_labels": [
+      [
+        3
+      ]
+    ],
+    "point_head_class_vector": [
+      [
+        23
+      ]
+    ]
+  },
+  "processed_point": [
+    20.046879768371575,
+    20.412765105565384,
+    21.66666666666666
+  ],
+  "input_point_flag": 3,
+  "preprocessed_point_labels": [
+    3
+  ],
+  "peak_gpu_allocated_gib": 2.641049861907959,
+  "review": {
+    "technical_pass": false,
+    "reasons": [
+      "foreground_extent_exceeds_detector_limit",
+      "foreground_volume_exceeds_detector_limit",
+      "foreground_too_close_to_crop_edge"
+    ],
+    "crop_edge_clearance_mm": 0.2744140028953552,
+    "touches_crop_face": true,
+    "accepted_for_patient_findings": false,
+    "boundary_accuracy": "unverified; no independent contour reference"
+  },
+  "dice_vs_gb10_point_baseline": 0.16400216710590354,
+  "per_reader": [
+    {
+      "dice": 0.0017723005904233943,
+      "iou": 0.0008869362540350443,
+      "prediction_volume_mm3": 36508.04498403173,
+      "reference_volume_mm3": 32.380308660279994,
+      "relative_volume_error": 1126.4767441860465,
+      "assd_mm": 25.867033108690194,
+      "hd95_pooled_mm": 40.945390259460865,
+      "boundary_status": "ok"
+    },
+    {
+      "dice": 0.004075709389569889,
+      "iou": 0.002042016026731846,
+      "prediction_volume_mm3": 36508.04498403173,
+      "reference_volume_mm3": 74.55001296203999,
+      "relative_volume_error": 488.7121212121212,
+      "assd_mm": 25.185235463351567,
+      "hd95_pooled_mm": 40.307566664571006,
+      "boundary_status": "ok"
+    },
+    {
+      "dice": 0.0014428081168262343,
+      "iou": 0.0007219248579355012,
+      "prediction_volume_mm3": 36508.04498403173,
+      "reference_volume_mm3": 26.35606518859999,
+      "relative_volume_error": 1384.1857142857143,
+      "assd_mm": 25.87863724858082,
+      "hd95_pooled_mm": 40.89100423519051,
+      "boundary_status": "ok"
+    }
+  ],
+  "median_reader_dice": 0.0017723005904233943
+}

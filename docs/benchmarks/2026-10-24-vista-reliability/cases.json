@@ -1,0 +1,975 @@
+[
+  {
+    "id": "106000_T0",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/106000_05721056.nii.gz",
+    "box_lps": [
+      101.21453857421875,
+      -100.70349884033203,
+      -211.609130859375,
+      9.690689086914062,
+      9.651718139648438,
+      9.508697509765625
+    ],
+    "box_score": 0.9938787817955017,
+    "seed_source": "detector",
+    "failed": "no_seed"
+  },
+  {
+    "id": "106000_T1",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/106000_76925691.nii.gz",
+    "box_lps": [
+      99.09632873535156,
+      -102.96182250976562,
+      -214.51544189453125,
+      11.311965942382812,
+      11.265533447265625,
+      11.128250122070312
+    ],
+    "box_score": 0.9920002222061157,
+    "seed_source": "detector",
+    "positive": [
+      361,
+      405,
+      79
+    ],
+    "positive_hu": -374.0,
+    "image_sha256": "24fd8234d2c8ed7fb077fbb7314654924d1d9b256346311cc43c67d2b14872f8"
+  },
+  {
+    "id": "106000_T2",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/106000_32104892.nii.gz",
+    "box_lps": [
+      91.14576721191406,
+      -105.67294311523438,
+      -160.9080810546875,
+      13.686317443847656,
+      13.821357727050781,
+      13.908355712890625
+    ],
+    "box_score": 0.9908034801483154,
+    "seed_source": "detector",
+    "positive": [
+      354,
+      419,
+      80
+    ],
+    "positive_hu": -386.0,
+    "image_sha256": "52c4319eff79ab6978496fe23c588e409b21ef43f5b636721fc4c0814db23e41"
+  },
+  {
+    "id": "106194_T0",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/106194_61989984.nii.gz",
+    "box_lps": [
+      51.55793380737305,
+      16.582420349121094,
+      -35.71429443359375,
+      15.508872985839844,
+      15.738693237304688,
+      15.349609375
+    ],
+    "box_score": 0.9769347906112671,
+    "seed_source": "detector",
+    "positive": [
+      262,
+      339,
+      98
+    ],
+    "positive_hu": -396.0,
+    "image_sha256": "11a41a3e97bfd14ea374e945841247d6c11d50b25e97ff025e8fc389c3310139"
+  },
+  {
+    "id": "106194_T1",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/106194_95651332.nii.gz",
+    "box_lps": [
+      49.6875,
+      -7.96875,
+      31.6875,
+      17.90625,
+      17.75,
+      17.671875
+    ],
+    "box_score": 0.98779296875,
+    "seed_source": "detector",
+    "positive": [
+      245,
+      327,
+      83
+    ],
+    "positive_hu": -326.0,
+    "image_sha256": "0c8cc7254641f4891334438ae86e9348aec75ea4194be1649ae860e47ea11504"
+  },
+  {
+    "id": "106194_T2",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/106194_18399541.nii.gz",
+    "box_lps": [
+      52.449527740478516,
+      -9.683151245117188,
+      16.543411254882812,
+      19.967323303222656,
+      19.71063232421875,
+      19.67864990234375
+    ],
+    "box_score": 0.95743727684021,
+    "seed_source": "detector",
+    "positive": [
+      261,
+      330,
+      100
+    ],
+    "positive_hu": -40.0,
+    "image_sha256": "8cfcf6e1fdcc6818bcbefc10a017952301d80744a6f9fb25cad9c0ea65b3b39d"
+  },
+  {
+    "id": "109965_T0",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/109965_69432482.nii.gz",
+    "box_lps": [
+      103.52728271484375,
+      -167.42596435546875,
+      -212.3761444091797,
+      7.36126708984375,
+      7.363525390625,
+      7.317596435546875
+    ],
+    "box_score": 0.9986489415168762,
+    "seed_source": "detector",
+    "positive": [
+      237,
+      413,
+      69
+    ],
+    "positive_hu": 82.0,
+    "image_sha256": "6ada11cedda0cb7adb01a53d25681506e67602a87e2045d4c0b1321a941e485b"
+  },
+  {
+    "id": "109965_T1",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/109965_24821758.nii.gz",
+    "box_lps": [
+      101.5,
+      -166.25,
+      1615.0,
+      7.8125,
+      7.625,
+      8.0
+    ],
+    "box_score": 0.99560546875,
+    "seed_source": "detector",
+    "positive": [
+      228,
+      454,
+      78
+    ],
+    "positive_hu": 230.0,
+    "image_sha256": "10cfd16aec762fa8d7f74883887e5f8d8755a110183883b2de242ba3ccb5f5f9"
+  },
+  {
+    "id": "109965_T2",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/109965_05960293.nii.gz",
+    "box_lps": [
+      99.375,
+      -161.5,
+      1102.0,
+      9.9375,
+      10.0,
+      10.0
+    ],
+    "box_score": 0.99853515625,
+    "seed_source": "detector",
+    "positive": [
+      221,
+      430,
+      77
+    ],
+    "positive_hu": 86.0,
+    "image_sha256": "4c26740ba60cac55576fbe327a3a5da26018b9ab50ead3bdf5a51e6547e42a9b"
+  },
+  {
+    "id": "113820_T0",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/113820_86219152.nii.gz",
+    "box_lps": [
+      27.140625,
+      8.46875,
+      -54.125,
+      5.71875,
+      5.80078125,
+      5.78125
+    ],
+    "box_score": 0.98876953125,
+    "seed_source": "detector",
+    "positive": [
+      272,
+      301,
+      108
+    ],
+    "positive_hu": -279.0,
+    "image_sha256": "7f9d7db1dc7498468c719ada765e894f8872cd218c09e98ca3d9755c545575dc"
+  },
+  {
+    "id": "113820_T1",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/113820_67136685.nii.gz",
+    "box_lps": [
+      32.53125,
+      20.75,
+      -80.6875,
+      7.546875,
+      7.640625,
+      7.5
+    ],
+    "box_score": 0.99853515625,
+    "seed_source": "detector",
+    "positive": [
+      290,
+      305,
+      105
+    ],
+    "positive_hu": -83.0,
+    "image_sha256": "daa0b889758a1f07e9110a7fcf839257ce5264d3f0b6585cb881626b8b6a03ce"
+  },
+  {
+    "id": "113820_T2",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/113820_69088068.nii.gz",
+    "box_lps": [
+      27.8125,
+      20.6875,
+      -46.8125,
+      9.5625,
+      9.578125,
+      9.53125
+    ],
+    "box_score": 0.998046875,
+    "seed_source": "detector",
+    "positive": [
+      291,
+      305,
+      110
+    ],
+    "positive_hu": -302.0,
+    "image_sha256": "4ded846e1848210c47a54179534911f6b2a94c275c4c7dc4f8641d666470def7"
+  },
+  {
+    "id": "134503_T0",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/134503_42269693.nii.gz",
+    "box_lps": [
+      60.5625,
+      -192.5,
+      -230.75,
+      7.125,
+      7.125,
+      7.0
+    ],
+    "box_score": 0.99951171875,
+    "seed_source": "detector",
+    "positive": [
+      230,
+      391,
+      59
+    ],
+    "positive_hu": 92.0,
+    "image_sha256": "1834ab3250fd3b1777fc8abc96fbe3d8f1c1b3a12018621c97c646105c728a71"
+  },
+  {
+    "id": "134503_T1",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/134503_96105794.nii.gz",
+    "box_lps": [
+      87.5,
+      -191.5,
+      -217.5,
+      9.5625,
+      9.625,
+      9.25
+    ],
+    "box_score": 0.9990234375,
+    "seed_source": "detector",
+    "positive": [
+      228,
+      386,
+      66
+    ],
+    "positive_hu": 56.0,
+    "image_sha256": "e13992d84a49fb89d3c3c137d9a65354ac1d9563bf065dfbef3220119973a044"
+  },
+  {
+    "id": "134503_T2",
+    "kind": "nlst",
+    "image": "/home/ty/spark-md-b/vols/134503_45037002.nii.gz",
+    "box_lps": [
+      63.29648208618164,
+      -195.22232055664062,
+      -201.40975952148438,
+      13.069343566894531,
+      13.163818359375,
+      13.114410400390625
+    ],
+    "box_score": 0.9995608925819397,
+    "seed_source": "detector",
+    "positive": [
+      220,
+      385,
+      66
+    ],
+    "positive_hu": 54.0,
+    "image_sha256": "8fbf41378e65519dc34f43cb44ee7c4fd4d00b945de92211c0eaaf6bcebc1d3a"
+  },
+  {
+    "id": "LIDC-IDRI-0052_n1",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0052_25051420.nii.gz",
+    "box_lps": [
+      42.73280334472656,
+      -9.481414794921875,
+      -247.80453491210938,
+      7.9356689453125,
+      7.93359375,
+      7.879150390625
+    ],
+    "box_score": 0.9969633221626282,
+    "box_to_consensus_mm": 2.7462615713083225,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n1_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n1_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n1_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n1_r3.nii.gz"
+    ],
+    "consensus_mm3": 246.50223935033125,
+    "positive": [
+      232,
+      347,
+      84
+    ],
+    "positive_hu": -22.0,
+    "image_sha256": "06bc7b86a3ee46c9f1e8c2499cec45200c36c6af2c324b83d823c81a2895720c"
+  },
+  {
+    "id": "LIDC-IDRI-0052_n2",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0052_25051420.nii.gz",
+    "box_lps": [
+      -103.182373046875,
+      44.869773864746094,
+      -69.4609375,
+      12.660888671875,
+      12.919631958007812,
+      12.9569091796875
+    ],
+    "box_score": 0.9801673293113708,
+    "box_to_consensus_mm": 5.653353742453507,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n2_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n2_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n2_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0052/n2_r3.nii.gz"
+    ],
+    "consensus_mm3": 1726.8927829347228,
+    "positive": [
+      303,
+      152,
+      225
+    ],
+    "positive_hu": 16.0,
+    "image_sha256": "06bc7b86a3ee46c9f1e8c2499cec45200c36c6af2c324b83d823c81a2895720c"
+  },
+  {
+    "id": "LIDC-IDRI-0080_n1",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0080_01738073.nii.gz",
+    "box_lps": [
+      -25.36174774169922,
+      29.735923767089844,
+      -207.08340454101562,
+      19.669174194335938,
+      19.101882934570312,
+      18.544570922851562
+    ],
+    "box_score": 0.8014700412750244,
+    "box_to_consensus_mm": 3.965666492168575,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0080/n1_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0080/n1_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0080/n1_r2.nii.gz"
+    ],
+    "consensus_mm3": 3526.30615234375,
+    "positive": [
+      294,
+      206,
+      81
+    ],
+    "positive_hu": 54.0,
+    "image_sha256": "98c285209667d86a5a7e431ebcf6e5011474114dc3f41ab80379374de91aed85"
+  },
+  {
+    "id": "LIDC-IDRI-0080_n2",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0080_01738073.nii.gz",
+    "box_lps": [
+      -30.56916046142578,
+      17.175460815429688,
+      -182.85748291015625,
+      21.499984741210938,
+      21.592681884765625,
+      21.708114624023438
+    ],
+    "box_score": 0.9980121850967407,
+    "box_to_consensus_mm": 8.51370173662347,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0080/n2_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0080/n2_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0080/n2_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0080/n2_r3.nii.gz"
+    ],
+    "consensus_mm3": 6247.711181640625,
+    "positive": [
+      280,
+      207,
+      98
+    ],
+    "positive_hu": 26.0,
+    "image_sha256": "98c285209667d86a5a7e431ebcf6e5011474114dc3f41ab80379374de91aed85"
+  },
+  {
+    "id": "LIDC-IDRI-0206_n1",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0206_94283158.nii.gz",
+    "box_lps": [
+      141.22573852539062,
+      -6.754020690917969,
+      -299.076171875,
+      5.3861541748046875,
+      5.3660125732421875,
+      5.549530029296875
+    ],
+    "box_score": 0.996434211730957,
+    "box_to_consensus_mm": 1.9860503040016582,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n1_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n1_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n1_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n1_r3.nii.gz"
+    ],
+    "consensus_mm3": 72.09274867200475,
+    "positive": [
+      248,
+      436,
+      105
+    ],
+    "positive_hu": -24.0,
+    "image_sha256": "cd1c577d12c9f2865a932b1cd8c725b647584cf732712307ec69190e3826b511"
+  },
+  {
+    "id": "LIDC-IDRI-0206_n2",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0206_94283158.nii.gz",
+    "box_lps": [
+      -90.49699401855469,
+      -15.128005981445312,
+      -161.9224853515625,
+      11.15087890625,
+      11.219573974609375,
+      11.059326171875
+    ],
+    "box_score": 0.9994022846221924,
+    "box_to_consensus_mm": 4.2235055067523275,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n2_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n2_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n2_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n2_r3.nii.gz"
+    ],
+    "consensus_mm3": 605.0136555219221,
+    "positive": [
+      240,
+      124,
+      214
+    ],
+    "positive_hu": 38.0,
+    "image_sha256": "cd1c577d12c9f2865a932b1cd8c725b647584cf732712307ec69190e3826b511"
+  },
+  {
+    "id": "LIDC-IDRI-0206_n4",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0206_94283158.nii.gz",
+    "box_lps": [
+      -37.00293731689453,
+      11.05499267578125,
+      -97.70556640625,
+      5.2141265869140625,
+      5.235595703125,
+      5.46697998046875
+    ],
+    "box_score": 0.9428760409355164,
+    "box_to_consensus_mm": 2.202910674396136,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n4_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n4_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0206/n4_r2.nii.gz"
+    ],
+    "consensus_mm3": 73.50633197929895,
+    "positive": [
+      272,
+      198,
+      266
+    ],
+    "positive_hu": -9.0,
+    "image_sha256": "cd1c577d12c9f2865a932b1cd8c725b647584cf732712307ec69190e3826b511"
+  },
+  {
+    "id": "LIDC-IDRI-0415_n1",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0415_84471720.nii.gz",
+    "box_lps": [
+      110.125,
+      -38.8125,
+      -238.0,
+      6.0625,
+      6.15625,
+      6.125
+    ],
+    "box_score": 0.9931640625,
+    "box_to_consensus_mm": 2.282618370829777,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n1_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n1_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n1_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n1_r3.nii.gz"
+    ],
+    "consensus_mm3": 125.55799835829147,
+    "positive": [
+      318,
+      92,
+      54
+    ],
+    "positive_hu": -18.0,
+    "image_sha256": "926efe804ab151e4d62c5db73e5a4a7456ecaa975ecd497d2f84eb2e46274f35"
+  },
+  {
+    "id": "LIDC-IDRI-0415_n3",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0415_84471720.nii.gz",
+    "box_lps": [
+      117.75,
+      -12.875,
+      -207.0,
+      6.8125,
+      6.8515625,
+      6.875
+    ],
+    "box_score": 0.9990234375,
+    "box_to_consensus_mm": 2.512744607101536,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n3_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n3_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n3_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n3_r3.nii.gz"
+    ],
+    "consensus_mm3": 196.5853331960111,
+    "positive": [
+      275,
+      80,
+      79
+    ],
+    "positive_hu": 141.0,
+    "image_sha256": "926efe804ab151e4d62c5db73e5a4a7456ecaa975ecd497d2f84eb2e46274f35"
+  },
+  {
+    "id": "LIDC-IDRI-0415_n4",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0415_84471720.nii.gz",
+    "box_lps": [
+      114.9375,
+      -3.16015625,
+      -196.0,
+      4.75,
+      4.8359375,
+      4.875
+    ],
+    "box_score": 0.9775390625,
+    "box_to_consensus_mm": 2.9733385299003343,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n4_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n4_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n4_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n4_r3.nii.gz"
+    ],
+    "consensus_mm3": 62.32075830922496,
+    "positive": [
+      259,
+      84,
+      88
+    ],
+    "positive_hu": -22.0,
+    "image_sha256": "926efe804ab151e4d62c5db73e5a4a7456ecaa975ecd497d2f84eb2e46274f35"
+  },
+  {
+    "id": "LIDC-IDRI-0415_n5",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0415_84471720.nii.gz",
+    "box_lps": [
+      108.25,
+      10.25,
+      -189.75,
+      8.9375,
+      8.7890625,
+      9.0
+    ],
+    "box_score": 0.92041015625,
+    "box_to_consensus_mm": 2.1251408269784333,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n5_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n5_r1.nii.gz"
+    ],
+    "consensus_mm3": 366.5926959366174,
+    "positive": [
+      236,
+      94,
+      93
+    ],
+    "positive_hu": -23.0,
+    "image_sha256": "926efe804ab151e4d62c5db73e5a4a7456ecaa975ecd497d2f84eb2e46274f35"
+  },
+  {
+    "id": "LIDC-IDRI-0415_n6",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0415_84471720.nii.gz",
+    "box_lps": [
+      94.6875,
+      -24.8125,
+      -156.25,
+      4.625,
+      4.578125,
+      4.625
+    ],
+    "box_score": 0.9873046875,
+    "box_to_consensus_mm": 2.5181619110825304,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n6_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n6_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n6_r2.nii.gz"
+    ],
+    "consensus_mm3": 65.98668526859113,
+    "positive": [
+      295,
+      117,
+      119
+    ],
+    "positive_hu": 212.0,
+    "image_sha256": "926efe804ab151e4d62c5db73e5a4a7456ecaa975ecd497d2f84eb2e46274f35"
+  },
+  {
+    "id": "LIDC-IDRI-0415_n7",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0415_84471720.nii.gz",
+    "box_lps": [
+      -8.5390625,
+      20.84375,
+      -142.5,
+      8.875,
+      8.890625,
+      8.5
+    ],
+    "box_score": 0.99462890625,
+    "box_to_consensus_mm": 2.7613385907762718,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n7_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n7_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n7_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n7_r3.nii.gz"
+    ],
+    "consensus_mm3": 471.52985514847416,
+    "positive": [
+      221,
+      286,
+      131
+    ],
+    "positive_hu": 316.0,
+    "image_sha256": "926efe804ab151e4d62c5db73e5a4a7456ecaa975ecd497d2f84eb2e46274f35"
+  },
+  {
+    "id": "LIDC-IDRI-0415_n8",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0415_84471720.nii.gz",
+    "box_lps": [
+      -6.2109375,
+      21.015625,
+      -99.5625,
+      17.046875,
+      16.96875,
+      16.875
+    ],
+    "box_score": 0.986328125,
+    "box_to_consensus_mm": 9.196407465637092,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n8_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0415/n8_r1.nii.gz"
+    ],
+    "consensus_mm3": 4861.019148119547,
+    "positive": [
+      217,
+      281,
+      164
+    ],
+    "positive_hu": 331.0,
+    "image_sha256": "926efe804ab151e4d62c5db73e5a4a7456ecaa975ecd497d2f84eb2e46274f35"
+  },
+  {
+    "id": "LIDC-IDRI-0447_n1",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0447_41456357.nii.gz",
+    "box_lps": [
+      35.09375,
+      75.625,
+      -122.25,
+      4.5625,
+      4.5625,
+      4.5
+    ],
+    "box_score": 0.9814453125,
+    "box_to_consensus_mm": 2.078720080432875,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0447/n1_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0447/n1_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0447/n1_r2.nii.gz"
+    ],
+    "consensus_mm3": 33.88637024327341,
+    "positive": [
+      335,
+      407,
+      57
+    ],
+    "positive_hu": -102.0,
+    "image_sha256": "553d8c7f9913fb096220adb38770c6d2d121aa3fcefff3a6b03afb06c650bf60"
+  },
+  {
+    "id": "LIDC-IDRI-0447_n2",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0447_41456357.nii.gz",
+    "box_lps": [
+      43.21875,
+      45.5,
+      -106.4375,
+      13.9375,
+      14.0625,
+      13.875
+    ],
+    "box_score": 0.9990234375,
+    "box_to_consensus_mm": 4.68098763499775,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0447/n2_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0447/n2_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0447/n2_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0447/n2_r3.nii.gz"
+    ],
+    "consensus_mm3": 1434.5230069652412,
+    "positive": [
+      280,
+      427,
+      68
+    ],
+    "positive_hu": -8.0,
+    "image_sha256": "553d8c7f9913fb096220adb38770c6d2d121aa3fcefff3a6b03afb06c650bf60"
+  },
+  {
+    "id": "LIDC-IDRI-0473_n1",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0473_16556991.nii.gz",
+    "box_lps": [
+      -161.94277954101562,
+      -29.455787658691406,
+      -268.24652099609375,
+      5.10882568359375,
+      5.1701812744140625,
+      5.14892578125
+    ],
+    "box_score": 0.9932811260223389,
+    "box_to_consensus_mm": 1.5877021496372918,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n1_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n1_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n1_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n1_r3.nii.gz"
+    ],
+    "consensus_mm3": 76.5437189955523,
+    "positive": [
+      220,
+      41,
+      87
+    ],
+    "positive_hu": 84.0,
+    "image_sha256": "8f9a80ae0c13057931bd15ef71fe3ed11f94f788ed49369d4b58c41dd9c9f109"
+  },
+  {
+    "id": "LIDC-IDRI-0473_n2",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0473_16556991.nii.gz",
+    "box_lps": [
+      -103.33488464355469,
+      -74.90777587890625,
+      -219.3170623779297,
+      4.658355712890625,
+      4.70758056640625,
+      4.63165283203125
+    ],
+    "box_score": 0.9919145107269287,
+    "box_to_consensus_mm": 1.95396382180198,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n2_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n2_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n2_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n2_r3.nii.gz"
+    ],
+    "consensus_mm3": 57.19750430436875,
+    "positive": [
+      164,
+      111,
+      127
+    ],
+    "positive_hu": -10.0,
+    "image_sha256": "8f9a80ae0c13057931bd15ef71fe3ed11f94f788ed49369d4b58c41dd9c9f109"
+  },
+  {
+    "id": "LIDC-IDRI-0473_n3",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0473_16556991.nii.gz",
+    "box_lps": [
+      165.4535675048828,
+      36.411537170410156,
+      -195.2384033203125,
+      4.217559814453125,
+      4.2370758056640625,
+      4.108612060546875
+    ],
+    "box_score": 0.9717254042625427,
+    "box_to_consensus_mm": 3.078898161589661,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n3_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n3_r1.nii.gz"
+    ],
+    "consensus_mm3": 38.692429382367095,
+    "positive": [
+      301,
+      441,
+      145
+    ],
+    "positive_hu": -384.0,
+    "image_sha256": "8f9a80ae0c13057931bd15ef71fe3ed11f94f788ed49369d4b58c41dd9c9f109"
+  },
+  {
+    "id": "LIDC-IDRI-0473_n4",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0473_16556991.nii.gz",
+    "box_lps": [
+      -38.76283264160156,
+      62.54698181152344,
+      -127.20121765136719,
+      5.134307861328125,
+      5.212982177734375,
+      5.260528564453125
+    ],
+    "box_score": 0.9806734323501587,
+    "box_to_consensus_mm": 2.2059647934687856,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n4_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n4_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0473/n4_r2.nii.gz"
+    ],
+    "consensus_mm3": 42.05698845909467,
+    "positive": [
+      331,
+      192,
+      199
+    ],
+    "positive_hu": -180.0,
+    "image_sha256": "8f9a80ae0c13057931bd15ef71fe3ed11f94f788ed49369d4b58c41dd9c9f109"
+  },
+  {
+    "id": "LIDC-IDRI-0606_n1",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0606_69489281.nii.gz",
+    "box_lps": [
+      -41.0,
+      -110.0625,
+      -137.5,
+      14.0625,
+      14.25,
+      14.125
+    ],
+    "box_score": 0.9990234375,
+    "box_to_consensus_mm": 4.935239487085699,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0606/n1_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0606/n1_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0606/n1_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0606/n1_r3.nii.gz"
+    ],
+    "consensus_mm3": 1364.5576400756838,
+    "positive": [
+      298,
+      185,
+      407
+    ],
+    "positive_hu": 62.0,
+    "image_sha256": "4610ed48a5273d7f5bc9a4b2e4e1b6151b3364facd9d6b996c0d8762c5e7c651"
+  },
+  {
+    "id": "LIDC-IDRI-0884_n2",
+    "kind": "lidc",
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0884_19563626.nii.gz",
+    "box_lps": [
+      56.34168243408203,
+      11.751426696777344,
+      -81.86279296875,
+      17.261322021484375,
+      17.443466186523438,
+      17.39605712890625
+    ],
+    "box_score": 0.9995827078819275,
+    "box_to_consensus_mm": 4.5380899546044144,
+    "seed_source": "detector",
+    "readers": [
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0884/n2_r0.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0884/n2_r1.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0884/n2_r2.nii.gz",
+      "/home/ty/spark-md-b/lidc_masks/LIDC-IDRI-0884/n2_r3.nii.gz"
+    ],
+    "consensus_mm3": 2966.1307652961855,
+    "positive": [
+      244,
+      373,
+      191
+    ],
+    "positive_hu": 25.0,
+    "image_sha256": "aada13bb4b9e525ab5bfeb0a22275f11d894121418ce01ed10cdcc3e94a82131"
+  }
+]

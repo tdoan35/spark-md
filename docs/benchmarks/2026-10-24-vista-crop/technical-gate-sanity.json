@@ -1,0 +1,23 @@
+{
+  "small_centered_mask": {
+    "technical_pass": true,
+    "reasons": [],
+    "crop_edge_clearance_mm": 27.0,
+    "touches_crop_face": false,
+    "accepted_for_patient_findings": false,
+    "boundary_accuracy": "unverified; no independent contour reference"
+  },
+  "crop_filling_mask": {
+    "technical_pass": false,
+    "reasons": [
+      "foreground_extent_exceeds_detector_limit",
+      "foreground_volume_exceeds_detector_limit",
+      "foreground_too_close_to_crop_edge"
+    ],
+    "crop_edge_clearance_mm": 1.0,
+    "touches_crop_face": true,
+    "accepted_for_patient_findings": false,
+    "boundary_accuracy": "unverified; no independent contour reference"
+  },
+  "sanity_assertions_pass": true
+}

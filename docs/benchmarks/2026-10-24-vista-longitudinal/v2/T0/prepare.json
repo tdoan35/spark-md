@@ -1,0 +1,41 @@
+{
+  "image": "/home/ty/spark-md-b/vols/134503_42269693.nii.gz",
+  "image_sha256": "1834ab3250fd3b1777fc8abc96fbe3d8f1c1b3a12018621c97c646105c728a71",
+  "detector_point": [
+    227.9444444444444,
+    388.05555555555554,
+    59.274993896484375
+  ],
+  "foreground": [
+    230,
+    391,
+    59
+  ],
+  "foreground_hu": 92.0,
+  "interior_distance_mm": 2.25,
+  "foreground_shift_mm": 2.0934575938897635,
+  "fallback": {
+    "volume_mm3": 114.5390625,
+    "pca_extents_mm": [
+      6.089838141614462,
+      5.91296260144044,
+      4.953798852882256
+    ],
+    "pca_mean_extent_mm": 6.001400371527451,
+    "bbox_extent_mm": [
+      6.1875,
+      5.625,
+      6.0
+    ],
+    "mean_hu": -121.34806823730469
+  },
+  "seed_mode": "detector-box",
+  "detector_box_lps": [
+    60.5625,
+    -192.5,
+    -230.75,
+    7.125,
+    7.125,
+    7.0
+  ]
+}

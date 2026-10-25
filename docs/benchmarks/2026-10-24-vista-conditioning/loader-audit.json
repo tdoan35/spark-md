@@ -1,0 +1,35 @@
+{
+  "converted_checkpoint_matches_original_tensors": true,
+  "loaded_model_matches_original_tensors": true,
+  "tensor_count": 259,
+  "loading_info": {
+    "missing_keys": [],
+    "unexpected_keys": [],
+    "mismatched_keys": [],
+    "error_msgs": []
+  },
+  "all_parameters_on_cpu": true,
+  "point_head_last_supported": 132,
+  "pretransform_special_index": [
+    25,
+    26,
+    27,
+    28,
+    29,
+    117
+  ],
+  "class23_pretransform_point_labels": [
+    1
+  ],
+  "class23_network_conversion_point_labels": [
+    [
+      3
+    ]
+  ],
+  "special_class_conversion_disagreement": true,
+  "versions": {
+    "torch": "2.14.1",
+    "monai": "1.6.1",
+    "transformers": "4.46.3"
+  }
+}

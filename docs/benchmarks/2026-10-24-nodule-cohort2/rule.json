@@ -1,0 +1,18 @@
+{
+  "version": "nodule-cohort2-v1",
+  "frozen": "2026-10-24, before selecting or downloading any case",
+  "nlst_stable": {
+    "selection": "Farina 2025 patients with exactly one Farina nodule row at each of T0/T1/T2 and Cancer=0; NLST prsn cancyr empty; ctab (sct_ab_desc=51) exactly one nodule per study_yr 0/1/2; |long_t - long_0| <= 1 and |perp_t - perp_0| <= 1 mm; exclude the 12 NLST patients already in data/; if > 30 remain, numpy default_rng(20261024).choice(sorted, 30)",
+    "series": "the exact Farina series UID per timepoint (soft-kernel recon)",
+    "identity": "Farina (i=col, j=row, k=slice ascending along normal) -> NIfTI voxel (j, i, k); best-scoring detector box within 10 mm (as hero eval); no match = detection miss",
+    "measure": "A7 (nodule-measure-v1, f=0.5 k=1.5 r=1 mm) and box (w+h)/2 per timepoint, unchanged code",
+    "metrics": "per interval (T0->T1, T1->T2): delta = later - earlier mean diameter. False growth = delta > 1.5 mm. Also |delta| median, and |A7 - NLST reported mean| per scan",
+    "gates": {"S1_median_abs_delta_mm_max": 1.0, "S2_false_growth_interval_rate_max": 0.10, "S3_detection_or_measure_failure_rate_max": 0.15}
+  },
+  "lidc_pool2": {
+    "selection": "same eligibility as nodule-holdout-v1; exclude the 23 LIDC patients used so far; numpy default_rng(20261025).choice(sorted ids, 20)",
+    "use": "tuning pool for any later stability fix; scored descriptively now with frozen A7 (same metrics as holdout), no gates"
+  },
+  "storage": "outside data/ (laptop ~/spark-md-cohort2, spark-2 ~/spark-md-b/cohort2); not on the drive",
+  "accepted_for_patient_findings": false
+}

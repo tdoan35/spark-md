@@ -1,0 +1,21 @@
+{
+  "version": "hero-two-pass-box-v2",
+  "foreground": "first maximum physical EDT voxel in HU >= -400 component nearest detector center, restricted to its predicted physical box; no opening",
+  "negative_pool": "first-pass label 1 AND HU > -400 AND distance outside detector-box seed > 4 mm AND distance from centered point > 12 mm",
+  "negative_selection": "nearest eligible voxel to centered point; farthest eligible voxel from first negative; numpy argmin/argmax ordering; omit duplicate",
+  "empty_negative_pool": "centered foreground only; no invented negatives",
+  "initial_pass": "corrected detector point, label 1",
+  "final_pass": "centered point label 1, up to two negatives label 0",
+  "mask": "label == 1; no morphology, clipping, or component removal",
+  "fallback_parameters": "v2 prompt seed is not legacy measurement fallback; threshold -400 inside detector box; 6-connected component nearest center",
+  "days": {
+    "T0": 23,
+    "T1": 380,
+    "T2": 800
+  },
+  "nlst_reported_mean_mm": {
+    "T0": 6,
+    "T1": 9,
+    "T2": 14
+  }
+}

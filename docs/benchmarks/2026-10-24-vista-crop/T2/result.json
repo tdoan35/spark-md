@@ -1,0 +1,196 @@
+{
+  "full": {
+    "path": "/home/ty/spark-md-b/vista-probe-20261024-05/T2/full/134503_45037002/134503_45037002_seg.nii.gz",
+    "shape": [
+      512,
+      512,
+      152
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.64453125,
+        0.0,
+        182.677734375
+      ],
+      [
+        -0.64453125,
+        0.0,
+        0.0,
+        334.677734375
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        -336.3999938964844
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 8464331,
+      "1.0": 3637,
+      "255.0": 31377920
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 31381557,
+    "foreground_voxels": 3637,
+    "uncomputed_voxels": 31377920,
+    "foreground_bbox_voxels": [
+      [
+        204,
+        372,
+        62
+      ],
+      [
+        233,
+        403,
+        70
+      ]
+    ],
+    "foreground_volume_mm3": 3021.768951416015,
+    "foreground_bbox_extent_mm": [
+      19.3359375,
+      20.625,
+      18.0
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 2.205433761700988,
+    "sha256": "041297de015fc76792bbaa8fbcf7f83d3a5a7b65a58f49cf2ef5f5c977dc458f",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": null,
+      "touches_crop_face": null,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "volume_mm3": 3021.768951416015,
+    "pca_extents_mm": [
+      22.271981364996122,
+      20.155489960676263,
+      15.001321041883138
+    ],
+    "pca_mean_extent_mm": 21.213735662836193,
+    "bbox_extent_mm": [
+      19.3359375,
+      20.625,
+      18.0
+    ],
+    "mean_hu": -474.6216735839844,
+    "components": 1,
+    "prompt_component_voxels": 3637,
+    "prompt_component_volume_mm3": 3021.768951416015,
+    "prompt_component_extent_mm": [
+      19.3359375,
+      20.625,
+      18.0
+    ]
+  },
+  "crop": {
+    "path": "/home/ty/spark-md-b/vista-probe-20261024-05/T2/crop/crop/crop_seg.nii.gz",
+    "shape": [
+      100,
+      100,
+      32
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.64453125,
+        0.0,
+        -30.662109375
+      ],
+      [
+        -0.64453125,
+        0.0,
+        0.0,
+        227.685546875
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        -234.39999389648438
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 319068,
+      "1.0": 932
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 932,
+    "foreground_voxels": 932,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        46,
+        46,
+        13
+      ],
+      [
+        63,
+        63,
+        18
+      ]
+    ],
+    "foreground_volume_mm3": 774.3438720703124,
+    "foreground_bbox_extent_mm": [
+      11.6015625,
+      11.6015625,
+      12.0
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.3613203330896795,
+    "sha256": "78c7a9f1c891949e4350cb68655baabf6c41992a1219f5f1ed3181ad830fba80",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": 23.525390625,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "volume_mm3": 774.3438720703124,
+    "pca_extents_mm": [
+      13.856217657593167,
+      11.499081566420191,
+      9.764844753629294
+    ],
+    "pca_mean_extent_mm": 12.677649612006679,
+    "bbox_extent_mm": [
+      11.6015625,
+      11.6015625,
+      12.0
+    ],
+    "mean_hu": -47.12982940673828,
+    "components": 1,
+    "prompt_component_voxels": 932,
+    "prompt_component_volume_mm3": 774.3438720703124,
+    "prompt_component_extent_mm": [
+      11.6015625,
+      11.6015625,
+      12.0
+    ],
+    "restored_path": "/home/ty/spark-md-b/vista-probe-20261024-05/T2/restored-crop-labels.nii.gz",
+    "restored_sha256": "af81890a60182e2f3366f6bfb1f1205d870478c69f0d3cd6b050bc2bea582817",
+    "restored_grid_and_labels_match": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "T0": {
+    "same_affine": true,
+    "mask_bitwise_identical_to_prior_64mm_run": true,
+    "voxels": 549
+  },
+  "T1": {
+    "same_affine": true,
+    "mask_bitwise_identical_to_prior_64mm_run": true,
+    "voxels": 754
+  },
+  "T2": {
+    "same_affine": true,
+    "mask_bitwise_identical_to_prior_64mm_run": true,
+    "voxels": 932
+  }
+}

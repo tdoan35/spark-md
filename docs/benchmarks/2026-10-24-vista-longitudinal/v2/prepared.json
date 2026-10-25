@@ -1,0 +1,125 @@
+{
+  "T0": {
+    "image": "/home/ty/spark-md-b/vols/134503_42269693.nii.gz",
+    "image_sha256": "1834ab3250fd3b1777fc8abc96fbe3d8f1c1b3a12018621c97c646105c728a71",
+    "detector_point": [
+      227.9444444444444,
+      388.05555555555554,
+      59.274993896484375
+    ],
+    "foreground": [
+      230,
+      391,
+      59
+    ],
+    "foreground_hu": 92.0,
+    "interior_distance_mm": 2.25,
+    "foreground_shift_mm": 2.0934575938897635,
+    "fallback": {
+      "volume_mm3": 114.5390625,
+      "pca_extents_mm": [
+        6.089838141614462,
+        5.91296260144044,
+        4.953798852882256
+      ],
+      "pca_mean_extent_mm": 6.001400371527451,
+      "bbox_extent_mm": [
+        6.1875,
+        5.625,
+        6.0
+      ],
+      "mean_hu": -121.34806823730469
+    },
+    "seed_mode": "detector-box",
+    "detector_box_lps": [
+      60.5625,
+      -192.5,
+      -230.75,
+      7.125,
+      7.125,
+      7.0
+    ]
+  },
+  "T1": {
+    "image": "/home/ty/spark-md-b/vols/134503_96105794.nii.gz",
+    "image_sha256": "e13992d84a49fb89d3c3c137d9a65354ac1d9563bf065dfbef3220119973a044",
+    "detector_point": [
+      224.94516129032257,
+      383.5,
+      66.39999389648438
+    ],
+    "foreground": [
+      228,
+      386,
+      66
+    ],
+    "foreground_hu": 56.0,
+    "interior_distance_mm": 3.02734375,
+    "foreground_shift_mm": 2.520364627222207,
+    "fallback": {
+      "volume_mm3": 335.79864501953125,
+      "pca_extents_mm": [
+        10.833925905373569,
+        8.852196005292665,
+        8.816459014616107
+      ],
+      "pca_mean_extent_mm": 9.843060955333117,
+      "bbox_extent_mm": [
+        9.6875,
+        9.6875,
+        8.0
+      ],
+      "mean_hu": -86.35371398925781
+    },
+    "seed_mode": "detector-box",
+    "detector_box_lps": [
+      87.5,
+      -191.5,
+      -217.5,
+      9.5625,
+      9.625,
+      9.25
+    ]
+  },
+  "T2": {
+    "image": "/home/ty/spark-md-b/vols/134503_45037002.nii.gz",
+    "image_sha256": "8fbf41378e65519dc34f43cb44ee7c4fd4d00b945de92211c0eaaf6bcebc1d3a",
+    "detector_point": [
+      216.3671875,
+      381.63272372159093,
+      67.4951171875
+    ],
+    "foreground": [
+      220,
+      385,
+      66
+    ],
+    "foreground_hu": 54.0,
+    "interior_distance_mm": 4.0,
+    "foreground_shift_mm": 4.374266608830006,
+    "fallback": {
+      "volume_mm3": 679.6279907226561,
+      "pca_extents_mm": [
+        16.47867331938803,
+        11.079233527967585,
+        10.575042829286105
+      ],
+      "pca_mean_extent_mm": 13.778953423677807,
+      "bbox_extent_mm": [
+        12.24609375,
+        10.3125,
+        12.0
+      ],
+      "mean_hu": -31.33863067626953
+    },
+    "seed_mode": "detector-box",
+    "detector_box_lps": [
+      63.29648208618164,
+      -195.22232055664062,
+      -201.40975952148438,
+      13.069343566894531,
+      13.163818359375,
+      13.114410400390625
+    ]
+  }
+}

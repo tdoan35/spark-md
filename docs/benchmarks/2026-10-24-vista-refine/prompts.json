@@ -1,0 +1,45 @@
+{
+  "image": "/home/ty/spark-md-b/vols/134503_45037002.nii.gz",
+  "patient": "134503",
+  "timepoint": "T2",
+  "original_detector_voxel": [
+    216.3671875,
+    381.63272372159093,
+    67.4951171875
+  ],
+  "foreground": [
+    221,
+    384,
+    66
+  ],
+  "negatives": [
+    [
+      226,
+      375,
+      71
+    ],
+    [
+      127,
+      376,
+      53
+    ]
+  ],
+  "method": "foreground = max physical EDT inside threshold fallback; negatives = prior foreground tissue >4 mm outside fallback and >12 mm from centered point, nearest then farthest",
+  "foreground_interior_distance_mm": 4.005895085317427,
+  "foreground_shift_mm": 4.49284629456381,
+  "fallback_voxels": 1007,
+  "fallback_volume_mm3": 836.6569519042968,
+  "points_hu": [
+    80.0,
+    -184.0,
+    -374.0
+  ],
+  "negative_distance_from_foreground_mm": [
+    12.001440597528934,
+    66.13049778140496
+  ],
+  "negative_distance_from_fallback_mm": [
+    4.93035603628493,
+    60.245341520542134
+  ]
+}

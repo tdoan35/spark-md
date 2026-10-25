@@ -1,0 +1,230 @@
+{
+  "48": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0606-n1-c0/size-48/input-48/input-48_seg.nii.gz",
+    "shape": [
+      89,
+      89,
+      96
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.541015625,
+        0.0,
+        65.1103515625
+      ],
+      [
+        -0.541015625,
+        0.0,
+        0.0,
+        134.5986328125
+      ],
+      [
+        0.0,
+        0.0,
+        0.5,
+        -161.5
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 748719,
+      "1.0": 11697
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 11697,
+    "foreground_voxels": 11697,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        32,
+        27,
+        26
+      ],
+      [
+        70,
+        65,
+        58
+      ]
+    ],
+    "foreground_volume_mm3": 1711.8437061309817,
+    "foreground_bbox_extent_mm": [
+      21.099609375,
+      21.099609375,
+      16.5
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.3316522631794214,
+    "sha256": "afa0a6c889d421ca3dca3742e36ca60bc643d606bdb6c00a839be584355f7547",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": 10.0087890625,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0606-n1-c0/prediction-48.npz",
+    "coords_sha256": "5315f9efff24d54c93ce3294d9f2fca8e925c85be421cf1e3fc4e3996443745e"
+  },
+  "64": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0606-n1-c0/size-64/input-64/input-64_seg.nii.gz",
+    "shape": [
+      119,
+      119,
+      128
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.541015625,
+        0.0,
+        73.2255859375
+      ],
+      [
+        -0.541015625,
+        0.0,
+        0.0,
+        142.7138671875
+      ],
+      [
+        0.0,
+        0.0,
+        0.5,
+        -169.5
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 1780733,
+      "1.0": 31875
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 31875,
+    "foreground_voxels": 31875,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        41,
+        46,
+        41
+      ],
+      [
+        87,
+        84,
+        82
+      ]
+    ],
+    "foreground_volume_mm3": 4664.872884750367,
+    "foreground_bbox_extent_mm": [
+      25.427734375,
+      21.099609375,
+      21.0
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.36677842773497105,
+    "sha256": "37dfbbac120b3515899ad946d0c9f66289e7f6111e408d6f8207db0be47f63d9",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": 17.0419921875,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0606-n1-c0/prediction-64.npz",
+    "coords_sha256": "27aa0038fa71f49084971fce45a881eaa89652cb0172ec0f4211de8584f754b7"
+  },
+  "96": {
+    "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0606-n1-c0/size-96/input-96/input-96_seg.nii.gz",
+    "shape": [
+      178,
+      178,
+      192
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.541015625,
+        0.0,
+        89.4560546875
+      ],
+      [
+        -0.541015625,
+        0.0,
+        0.0,
+        158.4033203125
+      ],
+      [
+        0.0,
+        0.0,
+        0.5,
+        -185.5
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 6072630,
+      "1.0": 10698
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 10698,
+    "foreground_voxels": 10698,
+    "uncomputed_voxels": 0,
+    "foreground_bbox_voxels": [
+      [
+        80,
+        77,
+        77
+      ],
+      [
+        109,
+        106,
+        109
+      ]
+    ],
+    "foreground_volume_mm3": 1565.6411018371584,
+    "foreground_bbox_extent_mm": [
+      16.23046875,
+      16.23046875,
+      16.5
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 0.5624361759983003,
+    "sha256": "788ea76d22e0d085dc557f7205575dcc2e3d588358721e5879f08c7cb10b86b1",
+    "review": {
+      "technical_pass": true,
+      "reasons": [],
+      "crop_edge_clearance_mm": 37.0595703125,
+      "touches_crop_face": false,
+      "accepted_for_patient_findings": false,
+      "boundary_accuracy": "unverified; no independent contour reference"
+    },
+    "coords_file": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0606-n1-c0/prediction-96.npz",
+    "coords_sha256": "4a71a26994e64eab38f7d353973724e5587bcc677f8492bbfd16dcb1447ed080"
+  }
+}

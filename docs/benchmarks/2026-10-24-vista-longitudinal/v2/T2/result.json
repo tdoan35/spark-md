@@ -1,0 +1,208 @@
+{
+  "initial": {
+    "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T2/initial/134503_45037002/134503_45037002_seg.nii.gz",
+    "shape": [
+      512,
+      512,
+      152
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.64453125,
+        0.0,
+        182.677734375
+      ],
+      [
+        -0.64453125,
+        0.0,
+        0.0,
+        334.677734375
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        -336.3999938964844
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 8457397,
+      "1.0": 10571,
+      "255.0": 31377920
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 31388491,
+    "foreground_voxels": 10571,
+    "uncomputed_voxels": 31377920,
+    "foreground_bbox_voxels": [
+      [
+        125,
+        365,
+        44
+      ],
+      [
+        236,
+        408,
+        74
+      ]
+    ],
+    "foreground_volume_mm3": 8782.820892333983,
+    "foreground_bbox_extent_mm": [
+      72.1875,
+      28.359375,
+      62.0
+    ],
+    "foreground_components": 6,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 1.762395216152072,
+    "sha256": "d33c373b5930801459b2462d1f88bf3a334b49fcc1cc1c9e05bf2cbba7cba537"
+  },
+  "final": {
+    "path": "/home/ty/spark-md-b/vista-probe-20261024-04/T2/final/134503_45037002/134503_45037002_seg.nii.gz",
+    "shape": [
+      512,
+      512,
+      152
+    ],
+    "affine": [
+      [
+        0.0,
+        -0.64453125,
+        0.0,
+        182.677734375
+      ],
+      [
+        -0.64453125,
+        0.0,
+        0.0,
+        334.677734375
+      ],
+      [
+        0.0,
+        0.0,
+        2.0,
+        -336.3999938964844
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "labels": {
+      "0.0": 11499513,
+      "1.0": 2159,
+      "255.0": 28344216
+    },
+    "same_shape": true,
+    "same_affine": true,
+    "naive_positive_voxels": 28346375,
+    "foreground_voxels": 2159,
+    "uncomputed_voxels": 28344216,
+    "foreground_bbox_voxels": [
+      [
+        206,
+        374,
+        63
+      ],
+      [
+        233,
+        399,
+        70
+      ]
+    ],
+    "foreground_volume_mm3": 1793.7858581542966,
+    "foreground_bbox_extent_mm": [
+      18.046875,
+      16.7578125,
+      16.0
+    ],
+    "foreground_components": 1,
+    "foreground_at_prompt": true,
+    "nearest_foreground_to_prompt_mm": 0.0,
+    "pipeline_s": 2.21593497088179,
+    "sha256": "a04d3efd01793a09153fcf4ca72e7ca06c0130fe5b8df429fdefd3dd3b3ac8ce",
+    "volume_mm3": 1793.7858581542966,
+    "pca_extents_mm": [
+      19.892137108825253,
+      15.605634442823746,
+      12.921674209411012
+    ],
+    "pca_mean_extent_mm": 17.748885775824498,
+    "bbox_extent_mm": [
+      18.046875,
+      16.7578125,
+      16.0
+    ],
+    "mean_hu": -305.1130065917969,
+    "components": 1,
+    "prompt_component_voxels": 2159,
+    "prompt_component_volume_mm3": 1793.7858581542966,
+    "prompt_component_extent_mm": [
+      18.046875,
+      16.7578125,
+      16.0
+    ],
+    "fallback_coverage": 0.9682151589242054,
+    "fallback_dice": 0.532079274437353,
+    "negative_points_in_foreground": [
+      false,
+      false
+    ]
+  },
+  "prompts": {
+    "points": [
+      [
+        220,
+        385,
+        66
+      ],
+      [
+        218,
+        369,
+        63
+      ],
+      [
+        127,
+        376,
+        53
+      ]
+    ],
+    "point_labels": [
+      1,
+      0,
+      0
+    ],
+    "eligible_negatives": 163,
+    "points_hu": [
+      54.0,
+      -293.0,
+      -374.0
+    ]
+  },
+  "fallback": {
+    "volume_mm3": 679.6279907226561,
+    "pca_extents_mm": [
+      16.47867331938803,
+      11.079233527967585,
+      10.575042829286105
+    ],
+    "pca_mean_extent_mm": 13.778953423677807,
+    "bbox_extent_mm": [
+      12.24609375,
+      10.3125,
+      12.0
+    ],
+    "mean_hu": -31.33863067626953
+  }
+}

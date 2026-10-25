@@ -1,0 +1,131 @@
+{
+  "version": "nodule-measure-v1",
+  "cases": "vista-reliability-v1 cases.json (14 NLST hero scans, 22 LIDC >=2-reader groups)",
+  "roi": "96.0 mm cube on unshifted box centre, original grid, int16 HU",
+  "shifts_mm": [
+    [
+      -1.0,
+      0.0
+    ],
+    [
+      0.0,
+      6.0
+    ],
+    [
+      0.0,
+      -6.0
+    ],
+    [
+      1.0,
+      6.0
+    ],
+    [
+      1.0,
+      -6.0
+    ],
+    [
+      2.0,
+      6.0
+    ],
+    [
+      2.0,
+      -6.0
+    ]
+  ],
+  "diameter": "Lung-RADS mean diameter: axial slice with the longest in-plane diameter; long = max Feret over pixel-corner hull, short = extent perpendicular to long; mean=(L+S)/2. Same function for every method and every reader mask.",
+  "arm_A": {
+    "grid": [
+      {
+        "f": 0.4,
+        "k": 1.5,
+        "r": 0.0
+      },
+      {
+        "f": 0.4,
+        "k": 1.5,
+        "r": 1.0
+      },
+      {
+        "f": 0.4,
+        "k": 1.5,
+        "r": 2.0
+      },
+      {
+        "f": 0.4,
+        "k": 2.0,
+        "r": 0.0
+      },
+      {
+        "f": 0.4,
+        "k": 2.0,
+        "r": 1.0
+      },
+      {
+        "f": 0.4,
+        "k": 2.0,
+        "r": 2.0
+      },
+      {
+        "f": 0.5,
+        "k": 1.5,
+        "r": 0.0
+      },
+      {
+        "f": 0.5,
+        "k": 1.5,
+        "r": 1.0
+      },
+      {
+        "f": 0.5,
+        "k": 1.5,
+        "r": 2.0
+      },
+      {
+        "f": 0.5,
+        "k": 2.0,
+        "r": 0.0
+      },
+      {
+        "f": 0.5,
+        "k": 2.0,
+        "r": 1.0
+      },
+      {
+        "f": 0.5,
+        "k": 2.0,
+        "r": 2.0
+      }
+    ],
+    "seed": "max of Gaussian(1 mm)-smoothed HU within box centre +- max(size/4, 2 mm); fail if < -600",
+    "background": "median HU of cap-sphere voxels < -500 (default -850 if <100 voxels)",
+    "threshold": "T = bg + f*(core - bg), core = smoothed HU at seed",
+    "mask": "HU >= T inside sphere radius max(k*max(size)/2, 5 mm); opening with physical ball radius r; component containing seed, else nearest within 3 mm, else fail"
+  },
+  "arm_B": "VISTA crop64 (hero-crop64-v1 geometry), positive = detector_seed EDT point, 10 negatives: 8 in-plane at 45 deg + 2 along z, radius max(1.5*max(size)/2, 6 mm), clipped to crop; decode ==1",
+  "arm_C": "box mean diameter (w + h)/2 from detector box x/y sizes",
+  "arm_D": "detector_seed mask (HU >= -400 component nearest centre, inside box)",
+  "split": {
+    "tune": [
+      "LIDC-IDRI-0052",
+      "LIDC-IDRI-0415",
+      "LIDC-IDRI-0447",
+      "LIDC-IDRI-0606"
+    ],
+    "test": [
+      "LIDC-IDRI-0080",
+      "LIDC-IDRI-0206",
+      "LIDC-IDRI-0473",
+      "LIDC-IDRI-0884"
+    ]
+  },
+  "selection": "arm A params = lowest tune median |diameter error|; tie -> higher tune bin agreement",
+  "reference": "median reader mean diameter per group; reader ceiling = each reader vs median of the others",
+  "pass_bar_test": {
+    "median_abs_err_mm": 1.5,
+    "bin_agreement_min": "reader leave-one-out agreement - 0.10",
+    "stability_median_range_mm": 1.5,
+    "failure_rate_max": 0.1
+  },
+  "caveat": "LUNA16 (detector training) is an LIDC subset; arm C on LIDC is likely optimistic",
+  "accepted_for_patient_findings": false
+}

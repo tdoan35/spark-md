@@ -1,0 +1,202 @@
+{
+  "LIDC-IDRI-0052": {
+    "groups": 2,
+    "qualifying_candidates": 4,
+    "matched": [
+      {
+        "candidate_index": 0,
+        "group": "1",
+        "distance_mm": 2.752118651816938,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 1,
+        "group": "2",
+        "distance_mm": 5.573709092196621,
+        "seed_missing": false
+      }
+    ],
+    "unmatched_groups": [],
+    "unmatched_candidates": [
+      2,
+      3
+    ]
+  },
+  "LIDC-IDRI-0080": {
+    "groups": 2,
+    "qualifying_candidates": 7,
+    "matched": [
+      {
+        "candidate_index": 0,
+        "group": "2",
+        "distance_mm": 8.508043086567106,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 3,
+        "group": "1",
+        "distance_mm": 4.1559087150881435,
+        "seed_missing": false
+      }
+    ],
+    "unmatched_groups": [],
+    "unmatched_candidates": [
+      1,
+      2,
+      4,
+      5,
+      6
+    ]
+  },
+  "LIDC-IDRI-0206": {
+    "groups": 4,
+    "qualifying_candidates": 3,
+    "matched": [
+      {
+        "candidate_index": 0,
+        "group": "2",
+        "distance_mm": 4.3548879936144065,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 1,
+        "group": "1",
+        "distance_mm": 1.8709726390125427,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 2,
+        "group": "4",
+        "distance_mm": 2.108805101818924,
+        "seed_missing": false
+      }
+    ],
+    "unmatched_groups": [
+      "3"
+    ],
+    "unmatched_candidates": []
+  },
+  "LIDC-IDRI-0447": {
+    "groups": 5,
+    "qualifying_candidates": 5,
+    "matched": [
+      {
+        "candidate_index": 0,
+        "group": "2",
+        "distance_mm": 4.686791272693731,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 1,
+        "group": "1",
+        "distance_mm": 1.876064919878171,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 2,
+        "group": "5",
+        "distance_mm": 2.240168252845438,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 4,
+        "group": "3",
+        "distance_mm": 2.529443313465652,
+        "seed_missing": false
+      }
+    ],
+    "unmatched_groups": [
+      "4"
+    ],
+    "unmatched_candidates": [
+      3
+    ]
+  },
+  "LIDC-IDRI-0473": {
+    "groups": 4,
+    "qualifying_candidates": 10,
+    "matched": [
+      {
+        "candidate_index": 0,
+        "group": "1",
+        "distance_mm": 1.6402465066965708,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 1,
+        "group": "2",
+        "distance_mm": 1.9478346614281163,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 4,
+        "group": "4",
+        "distance_mm": 2.0326822249936254,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 6,
+        "group": "3",
+        "distance_mm": 3.077734870624001,
+        "seed_missing": false
+      }
+    ],
+    "unmatched_groups": [],
+    "unmatched_candidates": [
+      2,
+      3,
+      5,
+      7,
+      8,
+      9
+    ]
+  },
+  "LIDC-IDRI-0606": {
+    "groups": 3,
+    "qualifying_candidates": 9,
+    "matched": [
+      {
+        "candidate_index": 0,
+        "group": "1",
+        "distance_mm": 4.884186765716521,
+        "seed_missing": false
+      },
+      {
+        "candidate_index": 8,
+        "group": "2",
+        "distance_mm": 6.291476345351069,
+        "seed_missing": false
+      }
+    ],
+    "unmatched_groups": [
+      "3"
+    ],
+    "unmatched_candidates": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  },
+  "LIDC-IDRI-0884": {
+    "groups": 2,
+    "qualifying_candidates": 2,
+    "matched": [
+      {
+        "candidate_index": 0,
+        "group": "2",
+        "distance_mm": 4.447459912673606,
+        "seed_missing": false
+      }
+    ],
+    "unmatched_groups": [
+      "1"
+    ],
+    "unmatched_candidates": [
+      1
+    ]
+  }
+}

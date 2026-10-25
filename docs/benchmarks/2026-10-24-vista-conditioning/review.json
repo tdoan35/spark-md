@@ -1,0 +1,17 @@
+{
+  "accepted_for_patient_findings": false,
+  "loader_audit": "passed, all 259 tensors exact",
+  "control_dice_vs_prior_gb10_range": [
+    0.9959782153330541,
+    1.0
+  ],
+  "diagnostic_conditions_completed": 20,
+  "explicit_zero_shot_improved_reader_dice_targets": 0,
+  "reader_referenced_targets": 3,
+  "hero_targets_without_contour": 1,
+  "class23_preprocessing_network_flag_disagreement": true,
+  "disagreement_is_demonstrated_fix": false,
+  "interpretation": "No tested class/flag change rescues selected small LIDC failure; no single favorable alternative across targets; CPU weight identity rules out missing/corrupted converted tensors, direct controls argue against gross HF-wrapper divergence on these inputs",
+  "limits": "Selected diagnostic targets, laptop inference, native class-dependent postprocessing; GB10 class/flag ablation and complete cohort validation unverified",
+  "next_diagnostic": "Reference-assisted foreground/background prompts on aligned reader masks to test model capability vs automatic prompt strategy; label explicitly annotation-assisted, not validation"
+}

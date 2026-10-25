@@ -1,0 +1,21 @@
+{
+  "version": "hero-two-pass-v1",
+  "foreground": "first maximum physical EDT voxel inside threshold-ROI fallback",
+  "negative_pool": "first-pass label 1 AND HU > -400 AND distance outside fallback > 4 mm AND distance from centered point > 12 mm",
+  "negative_selection": "nearest eligible voxel to centered point; farthest eligible voxel from first negative; numpy argmin/argmax ordering; omit duplicate",
+  "empty_negative_pool": "centered foreground only; no invented negatives",
+  "initial_pass": "corrected detector point, label 1",
+  "final_pass": "centered point label 1, up to two negatives label 0",
+  "mask": "label == 1; no morphology, clipping, or component removal",
+  "fallback_parameters": "unchanged scripts/b5_threshold.py: HU -400, 32 mm crop, opening/closing 2 voxel iterations, lung-mask helper",
+  "days": {
+    "T0": 23,
+    "T1": 380,
+    "T2": 800
+  },
+  "nlst_reported_mean_mm": {
+    "T0": 6,
+    "T1": 9,
+    "T2": 14
+  }
+}

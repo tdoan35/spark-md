@@ -1,0 +1,18 @@
+{
+  "version": "nodule-holdout-v1",
+  "frozen": "2026-10-24, before sampling or downloading any holdout case",
+  "selection": "IDC lidc_idri studies with one CT and >=1 SEG nodule group with >=2 readers (803 eligible); exclude the 8 previously used patients; random sample of 15 PatientIDs, numpy default_rng(20261024).choice(sorted ids, 15, replace=False)",
+  "pipeline": "B1 series = the study's CT; B2 conversion (scripts/b2_convert.py logic); B3 detection bundle unchanged; reader masks via bench/lidc_seg_masks.py (referenced-SOP mapping); groups with >=2 readers; consensus/reference/diameter exactly as nodule-measure-v1",
+  "matching": "best-scoring detector box within 10 mm of reader-consensus centroid (any score, same as vista-reliability-v1); unmatched groups = detection misses, reported, excluded from measurement metrics",
+  "method": "A7 from nodule-measure-v1 (f=0.5, k=1.5, r=1 mm), unchanged code; C = box (w+h)/2; flag = A7 failed OR |A7 - C| > 2.0 mm",
+  "shifts": "box centre 0 and +-3 mm per array axis (7 positions)",
+  "gates": {
+    "G1_unflagged_median_abs_err_mm_max": 1.5,
+    "G2_unflagged_bin_agreement_min": "reader leave-one-out bin agreement - 0.10 (bins 6/8/15 mm)",
+    "G3_unflagged_frac_err_gt_2mm_max": 0.10,
+    "G4_flag_rate_max": 0.40,
+    "G5_unflagged_shift_range_median_mm_max": 1.5
+  },
+  "pass": "all gates on the holdout set; scored once, no parameter changes after scoring",
+  "accepted_for_patient_findings": false
+}

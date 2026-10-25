@@ -1,0 +1,134 @@
+{
+  "path": "tmp/vista-conditioning-20261024-02/LIDC-IDRI-0447-n1-c1/point1.nii.gz",
+  "shape": [
+    117,
+    117,
+    52
+  ],
+  "affine": [
+    [
+      0.0,
+      -0.5488280057907104,
+      0.0,
+      -2.743320941925049
+    ],
+    [
+      -0.5488280057907104,
+      0.0,
+      0.0,
+      -43.1765251159668
+    ],
+    [
+      0.0,
+      0.0,
+      1.25,
+      -155.25
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "labels": {
+    "0": 699896,
+    "1": 11932
+  },
+  "same_shape": true,
+  "same_affine": true,
+  "naive_positive_voxels": 11932,
+  "foreground_voxels": 11932,
+  "uncomputed_voxels": 0,
+  "foreground_bbox_voxels": [
+    [
+      35,
+      43,
+      14
+    ],
+    [
+      75,
+      88,
+      37
+    ]
+  ],
+  "foreground_volume_mm3": 4492.579663808204,
+  "foreground_bbox_extent_mm": [
+    22.50194823741913,
+    25.24608826637268,
+    30.0
+  ],
+  "foreground_components": 7,
+  "foreground_at_prompt": true,
+  "nearest_foreground_to_prompt_mm": 0.0,
+  "pipeline_s": 0.1825860230019316,
+  "sha256": "732c7e839df003dbdd9d69ef7f0fc94d83824033a72dbc7b0acb5b7189ebb5a6",
+  "native_labels": [
+    0.0,
+    1.0
+  ],
+  "foreground_label": 1,
+  "trace": {
+    "point_head_labels": [
+      [
+        1
+      ]
+    ],
+    "point_head_class_vector": null
+  },
+  "processed_point": [
+    20.046879768371575,
+    20.412765105565384,
+    21.66666666666666
+  ],
+  "input_point_flag": 1,
+  "preprocessed_point_labels": [
+    1
+  ],
+  "peak_gpu_allocated_gib": 2.41414737701416,
+  "review": {
+    "technical_pass": false,
+    "reasons": [
+      "foreground_extent_exceeds_detector_limit",
+      "foreground_volume_exceeds_detector_limit"
+    ],
+    "crop_edge_clearance_mm": 15.641598165035248,
+    "touches_crop_face": false,
+    "accepted_for_patient_findings": false,
+    "boundary_accuracy": "unverified; no independent contour reference"
+  },
+  "dice_vs_gb10_point_baseline": 0.9959782153330541,
+  "per_reader": [
+    {
+      "dice": 0.014311865535030787,
+      "iou": 0.007207509218907141,
+      "prediction_volume_mm3": 4492.579569005359,
+      "reference_volume_mm3": 32.380308660279994,
+      "relative_volume_error": 137.74418604651163,
+      "assd_mm": 9.414958763264393,
+      "hd95_pooled_mm": 15.391196957173559,
+      "boundary_status": "ok"
+    },
+    {
+      "dice": 0.03264633140972795,
+      "iou": 0.01659403285283272,
+      "prediction_volume_mm3": 4492.579569005359,
+      "reference_volume_mm3": 74.55001296203999,
+      "relative_volume_error": 59.26262626262626,
+      "assd_mm": 8.562777267309162,
+      "hd95_pooled_mm": 14.848732923505633,
+      "boundary_status": "ok"
+    },
+    {
+      "dice": 0.011664722546242293,
+      "iou": 0.005866577271203486,
+      "prediction_volume_mm3": 4492.579569005359,
+      "reference_volume_mm3": 26.35606518859999,
+      "relative_volume_error": 169.45714285714286,
+      "assd_mm": 9.462988975888466,
+      "hd95_pooled_mm": 15.35204576251577,
+      "boundary_status": "ok"
+    }
+  ],
+  "median_reader_dice": 0.014311865535030787
+}

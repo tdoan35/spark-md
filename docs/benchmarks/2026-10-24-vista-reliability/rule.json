@@ -1,0 +1,119 @@
+{
+  "version": "vista-reliability-v1",
+  "conditions": {
+    "full": {},
+    "full_cls23": {
+      "cls": 23
+    },
+    "full_trim111": {
+      "trim": [
+        1,
+        1,
+        1
+      ]
+    },
+    "full_trim220": {
+      "trim": [
+        2,
+        2,
+        0
+      ]
+    },
+    "full_trim001": {
+      "trim": [
+        0,
+        0,
+        1
+      ]
+    },
+    "masked64": {
+      "mask_side": 64.0
+    },
+    "crop48": {
+      "side": 48.0
+    },
+    "crop64": {
+      "side": 64.0
+    },
+    "crop96": {
+      "side": 96.0
+    },
+    "crop128": {
+      "side": 128.0
+    },
+    "crop192": {
+      "side": 192.0
+    },
+    "crop64_cls23": {
+      "side": 64.0,
+      "cls": 23
+    },
+    "crop64_trim111": {
+      "side": 64.0,
+      "trim": [
+        1,
+        1,
+        1
+      ]
+    },
+    "crop64_trim220": {
+      "side": 64.0,
+      "trim": [
+        2,
+        2,
+        0
+      ]
+    },
+    "crop64_j0+": {
+      "side": 64.0,
+      "jitter": [
+        0,
+        6.0
+      ]
+    },
+    "crop64_j0-": {
+      "side": 64.0,
+      "jitter": [
+        0,
+        -6.0
+      ]
+    },
+    "crop64_j1+": {
+      "side": 64.0,
+      "jitter": [
+        1,
+        6.0
+      ]
+    },
+    "crop64_j1-": {
+      "side": 64.0,
+      "jitter": [
+        1,
+        -6.0
+      ]
+    },
+    "crop64_j2+": {
+      "side": 64.0,
+      "jitter": [
+        2,
+        6.0
+      ]
+    },
+    "crop64_j2-": {
+      "side": 64.0,
+      "jitter": [
+        2,
+        -6.0
+      ]
+    }
+  },
+  "positive": "deepest physical-EDT voxel of HU >= -400 component nearest box centre, restricted to the box (hero-crop64-v1 seed)",
+  "box": "NLST: Farina-assisted tracked detector box. LIDC: best-scoring detector box within 10 mm of the reader-consensus centroid; else consensus bbox (seed_source=reference, segmentation-only evaluation)",
+  "crop": "ceil(side / spacing) voxels per axis centred on box centre (+jitter); start floor(c - n/2); clipped to image; no padding/rescaling",
+  "masked": "original grid; HU outside the crop64 index block set to -1000",
+  "trim": "drop N low-index voxels per axis (affine shifted); restored by index paste",
+  "decode": "point-only label == 1; class prompt label == 23 (also 1 accepted, recorded)",
+  "reference": "LIDC consensus = voxels in >= ceil(R/2) of R reader masks",
+  "gates": "crop64 technical gates from hero-crop64-v1 (extent <= 3x largest box axis, volume <= 4x box volume, contains positive, crop edge >= 5 mm)",
+  "accepted_for_patient_findings": false
+}

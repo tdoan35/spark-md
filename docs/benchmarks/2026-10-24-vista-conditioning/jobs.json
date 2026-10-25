@@ -1,0 +1,759 @@
+[
+  {
+    "candidate_index": 0,
+    "box": [
+      42.73280334472656,
+      -9.481414794921875,
+      -247.80453491210938,
+      7.9356689453125,
+      7.93359375,
+      7.879150390625
+    ],
+    "score": 0.9969633221626282,
+    "positive": [
+      232,
+      347,
+      84
+    ],
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0052_25051420.nii.gz",
+    "image_sha256": "06bc7b86a3ee46c9f1e8c2499cec45200c36c6af2c324b83d823c81a2895720c",
+    "id": "LIDC-IDRI-0052-n1-c0",
+    "case": "LIDC-IDRI-0052",
+    "group": "1",
+    "match_distance_mm": 2.752118651816938,
+    "reference_files": [
+      "LIDC-IDRI-0052/annotation-000.npz",
+      "LIDC-IDRI-0052/annotation-001.npz",
+      "LIDC-IDRI-0052/annotation-002.npz",
+      "LIDC-IDRI-0052/annotation-003.npz"
+    ],
+    "center_voxel": [
+      230.02067869765193,
+      346.4523884326246,
+      85.35637207031252
+    ],
+    "crops": {
+      "48": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0052-n1-c0/input-48.nii.gz",
+        "sha256": "18280e10dafb87e4ced91e3fe8f629ab307b9afc21587886bb2c8fd2426846b3",
+        "lo": [
+          197,
+          313,
+          65
+        ],
+        "hi": [
+          262,
+          378,
+          104
+        ],
+        "point": [
+          35,
+          34,
+          19
+        ],
+        "shape": [
+          65,
+          65,
+          39
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.7421879768371582,
+            0.0,
+            -17.904842853546143
+          ],
+          [
+            -0.7421879768371582,
+            0.0,
+            0.0,
+            33.98896551132202
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -273.25
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "64": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0052-n1-c0/input-64.nii.gz",
+        "sha256": "6a6d5ca3cf0c5f1e725b9c9800fcc06eb5a74775d3ecf1b04b0c6b1d00afc133",
+        "lo": [
+          186,
+          302,
+          59
+        ],
+        "hi": [
+          273,
+          389,
+          111
+        ],
+        "point": [
+          46,
+          45,
+          25
+        ],
+        "shape": [
+          87,
+          87,
+          52
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.7421879768371582,
+            0.0,
+            -9.740775108337402
+          ],
+          [
+            -0.7421879768371582,
+            0.0,
+            0.0,
+            42.15303325653076
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -280.75
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "96": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0052-n1-c0/input-96.nii.gz",
+        "sha256": "e030bc0b5a021cbba61578defb751ce06d4a011fd6adce9eee6ab8df82cf6de0",
+        "lo": [
+          165,
+          281,
+          46
+        ],
+        "hi": [
+          295,
+          411,
+          123
+        ],
+        "point": [
+          67,
+          66,
+          38
+        ],
+        "shape": [
+          130,
+          130,
+          77
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.7421879768371582,
+            0.0,
+            5.84517240524292
+          ],
+          [
+            -0.7421879768371582,
+            0.0,
+            0.0,
+            57.738980770111084
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -297.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      }
+    },
+    "local_crop": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/LIDC-IDRI-0052-n1-c0.nii.gz",
+    "previous_prediction": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/LIDC-IDRI-0052-n1-c0-gb10.npz"
+  },
+  {
+    "candidate_index": 1,
+    "box": [
+      35.09375,
+      75.625,
+      -122.25,
+      4.5625,
+      4.5625,
+      4.5
+    ],
+    "score": 0.9814453125,
+    "positive": [
+      335,
+      407,
+      57
+    ],
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0447_41456357.nii.gz",
+    "image_sha256": "553d8c7f9913fb096220adb38770c6d2d121aa3fcefff3a6b03afb06c650bf60",
+    "id": "LIDC-IDRI-0447-n1-c1",
+    "case": "LIDC-IDRI-0447",
+    "group": "1",
+    "match_distance_mm": 1.876064919878171,
+    "reference_files": [
+      "LIDC-IDRI-0447/annotation-000.npz",
+      "LIDC-IDRI-0447/annotation-001.npz",
+      "LIDC-IDRI-0447/annotation-002.npz"
+    ],
+    "center_voxel": [
+      335.12321002419037,
+      405.9445665992529,
+      57.400000000000006
+    ],
+    "crops": {
+      "48": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0447-n1-c1/input-48.nii.gz",
+        "sha256": "a66481723b40c6d84ebb4deb177f68472f64914c513c3d26747a507a34ee94f5",
+        "lo": [
+          291,
+          361,
+          37
+        ],
+        "hi": [
+          379,
+          449,
+          76
+        ],
+        "point": [
+          44,
+          46,
+          20
+        ],
+        "shape": [
+          88,
+          88,
+          39
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5488280057907104,
+            0.0,
+            -10.426913142204285
+          ],
+          [
+            -0.5488280057907104,
+            0.0,
+            0.0,
+            -51.40894663333893
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -147.75
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "64": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0447-n1-c1/input-64.nii.gz",
+        "sha256": "5e14b4a4192c7deadd8b74b369fac13624d1aa3932054f6b1e4b6aa53a30bc51",
+        "lo": [
+          276,
+          347,
+          31
+        ],
+        "hi": [
+          393,
+          464,
+          83
+        ],
+        "point": [
+          59,
+          60,
+          26
+        ],
+        "shape": [
+          117,
+          117,
+          52
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5488280057907104,
+            0.0,
+            -2.7433210611343384
+          ],
+          [
+            -0.5488280057907104,
+            0.0,
+            0.0,
+            -43.17652654647827
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -155.25
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "96": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0447-n1-c1/input-96.nii.gz",
+        "sha256": "1a24c6039c559f4de2e69567d9c69c7441a09433185a0995c2e642be607e67a9",
+        "lo": [
+          247,
+          318,
+          18
+        ],
+        "hi": [
+          422,
+          493,
+          95
+        ],
+        "point": [
+          88,
+          89,
+          39
+        ],
+        "shape": [
+          175,
+          175,
+          77
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5488280057907104,
+            0.0,
+            13.172691106796265
+          ],
+          [
+            -0.5488280057907104,
+            0.0,
+            0.0,
+            -27.26051437854767
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -171.5
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      }
+    },
+    "local_crop": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/LIDC-IDRI-0447-n1-c1.nii.gz",
+    "previous_prediction": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/LIDC-IDRI-0447-n1-c1-gb10.npz"
+  },
+  {
+    "candidate_index": 0,
+    "box": [
+      56.34168243408203,
+      11.751426696777344,
+      -81.86279296875,
+      17.261322021484375,
+      17.443466186523438,
+      17.39605712890625
+    ],
+    "score": 0.9995827078819275,
+    "positive": [
+      244,
+      373,
+      191
+    ],
+    "image": "/home/ty/spark-md-b/vols/LIDC-IDRI-0884_19563626.nii.gz",
+    "image_sha256": "aada13bb4b9e525ab5bfeb0a22275f11d894121418ce01ed10cdcc3e94a82131",
+    "id": "LIDC-IDRI-0884-n2-c0",
+    "case": "LIDC-IDRI-0884",
+    "group": "2",
+    "match_distance_mm": 4.447459912673606,
+    "reference_files": [
+      "LIDC-IDRI-0884/annotation-001.npz",
+      "LIDC-IDRI-0884/annotation-002.npz",
+      "LIDC-IDRI-0884/annotation-003.npz",
+      "LIDC-IDRI-0884/annotation-004.npz"
+    ],
+    "center_voxel": [
+      244.03056355595385,
+      370.51008911857275,
+      191.509765625
+    ],
+    "crops": {
+      "48": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0884-n2-c0/input-48.nii.gz",
+        "sha256": "d4a9c5c289e9ca437c629497cc57390cdb16da8ab8ef3f17ed1ae1ac791dd8f8",
+        "lo": [
+          207,
+          334,
+          172
+        ],
+        "hi": [
+          280,
+          407,
+          211
+        ],
+        "point": [
+          37,
+          39,
+          19
+        ],
+        "shape": [
+          73,
+          73,
+          39
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.6640620231628418,
+            0.0,
+            -32.09671878814697
+          ],
+          [
+            -0.6640620231628418,
+            0.0,
+            0.0,
+            12.83916425704956
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -106.25
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "64": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0884-n2-c0/input-64.nii.gz",
+        "sha256": "ac0f36b55306b32deaf1ccf1c1bcddc87daf4ee4f6b4c2d85ea94ff3dcc6043c",
+        "lo": [
+          195,
+          322,
+          165
+        ],
+        "hi": [
+          292,
+          419,
+          217
+        ],
+        "point": [
+          49,
+          51,
+          26
+        ],
+        "shape": [
+          97,
+          97,
+          52
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.6640620231628418,
+            0.0,
+            -24.12797451019287
+          ],
+          [
+            -0.6640620231628418,
+            0.0,
+            0.0,
+            20.807908535003662
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -115.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "96": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/LIDC-IDRI-0884-n2-c0/input-96.nii.gz",
+        "sha256": "f25541682d3a5bc01e28f35c9523cbe46ee59f0d3f15105aaef852a78e10a067",
+        "lo": [
+          171,
+          298,
+          153
+        ],
+        "hi": [
+          316,
+          443,
+          230
+        ],
+        "point": [
+          73,
+          75,
+          38
+        ],
+        "shape": [
+          145,
+          145,
+          77
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.6640620231628418,
+            0.0,
+            -8.190485954284668
+          ],
+          [
+            -0.6640620231628418,
+            0.0,
+            0.0,
+            36.745397090911865
+          ],
+          [
+            0.0,
+            0.0,
+            1.25,
+            -130.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      }
+    },
+    "local_crop": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/LIDC-IDRI-0884-n2-c0.nii.gz",
+    "previous_prediction": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/LIDC-IDRI-0884-n2-c0-gb10.npz"
+  },
+  {
+    "id": "hero-134503-T0",
+    "case": "134503",
+    "timepoint": "T0",
+    "image": "/home/ty/spark-md-b/vols/134503_42269693.nii.gz",
+    "image_sha256": "1834ab3250fd3b1777fc8abc96fbe3d8f1c1b3a12018621c97c646105c728a71",
+    "candidate_index": 0,
+    "box": [
+      60.5625,
+      -192.5,
+      -230.75,
+      7.125,
+      7.125,
+      7.0
+    ],
+    "score": 0.99951171875,
+    "positive": [
+      230,
+      391,
+      59
+    ],
+    "reference_files": [],
+    "center_voxel": [
+      227.9444444444444,
+      388.05555555555554,
+      59.274993896484375
+    ],
+    "crops": {
+      "48": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/input-48.nii.gz",
+        "sha256": "df22d12f7f3412e9d0f007ce7a7a682900beb229ccab52b4432813bbeaa3b049",
+        "lo": [
+          184,
+          345,
+          47
+        ],
+        "hi": [
+          270,
+          431,
+          71
+        ],
+        "point": [
+          46,
+          46,
+          12
+        ],
+        "shape": [
+          86,
+          86,
+          24
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5625,
+            0.0,
+            -36.34375
+          ],
+          [
+            -0.5625,
+            0.0,
+            0.0,
+            217.21875
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -255.29998779296875
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "64": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/input-64.nii.gz",
+        "sha256": "203c4105365a1cb2d394a630a126da968b3f72a41df9bc856ac012cf4dd147b7",
+        "lo": [
+          170,
+          331,
+          43
+        ],
+        "hi": [
+          284,
+          445,
+          75
+        ],
+        "point": [
+          60,
+          60,
+          16
+        ],
+        "shape": [
+          114,
+          114,
+          32
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5625,
+            0.0,
+            -28.46875
+          ],
+          [
+            -0.5625,
+            0.0,
+            0.0,
+            225.09375
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -263.29998779296875
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      },
+      "96": {
+        "path": "/home/ty/spark-md-b/vista-lidc-20261024-01/hero-134503-T0/input-96.nii.gz",
+        "sha256": "649c6b30afc68662ced217f433dfd84becdc0411209a3802f63e865f6e12f9f4",
+        "lo": [
+          142,
+          302,
+          35
+        ],
+        "hi": [
+          313,
+          473,
+          83
+        ],
+        "point": [
+          88,
+          89,
+          24
+        ],
+        "shape": [
+          171,
+          171,
+          48
+        ],
+        "affine": [
+          [
+            0.0,
+            -0.5625,
+            0.0,
+            -12.15625
+          ],
+          [
+            -0.5625,
+            0.0,
+            0.0,
+            240.84375
+          ],
+          [
+            0.0,
+            0.0,
+            2.0,
+            -279.29998779296875
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "point_error_mm": 0.0
+      }
+    },
+    "local_crop": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/hero-134503-T0.nii.gz",
+    "previous_prediction": "/mnt/ty-ubuntu/projects/spark-md/tmp/vista-conditioning-20261024-01/inputs/hero-134503-T0-gb10.npz"
+  }
+]

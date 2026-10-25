@@ -1,0 +1,18 @@
+{
+  "version": "lidc-crop-stability-v1",
+  "detector_score_min": 0.5,
+  "match_max_centroid_distance_mm": 10.0,
+  "matching": "one-to-one minimum-distance assignment; median annotation centroid; box overlaps reader union bbox; disallowed pairs excluded before assignment",
+  "selection": "all matched groups across all 8 staged LIDC cases; unmatched and missing seed reported",
+  "seed": "unchanged detector-box HU >= -400 nearest tissue component; deepest physical EDT; no reader input",
+  "crops_mm": [
+    48,
+    64,
+    96
+  ],
+  "prompts": "identical physical positive for every crop, no negatives/class prompt",
+  "cleanup": "none, label 1 only; preserve raw masks and all failures",
+  "reference": "each DICOM SEG annotation scored separately, no consensus mask",
+  "extra_stability": "same three crops for hero 134503 T0/T1/T2; no reference contour",
+  "clinical_acceptance": false
+}

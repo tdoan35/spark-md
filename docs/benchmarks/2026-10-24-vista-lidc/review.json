@@ -1,0 +1,20 @@
+{
+  "accepted_for_patient_findings": false,
+  "configuration_status": "reject for current automatic nodule measurement pipeline",
+  "reason": "poor reader-contour agreement and large crop-size sensitivity despite alignment checks",
+  "matched_groups": 18,
+  "matched_reader_annotations": 57,
+  "eligible_groups": 22,
+  "excluded_alignment_case": "LIDC-IDRI-0415",
+  "median_group_reader_dice64": 0.032700163208174024,
+  "technical_pass64": 5,
+  "multireader_model64_median_dice": 0.0863222167843576,
+  "multireader_reader_pairwise_group_median_dice": 0.7750481695568401,
+  "all_readers_contain_positive_subset": {
+    "groups": 14,
+    "median_reader_dice64": 0.06166443729569282
+  },
+  "same64_hero_repeatability": "all three masks bitwise identical to previous run",
+  "root_cause": "not isolated; applies to current checkpoint/wrapper/shims and point-only automatic seed configuration, not all VISTA implementations",
+  "next": "audit vendor reference point/class conditioning and compatibility on aligned LIDC targets before additional crop tuning; no clinical growth/category output"
+}

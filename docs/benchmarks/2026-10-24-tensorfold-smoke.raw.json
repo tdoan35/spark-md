@@ -1,0 +1,328 @@
+{
+  "base_url": "http://127.0.0.1:8000/v1",
+  "model": "qwen3.8-27b",
+  "checks": {
+    "S1": {
+      "pass": true,
+      "models": [
+        "qwen3.8-27b"
+      ]
+    },
+    "S2": {
+      "pass": true,
+      "content": "OK"
+    },
+    "S3": {
+      "pass": true,
+      "score": "10/10",
+      "rows": [
+        {
+          "i": 1,
+          "prompt": "New CT study 1.2.3.4.5 arrived. Look it up.",
+          "expected": "get_study",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_study",
+          "args": "{\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 2,
+          "prompt": "Show me the nodule in study 1.2.3.4.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"show_nodule\",\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 3,
+          "prompt": "What are the findings for study 1.2.3.4.5?",
+          "expected": "get_findings",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_findings",
+          "args": "{\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 4,
+          "prompt": "Pull up the prior comparison for study 9.8.7.6.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"compare_prior\",\"study_uid\":\"9.8.7.6.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 5,
+          "prompt": "Reset the view for study 1.2.3.4.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"reset_view\",\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 6,
+          "prompt": "Fetch the nodule measurements from study 2.3.4.5.6.",
+          "expected": "get_findings",
+          "content_head": "I'll fetch the findings for that study.",
+          "finish_reason": "tool_calls",
+          "tool": "get_findings",
+          "args": "{\"study_uid\":\"2.3.4.5.6\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 7,
+          "prompt": "Get me the series details of study 5.6.7.8.9.",
+          "expected": "get_study",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_study",
+          "args": "{\"study_uid\":\"5.6.7.8.9\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 8,
+          "prompt": "Display the bone density extras for study 4.4.4.4.4",
+          "expected": "viewer_command",
+          "content_head": "I'll display the extras for that study.",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"show_extras\",\"study_uid\":\"4.4.4.4.4\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 9,
+          "prompt": "A new chest CT 1.9.9.9.1 just landed in the worklist. Look at its header.",
+          "expected": "get_study",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_study",
+          "args": "{\"study_uid\":\"1.9.9.9.1\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 10,
+          "prompt": "Show nodule NOD-7 in study 1.2.3.4.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"show_nodule\",\"study_uid\":\"1.2.3.4.5\",\"nodule_id\":\"NOD-7\"}",
+          "pass": true,
+          "errors": []
+        }
+      ]
+    },
+    "S3-think": {
+      "pass": true,
+      "score": "9/10",
+      "rows": [
+        {
+          "i": 1,
+          "prompt": "New CT study 1.2.3.4.5 arrived. Look it up.",
+          "expected": "get_study",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_study",
+          "args": "{\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 2,
+          "prompt": "Show me the nodule in study 1.2.3.4.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_study",
+          "args": "{\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": false,
+          "errors": [
+            "wrong tool: wanted viewer_command",
+            "arg command: wanted 'show_nodule', got None"
+          ]
+        },
+        {
+          "i": 3,
+          "prompt": "What are the findings for study 1.2.3.4.5?",
+          "expected": "get_findings",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_findings",
+          "args": "{\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 4,
+          "prompt": "Pull up the prior comparison for study 9.8.7.6.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"compare_prior\",\"study_uid\":\"9.8.7.6.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 5,
+          "prompt": "Reset the view for study 1.2.3.4.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"reset_view\",\"study_uid\":\"1.2.3.4.5\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 6,
+          "prompt": "Fetch the nodule measurements from study 2.3.4.5.6.",
+          "expected": "get_findings",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_findings",
+          "args": "{\"study_uid\":\"2.3.4.5.6\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 7,
+          "prompt": "Get me the series details of study 5.6.7.8.9.",
+          "expected": "get_study",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_study",
+          "args": "{\"study_uid\":\"5.6.7.8.9\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 8,
+          "prompt": "Display the bone density extras for study 4.4.4.4.4",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"show_extras\",\"study_uid\":\"4.4.4.4.4\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 9,
+          "prompt": "A new chest CT 1.9.9.9.1 just landed in the worklist. Look at its header.",
+          "expected": "get_study",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "get_study",
+          "args": "{\"study_uid\":\"1.9.9.9.1\"}",
+          "pass": true,
+          "errors": []
+        },
+        {
+          "i": 10,
+          "prompt": "Show nodule NOD-7 in study 1.2.3.4.5.",
+          "expected": "viewer_command",
+          "content_head": "",
+          "finish_reason": "tool_calls",
+          "tool": "viewer_command",
+          "args": "{\"command\":\"show_nodule\",\"study_uid\":\"1.2.3.4.5\",\"nodule_id\":\"NOD-7\"}",
+          "pass": true,
+          "errors": []
+        }
+      ]
+    },
+    "S4": {
+      "pass": true,
+      "answer": "The study was flagged because the solid nodule in the left upper lobe demonstrated significant growth, increasing from 10 mm to 14 mm over a 371-day interval. This rapid expansion resulted in a volume doubling time of 47 days, triggering the \"growth-doubling\" rule and a Lung-RADS 4B assessment.",
+      "invented_numbers": [],
+      "allowed_numbers": [
+        "0.91",
+        "1.0",
+        "1.3",
+        "10.0",
+        "1001.0",
+        "134503.0",
+        "14.0",
+        "1436.0",
+        "14519.5",
+        "2.1",
+        "2022.0",
+        "3.0",
+        "35.0",
+        "371.0",
+        "4.0",
+        "4.1",
+        "47.0",
+        "524.0",
+        "6.1",
+        "700.0",
+        "7991.4002"
+      ]
+    },
+    "S5": {
+      "median_tok_s_net": 40.0,
+      "rows": [
+        {
+          "run": 1,
+          "completion_tokens": 517,
+          "ttft_s": 0.10588704608380795,
+          "total_s": 12.998528794385493,
+          "tok_s_net": 40.1
+        },
+        {
+          "run": 2,
+          "completion_tokens": 517,
+          "ttft_s": 0.09477416193112731,
+          "total_s": 13.00367493275553,
+          "tok_s_net": 40.0
+        },
+        {
+          "run": 3,
+          "completion_tokens": 517,
+          "ttft_s": 0.09589484799653292,
+          "total_s": 13.029762180056423,
+          "tok_s_net": 40.0
+        }
+      ]
+    },
+    "S6": {
+      "runs": [
+        {
+          "which": "cold",
+          "ttft_s": 8.691893210168928,
+          "total_s": 9.513998666312546,
+          "prompt_tokens": 16061,
+          "answer_head": "The provided log documents 520 annual low-dose CT visits for a single asymptomatic patient, all of which were noted by t"
+        },
+        {
+          "which": "warm",
+          "ttft_s": 8.714459334965795,
+          "total_s": 9.262298441957682,
+          "prompt_tokens": 16061,
+          "answer_head": "This log comes from a clinical annual lung cancer screening program that utilizes annual low-dose CT imaging."
+        }
+      ],
+      "reuse_helps": false,
+      "mem_available_gib_after": 75.1
+    }
+  },
+  "raw": {},
+  "mem_available_gib_start": 75.1,
+  "mem_available_gib_end": 75.1
+}

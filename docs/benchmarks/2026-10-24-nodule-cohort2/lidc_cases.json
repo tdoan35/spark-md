@@ -1,0 +1,921 @@
+[
+ {
+  "id": "LIDC-IDRI-0051_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0051_32969899.nii.gz",
+  "box_lps": [
+   -74.17581176757812,
+   -62.73670959472656,
+   -133.578369140625,
+   13.013671875,
+   13.181793212890625,
+   13.004791259765625
+  ],
+  "box_score": 0.9999167919158936,
+  "box_to_consensus_mm": 4.104327879873561,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 1228.271484375
+ },
+ {
+  "id": "LIDC-IDRI-0051_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0051_32969899.nii.gz",
+  "box_lps": [
+   89.79944610595703,
+   -14.227340698242188,
+   -95.29605102539062,
+   12.377853393554688,
+   12.438751220703125,
+   11.50811767578125
+  ],
+  "box_score": 0.9983722567558289,
+  "box_to_consensus_mm": 3.4374706936023807,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n3_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n3_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0051/n3_r3.nii.gz"
+  ],
+  "consensus_mm3": 1267.822265625
+ },
+ {
+  "id": "LIDC-IDRI-0076_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0076_31187685.nii.gz",
+  "box_lps": [
+   -153.691650390625,
+   -23.161582946777344,
+   -273.37396240234375,
+   8.068511962890625,
+   8.077621459960938,
+   8.028167724609375
+  ],
+  "box_score": 0.9992021918296814,
+  "box_to_consensus_mm": 1.9695151382166065,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 299.7027677792976
+ },
+ {
+  "id": "LIDC-IDRI-0076_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0076_31187685.nii.gz",
+  "box_lps": [
+   -142.10214233398438,
+   -21.25733184814453,
+   -204.12217712402344,
+   6.056060791015625,
+   6.0814361572265625,
+   6.129180908203125
+  ],
+  "box_score": 0.9982109069824219,
+  "box_to_consensus_mm": 2.5455822716190952,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0076/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 138.62221041988184
+ },
+ {
+  "id": "LIDC-IDRI-0137_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0137_64520553.nii.gz",
+  "box_lps": [
+   51.917442321777344,
+   82.0462646484375,
+   -321.0648193359375,
+   4.9666900634765625,
+   4.907890319824219,
+   4.940338134765625
+  ],
+  "box_score": 0.9946568012237549,
+  "box_to_consensus_mm": 2.065867875404625,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n1_r1.nii.gz"
+  ],
+  "consensus_mm3": 48.828125
+ },
+ {
+  "id": "LIDC-IDRI-0137_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0137_64520553.nii.gz",
+  "box_lps": [
+   -116.97657775878906,
+   64.77481079101562,
+   -134.04373168945312,
+   20.24468994140625,
+   20.378562927246094,
+   20.43511962890625
+  ],
+  "box_score": 0.9629877209663391,
+  "box_to_consensus_mm": 4.61542102577873,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n2_r2.nii.gz"
+  ],
+  "consensus_mm3": 3688.04931640625
+ },
+ {
+  "id": "LIDC-IDRI-0137_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0137_64520553.nii.gz",
+  "box_lps": [
+   -118.82792663574219,
+   -10.819969177246094,
+   -124.1339111328125,
+   13.5714111328125,
+   13.615921020507812,
+   13.5284423828125
+  ],
+  "box_score": 0.9979493021965027,
+  "box_to_consensus_mm": 4.318434888005718,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n3_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n3_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n3_r3.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0137/n3_r4.nii.gz"
+  ],
+  "consensus_mm3": 808.7158203125
+ },
+ {
+  "id": "LIDC-IDRI-0153_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0153_84531386.nii.gz",
+  "box_lps": [
+   -85.25978088378906,
+   27.549423217773438,
+   -211.280517578125,
+   14.583587646484375,
+   14.780731201171875,
+   14.684249877929688
+  ],
+  "box_score": 0.9978677034378052,
+  "box_to_consensus_mm": 4.949921907876146,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0153/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0153/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0153/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 1505.4108386863538
+ },
+ {
+  "id": "LIDC-IDRI-0153_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0153_84531386.nii.gz",
+  "box_lps": [
+   -38.8028564453125,
+   -45.48567199707031,
+   -145.7420654296875,
+   18.4071044921875,
+   18.386322021484375,
+   18.170928955078125
+  ],
+  "box_score": 0.9991169571876526,
+  "box_to_consensus_mm": 4.641729948732897,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0153/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0153/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0153/n2_r2.nii.gz"
+  ],
+  "consensus_mm3": 2591.0824622966197
+ },
+ {
+  "id": "LIDC-IDRI-0245_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0245_06038569.nii.gz",
+  "box_lps": [
+   -78.29566955566406,
+   88.6171875,
+   -133.64613342285156,
+   5.5225830078125,
+   5.546577453613281,
+   5.556549072265625
+  ],
+  "box_score": 0.9975939393043518,
+  "box_to_consensus_mm": 2.44879653565094,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0245/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0245/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0245/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 72.9217529296875
+ },
+ {
+  "id": "LIDC-IDRI-0271_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0271_58853083.nii.gz",
+  "box_lps": [
+   92.18441772460938,
+   31.157821655273438,
+   -182.91876220703125,
+   6.336524963378906,
+   6.362884521484375,
+   6.355865478515625
+  ],
+  "box_score": 0.9994162321090698,
+  "box_to_consensus_mm": 2.2449946460847925,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0271/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0271/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0271/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0271/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 137.1917724609375
+ },
+ {
+  "id": "LIDC-IDRI-0277_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0277_73112426.nii.gz",
+  "box_lps": [
+   -103.92195129394531,
+   21.397789001464844,
+   -106.50665283203125,
+   11.8597412109375,
+   11.866500854492188,
+   11.814605712890625
+  ],
+  "box_score": 0.9981288313865662,
+  "box_to_consensus_mm": 4.465998078737011,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0277/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0277/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0277/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0277/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 862.9879025510522
+ },
+ {
+  "id": "LIDC-IDRI-0287_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0287_04657105.nii.gz",
+  "box_lps": [
+   -65.40617370605469,
+   -6.4968109130859375,
+   -84.20215606689453,
+   4.893890380859375,
+   4.943206787109375,
+   4.9411468505859375
+  ],
+  "box_score": 0.9946980476379395,
+  "box_to_consensus_mm": 2.734297338696283,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0287/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0287/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0287/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0287/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 76.2939453125
+ },
+ {
+  "id": "LIDC-IDRI-0518_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0518_86843861.nii.gz",
+  "box_lps": [
+   126.74516296386719,
+   82.94583129882812,
+   1519.0390625,
+   9.321449279785156,
+   9.3812255859375,
+   9.3031005859375
+  ],
+  "box_score": 0.9991735816001892,
+  "box_to_consensus_mm": 4.41254542424904,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 459.16998603702774
+ },
+ {
+  "id": "LIDC-IDRI-0518_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0518_86843861.nii.gz",
+  "box_lps": [
+   -24.882171630859375,
+   72.74622344970703,
+   1634.2340087890625,
+   6.65802001953125,
+   6.7295684814453125,
+   6.816162109375
+  ],
+  "box_score": 0.41750892996788025,
+  "box_to_consensus_mm": 2.159180607914309,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n2_r1.nii.gz"
+  ],
+  "consensus_mm3": 207.66481780569094
+ },
+ {
+  "id": "LIDC-IDRI-0518_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0518_86843861.nii.gz",
+  "box_lps": [
+   100.63949584960938,
+   47.912445068359375,
+   1646.623046875,
+   8.478462219238281,
+   8.416839599609375,
+   8.5723876953125
+  ],
+  "box_score": 0.9393037557601929,
+  "box_to_consensus_mm": 2.0238415375808434,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0518/n3_r1.nii.gz"
+  ],
+  "consensus_mm3": 383.0262195082744
+ },
+ {
+  "id": "LIDC-IDRI-0521_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0521_75616104.nii.gz",
+  "box_lps": [
+   89.47251892089844,
+   -230.859375,
+   -204.89816284179688,
+   15.449348449707031,
+   15.555313110351562,
+   15.475189208984375
+  ],
+  "box_score": 0.9998058676719666,
+  "box_to_consensus_mm": 4.080416237926454,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0521/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0521/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0521/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0521/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 2059.60693359375
+ },
+ {
+  "id": "LIDC-IDRI-0565_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0565_23984374.nii.gz",
+  "box_lps": [
+   115.46361541748047,
+   -181.94155883789062,
+   -233.5672607421875,
+   5.37384033203125,
+   5.3894195556640625,
+   5.5469970703125
+  ],
+  "box_score": 0.954647421836853,
+  "box_to_consensus_mm": 2.050263471040152,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 75.70266523089231
+ },
+ {
+  "id": "LIDC-IDRI-0565_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0565_23984374.nii.gz",
+  "box_lps": [
+   -84.86822509765625,
+   -97.67153930664062,
+   -220.6484832763672,
+   6.35687255859375,
+   6.359375,
+   6.383453369140625
+  ],
+  "box_score": 0.9965301156044006,
+  "box_to_consensus_mm": 2.2664764615352317,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 135.42365669081846
+ },
+ {
+  "id": "LIDC-IDRI-0565_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0565_23984374.nii.gz",
+  "box_lps": [
+   126.25064849853516,
+   -195.71978759765625,
+   -215.84066772460938,
+   3.6729278564453125,
+   3.6229095458984375,
+   3.589935302734375
+  ],
+  "box_score": 0.29563647508621216,
+  "box_to_consensus_mm": 2.3564500989313624,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n3_r1.nii.gz"
+  ],
+  "consensus_mm3": 50.46844348726154
+ },
+ {
+  "id": "LIDC-IDRI-0565_n4",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0565_23984374.nii.gz",
+  "box_lps": [
+   -93.80961608886719,
+   -209.9364471435547,
+   -201.95806884765625,
+   4.789215087890625,
+   4.80633544921875,
+   4.77874755859375
+  ],
+  "box_score": 0.988711953163147,
+  "box_to_consensus_mm": 2.188962034751158,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n4_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n4_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n4_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n4_r3.nii.gz"
+  ],
+  "consensus_mm3": 33.64562899150769
+ },
+ {
+  "id": "LIDC-IDRI-0565_n5",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0565_23984374.nii.gz",
+  "box_lps": [
+   73.98473358154297,
+   -166.55865478515625,
+   -145.368408203125,
+   15.6304931640625,
+   15.704147338867188,
+   15.54669189453125
+  ],
+  "box_score": 0.9990302324295044,
+  "box_to_consensus_mm": 4.256034324129558,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n5_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n5_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n5_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0565/n5_r3.nii.gz"
+  ],
+  "consensus_mm3": 2049.859946307606
+ },
+ {
+  "id": "LIDC-IDRI-0597_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0597_04799673.nii.gz",
+  "box_lps": [
+   62.3687744140625,
+   75.54790496826172,
+   1537.103759765625,
+   12.0411376953125,
+   12.068740844726562,
+   12.1243896484375
+  ],
+  "box_score": 0.9992221593856812,
+  "box_to_consensus_mm": 4.264919072874029,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0597/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0597/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0597/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0597/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 859.8635083071109
+ },
+ {
+  "id": "LIDC-IDRI-0608_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0608_02127157.nii.gz",
+  "box_lps": [
+   -115.93690490722656,
+   124.79447174072266,
+   -450.94134521484375,
+   8.43878173828125,
+   8.499221801757812,
+   8.4656982421875
+  ],
+  "box_score": 0.9964480400085449,
+  "box_to_consensus_mm": 4.633640192341633,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 306.88916015625
+ },
+ {
+  "id": "LIDC-IDRI-0608_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0608_02127157.nii.gz",
+  "box_lps": [
+   -106.37077331542969,
+   137.88107299804688,
+   -447.3766174316406,
+   7.25262451171875,
+   7.333465576171875,
+   7.22503662109375
+  ],
+  "box_score": 0.9954261183738708,
+  "box_to_consensus_mm": 2.222091837971641,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 202.76605224609375
+ },
+ {
+  "id": "LIDC-IDRI-0608_n6",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0608_02127157.nii.gz",
+  "box_lps": [
+   -92.3018798828125,
+   204.98951721191406,
+   -395.5150146484375,
+   11.703887939453125,
+   11.662933349609375,
+   11.58355712890625
+  ],
+  "box_score": 0.9980429410934448,
+  "box_to_consensus_mm": 4.092405912230664,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n6_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n6_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n6_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n6_r3.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0608/n6_r4.nii.gz"
+  ],
+  "consensus_mm3": 660.8163909912109
+ },
+ {
+  "id": "LIDC-IDRI-0615_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0615_17992331.nii.gz",
+  "box_lps": [
+   -116.77442932128906,
+   -40.197715759277344,
+   -109.25656127929688,
+   5.76123046875,
+   5.7625885009765625,
+   5.799072265625
+  ],
+  "box_score": 0.997285008430481,
+  "box_to_consensus_mm": 1.791253321606099,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n1_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n1_r3.nii.gz"
+  ],
+  "consensus_mm3": 92.6971435546875
+ },
+ {
+  "id": "LIDC-IDRI-0615_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0615_17992331.nii.gz",
+  "box_lps": [
+   95.74210357666016,
+   -0.03993988037109375,
+   -73.77720642089844,
+   5.275177001953125,
+   5.2879486083984375,
+   5.2939453125
+  ],
+  "box_score": 0.9991864562034607,
+  "box_to_consensus_mm": 2.0468969223195894,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 70.4498291015625
+ },
+ {
+  "id": "LIDC-IDRI-0615_n3",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0615_17992331.nii.gz",
+  "box_lps": [
+   -69.50325775146484,
+   -3.45001220703125,
+   -67.06444549560547,
+   4.7225799560546875,
+   4.752685546875,
+   4.8164825439453125
+  ],
+  "box_score": 0.9931495785713196,
+  "box_to_consensus_mm": 2.2327940515742366,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n3_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0615/n3_r1.nii.gz"
+  ],
+  "consensus_mm3": 50.6744384765625
+ },
+ {
+  "id": "LIDC-IDRI-0634_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0634_14342301.nii.gz",
+  "box_lps": [
+   75.17205810546875,
+   -69.73099517822266,
+   -219.31097412109375,
+   7.143280029296875,
+   7.14666748046875,
+   7.1289825439453125
+  ],
+  "box_score": 0.9848692417144775,
+  "box_to_consensus_mm": 2.4283776173620466,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0634/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0634/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0634/n2_r2.nii.gz"
+  ],
+  "consensus_mm3": 147.81005467812065
+ },
+ {
+  "id": "LIDC-IDRI-0650_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0650_29698533.nii.gz",
+  "box_lps": [
+   -50.25,
+   9.140625,
+   -43.5,
+   5.625,
+   5.625,
+   5.78125
+  ],
+  "box_score": 0.99365234375,
+  "box_to_consensus_mm": 2.7068498450776453,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0650/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0650/n1_r1.nii.gz"
+  ],
+  "consensus_mm3": 201.27329207038795
+ },
+ {
+  "id": "LIDC-IDRI-0794_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0794_93323227.nii.gz",
+  "box_lps": [
+   -61.91557312011719,
+   146.35557556152344,
+   -646.9481201171875,
+   7.671600341796875,
+   7.73907470703125,
+   8.18536376953125
+  ],
+  "box_score": 0.994401752948761,
+  "box_to_consensus_mm": 2.6780031009625898,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0794/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0794/n1_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0794/n1_r2.nii.gz"
+  ],
+  "consensus_mm3": 174.9898567199707
+ },
+ {
+  "id": "LIDC-IDRI-0794_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0794_93323227.nii.gz",
+  "box_lps": [
+   92.79949188232422,
+   181.2120819091797,
+   -518.0894775390625,
+   5.9310302734375,
+   5.903594970703125,
+   6.339111328125
+  ],
+  "box_score": 0.9968273043632507,
+  "box_to_consensus_mm": 2.240689719452195,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0794/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0794/n2_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0794/n2_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0794/n2_r3.nii.gz"
+  ],
+  "consensus_mm3": 92.69567584991455
+ },
+ {
+  "id": "LIDC-IDRI-0932_n1",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0932_70299550.nii.gz",
+  "box_lps": [
+   -22.21521759033203,
+   -175.61553955078125,
+   1057.8067626953125,
+   5.3051910400390625,
+   5.3572540283203125,
+   5.417236328125
+  ],
+  "box_score": 0.9958499670028687,
+  "box_to_consensus_mm": 1.7506193144739977,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0932/n1_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0932/n1_r1.nii.gz"
+  ],
+  "consensus_mm3": 133.6816370836459
+ },
+ {
+  "id": "LIDC-IDRI-0998_n2",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0998_76451584.nii.gz",
+  "box_lps": [
+   101.23724365234375,
+   -78.14627075195312,
+   -242.73980712890625,
+   8.855659484863281,
+   8.827796936035156,
+   8.7640380859375
+  ],
+  "box_score": 0.7719295024871826,
+  "box_to_consensus_mm": 4.207215564158695,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n2_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n2_r1.nii.gz"
+  ],
+  "consensus_mm3": 312.32757568359375
+ },
+ {
+  "id": "LIDC-IDRI-0998_n4",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0998_76451584.nii.gz",
+  "box_lps": [
+   82.95198059082031,
+   -90.00914001464844,
+   -236.47076416015625,
+   6.4332275390625,
+   6.483283996582031,
+   6.54962158203125
+  ],
+  "box_score": 0.9102267622947693,
+  "box_to_consensus_mm": 1.803058193010942,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n4_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n4_r1.nii.gz"
+  ],
+  "consensus_mm3": 117.32940673828125
+ },
+ {
+  "id": "LIDC-IDRI-0998_n6",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0998_76451584.nii.gz",
+  "box_lps": [
+   44.38859558105469,
+   -131.00613403320312,
+   -192.2470703125,
+   9.935943603515625,
+   10.103805541992188,
+   9.83782958984375
+  ],
+  "box_score": 0.9260365962982178,
+  "box_to_consensus_mm": 1.9024397810545766,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n6_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n6_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n6_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n6_r3.nii.gz"
+  ],
+  "consensus_mm3": 499.0631103515625
+ },
+ {
+  "id": "LIDC-IDRI-0998_n7",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0998_76451584.nii.gz",
+  "box_lps": [
+   -81.47575378417969,
+   -129.18179321289062,
+   -181.59512329101562,
+   7.556304931640625,
+   7.612335205078125,
+   7.4984130859375
+  ],
+  "box_score": 0.9837537407875061,
+  "box_to_consensus_mm": 1.9918513239790563,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n7_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n7_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n7_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n7_r3.nii.gz"
+  ],
+  "consensus_mm3": 282.58209228515625
+ },
+ {
+  "id": "LIDC-IDRI-0998_n8",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0998_76451584.nii.gz",
+  "box_lps": [
+   108.0460433959961,
+   -155.93978881835938,
+   -152.11923217773438,
+   8.813507080078125,
+   8.84344482421875,
+   8.737686157226562
+  ],
+  "box_score": 0.9983320832252502,
+  "box_to_consensus_mm": 2.226089980870445,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n8_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n8_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n8_r2.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n8_r3.nii.gz"
+  ],
+  "consensus_mm3": 297.454833984375
+ },
+ {
+  "id": "LIDC-IDRI-0998_n9",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0998_76451584.nii.gz",
+  "box_lps": [
+   -113.77432250976562,
+   -152.82870483398438,
+   -136.36917114257812,
+   5.944091796875,
+   5.9861297607421875,
+   6.0777740478515625
+  ],
+  "box_score": 0.8087478876113892,
+  "box_to_consensus_mm": 2.0536223773008393,
+  "seed_source": "detector",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n9_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n9_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n9_r2.nii.gz"
+  ],
+  "consensus_mm3": 100.80413818359375
+ },
+ {
+  "id": "LIDC-IDRI-0998_n10",
+  "kind": "lidc",
+  "image": "/home/ty/spark-md-b/cohort2/lidc_vols/LIDC-IDRI-0998_76451584.nii.gz",
+  "box_lps": [
+   84.609375,
+   -117.890625,
+   -131.0,
+   5.9375,
+   5.9375,
+   6.0
+  ],
+  "box_score": null,
+  "box_to_consensus_mm": null,
+  "seed_source": "reference",
+  "readers": [
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n10_r0.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n10_r1.nii.gz",
+   "/home/ty/spark-md-b/cohort2/lidc_masks/LIDC-IDRI-0998/n10_r2.nii.gz"
+  ],
+  "consensus_mm3": 132.2021484375
+ }
+]

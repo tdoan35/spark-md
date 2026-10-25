@@ -1,0 +1,4174 @@
+{
+  "metrics_definition": {
+    "dice": "full annotation mask, no truncation to model crop",
+    "surface": "6-neighbor voxel boundary centers in physical mm",
+    "assd": "mean pooled bidirectional nearest-boundary distances",
+    "hd95_pooled": "95th percentile of pooled bidirectional nearest-boundary distances",
+    "aggregation": "each matched nodule group contributes one median across its separate reader annotations"
+  },
+  "scores": {
+    "LIDC-IDRI-0052-n1-c0": {
+      "case": "LIDC-IDRI-0052",
+      "group": "1",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.7827750868995385,
+        "min": 0.6860643185298622,
+        "max": 0.8583941605839416,
+        "p25": 0.7560037002775208,
+        "p75": 0.8426244831194692
+      },
+      "reference_equivalent_diameter_mm": 7.665153023978027,
+      "reader_volume_range_mm3": [
+        156.30170900885997,
+        293.32391206067996
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.5750286368843069,
+              "iou": 0.40353697749196143,
+              "prediction_volume_mm3": 369.06482832047993,
+              "reference_volume_mm3": 232.04262526865998,
+              "relative_volume_error": 0.5905044510385757,
+              "assd_mm": 0.9625797122542123,
+              "hd95_pooled_mm": 2.9535502967567653,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5882352941176471,
+              "iou": 0.4166666666666667,
+              "prediction_volume_mm3": 369.06482832047993,
+              "reference_volume_mm3": 239.61671689463998,
+              "relative_volume_error": 0.5402298850574712,
+              "assd_mm": 0.9365884281368139,
+              "hd95_pooled_mm": 2.6616533074341273,
+              "boundary_status": "ok",
+              "annotation": "IL057_159650",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.4692005242463958,
+              "iou": 0.3065068493150685,
+              "prediction_volume_mm3": 369.06482832047993,
+              "reference_volume_mm3": 156.30170900885997,
+              "relative_volume_error": 1.3612334801762116,
+              "assd_mm": 1.207189952666551,
+              "hd95_pooled_mm": 3.30557581441539,
+              "boundary_status": "ok",
+              "annotation": "MI014_13738",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.6008316008316008,
+              "iou": 0.4294205052005943,
+              "prediction_volume_mm3": 369.06482832047993,
+              "reference_volume_mm3": 293.32391206067996,
+              "relative_volume_error": 0.2582159624413145,
+              "assd_mm": 0.887935305797136,
+              "hd95_pooled_mm": 2.65912208697532,
+              "boundary_status": "ok",
+              "annotation": "2",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.581631965500977,
+          "median_signed_relative_volume_error": 0.5653671680480234,
+          "median_absolute_relative_volume_error": 0.5653671680480234,
+          "median_hd95_pooled_mm": 2.807601802095446,
+          "technical_pass": true
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.5303210463733651,
+              "iou": 0.36084142394822005,
+              "prediction_volume_mm3": 347.03110722671994,
+              "reference_volume_mm3": 232.04262526865998,
+              "relative_volume_error": 0.49554896142433225,
+              "assd_mm": 1.1402293070784832,
+              "hd95_pooled_mm": 2.65912208697532,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5892018779342723,
+              "iou": 0.4176372712146423,
+              "prediction_volume_mm3": 347.03110722671994,
+              "reference_volume_mm3": 239.61671689463998,
+              "relative_volume_error": 0.4482758620689655,
+              "assd_mm": 1.0183394207502776,
+              "hd95_pooled_mm": 2.5133615377519223,
+              "boundary_status": "ok",
+              "annotation": "IL057_159650",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5389876880984952,
+              "iou": 0.36891385767790263,
+              "prediction_volume_mm3": 347.03110722671994,
+              "reference_volume_mm3": 156.30170900885997,
+              "relative_volume_error": 1.2202643171806167,
+              "assd_mm": 1.0998932628255376,
+              "hd95_pooled_mm": 2.9074683333401796,
+              "boundary_status": "ok",
+              "annotation": "MI014_13738",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5935483870967742,
+              "iou": 0.42201834862385323,
+              "prediction_volume_mm3": 347.03110722671994,
+              "reference_volume_mm3": 293.32391206067996,
+              "relative_volume_error": 0.18309859154929575,
+              "assd_mm": 1.0054648863313393,
+              "hd95_pooled_mm": 2.4432036793423357,
+              "boundary_status": "ok",
+              "annotation": "2",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.5640947830163837,
+          "median_signed_relative_volume_error": 0.4719124117466489,
+          "median_absolute_relative_volume_error": 0.4719124117466489,
+          "median_hd95_pooled_mm": 2.586241812363621,
+          "technical_pass": true
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.4280155642023346,
+              "iou": 0.2722772277227723,
+              "prediction_volume_mm3": 652.74898740264,
+              "reference_volume_mm3": 232.04262526865998,
+              "relative_volume_error": 1.8130563798219583,
+              "assd_mm": 1.7181736275390274,
+              "hd95_pooled_mm": 4.18771391011563,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.46141975308641975,
+              "iou": 0.29989969909729186,
+              "prediction_volume_mm3": 652.74898740264,
+              "reference_volume_mm3": 239.61671689463998,
+              "relative_volume_error": 1.7241379310344827,
+              "assd_mm": 1.6552599399516512,
+              "hd95_pooled_mm": 3.951497369965969,
+              "boundary_status": "ok",
+              "annotation": "IL057_159650",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.3727659574468085,
+              "iou": 0.2290794979079498,
+              "prediction_volume_mm3": 652.74898740264,
+              "reference_volume_mm3": 156.30170900885997,
+              "relative_volume_error": 3.176211453744493,
+              "assd_mm": 1.9843400271748417,
+              "hd95_pooled_mm": 4.625240424495135,
+              "boundary_status": "ok",
+              "annotation": "MI014_13738",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5021834061135371,
+              "iou": 0.33527696793002915,
+              "prediction_volume_mm3": 652.74898740264,
+              "reference_volume_mm3": 293.32391206067996,
+              "relative_volume_error": 1.2253521126760565,
+              "assd_mm": 1.4768012013374119,
+              "hd95_pooled_mm": 3.915810986705033,
+              "boundary_status": "ok",
+              "annotation": "2",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.4447176586443772,
+          "median_signed_relative_volume_error": 1.7685971554282205,
+          "median_absolute_relative_volume_error": 1.7685971554282205,
+          "median_hd95_pooled_mm": 4.0696056400408,
+          "technical_pass": true
+        }
+      }
+    },
+    "LIDC-IDRI-0052-n2-c1": {
+      "case": "LIDC-IDRI-0052",
+      "group": "2",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.3562800294943152,
+        "min": 0.09152630215081628,
+        "max": 0.6339144215530903,
+        "p25": 0.1580069287364963,
+        "p75": 0.5675756308908483
+      },
+      "reference_equivalent_diameter_mm": 14.210838368353357,
+      "reader_volume_range_mm3": [
+        617.6327444094599,
+        12668.012521343639
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.08582413493736822,
+              "iou": 0.04483607619541272,
+              "prediction_volume_mm3": 37056.587556999235,
+              "reference_volume_mm3": 1806.0765759041396,
+              "relative_volume_error": 19.51772779260389,
+              "assd_mm": 13.269522115378441,
+              "hd95_pooled_mm": 28.341732170459867,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.06272027619938143,
+              "iou": 0.03237543625157793,
+              "prediction_volume_mm3": 37056.587556999235,
+              "reference_volume_mm3": 1235.2654888189197,
+              "relative_volume_error": 28.998885172798218,
+              "assd_mm": 14.634969694387205,
+              "hd95_pooled_mm": 29.018271612769635,
+              "boundary_status": "ok",
+              "annotation": "IL057_159648",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.14957904065581035,
+              "iou": 0.08083514180947392,
+              "prediction_volume_mm3": 37056.587556999235,
+              "reference_volume_mm3": 12668.012521343639,
+              "relative_volume_error": 1.925209261876291,
+              "assd_mm": 8.475102320277495,
+              "hd95_pooled_mm": 23.853363769824323,
+              "boundary_status": "ok",
+              "annotation": "MI014_13717",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03216668189710317,
+              "iou": 0.01634624315036686,
+              "prediction_volume_mm3": 37056.587556999235,
+              "reference_volume_mm3": 617.6327444094599,
+              "relative_volume_error": 58.997770345596436,
+              "assd_mm": 16.416542555451443,
+              "hd95_pooled_mm": 31.74429989178548,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.07427220556837483,
+          "median_signed_relative_volume_error": 24.25830648270105,
+          "median_absolute_relative_volume_error": 24.25830648270105,
+          "median_hd95_pooled_mm": 28.68000189161475,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.39596469104665827,
+              "iou": 0.2468553459119497,
+              "prediction_volume_mm3": 6384.270686916959,
+              "reference_volume_mm3": 1806.0765759041396,
+              "relative_volume_error": 2.5348837209302326,
+              "assd_mm": 5.798974467274963,
+              "hd95_pooled_mm": 16.800746925441842,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.3126694379179469,
+              "iou": 0.18530419880034277,
+              "prediction_volume_mm3": 6384.270686916959,
+              "reference_volume_mm3": 1235.2654888189197,
+              "relative_volume_error": 4.168338907469343,
+              "assd_mm": 6.579109805257657,
+              "hd95_pooled_mm": 17.09959208304437,
+              "boundary_status": "ok",
+              "annotation": "IL057_159648",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.223491145645103,
+              "iou": 0.12580356416307267,
+              "prediction_volume_mm3": 6384.270686916959,
+              "reference_volume_mm3": 12668.012521343639,
+              "relative_volume_error": -0.49603217741058814,
+              "assd_mm": 8.896348141828428,
+              "hd95_pooled_mm": 23.28815732683523,
+              "boundary_status": "ok",
+              "annotation": "MI014_13717",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.1764185268954666,
+              "iou": 0.09674288179465056,
+              "prediction_volume_mm3": 6384.270686916959,
+              "reference_volume_mm3": 617.6327444094599,
+              "relative_volume_error": 9.336677814938685,
+              "assd_mm": 7.989787099456314,
+              "hd95_pooled_mm": 18.92892000662605,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.2680802917815249,
+          "median_signed_relative_volume_error": 3.3516113141997876,
+          "median_absolute_relative_volume_error": 3.3516113141997876,
+          "median_hd95_pooled_mm": 18.01425604483521,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.6472344161545215,
+              "iou": 0.4784527518172378,
+              "prediction_volume_mm3": 2115.23722500096,
+              "reference_volume_mm3": 1806.0765759041396,
+              "relative_volume_error": 0.17117804041174223,
+              "assd_mm": 1.4446857104645594,
+              "hd95_pooled_mm": 3.75,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5129469790382244,
+              "iou": 0.3449419568822554,
+              "prediction_volume_mm3": 2115.23722500096,
+              "reference_volume_mm3": 1235.2654888189197,
+              "relative_volume_error": 0.7123745819397993,
+              "assd_mm": 1.9672380409360481,
+              "hd95_pooled_mm": 7.5,
+              "boundary_status": "ok",
+              "annotation": "IL057_159648",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.20540288775034932,
+              "iou": 0.11445626784323903,
+              "prediction_volume_mm3": 2115.23722500096,
+              "reference_volume_mm3": 12668.012521343639,
+              "relative_volume_error": -0.8330253288400913,
+              "assd_mm": 13.917948511524338,
+              "hd95_pooled_mm": 33.68127854622654,
+              "boundary_status": "ok",
+              "annotation": "MI014_13717",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.3769211388259007,
+              "iou": 0.2322260167649798,
+              "prediction_volume_mm3": 2115.23722500096,
+              "reference_volume_mm3": 617.6327444094599,
+              "relative_volume_error": 2.4247491638795986,
+              "assd_mm": 2.6719976962686074,
+              "hd95_pooled_mm": 7.5,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.44493405893206256,
+          "median_signed_relative_volume_error": 0.44177631117577076,
+          "median_absolute_relative_volume_error": 0.7726999553899453,
+          "median_hd95_pooled_mm": 7.5,
+          "technical_pass": true
+        }
+      }
+    },
+    "LIDC-IDRI-0080-n2-c0": {
+      "case": "LIDC-IDRI-0080",
+      "group": "2",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.7882105353257397,
+        "min": 0.7355101536942164,
+        "max": 0.8544196370283327,
+        "p25": 0.7756070405073758,
+        "p75": 0.8252024687730369
+      },
+      "reference_equivalent_diameter_mm": 22.346427986592943,
+      "reader_volume_range_mm3": [
+        4581.451416015625,
+        7778.9306640625
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.40852493195112066,
+              "iou": 0.2566957787481805,
+              "prediction_volume_mm3": 20407.867431640625,
+              "reference_volume_mm3": 5939.483642578125,
+              "relative_volume_error": 2.435966602440591,
+              "assd_mm": 8.290291230725161,
+              "hd95_pooled_mm": 22.781871440155587,
+              "boundary_status": "ok",
+              "annotation": "Nodule 004",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.3407217439091409,
+              "iou": 0.2053433429013027,
+              "prediction_volume_mm3": 20407.867431640625,
+              "reference_volume_mm3": 4581.451416015625,
+              "relative_volume_error": 3.4544546211490426,
+              "assd_mm": 9.3013047136361,
+              "hd95_pooled_mm": 23.60652592716887,
+              "boundary_status": "ok",
+              "annotation": "IL057_201470",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.3941426987923692,
+              "iou": 0.24544067427159777,
+              "prediction_volume_mm3": 20407.867431640625,
+              "reference_volume_mm3": 5747.222900390625,
+              "relative_volume_error": 2.5509093322713396,
+              "assd_mm": 8.229973728155015,
+              "hd95_pooled_mm": 22.378824067176428,
+              "boundary_status": "ok",
+              "annotation": "MI014_20607",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.4066044119637299,
+              "iou": 0.2551810831011755,
+              "prediction_volume_mm3": 20407.867431640625,
+              "reference_volume_mm3": 7778.9306640625,
+              "relative_volume_error": 1.6234797959984308,
+              "assd_mm": 7.685919199446836,
+              "hd95_pooled_mm": 21.717484497196615,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.40037355537804953,
+          "median_signed_relative_volume_error": 2.4934379673559652,
+          "median_absolute_relative_volume_error": 2.4934379673559652,
+          "median_hd95_pooled_mm": 22.580347753666008,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.32008545971011676,
+              "iou": 0.19053675174148046,
+              "prediction_volume_mm3": 25485.2294921875,
+              "reference_volume_mm3": 5939.483642578125,
+              "relative_volume_error": 3.290815671162492,
+              "assd_mm": 15.353872757103224,
+              "hd95_pooled_mm": 34.743760680876214,
+              "boundary_status": "ok",
+              "annotation": "Nodule 004",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.27790606206704055,
+              "iou": 0.16137683081366222,
+              "prediction_volume_mm3": 25485.2294921875,
+              "reference_volume_mm3": 4581.451416015625,
+              "relative_volume_error": 4.562697751873439,
+              "assd_mm": 17.001288297862153,
+              "hd95_pooled_mm": 36.241445644448746,
+              "boundary_status": "ok",
+              "annotation": "IL057_201470",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.3091091188900017,
+              "iou": 0.18280843686795722,
+              "prediction_volume_mm3": 25485.2294921875,
+              "reference_volume_mm3": 5747.222900390625,
+              "relative_volume_error": 3.434355502455861,
+              "assd_mm": 15.714950266542807,
+              "hd95_pooled_mm": 35.29175258519072,
+              "boundary_status": "ok",
+              "annotation": "MI014_20607",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.30793577981651377,
+              "iou": 0.1819882343373004,
+              "prediction_volume_mm3": 25485.2294921875,
+              "reference_volume_mm3": 7778.9306640625,
+              "relative_volume_error": 2.2761867398979994,
+              "assd_mm": 14.874643610458307,
+              "hd95_pooled_mm": 34.573503263494075,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.30852244935325773,
+          "median_signed_relative_volume_error": 3.3625855868091765,
+          "median_absolute_relative_volume_error": 3.3625855868091765,
+          "median_hd95_pooled_mm": 35.01775663303347,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.6815661233406151,
+              "iou": 0.5169513127708386,
+              "prediction_volume_mm3": 3141.021728515625,
+              "reference_volume_mm3": 5939.483642578125,
+              "relative_volume_error": -0.47116249197174054,
+              "assd_mm": 1.887047832132132,
+              "hd95_pooled_mm": 4.851304592581258,
+              "boundary_status": "ok",
+              "annotation": "Nodule 004",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.7508397549891326,
+              "iou": 0.6010756089844985,
+              "prediction_volume_mm3": 3141.021728515625,
+              "reference_volume_mm3": 4581.451416015625,
+              "relative_volume_error": -0.31440466278101586,
+              "assd_mm": 1.3560637191361649,
+              "hd95_pooled_mm": 3.4552100605462472,
+              "boundary_status": "ok",
+              "annotation": "IL057_201470",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.6832618025751073,
+              "iou": 0.5189048239895697,
+              "prediction_volume_mm3": 3141.021728515625,
+              "reference_volume_mm3": 5747.222900390625,
+              "relative_volume_error": -0.45347139253949287,
+              "assd_mm": 1.9061701278640877,
+              "hd95_pooled_mm": 4.851304592581258,
+              "boundary_status": "ok",
+              "annotation": "MI014_20607",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5664780269684901,
+              "iou": 0.3951652207817526,
+              "prediction_volume_mm3": 3141.021728515625,
+              "reference_volume_mm3": 7778.9306640625,
+              "relative_volume_error": -0.596214201647705,
+              "assd_mm": 3.876601366252195,
+              "hd95_pooled_mm": 12.617802117136671,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.6824139629578612,
+          "median_signed_relative_volume_error": -0.4623169422556167,
+          "median_absolute_relative_volume_error": 0.4623169422556167,
+          "median_hd95_pooled_mm": 4.851304592581258,
+          "technical_pass": true
+        }
+      }
+    },
+    "LIDC-IDRI-0080-n1-c3": {
+      "case": "LIDC-IDRI-0080",
+      "group": "1",
+      "reader_count": 3,
+      "reader_pairwise_dice": {
+        "n": 3,
+        "median": 0.78415991902834,
+        "min": 0.7744200893807193,
+        "max": 0.8244399185336049,
+        "p25": 0.7792900042045297,
+        "p75": 0.8042999187809725
+      },
+      "reference_equivalent_diameter_mm": 18.237527261910014,
+      "reader_volume_range_mm3": [
+        2854.156494140625,
+        4315.948486328125
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.1248804808086327,
+              "iou": 0.06659867786053796,
+              "prediction_volume_mm3": 41829.681396484375,
+              "reference_volume_mm3": 2854.156494140625,
+              "relative_volume_error": 13.655707030205827,
+              "assd_mm": 13.781819047194334,
+              "hd95_pooled_mm": 27.314715398761134,
+              "boundary_status": "ok",
+              "annotation": "IL057_203646",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.16612657892996496,
+              "iou": 0.09058781103498016,
+              "prediction_volume_mm3": 41829.681396484375,
+              "reference_volume_mm3": 4315.948486328125,
+              "relative_volume_error": 8.691886158741383,
+              "assd_mm": 12.165727652688284,
+              "hd95_pooled_mm": 26.289381726104235,
+              "boundary_status": "ok",
+              "annotation": "MI014_20609",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.13446346838447196,
+              "iou": 0.07207763884850248,
+              "prediction_volume_mm3": 41829.681396484375,
+              "reference_volume_mm3": 3176.116943359375,
+              "relative_volume_error": 12.170069661301946,
+              "assd_mm": 13.408273436464059,
+              "hd95_pooled_mm": 27.06735305792755,
+              "boundary_status": "ok",
+              "annotation": "3",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.13446346838447196,
+          "median_signed_relative_volume_error": 12.170069661301946,
+          "median_absolute_relative_volume_error": 12.170069661301946,
+          "median_hd95_pooled_mm": 27.06735305792755,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.077146470560682,
+              "iou": 0.040120825314852254,
+              "prediction_volume_mm3": 62297.821044921875,
+              "reference_volume_mm3": 2854.156494140625,
+              "relative_volume_error": 20.827051590483826,
+              "assd_mm": 18.669081544146493,
+              "hd95_pooled_mm": 33.57775782139868,
+              "boundary_status": "ok",
+              "annotation": "IL057_203646",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.10014660069635331,
+              "iou": 0.052712804436942366,
+              "prediction_volume_mm3": 62297.821044921875,
+              "reference_volume_mm3": 4315.948486328125,
+              "relative_volume_error": 13.434329149726004,
+              "assd_mm": 16.88779502709897,
+              "hd95_pooled_mm": 31.84266122448226,
+              "boundary_status": "ok",
+              "annotation": "MI014_20609",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0863222167843576,
+              "iou": 0.04510802055678691,
+              "prediction_volume_mm3": 62297.821044921875,
+              "reference_volume_mm3": 3176.116943359375,
+              "relative_volume_error": 18.614460725438384,
+              "assd_mm": 18.312132633068604,
+              "hd95_pooled_mm": 33.16790388829343,
+              "boundary_status": "ok",
+              "annotation": "3",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.0863222167843576,
+          "median_signed_relative_volume_error": 18.614460725438384,
+          "median_absolute_relative_volume_error": 18.614460725438384,
+          "median_hd95_pooled_mm": 33.16790388829343,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.016948389565373968,
+              "iou": 0.008546620509619204,
+              "prediction_volume_mm3": 200525.66528320312,
+              "reference_volume_mm3": 2854.156494140625,
+              "relative_volume_error": 69.25741780272655,
+              "assd_mm": 35.714373432588765,
+              "hd95_pooled_mm": 60.64452810487109,
+              "boundary_status": "ok",
+              "annotation": "IL057_203646",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.02254832582219077,
+              "iou": 0.011402719022990022,
+              "prediction_volume_mm3": 200525.66528320312,
+              "reference_volume_mm3": 4315.948486328125,
+              "relative_volume_error": 45.46155205939544,
+              "assd_mm": 33.810590098549724,
+              "hd95_pooled_mm": 59.75413492491545,
+              "boundary_status": "ok",
+              "annotation": "MI014_20609",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.021423541925721733,
+              "iou": 0.010827755398733985,
+              "prediction_volume_mm3": 200525.66528320312,
+              "reference_volume_mm3": 3176.116943359375,
+              "relative_volume_error": 62.13547922171511,
+              "assd_mm": 35.62530738438373,
+              "hd95_pooled_mm": 60.730618371728276,
+              "boundary_status": "ok",
+              "annotation": "3",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.021423541925721733,
+          "median_signed_relative_volume_error": 62.13547922171511,
+          "median_absolute_relative_volume_error": 62.13547922171511,
+          "median_hd95_pooled_mm": 60.64452810487109,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0206-n2-c0": {
+      "case": "LIDC-IDRI-0206",
+      "group": "2",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.7418169012619558,
+        "min": 0.6108647450110865,
+        "max": 0.7838884585592564,
+        "p25": 0.6775971948664551,
+        "p75": 0.7778227995636733
+      },
+      "reference_equivalent_diameter_mm": 10.051410818617448,
+      "reader_volume_range_mm3": [
+        395.80331994629995,
+        879.2488035949949
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.5418848167539267,
+              "iou": 0.37163375224416517,
+              "prediction_volume_mm3": 684.17431019289,
+              "reference_volume_mm3": 395.80331994629995,
+              "relative_volume_error": 0.7285714285714286,
+              "assd_mm": 1.4114867024775533,
+              "hd95_pooled_mm": 4.808751428893142,
+              "boundary_status": "ok",
+              "annotation": "09876",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.6073478760045924,
+              "iou": 0.4361088211046991,
+              "prediction_volume_mm3": 684.17431019289,
+              "reference_volume_mm3": 547.0567314972075,
+              "relative_volume_error": 0.2506459948320414,
+              "assd_mm": 1.2818520055752538,
+              "hd95_pooled_mm": 3.587640768552505,
+              "boundary_status": "ok",
+              "annotation": "IL057_123244",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.596745027124774,
+              "iou": 0.4252577319587629,
+              "prediction_volume_mm3": 684.17431019289,
+              "reference_volume_mm3": 879.2488035949949,
+              "relative_volume_error": -0.22186495176848875,
+              "assd_mm": 1.2829080373776662,
+              "hd95_pooled_mm": 3.687903616516707,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.6403766921718658,
+              "iou": 0.470995670995671,
+              "prediction_volume_mm3": 684.17431019289,
+              "reference_volume_mm3": 516.6646908584737,
+              "relative_volume_error": 0.32421340629274975,
+              "assd_mm": 1.1750476067495348,
+              "hd95_pooled_mm": 4.19030622797189,
+              "boundary_status": "ok",
+              "annotation": "8066",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.6020464515646832,
+          "median_signed_relative_volume_error": 0.2874297005623956,
+          "median_absolute_relative_volume_error": 0.2874297005623956,
+          "median_hd95_pooled_mm": 3.939104922244298,
+          "technical_pass": true
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.4330708661417323,
+              "iou": 0.27638190954773867,
+              "prediction_volume_mm3": 1399.447452667275,
+              "reference_volume_mm3": 395.80331994629995,
+              "relative_volume_error": 2.5357142857142856,
+              "assd_mm": 2.029228713108158,
+              "hd95_pooled_mm": 3.982758634609058,
+              "boundary_status": "ok",
+              "annotation": "09876",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5446623093681917,
+              "iou": 0.37425149700598803,
+              "prediction_volume_mm3": 1399.447452667275,
+              "reference_volume_mm3": 547.0567314972075,
+              "relative_volume_error": 1.558139534883721,
+              "assd_mm": 1.655395684324223,
+              "hd95_pooled_mm": 3.450265662538168,
+              "boundary_status": "ok",
+              "annotation": "IL057_123244",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.68424317617866,
+              "iou": 0.5200377180575201,
+              "prediction_volume_mm3": 1399.447452667275,
+              "reference_volume_mm3": 879.2488035949949,
+              "relative_volume_error": 0.5916398713826367,
+              "assd_mm": 1.0423624724126992,
+              "hd95_pooled_mm": 2.579030792348359,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5237919586868315,
+              "iou": 0.3548225887056472,
+              "prediction_volume_mm3": 1399.447452667275,
+              "reference_volume_mm3": 516.6646908584737,
+              "relative_volume_error": 1.7086183310533514,
+              "assd_mm": 1.7610194715429774,
+              "hd95_pooled_mm": 3.75,
+              "boundary_status": "ok",
+              "annotation": "8066",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.5342271340275115,
+          "median_signed_relative_volume_error": 1.6333789329685362,
+          "median_absolute_relative_volume_error": 1.6333789329685362,
+          "median_hd95_pooled_mm": 3.600132831269084,
+          "technical_pass": true
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.684,
+              "iou": 0.5197568389057751,
+              "prediction_volume_mm3": 310.98832281495,
+              "reference_volume_mm3": 395.80331994629995,
+              "relative_volume_error": -0.2142857142857143,
+              "assd_mm": 0.6200150045714972,
+              "hd95_pooled_mm": 1.5039060000000006,
+              "boundary_status": "ok",
+              "annotation": "09876",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.6507413509060955,
+              "iou": 0.4822954822954823,
+              "prediction_volume_mm3": 310.98832281495,
+              "reference_volume_mm3": 547.0567314972075,
+              "relative_volume_error": -0.4315245478036176,
+              "assd_mm": 0.9609780041248858,
+              "hd95_pooled_mm": 2.4669751749200888,
+              "boundary_status": "ok",
+              "annotation": "IL057_123244",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.501187648456057,
+              "iou": 0.33438985736925514,
+              "prediction_volume_mm3": 310.98832281495,
+              "reference_volume_mm3": 879.2488035949949,
+              "relative_volume_error": -0.6463022508038585,
+              "assd_mm": 1.6454635655539545,
+              "hd95_pooled_mm": 3.982758634609055,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.695132365499573,
+              "iou": 0.5327225130890052,
+              "prediction_volume_mm3": 310.98832281495,
+              "reference_volume_mm3": 516.6646908584737,
+              "relative_volume_error": -0.39808481532147744,
+              "assd_mm": 0.7042453217138103,
+              "hd95_pooled_mm": 1.6814180238848937,
+              "boundary_status": "ok",
+              "annotation": "8066",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.6673706754530477,
+          "median_signed_relative_volume_error": -0.4148046815625475,
+          "median_absolute_relative_volume_error": 0.4148046815625475,
+          "median_hd95_pooled_mm": 2.0741965994024913,
+          "technical_pass": true
+        }
+      }
+    },
+    "LIDC-IDRI-0206-n1-c1": {
+      "case": "LIDC-IDRI-0206",
+      "group": "1",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.7750481695568401,
+        "min": 0.6666666666666666,
+        "max": 0.95,
+        "p25": 0.7037809153795129,
+        "p75": 0.834546925566343
+      },
+      "reference_equivalent_diameter_mm": 5.1283402127832645,
+      "reader_volume_range_mm3": [
+        55.1297481353775,
+        78.45387234649874
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.033551121313791274,
+              "iou": 0.017061781609195404,
+              "prediction_volume_mm3": 3935.4158668946397,
+              "reference_volume_mm3": 67.14520606231875,
+              "relative_volume_error": 57.61052631578947,
+              "assd_mm": 8.021692468068906,
+              "hd95_pooled_mm": 13.388424804701758,
+              "boundary_status": "ok",
+              "annotation": "09879",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0370174510840825,
+              "iou": 0.018857758620689655,
+              "prediction_volume_mm3": 3935.4158668946397,
+              "reference_volume_mm3": 74.21312248993125,
+              "relative_volume_error": 52.02857142857143,
+              "assd_mm": 7.840051447349989,
+              "hd95_pooled_mm": 13.176428234004234,
+              "boundary_status": "ok",
+              "annotation": "IL057_123247",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03873921465046663,
+              "iou": 0.019752199676782187,
+              "prediction_volume_mm3": 3935.4158668946397,
+              "reference_volume_mm3": 78.45387234649874,
+              "relative_volume_error": 49.16216216216216,
+              "assd_mm": 7.769765991700661,
+              "hd95_pooled_mm": 13.182517412083396,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.02763018065887354,
+              "iou": 0.014008620689655173,
+              "prediction_volume_mm3": 3935.4158668946397,
+              "reference_volume_mm3": 55.1297481353775,
+              "relative_volume_error": 70.38461538461539,
+              "assd_mm": 8.355364744995995,
+              "hd95_pooled_mm": 14.228866179819422,
+              "boundary_status": "ok",
+              "annotation": "8072",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.035284286198936886,
+          "median_signed_relative_volume_error": 54.81954887218045,
+          "median_absolute_relative_volume_error": 54.81954887218045,
+          "median_hd95_pooled_mm": 13.285471108392578,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.035114798379317,
+              "iou": 0.017871170463472114,
+              "prediction_volume_mm3": 3596.15587836924,
+              "reference_volume_mm3": 67.14520606231875,
+              "relative_volume_error": 52.55789473684211,
+              "assd_mm": 9.073768878752487,
+              "hd95_pooled_mm": 15.55222358824695,
+              "boundary_status": "ok",
+              "annotation": "09879",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03889851723473907,
+              "iou": 0.01983503534956795,
+              "prediction_volume_mm3": 3596.15587836924,
+              "reference_volume_mm3": 74.21312248993125,
+              "relative_volume_error": 47.457142857142856,
+              "assd_mm": 8.88987782740731,
+              "hd95_pooled_mm": 15.483659942811176,
+              "boundary_status": "ok",
+              "annotation": "IL057_123247",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03962300442392768,
+              "iou": 0.02021193092621664,
+              "prediction_volume_mm3": 3596.15587836924,
+              "reference_volume_mm3": 78.45387234649874,
+              "relative_volume_error": 44.83783783783784,
+              "assd_mm": 8.828955094894665,
+              "hd95_pooled_mm": 15.352926729777863,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.028648857917150602,
+              "iou": 0.014532600157109192,
+              "prediction_volume_mm3": 3596.15587836924,
+              "reference_volume_mm3": 55.1297481353775,
+              "relative_volume_error": 64.23076923076923,
+              "assd_mm": 9.480111091347329,
+              "hd95_pooled_mm": 16.26815984042183,
+              "boundary_status": "ok",
+              "annotation": "8072",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.03700665780702803,
+          "median_signed_relative_volume_error": 50.007518796992485,
+          "median_absolute_relative_volume_error": 50.007518796992485,
+          "median_hd95_pooled_mm": 15.517941765529063,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.03405628248790106,
+              "iou": 0.017323121808898615,
+              "prediction_volume_mm3": 3876.045368902695,
+              "reference_volume_mm3": 67.14520606231875,
+              "relative_volume_error": 56.72631578947368,
+              "assd_mm": 8.719609505108908,
+              "hd95_pooled_mm": 15.092005421963231,
+              "boundary_status": "ok",
+              "annotation": "09879",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03757380568974772,
+              "iou": 0.019146608315098467,
+              "prediction_volume_mm3": 3876.045368902695,
+              "reference_volume_mm3": 74.21312248993125,
+              "relative_volume_error": 51.22857142857143,
+              "assd_mm": 8.54551793386702,
+              "hd95_pooled_mm": 15.039914363683511,
+              "boundary_status": "ok",
+              "annotation": "IL057_123247",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03967828418230563,
+              "iou": 0.02024070021881838,
+              "prediction_volume_mm3": 3876.045368902695,
+              "reference_volume_mm3": 78.45387234649874,
+              "relative_volume_error": 48.4054054054054,
+              "assd_mm": 8.489327723827767,
+              "hd95_pooled_mm": 14.94029314203467,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.028047464940668825,
+              "iou": 0.014223194748358862,
+              "prediction_volume_mm3": 3876.045368902695,
+              "reference_volume_mm3": 55.1297481353775,
+              "relative_volume_error": 69.3076923076923,
+              "assd_mm": 9.094008646342749,
+              "hd95_pooled_mm": 15.737097510805643,
+              "boundary_status": "ok",
+              "annotation": "8072",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.03581504408882439,
+          "median_signed_relative_volume_error": 53.97744360902256,
+          "median_absolute_relative_volume_error": 53.97744360902256,
+          "median_hd95_pooled_mm": 15.065959892823372,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0206-n4-c2": {
+      "case": "LIDC-IDRI-0206",
+      "group": "4",
+      "reader_count": 3,
+      "reader_pairwise_dice": {
+        "n": 3,
+        "median": 0.8497409326424871,
+        "min": 0.8059701492537313,
+        "max": 0.8859649122807017,
+        "p25": 0.8278555409481092,
+        "p75": 0.8678529224615944
+      },
+      "reference_equivalent_diameter_mm": 5.2953559230719085,
+      "reader_volume_range_mm3": [
+        58.66370634918375,
+        83.40141384582749
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.007771825247113861,
+              "iou": 0.0039010718478960722,
+              "prediction_volume_mm3": 18656.472202325953,
+              "reference_volume_mm3": 77.7470807037375,
+              "relative_volume_error": 238.96363636363637,
+              "assd_mm": 17.088907215887275,
+              "hd95_pooled_mm": 30.601188848062073,
+              "boundary_status": "ok",
+              "annotation": "10262",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.005740398051285925,
+              "iou": 0.0028784607809718595,
+              "prediction_volume_mm3": 18656.472202325953,
+              "reference_volume_mm3": 58.66370634918375,
+              "relative_volume_error": 317.0240963855422,
+              "assd_mm": 17.284610697910928,
+              "hd95_pooled_mm": 30.40887103768304,
+              "boundary_status": "ok",
+              "annotation": "IL057_123250",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.00829750320585351,
+              "iou": 0.004166035449174367,
+              "prediction_volume_mm3": 18656.472202325953,
+              "reference_volume_mm3": 83.40141384582749,
+              "relative_volume_error": 222.6949152542373,
+              "assd_mm": 16.982579646380106,
+              "hd95_pooled_mm": 30.246640973669354,
+              "boundary_status": "ok",
+              "annotation": "8162",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.007771825247113861,
+          "median_signed_relative_volume_error": 238.96363636363637,
+          "median_absolute_relative_volume_error": 238.96363636363637,
+          "median_hd95_pooled_mm": 30.40887103768304,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.024482528377476075,
+              "iou": 0.012392969806219017,
+              "prediction_volume_mm3": 6273.482621148854,
+              "reference_volume_mm3": 77.7470807037375,
+              "relative_volume_error": 79.69090909090909,
+              "assd_mm": 12.84969552651478,
+              "hd95_pooled_mm": 27.084265059391736,
+              "boundary_status": "ok",
+              "annotation": "10262",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.018528853666703874,
+              "iou": 0.009351059035601622,
+              "prediction_volume_mm3": 6273.482621148854,
+              "reference_volume_mm3": 58.66370634918375,
+              "relative_volume_error": 105.93975903614458,
+              "assd_mm": 13.137984536122573,
+              "hd95_pooled_mm": 27.725684988294912,
+              "boundary_status": "ok",
+              "annotation": "IL057_123250",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.026239715365799422,
+              "iou": 0.013294276701216764,
+              "prediction_volume_mm3": 6273.482621148854,
+              "reference_volume_mm3": 83.40141384582749,
+              "relative_volume_error": 74.22033898305085,
+              "assd_mm": 12.777759229289911,
+              "hd95_pooled_mm": 27.248548546379293,
+              "boundary_status": "ok",
+              "annotation": "8162",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.024482528377476075,
+          "median_signed_relative_volume_error": 79.69090909090909,
+          "median_absolute_relative_volume_error": 79.69090909090909,
+          "median_hd95_pooled_mm": 27.248548546379293,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.001012798084890894,
+              "iou": 0.000506655612362397,
+              "prediction_volume_mm3": 153451.53355989498,
+              "reference_volume_mm3": 77.7470807037375,
+              "relative_volume_error": 1972.7272727272727,
+              "assd_mm": 36.34937652991959,
+              "hd95_pooled_mm": 59.27345377206141,
+              "boundary_status": "ok",
+              "annotation": "10262",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0007642971918984498,
+              "iou": 0.0003822946893279904,
+              "prediction_volume_mm3": 153451.53355989498,
+              "reference_volume_mm3": 58.66370634918375,
+              "relative_volume_error": 2614.7831325301204,
+              "assd_mm": 36.87477938309627,
+              "hd95_pooled_mm": 59.39970388410886,
+              "boundary_status": "ok",
+              "annotation": "IL057_123250",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0010864161157861786,
+              "iou": 0.0005435032932614804,
+              "prediction_volume_mm3": 153451.53355989498,
+              "reference_volume_mm3": 83.40141384582749,
+              "relative_volume_error": 1838.915254237288,
+              "assd_mm": 36.3250521914065,
+              "hd95_pooled_mm": 58.98887826674171,
+              "boundary_status": "ok",
+              "annotation": "8162",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.001012798084890894,
+          "median_signed_relative_volume_error": 1972.7272727272727,
+          "median_absolute_relative_volume_error": 1972.7272727272727,
+          "median_hd95_pooled_mm": 59.27345377206141,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0447-n2-c0": {
+      "case": "LIDC-IDRI-0447",
+      "group": "2",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.8600274202971301,
+        "min": 0.8118051879301218,
+        "max": 0.8895889588958896,
+        "p25": 0.8283571018749132,
+        "p75": 0.8835619749675445
+      },
+      "reference_equivalent_diameter_mm": 13.576776952857713,
+      "reader_volume_range_mm3": [
+        1219.9093030151996,
+        1625.0396764856796
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.10078383939931826,
+              "iou": 0.053066018229037434,
+              "prediction_volume_mm3": 22679.394094790296,
+              "reference_volume_mm3": 1289.9411333734797,
+              "relative_volume_error": 16.581727962638645,
+              "assd_mm": 11.74034106959468,
+              "hd95_pooled_mm": 19.881870767841487,
+              "boundary_status": "ok",
+              "annotation": "81210",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.098779046868846,
+              "iou": 0.05195558501823003,
+              "prediction_volume_mm3": 22679.394094790296,
+              "reference_volume_mm3": 1219.9093030151996,
+              "relative_volume_error": 17.59104938271605,
+              "assd_mm": 11.707364653862678,
+              "hd95_pooled_mm": 19.84900706377988,
+              "boundary_status": "ok",
+              "annotation": "IL057_195860",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.12414989698068195,
+              "iou": 0.06618327167019028,
+              "prediction_volume_mm3": 22679.394094790296,
+              "reference_volume_mm3": 1625.0396764856796,
+              "relative_volume_error": 12.956209453197404,
+              "assd_mm": 10.887654875808332,
+              "hd95_pooled_mm": 18.852715219879393,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.10679002665830328,
+              "iou": 0.05640685827880394,
+              "prediction_volume_mm3": 22679.394094790296,
+              "reference_volume_mm3": 1330.9812920242996,
+              "relative_volume_error": 16.03960396039604,
+              "assd_mm": 11.49699177174876,
+              "hd95_pooled_mm": 19.848279249540152,
+              "boundary_status": "ok",
+              "annotation": "4384",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.10378693302881077,
+          "median_signed_relative_volume_error": 16.310665961517344,
+          "median_absolute_relative_volume_error": 16.310665961517344,
+          "median_hd95_pooled_mm": 19.848643156660017,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.02793004660708941,
+              "iou": 0.014162807236648107,
+              "prediction_volume_mm3": 86765.6726617391,
+              "reference_volume_mm3": 1289.9411333734797,
+              "relative_volume_error": 66.26328079392879,
+              "assd_mm": 22.85323399228144,
+              "hd95_pooled_mm": 38.969229220634276,
+              "boundary_status": "ok",
+              "annotation": "81210",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.026711285325482274,
+              "iou": 0.013536430389958493,
+              "prediction_volume_mm3": 86765.6726617391,
+              "reference_volume_mm3": 1219.9093030151996,
+              "relative_volume_error": 70.12469135802469,
+              "assd_mm": 22.800237753878605,
+              "hd95_pooled_mm": 38.93181119988011,
+              "boundary_status": "ok",
+              "annotation": "IL057_195860",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03518486965411484,
+              "iou": 0.01790747084074058,
+              "prediction_volume_mm3": 86765.6726617391,
+              "reference_volume_mm3": 1625.0396764856796,
+              "relative_volume_error": 52.39295644114921,
+              "assd_mm": 22.014802803193906,
+              "hd95_pooled_mm": 37.94600148301281,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.02885729061155061,
+              "iou": 0.014639878926119782,
+              "prediction_volume_mm3": 86765.6726617391,
+              "reference_volume_mm3": 1330.9812920242996,
+              "relative_volume_error": 64.1892503536068,
+              "assd_mm": 22.664991285284803,
+              "hd95_pooled_mm": 38.90524714544327,
+              "boundary_status": "ok",
+              "annotation": "4384",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.028393668609320008,
+          "median_signed_relative_volume_error": 65.22626557376779,
+          "median_absolute_relative_volume_error": 65.22626557376779,
+          "median_hd95_pooled_mm": 38.91852917266169,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.03588766877094625,
+              "iou": 0.018271698721268832,
+              "prediction_volume_mm3": 65331.03787428468,
+              "reference_volume_mm3": 1289.9411333734797,
+              "relative_volume_error": 49.646526561587855,
+              "assd_mm": 30.604855767078803,
+              "hd95_pooled_mm": 56.26500006179852,
+              "boundary_status": "ok",
+              "annotation": "81210",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03464682752963141,
+              "iou": 0.017628804845330553,
+              "prediction_volume_mm3": 65331.03787428468,
+              "reference_volume_mm3": 1219.9093030151996,
+              "relative_volume_error": 52.55401234567901,
+              "assd_mm": 30.005490080136724,
+              "hd95_pooled_mm": 55.354572061946264,
+              "boundary_status": "ok",
+              "annotation": "IL057_195860",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.043760649155659026,
+              "iou": 0.022369782683684027,
+              "prediction_volume_mm3": 65331.03787428468,
+              "reference_volume_mm3": 1625.0396764856796,
+              "relative_volume_error": 39.20273401297498,
+              "assd_mm": 29.119205796668222,
+              "hd95_pooled_mm": 54.817248154859215,
+              "boundary_status": "ok",
+              "annotation": "Nodule 001",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.037175939000282404,
+              "iou": 0.018940026128143002,
+              "prediction_volume_mm3": 65331.03787428468,
+              "reference_volume_mm3": 1330.9812920242996,
+              "relative_volume_error": 48.08486562942009,
+              "assd_mm": 30.067441155769828,
+              "hd95_pooled_mm": 55.520086230644516,
+              "boundary_status": "ok",
+              "annotation": "4384",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.036531803885614327,
+          "median_signed_relative_volume_error": 48.86569609550397,
+          "median_absolute_relative_volume_error": 48.86569609550397,
+          "median_hd95_pooled_mm": 55.43732914629539,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0447-n1-c1": {
+      "case": "LIDC-IDRI-0447",
+      "group": "1",
+      "reader_count": 3,
+      "reader_pairwise_dice": {
+        "n": 3,
+        "median": 0.5985915492957746,
+        "min": 0.5223880597014925,
+        "max": 0.8333333333333334,
+        "p25": 0.5604898044986335,
+        "p75": 0.715962441314554
+      },
+      "reference_equivalent_diameter_mm": 3.9545231353252284,
+      "reader_volume_range_mm3": [
+        26.35606518859999,
+        74.55001296203999
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.0010963095162215566,
+              "iou": 0.0005484553965460065,
+              "prediction_volume_mm3": 59039.0920833319,
+              "reference_volume_mm3": 32.380308660279994,
+              "relative_volume_error": 1822.3023255813953,
+              "assd_mm": 22.318795825855467,
+              "hd95_pooled_mm": 32.30949483655638,
+              "boundary_status": "ok",
+              "annotation": "81219",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.002522260862918944,
+              "iou": 0.001262722889722201,
+              "prediction_volume_mm3": 59039.0920833319,
+              "reference_volume_mm3": 74.55001296203999,
+              "relative_volume_error": 790.939393939394,
+              "assd_mm": 21.507592748728193,
+              "hd95_pooled_mm": 31.60716498921244,
+              "boundary_status": "ok",
+              "annotation": "IL057_196382",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0008924359677193162,
+              "iou": 0.0004464171832351216,
+              "prediction_volume_mm3": 59039.0920833319,
+              "reference_volume_mm3": 26.35606518859999,
+              "relative_volume_error": 2239.057142857143,
+              "assd_mm": 22.33264436056731,
+              "hd95_pooled_mm": 32.286338736058624,
+              "boundary_status": "ok",
+              "annotation": "4409",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.0010963095162215566,
+          "median_signed_relative_volume_error": 1822.3023255813953,
+          "median_absolute_relative_volume_error": 1822.3023255813953,
+          "median_hd95_pooled_mm": 32.286338736058624,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.014304723885562209,
+              "iou": 0.007203886748199028,
+              "prediction_volume_mm3": 4494.838660307239,
+              "reference_volume_mm3": 32.380308660279994,
+              "relative_volume_error": 137.8139534883721,
+              "assd_mm": 9.386538751128018,
+              "hd95_pooled_mm": 15.347490938677884,
+              "boundary_status": "ok",
+              "annotation": "81219",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03263019116677653,
+              "iou": 0.016585692745853576,
+              "prediction_volume_mm3": 4494.838660307239,
+              "reference_volume_mm3": 74.55001296203999,
+              "relative_volume_error": 59.292929292929294,
+              "assd_mm": 8.533927492657384,
+              "hd95_pooled_mm": 14.838648472230618,
+              "boundary_status": "ok",
+              "annotation": "IL057_196382",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.011658894070619586,
+              "iou": 0.005863628748534092,
+              "prediction_volume_mm3": 4494.838660307239,
+              "reference_volume_mm3": 26.35606518859999,
+              "relative_volume_error": 169.54285714285714,
+              "assd_mm": 9.43455976055879,
+              "hd95_pooled_mm": 15.314526942793053,
+              "boundary_status": "ok",
+              "annotation": "4409",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.014304723885562209,
+          "median_signed_relative_volume_error": 137.8139534883721,
+          "median_absolute_relative_volume_error": 137.8139534883721,
+          "median_hd95_pooled_mm": 15.314526942793053,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.0012206199613943455,
+              "iou": 0.0006106826864357434,
+              "prediction_volume_mm3": 53023.13194642546,
+              "reference_volume_mm3": 32.380308660279994,
+              "relative_volume_error": 1636.5116279069769,
+              "assd_mm": 27.728814735927575,
+              "hd95_pooled_mm": 45.815499276033115,
+              "boundary_status": "ok",
+              "annotation": "81219",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0028080326752893126,
+              "iou": 0.0014059903710962464,
+              "prediction_volume_mm3": 53023.13194642546,
+              "reference_volume_mm3": 74.55001296203999,
+              "relative_volume_error": 710.2424242424242,
+              "assd_mm": 26.620950126655117,
+              "hd95_pooled_mm": 44.87080013260863,
+              "boundary_status": "ok",
+              "annotation": "IL057_196382",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0009936406995230524,
+              "iou": 0.0004970673029128144,
+              "prediction_volume_mm3": 53023.13194642546,
+              "reference_volume_mm3": 26.35606518859999,
+              "relative_volume_error": 2010.8,
+              "assd_mm": 27.71035600021595,
+              "hd95_pooled_mm": 45.900470058270166,
+              "boundary_status": "ok",
+              "annotation": "4409",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.0012206199613943455,
+          "median_signed_relative_volume_error": 1636.5116279069769,
+          "median_absolute_relative_volume_error": 1636.5116279069769,
+          "median_hd95_pooled_mm": 45.815499276033115,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0447-n5-c2": {
+      "case": "LIDC-IDRI-0447",
+      "group": "5",
+      "reader_count": 1,
+      "reader_pairwise_dice": {
+        "n": 0
+      },
+      "reference_equivalent_diameter_mm": 4.239974636601843,
+      "reader_volume_range_mm3": [
+        39.91061299987999,
+        39.91061299987999
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.003460433533559676,
+              "iou": 0.0017332156054808857,
+              "prediction_volume_mm3": 23026.917640062835,
+              "reference_volume_mm3": 39.91061299987999,
+              "relative_volume_error": 575.9622641509434,
+              "assd_mm": 18.541769054617806,
+              "hd95_pooled_mm": 30.45468296378512,
+              "boundary_status": "ok",
+              "annotation": "IL057_195862",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.003460433533559676,
+          "median_signed_relative_volume_error": 575.9622641509434,
+          "median_absolute_relative_volume_error": 575.9622641509434,
+          "median_hd95_pooled_mm": 30.45468296378512,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.006057488999371393,
+              "iou": 0.0030379456608964806,
+              "prediction_volume_mm3": 13137.368950866157,
+              "reference_volume_mm3": 39.91061299987999,
+              "relative_volume_error": 328.1698113207547,
+              "assd_mm": 14.62586086304804,
+              "hd95_pooled_mm": 25.466796091260157,
+              "boundary_status": "ok",
+              "annotation": "IL057_195862",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.006057488999371393,
+          "median_signed_relative_volume_error": 328.1698113207547,
+          "median_absolute_relative_volume_error": 328.1698113207547,
+          "median_hd95_pooled_mm": 25.466796091260157,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.0005572744024414927,
+              "iou": 0.00027871486154970723,
+              "prediction_volume_mm3": 143195.13777618262,
+              "reference_volume_mm3": 39.91061299987999,
+              "relative_volume_error": 3586.896226415094,
+              "assd_mm": 34.673774283798636,
+              "hd95_pooled_mm": 49.97525963024461,
+              "boundary_status": "ok",
+              "annotation": "IL057_195862",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.0005572744024414927,
+          "median_signed_relative_volume_error": 3586.896226415094,
+          "median_absolute_relative_volume_error": 3586.896226415094,
+          "median_hd95_pooled_mm": 49.97525963024461,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0447-n3-c4": {
+      "case": "LIDC-IDRI-0447",
+      "group": "3",
+      "reader_count": 1,
+      "reader_pairwise_dice": {
+        "n": 0
+      },
+      "reference_equivalent_diameter_mm": 3.507344189792908,
+      "reader_volume_range_mm3": [
+        22.590913018799995,
+        22.590913018799995
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.0010251328401305335,
+              "iou": 0.0005128292791329766,
+              "prediction_volume_mm3": 44051.527356226026,
+              "reference_volume_mm3": 22.590913018799995,
+              "relative_volume_error": 1948.9666666666667,
+              "assd_mm": 22.03926981623969,
+              "hd95_pooled_mm": 31.646879522309174,
+              "boundary_status": "ok",
+              "annotation": "IL057_196381",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.0010251328401305335,
+          "median_signed_relative_volume_error": 1948.9666666666667,
+          "median_absolute_relative_volume_error": 1948.9666666666667,
+          "median_hd95_pooled_mm": 31.646879522309174,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.0006070171178827243,
+              "iou": 0.0003036007043536341,
+              "prediction_volume_mm3": 74409.94930132342,
+              "reference_volume_mm3": 22.590913018799995,
+              "relative_volume_error": 3292.8,
+              "assd_mm": 26.936528853664772,
+              "hd95_pooled_mm": 39.32455794475467,
+              "boundary_status": "ok",
+              "annotation": "IL057_196381",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.0006070171178827243,
+          "median_signed_relative_volume_error": 3292.8,
+          "median_absolute_relative_volume_error": 3292.8,
+          "median_hd95_pooled_mm": 39.32455794475467,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 22.590913018799995,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "IL057_196381",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.0,
+          "median_signed_relative_volume_error": -1.0,
+          "median_absolute_relative_volume_error": 1.0,
+          "median_hd95_pooled_mm": null,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0473-n1-c0": {
+      "case": "LIDC-IDRI-0473",
+      "group": "1",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.6852754529568656,
+        "min": 0.592,
+        "max": 0.8128342245989305,
+        "p25": 0.6302676984209976,
+        "p75": 0.7796711708713306
+      },
+      "reference_equivalent_diameter_mm": 5.108022410633884,
+      "reader_volume_range_mm3": [
+        37.8512874756,
+        84.95511188968001
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 67.29117773440001,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "0201",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 84.95511188968001,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "5428",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 72.33801606448,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "Nodule 005",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 37.8512874756,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "IL057_131654",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.0,
+          "median_signed_relative_volume_error": -1.0,
+          "median_absolute_relative_volume_error": 1.0,
+          "median_hd95_pooled_mm": null,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.0034726241463132307,
+              "iou": 0.0017393320964749536,
+              "prediction_volume_mm3": 7199.31487785912,
+              "reference_volume_mm3": 67.29117773440001,
+              "relative_volume_error": 105.9875,
+              "assd_mm": 18.80274667420467,
+              "hd95_pooled_mm": 32.01056917516599,
+              "boundary_status": "ok",
+              "annotation": "0201",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.007390300230946882,
+              "iou": 0.0037088548910523874,
+              "prediction_volume_mm3": 7199.31487785912,
+              "reference_volume_mm3": 84.95511188968001,
+              "relative_volume_error": 83.74257425742574,
+              "assd_mm": 18.666297079033946,
+              "hd95_pooled_mm": 31.952406716487385,
+              "boundary_status": "ok",
+              "annotation": "5428",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.007403123192596877,
+              "iou": 0.0037153140601416464,
+              "prediction_volume_mm3": 7199.31487785912,
+              "reference_volume_mm3": 72.33801606448,
+              "relative_volume_error": 98.52325581395348,
+              "assd_mm": 18.619639934626328,
+              "hd95_pooled_mm": 31.994715548862132,
+              "boundary_status": "ok",
+              "annotation": "Nodule 005",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0032543003254300326,
+              "iou": 0.001629802095459837,
+              "prediction_volume_mm3": 7199.31487785912,
+              "reference_volume_mm3": 37.8512874756,
+              "relative_volume_error": 189.2,
+              "assd_mm": 19.528669090537036,
+              "hd95_pooled_mm": 32.763116290039605,
+              "boundary_status": "ok",
+              "annotation": "IL057_131654",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.005431462188630057,
+          "median_signed_relative_volume_error": 102.25537790697675,
+          "median_absolute_relative_volume_error": 102.25537790697675,
+          "median_hd95_pooled_mm": 32.00264236201406,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.023505154639175258,
+              "iou": 0.011892343000208638,
+              "prediction_volume_mm3": 4012.2364724136005,
+              "reference_volume_mm3": 67.29117773440001,
+              "relative_volume_error": 58.625,
+              "assd_mm": 12.060504686581655,
+              "hd95_pooled_mm": 25.28146138304228,
+              "boundary_status": "ok",
+              "annotation": "0201",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.03079449804968179,
+              "iou": 0.015638031693077564,
+              "prediction_volume_mm3": 4012.2364724136005,
+              "reference_volume_mm3": 84.95511188968001,
+              "relative_volume_error": 46.227722772277225,
+              "assd_mm": 11.980638816849602,
+              "hd95_pooled_mm": 25.499995862893428,
+              "boundary_status": "ok",
+              "annotation": "5428",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.025947281713344317,
+              "iou": 0.013144168579177967,
+              "prediction_volume_mm3": 4012.2364724136005,
+              "reference_volume_mm3": 72.33801606448,
+              "relative_volume_error": 54.46511627906977,
+              "assd_mm": 12.153495429000559,
+              "hd95_pooled_mm": 26.006880452197144,
+              "boundary_status": "ok",
+              "annotation": "Nodule 005",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.014953271028037384,
+              "iou": 0.007532956685499058,
+              "prediction_volume_mm3": 4012.2364724136005,
+              "reference_volume_mm3": 37.8512874756,
+              "relative_volume_error": 105.0,
+              "assd_mm": 12.818456318700669,
+              "hd95_pooled_mm": 26.099111956387983,
+              "boundary_status": "ok",
+              "annotation": "IL057_131654",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.024726218176259786,
+          "median_signed_relative_volume_error": 56.54505813953489,
+          "median_absolute_relative_volume_error": 56.54505813953489,
+          "median_hd95_pooled_mm": 25.753438157545286,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0473-n2-c1": {
+      "case": "LIDC-IDRI-0473",
+      "group": "2",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.7190681150508984,
+        "min": 0.6041666666666666,
+        "max": 0.7441860465116279,
+        "p25": 0.6567378948125764,
+        "p75": 0.7354667894555083
+      },
+      "reference_equivalent_diameter_mm": 4.613021798246437,
+      "reader_volume_range_mm3": [
+        36.16900803224,
+        63.926618847680004
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 44.580405249040005,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "0205",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 63.926618847680004,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "5431",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 58.879780517600004,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "Nodule 003",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0,
+              "iou": 0.0,
+              "prediction_volume_mm3": 0.0,
+              "reference_volume_mm3": 36.16900803224,
+              "relative_volume_error": -1.0,
+              "assd_mm": null,
+              "hd95_pooled_mm": null,
+              "boundary_status": "empty_mask",
+              "annotation": "IL057_85663",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.0,
+          "median_signed_relative_volume_error": -1.0,
+          "median_absolute_relative_volume_error": 1.0,
+          "median_hd95_pooled_mm": null,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.0009668550019639242,
+              "iou": 0.0004836613161633566,
+              "prediction_volume_mm3": 55633.82233163688,
+              "reference_volume_mm3": 44.580405249040005,
+              "relative_volume_error": 1246.9433962264152,
+              "assd_mm": 29.70488279759502,
+              "hd95_pooled_mm": 42.20781949895067,
+              "boundary_status": "ok",
+              "annotation": "0205",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.0015705936541975626,
+              "iou": 0.0007859140028716088,
+              "prediction_volume_mm3": 55633.82233163688,
+              "reference_volume_mm3": 63.926618847680004,
+              "relative_volume_error": 869.2763157894736,
+              "assd_mm": 29.263482888162084,
+              "hd95_pooled_mm": 41.810163314523614,
+              "boundary_status": "ok",
+              "annotation": "5431",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.0012686713688057876,
+              "iou": 0.0006347383215705239,
+              "prediction_volume_mm3": 55633.82233163688,
+              "reference_volume_mm3": 58.879780517600004,
+              "relative_volume_error": 943.8714285714286,
+              "assd_mm": 29.485152174297138,
+              "hd95_pooled_mm": 42.123948633393184,
+              "boundary_status": "ok",
+              "annotation": "Nodule 003",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0009670010878762239,
+              "iou": 0.0004837344297980409,
+              "prediction_volume_mm3": 55633.82233163688,
+              "reference_volume_mm3": 36.16900803224,
+              "relative_volume_error": 1537.1627906976744,
+              "assd_mm": 29.82141890862039,
+              "hd95_pooled_mm": 42.453565293086235,
+              "boundary_status": "ok",
+              "annotation": "IL057_85663",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.0011178362283410057,
+          "median_signed_relative_volume_error": 1095.407412398922,
+          "median_absolute_relative_volume_error": 1095.407412398922,
+          "median_hd95_pooled_mm": 42.16588406617193,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.00037169194171870356,
+              "iou": 0.00018588051600431241,
+              "prediction_volume_mm3": 22585.44266682968,
+              "reference_volume_mm3": 44.580405249040005,
+              "relative_volume_error": 505.62264150943395,
+              "assd_mm": 28.97336696865808,
+              "hd95_pooled_mm": 56.5170469186334,
+              "boundary_status": "ok",
+              "annotation": "0205",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.0014854978274594273,
+              "iou": 0.0007433009997398446,
+              "prediction_volume_mm3": 22585.44266682968,
+              "reference_volume_mm3": 63.926618847680004,
+              "relative_volume_error": 352.30263157894734,
+              "assd_mm": 28.566341820177954,
+              "hd95_pooled_mm": 56.24792016681613,
+              "boundary_status": "ok",
+              "annotation": "5431",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.0012629545707811747,
+              "iou": 0.000631876300921796,
+              "prediction_volume_mm3": 22585.44266682968,
+              "reference_volume_mm3": 58.879780517600004,
+              "relative_volume_error": 382.5857142857143,
+              "assd_mm": 28.87384690392836,
+              "hd95_pooled_mm": 56.944601930997024,
+              "boundary_status": "ok",
+              "annotation": "Nodule 003",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0008923923551721574,
+              "iou": 0.0004463953574882821,
+              "prediction_volume_mm3": 22585.44266682968,
+              "reference_volume_mm3": 36.16900803224,
+              "relative_volume_error": 623.4418604651163,
+              "assd_mm": 29.014062060116107,
+              "hd95_pooled_mm": 56.68067202563708,
+              "boundary_status": "ok",
+              "annotation": "IL057_85663",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.001077673462976666,
+          "median_signed_relative_volume_error": 444.1041778975741,
+          "median_absolute_relative_volume_error": 444.1041778975741,
+          "median_hd95_pooled_mm": 56.59885947213524,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0473-n4-c4": {
+      "case": "LIDC-IDRI-0473",
+      "group": "4",
+      "reader_count": 3,
+      "reader_pairwise_dice": {
+        "n": 3,
+        "median": 0.7586206896551724,
+        "min": 0.7017543859649122,
+        "max": 0.8085106382978723,
+        "p25": 0.7301875378100423,
+        "p75": 0.7835656639765223
+      },
+      "reference_equivalent_diameter_mm": 4.256345945868314,
+      "reader_volume_range_mm3": [
+        38.692427197280004,
+        57.19750107424
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.054533925174381735,
+              "iou": 0.02803129074315515,
+              "prediction_volume_mm3": 1287.78491389208,
+              "reference_volume_mm3": 38.692427197280004,
+              "relative_volume_error": 32.28260869565217,
+              "assd_mm": 5.948662912932453,
+              "hd95_pooled_mm": 11.714674856114426,
+              "boundary_status": "ok",
+              "annotation": "0208",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.07879924953095685,
+              "iou": 0.041015625,
+              "prediction_volume_mm3": 1287.78491389208,
+              "reference_volume_mm3": 57.19750107424,
+              "relative_volume_error": 21.514705882352942,
+              "assd_mm": 5.609742211053134,
+              "hd95_pooled_mm": 11.68069609468134,
+              "boundary_status": "ok",
+              "annotation": "Nodule 010",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.05446485117162761,
+              "iou": 0.027994791666666668,
+              "prediction_volume_mm3": 1287.78491389208,
+              "reference_volume_mm3": 40.37470664064,
+              "relative_volume_error": 30.895833333333332,
+              "assd_mm": 5.94121423806503,
+              "hd95_pooled_mm": 11.737305037254528,
+              "boundary_status": "ok",
+              "annotation": "IL057_85664",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.054533925174381735,
+          "median_signed_relative_volume_error": 30.895833333333332,
+          "median_absolute_relative_volume_error": 30.895833333333332,
+          "median_hd95_pooled_mm": 11.714674856114426,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.4909090909090909,
+              "iou": 0.3253012048192771,
+              "prediction_volume_mm3": 53.832942187520004,
+              "reference_volume_mm3": 38.692427197280004,
+              "relative_volume_error": 0.3913043478260869,
+              "assd_mm": 0.706318259291075,
+              "hd95_pooled_mm": 1.689191573982211,
+              "boundary_status": "ok",
+              "annotation": "0208",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.5,
+              "iou": 0.3333333333333333,
+              "prediction_volume_mm3": 53.832942187520004,
+              "reference_volume_mm3": 57.19750107424,
+              "relative_volume_error": -0.05882352941176472,
+              "assd_mm": 0.620677292196728,
+              "hd95_pooled_mm": 1.6406240000000025,
+              "boundary_status": "ok",
+              "annotation": "Nodule 010",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.4107142857142857,
+              "iou": 0.25842696629213485,
+              "prediction_volume_mm3": 53.832942187520004,
+              "reference_volume_mm3": 40.37470664064,
+              "relative_volume_error": 0.33333333333333326,
+              "assd_mm": 0.796899820830515,
+              "hd95_pooled_mm": 1.7891609744515904,
+              "boundary_status": "ok",
+              "annotation": "IL057_85664",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.4909090909090909,
+          "median_signed_relative_volume_error": 0.33333333333333326,
+          "median_absolute_relative_volume_error": 0.33333333333333326,
+          "median_hd95_pooled_mm": 1.689191573982211,
+          "technical_pass": true
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.0006127369360489124,
+              "iou": 0.00030646235842771483,
+              "prediction_volume_mm3": 126255.072224168,
+              "reference_volume_mm3": 38.692427197280004,
+              "relative_volume_error": 3262.0434782608695,
+              "assd_mm": 34.39703966060231,
+              "hd95_pooled_mm": 52.11848084662245,
+              "boundary_status": "ok",
+              "annotation": "0208",
+              "positive_inside_reader_mask": false
+            },
+            {
+              "dice": 0.0009056523360502903,
+              "iou": 0.0004530313124583611,
+              "prediction_volume_mm3": 126255.072224168,
+              "reference_volume_mm3": 57.19750107424,
+              "relative_volume_error": 2206.3529411764707,
+              "assd_mm": 33.676013696137865,
+              "hd95_pooled_mm": 51.107657983227114,
+              "boundary_status": "ok",
+              "annotation": "Nodule 010",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.0006393691557663105,
+              "iou": 0.00031978680879413726,
+              "prediction_volume_mm3": 126255.072224168,
+              "reference_volume_mm3": 40.37470664064,
+              "relative_volume_error": 3126.0833333333335,
+              "assd_mm": 34.24401002700192,
+              "hd95_pooled_mm": 52.13617815826244,
+              "boundary_status": "ok",
+              "annotation": "IL057_85664",
+              "positive_inside_reader_mask": false
+            }
+          ],
+          "median_reader_dice": 0.0006393691557663105,
+          "median_signed_relative_volume_error": 3126.0833333333335,
+          "median_absolute_relative_volume_error": 3126.0833333333335,
+          "median_hd95_pooled_mm": 52.11848084662245,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0473-n3-c6": {
+      "case": "LIDC-IDRI-0473",
+      "group": "3",
+      "reader_count": 2,
+      "reader_pairwise_dice": {
+        "n": 1,
+        "median": 0.7567567567567568,
+        "min": 0.7567567567567568,
+        "max": 0.7567567567567568,
+        "p25": 0.7567567567567568,
+        "p75": 0.7567567567567568
+      },
+      "reference_equivalent_diameter_mm": 3.9013589710213505,
+      "reader_volume_range_mm3": [
+        29.439890258800002,
+        32.80444914552
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.009001731102135027,
+              "iou": 0.004521214931602133,
+              "prediction_volume_mm3": 7255.671239211681,
+              "reference_volume_mm3": 32.80444914552,
+              "relative_volume_error": 220.17948717948718,
+              "assd_mm": 13.241852244481779,
+              "hd95_pooled_mm": 27.98687481236654,
+              "boundary_status": "ok",
+              "annotation": "5437",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.008082207597275142,
+              "iou": 0.00405750057964294,
+              "prediction_volume_mm3": 7255.671239211681,
+              "reference_volume_mm3": 29.439890258800002,
+              "relative_volume_error": 245.45714285714286,
+              "assd_mm": 13.50099977572015,
+              "hd95_pooled_mm": 28.42827895934162,
+              "boundary_status": "ok",
+              "annotation": "Nodule 009",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.008541969349705084,
+          "median_signed_relative_volume_error": 232.81831501831502,
+          "median_absolute_relative_volume_error": 232.81831501831502,
+          "median_hd95_pooled_mm": 28.20757688585408,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.0025685220859103046,
+              "iou": 0.0012859124902710568,
+              "prediction_volume_mm3": 24855.678775644003,
+              "reference_volume_mm3": 32.80444914552,
+              "relative_volume_error": 756.6923076923077,
+              "assd_mm": 19.849161069410542,
+              "hd95_pooled_mm": 30.814866350473835,
+              "boundary_status": "ok",
+              "annotation": "5437",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.002298462058475579,
+              "iou": 0.0011505532807688404,
+              "prediction_volume_mm3": 24855.678775644003,
+              "reference_volume_mm3": 29.439890258800002,
+              "relative_volume_error": 843.2857142857143,
+              "assd_mm": 20.191752979917236,
+              "hd95_pooled_mm": 31.179235225814093,
+              "boundary_status": "ok",
+              "annotation": "Nodule 009",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.0024334920721929415,
+          "median_signed_relative_volume_error": 799.989010989011,
+          "median_absolute_relative_volume_error": 799.989010989011,
+          "median_hd95_pooled_mm": 30.997050788143966,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.00017175870504346016,
+              "iou": 8.588672841835685e-05,
+              "prediction_volume_mm3": 323183.5450036113,
+              "reference_volume_mm3": 32.80444914552,
+              "relative_volume_error": 9850.820512820514,
+              "assd_mm": 48.58795900374771,
+              "hd95_pooled_mm": 65.594474104466,
+              "boundary_status": "ok",
+              "annotation": "5437",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.00017176049300466356,
+              "iou": 8.588762255252808e-05,
+              "prediction_volume_mm3": 323183.5450036113,
+              "reference_volume_mm3": 29.439890258800002,
+              "relative_volume_error": 10976.742857142857,
+              "assd_mm": 48.29241335436517,
+              "hd95_pooled_mm": 65.28393227122521,
+              "boundary_status": "ok",
+              "annotation": "Nodule 009",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.00017175959902406186,
+          "median_signed_relative_volume_error": 10413.781684981685,
+          "median_absolute_relative_volume_error": 10413.781684981685,
+          "median_hd95_pooled_mm": 65.4392031878456,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0606-n1-c0": {
+      "case": "LIDC-IDRI-0606",
+      "group": "1",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.8709320123414721,
+        "min": 0.8506497159250718,
+        "max": 0.8962343981383541,
+        "p25": 0.8538393232656384,
+        "p75": 0.8868481638784689
+      },
+      "reference_equivalent_diameter_mm": 13.603974139280961,
+      "reader_volume_range_mm3": [
+        1136.5459709167483,
+        1465.0993709564211
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.5427492168785701,
+              "iou": 0.37244736675728646,
+              "prediction_volume_mm3": 1711.8437061309817,
+              "reference_volume_mm3": 1465.0993709564211,
+              "relative_volume_error": 0.16841474378183996,
+              "assd_mm": 1.4248787972532966,
+              "hd95_pooled_mm": 3.9332290980434017,
+              "boundary_status": "ok",
+              "annotation": "59325",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5058829574063608,
+              "iou": 0.33858321870701513,
+              "prediction_volume_mm3": 1711.8437061309817,
+              "reference_volume_mm3": 1136.5459709167483,
+              "relative_volume_error": 0.5061807880504765,
+              "assd_mm": 1.4282275876487198,
+              "hd95_pooled_mm": 3.702353608422412,
+              "boundary_status": "ok",
+              "annotation": "39625",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5488977372050111,
+              "iou": 0.3782626154463927,
+              "prediction_volume_mm3": 1711.8437061309817,
+              "reference_volume_mm3": 1302.0666370391848,
+              "relative_volume_error": 0.3147128245476003,
+              "assd_mm": 1.40689228003797,
+              "hd95_pooled_mm": 3.898541700055363,
+              "boundary_status": "ok",
+              "annotation": "9608",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.5499615680245965,
+              "iou": 0.37927378743705276,
+              "prediction_volume_mm3": 1711.8437061309817,
+              "reference_volume_mm3": 1334.5561046600344,
+              "relative_volume_error": 0.2827064371093322,
+              "assd_mm": 1.3411763232877223,
+              "hd95_pooled_mm": 3.6056364439942867,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.5458234770417907,
+          "median_signed_relative_volume_error": 0.29870963082846624,
+          "median_absolute_relative_volume_error": 0.29870963082846624,
+          "median_hd95_pooled_mm": 3.800447654238887,
+          "technical_pass": true
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.4680800267392446,
+              "iou": 0.30555122650624944,
+              "prediction_volume_mm3": 4664.872884750367,
+              "reference_volume_mm3": 1465.0993709564211,
+              "relative_volume_error": 2.183997602637099,
+              "assd_mm": 2.4835706183846704,
+              "hd95_pooled_mm": 5.027460981660538,
+              "boundary_status": "ok",
+              "annotation": "59325",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.38944527131000733,
+              "iou": 0.24180815738362257,
+              "prediction_volume_mm3": 4664.872884750367,
+              "reference_volume_mm3": 1136.5459709167483,
+              "relative_volume_error": 3.104429564769508,
+              "assd_mm": 2.842511646635888,
+              "hd95_pooled_mm": 5.291618687369635,
+              "boundary_status": "ok",
+              "annotation": "39625",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.4333856568233101,
+              "iou": 0.2766383818141967,
+              "prediction_volume_mm3": 4664.872884750367,
+              "reference_volume_mm3": 1302.0666370391848,
+              "relative_volume_error": 2.5826683151624144,
+              "assd_mm": 2.708774553726855,
+              "hd95_pooled_mm": 5.2551828868339365,
+              "boundary_status": "ok",
+              "annotation": "9608",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.4430404449431624,
+              "iou": 0.28455488358975967,
+              "prediction_volume_mm3": 4664.872884750367,
+              "reference_volume_mm3": 1334.5561046600344,
+              "relative_volume_error": 2.4954490623971926,
+              "assd_mm": 2.6326472096655373,
+              "hd95_pooled_mm": 5.066145726243103,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.43821305088323625,
+          "median_signed_relative_volume_error": 2.5390586887798037,
+          "median_absolute_relative_volume_error": 2.5390586887798037,
+          "median_hd95_pooled_mm": 5.16066430653852,
+          "technical_pass": true
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.7625669998551354,
+              "iou": 0.6162491219854835,
+              "prediction_volume_mm3": 1565.6411018371584,
+              "reference_volume_mm3": 1465.0993709564211,
+              "relative_volume_error": 0.06862451303566086,
+              "assd_mm": 0.7333631606873449,
+              "hd95_pooled_mm": 1.9063790699772345,
+              "boundary_status": "ok",
+              "annotation": "59325",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.7383015597920277,
+              "iou": 0.5851648351648352,
+              "prediction_volume_mm3": 1565.6411018371584,
+              "reference_volume_mm3": 1136.5459709167483,
+              "relative_volume_error": 0.37754313674993556,
+              "assd_mm": 0.7500364696676427,
+              "hd95_pooled_mm": 1.827999795391981,
+              "boundary_status": "ok",
+              "annotation": "39625",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.7581525899464149,
+              "iou": 0.610503821813101,
+              "prediction_volume_mm3": 1565.6411018371584,
+              "reference_volume_mm3": 1302.0666370391848,
+              "relative_volume_error": 0.20242778464651012,
+              "assd_mm": 0.7443620545061769,
+              "hd95_pooled_mm": 1.9506595767646973,
+              "boundary_status": "ok",
+              "annotation": "9608",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.7586415703688753,
+              "iou": 0.6111382113821138,
+              "prediction_volume_mm3": 1565.6411018371584,
+              "reference_volume_mm3": 1334.5561046600344,
+              "relative_volume_error": 0.1731549512007895,
+              "assd_mm": 0.7249392408434033,
+              "hd95_pooled_mm": 2.0,
+              "boundary_status": "ok",
+              "annotation": "0",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.7583970801576451,
+          "median_signed_relative_volume_error": 0.1877913679236498,
+          "median_absolute_relative_volume_error": 0.1877913679236498,
+          "median_hd95_pooled_mm": 1.9285193233709659,
+          "technical_pass": true
+        }
+      }
+    },
+    "LIDC-IDRI-0606-n2-c8": {
+      "case": "LIDC-IDRI-0606",
+      "group": "2",
+      "reader_count": 1,
+      "reader_pairwise_dice": {
+        "n": 0
+      },
+      "reference_equivalent_diameter_mm": 9.081869645754331,
+      "reader_volume_range_mm3": [
+        392.2151947021485,
+        392.2151947021485
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.19950124688279303,
+              "iou": 0.11080332409972299,
+              "prediction_volume_mm3": 1661.7923641204836,
+              "reference_volume_mm3": 392.2151947021485,
+              "relative_volume_error": 3.236940298507463,
+              "assd_mm": 5.615373016185314,
+              "hd95_pooled_mm": 19.137015061568672,
+              "boundary_status": "ok",
+              "annotation": "59329",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.19950124688279303,
+          "median_signed_relative_volume_error": 3.236940298507463,
+          "median_absolute_relative_volume_error": 3.236940298507463,
+          "median_hd95_pooled_mm": 19.137015061568672,
+          "technical_pass": false
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.009458509331736536,
+              "iou": 0.0047517267919701235,
+              "prediction_volume_mm3": 80994.34024238588,
+              "reference_volume_mm3": 392.2151947021485,
+              "relative_volume_error": 205.50485074626866,
+              "assd_mm": 25.968989364077977,
+              "hd95_pooled_mm": 42.09710482428707,
+              "boundary_status": "ok",
+              "annotation": "59329",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.009458509331736536,
+          "median_signed_relative_volume_error": 205.50485074626866,
+          "median_absolute_relative_volume_error": 205.50485074626866,
+          "median_hd95_pooled_mm": 42.09710482428707,
+          "technical_pass": false
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.010636835551530636,
+              "iou": 0.005346854582219829,
+              "prediction_volume_mm3": 72006.02658081056,
+              "reference_volume_mm3": 392.2151947021485,
+              "relative_volume_error": 182.58805970149254,
+              "assd_mm": 29.81363861011242,
+              "hd95_pooled_mm": 55.62057724417128,
+              "boundary_status": "ok",
+              "annotation": "59329",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.010636835551530636,
+          "median_signed_relative_volume_error": 182.58805970149254,
+          "median_absolute_relative_volume_error": 182.58805970149254,
+          "median_hd95_pooled_mm": 55.62057724417128,
+          "technical_pass": false
+        }
+      }
+    },
+    "LIDC-IDRI-0884-n2-c0": {
+      "case": "LIDC-IDRI-0884",
+      "group": "2",
+      "reader_count": 4,
+      "reader_pairwise_dice": {
+        "n": 6,
+        "median": 0.8894638029777191,
+        "min": 0.8720406402760471,
+        "max": 0.9015934331240947,
+        "p25": 0.8753023434980471,
+        "p75": 0.8952640057922964
+      },
+      "reference_equivalent_diameter_mm": 17.59275812492067,
+      "reader_volume_range_mm3": [
+        2668.4701789810056,
+        3055.4286721941157
+      ],
+      "conditions": {
+        "48": {
+          "per_reader": [
+            {
+              "dice": 0.47763946519133244,
+              "iou": 0.31374924288310113,
+              "prediction_volume_mm3": 918.3373927251303,
+              "reference_volume_mm3": 2668.4701789810056,
+              "relative_volume_error": -0.6558562280520553,
+              "assd_mm": 2.329388335131804,
+              "hd95_pooled_mm": 5.0086883009526595,
+              "boundary_status": "ok",
+              "annotation": "IL057_195832",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.47925564368517387,
+              "iou": 0.3151454363089268,
+              "prediction_volume_mm3": 918.3373927251303,
+              "reference_volume_mm3": 2695.4801022964507,
+              "relative_volume_error": -0.6593047034764826,
+              "assd_mm": 2.301521752812945,
+              "hd95_pooled_mm": 5.185945375927016,
+              "boundary_status": "ok",
+              "annotation": "4344",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.44678165755153554,
+              "iou": 0.2876489707475623,
+              "prediction_volume_mm3": 918.3373927251303,
+              "reference_volume_mm3": 3012.4332840593256,
+              "relative_volume_error": -0.6951509606587374,
+              "assd_mm": 2.603520794111447,
+              "hd95_pooled_mm": 5.739129735176931,
+              "boundary_status": "ok",
+              "annotation": "81163",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.4461090303786933,
+              "iou": 0.2870915907873594,
+              "prediction_volume_mm3": 918.3373927251303,
+              "reference_volume_mm3": 3055.4286721941157,
+              "relative_volume_error": -0.6994407360635035,
+              "assd_mm": 2.5519402590450753,
+              "hd95_pooled_mm": 5.669445469673724,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.462210561371434,
+          "median_signed_relative_volume_error": -0.67722783206761,
+          "median_absolute_relative_volume_error": 0.67722783206761,
+          "median_hd95_pooled_mm": 5.427695422800371,
+          "technical_pass": true
+        },
+        "64": {
+          "per_reader": [
+            {
+              "dice": 0.7803418803418803,
+              "iou": 0.6398037841625789,
+              "prediction_volume_mm3": 2490.9763971937955,
+              "reference_volume_mm3": 2668.4701789810056,
+              "relative_volume_error": -0.06651518281346824,
+              "assd_mm": 0.9329093303178007,
+              "hd95_pooled_mm": 2.6145147290279054,
+              "boundary_status": "ok",
+              "annotation": "IL057_195832",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.7503454139653524,
+              "iou": 0.6004422520836877,
+              "prediction_volume_mm3": 2490.9763971937955,
+              "reference_volume_mm3": 2695.4801022964507,
+              "relative_volume_error": -0.07586912065439677,
+              "assd_mm": 1.074300001521087,
+              "hd95_pooled_mm": 2.8308856139688876,
+              "boundary_status": "ok",
+              "annotation": "4344",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.7355769230769231,
+              "iou": 0.5817490494296578,
+              "prediction_volume_mm3": 2490.9763971937955,
+              "reference_volume_mm3": 3012.4332840593256,
+              "relative_volume_error": -0.1731015553522416,
+              "assd_mm": 1.160496034391788,
+              "hd95_pooled_mm": 3.082224864800106,
+              "boundary_status": "ok",
+              "annotation": "81163",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.763068972371298,
+              "iou": 0.6169050297284268,
+              "prediction_volume_mm3": 2490.9763971937955,
+              "reference_volume_mm3": 3055.4286721941157,
+              "relative_volume_error": -0.18473750676528955,
+              "assd_mm": 1.0156501054486196,
+              "hd95_pooled_mm": 2.907729646858526,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.7567071931683251,
+          "median_signed_relative_volume_error": -0.12448533800331918,
+          "median_absolute_relative_volume_error": 0.12448533800331918,
+          "median_hd95_pooled_mm": 2.869307630413707,
+          "technical_pass": true
+        },
+        "96": {
+          "per_reader": [
+            {
+              "dice": 0.6879619190780408,
+              "iou": 0.524345999618102,
+              "prediction_volume_mm3": 1731.9424297373105,
+              "reference_volume_mm3": 2668.4701789810056,
+              "relative_volume_error": -0.3509605453418715,
+              "assd_mm": 1.4231730973544632,
+              "hd95_pooled_mm": 4.17584964221463,
+              "boundary_status": "ok",
+              "annotation": "IL057_195832",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.6362051792828686,
+              "iou": 0.46649625707504105,
+              "prediction_volume_mm3": 1731.9424297373105,
+              "reference_volume_mm3": 2695.4801022964507,
+              "relative_volume_error": -0.3574642126789366,
+              "assd_mm": 1.714752536084487,
+              "hd95_pooled_mm": 4.69562743328302,
+              "boundary_status": "ok",
+              "annotation": "4344",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.626466829324968,
+              "iou": 0.4560987988496024,
+              "prediction_volume_mm3": 1731.9424297373105,
+              "reference_volume_mm3": 3012.4332840593256,
+              "relative_volume_error": -0.42506861848124433,
+              "assd_mm": 1.8625112387644125,
+              "hd95_pooled_mm": 5.3538390048506415,
+              "boundary_status": "ok",
+              "annotation": "81163",
+              "positive_inside_reader_mask": true
+            },
+            {
+              "dice": 0.6553828439838802,
+              "iou": 0.4874122281212536,
+              "prediction_volume_mm3": 1731.9424297373105,
+              "reference_volume_mm3": 3055.4286721941157,
+              "relative_volume_error": -0.43315893920259785,
+              "assd_mm": 1.616926102554806,
+              "hd95_pooled_mm": 5.1082311315151,
+              "boundary_status": "ok",
+              "annotation": "Nodule 002",
+              "positive_inside_reader_mask": true
+            }
+          ],
+          "median_reader_dice": 0.6457940116333745,
+          "median_signed_relative_volume_error": -0.39126641558009045,
+          "median_absolute_relative_volume_error": 0.39126641558009045,
+          "median_hd95_pooled_mm": 4.90192928239906,
+          "technical_pass": true
+        }
+      }
+    }
+  },
+  "crop_stability": {
+    "LIDC-IDRI-0052-n1-c0": {
+      "case": "LIDC-IDRI-0052",
+      "volumes_mm3": {
+        "48": 369.06482832047993,
+        "64": 347.03110722671994,
+        "96": 652.74898740264
+      },
+      "pairwise_dice": {
+        "48-64": 0.6634615384615384,
+        "48-96": 0.6199460916442049,
+        "64-96": 0.6707988980716253
+      },
+      "min_pairwise_dice": 0.6199460916442049,
+      "volume_span_relative_to_64": 0.8809523809523812
+    },
+    "LIDC-IDRI-0052-n2-c1": {
+      "case": "LIDC-IDRI-0052",
+      "volumes_mm3": {
+        "48": 37056.587556999235,
+        "64": 6384.270686916959,
+        "96": 2115.23722500096
+      },
+      "pairwise_dice": {
+        "48-64": 0.19917578063084482,
+        "48-96": 0.09773246616277026,
+        "64-96": 0.43551523007128967
+      },
+      "min_pairwise_dice": 0.09773246616277026,
+      "volume_span_relative_to_64": 5.473037100949095
+    },
+    "LIDC-IDRI-0080-n2-c0": {
+      "case": "LIDC-IDRI-0080",
+      "volumes_mm3": {
+        "48": 20407.867431640625,
+        "64": 25485.2294921875,
+        "96": 3141.021728515625
+      },
+      "pairwise_dice": {
+        "48-64": 0.3452529383405649,
+        "48-96": 0.26559968897816366,
+        "64-96": 0.21710508781748888
+      },
+      "min_pairwise_dice": 0.21710508781748888,
+      "volume_span_relative_to_64": 0.8767512872709855
+    },
+    "LIDC-IDRI-0080-n1-c3": {
+      "case": "LIDC-IDRI-0080",
+      "volumes_mm3": {
+        "48": 41829.681396484375,
+        "64": 62297.821044921875,
+        "96": 200525.66528320312
+      },
+      "pairwise_dice": {
+        "48-64": 0.5923125393824826,
+        "48-96": 0.27659762009695904,
+        "64-96": 0.3796765054225401
+      },
+      "min_pairwise_dice": 0.27659762009695904,
+      "volume_span_relative_to_64": 2.5473761557773558
+    },
+    "LIDC-IDRI-0206-n2-c0": {
+      "case": "LIDC-IDRI-0206",
+      "volumes_mm3": {
+        "48": 684.17431019289,
+        "64": 1399.447452667275,
+        "96": 310.98832281495
+      },
+      "pairwise_dice": {
+        "48-64": 0.6112618724559024,
+        "48-96": 0.5852272727272727,
+        "64-96": 0.36363636363636365
+      },
+      "min_pairwise_dice": 0.36363636363636365,
+      "volume_span_relative_to_64": 0.7777777777777778
+    },
+    "LIDC-IDRI-0206-n1-c1": {
+      "case": "LIDC-IDRI-0206",
+      "volumes_mm3": {
+        "48": 3935.4158668946397,
+        "64": 3596.15587836924,
+        "96": 3876.045368902695
+      },
+      "pairwise_dice": {
+        "48-64": 0.6659159159159159,
+        "48-96": 0.6608758595729279,
+        "64-96": 0.697124479757851
+      },
+      "min_pairwise_dice": 0.6608758595729279,
+      "volume_span_relative_to_64": 0.0943396226415094
+    },
+    "LIDC-IDRI-0206-n4-c2": {
+      "case": "LIDC-IDRI-0206",
+      "volumes_mm3": {
+        "48": 18656.472202325953,
+        "64": 6273.482621148854,
+        "96": 153451.53355989498
+      },
+      "pairwise_dice": {
+        "48-64": 0.2839646178271717,
+        "48-96": 0.10954966202064836,
+        "64-96": 0.06834051666917419
+      },
+      "min_pairwise_dice": 0.06834051666917419,
+      "volume_span_relative_to_64": 23.4603424966201
+    },
+    "LIDC-IDRI-0447-n2-c0": {
+      "case": "LIDC-IDRI-0447",
+      "volumes_mm3": {
+        "48": 22679.394094790296,
+        "64": 86765.6726617391,
+        "96": 65331.03787428468
+      },
+      "pairwise_dice": {
+        "48-64": 0.3732983806879754,
+        "48-96": 0.10704598930481284,
+        "64-96": 0.1650266487440557
+      },
+      "min_pairwise_dice": 0.10704598930481284,
+      "volume_span_relative_to_64": 0.7386132856572529
+    },
+    "LIDC-IDRI-0447-n1-c1": {
+      "case": "LIDC-IDRI-0447",
+      "volumes_mm3": {
+        "48": 59039.0920833319,
+        "64": 4494.838660307239,
+        "96": 53023.13194642546
+      },
+      "pairwise_dice": {
+        "48-64": 0.11278756918846523,
+        "48-96": 0.25832073379699627,
+        "64-96": 0.09922494828624545
+      },
+      "min_pairwise_dice": 0.09922494828624545,
+      "volume_span_relative_to_64": 12.134863461216286
+    },
+    "LIDC-IDRI-0447-n5-c2": {
+      "case": "LIDC-IDRI-0447",
+      "volumes_mm3": {
+        "48": 23026.917640062835,
+        "64": 13137.368950866157,
+        "96": 143195.13777618262
+      },
+      "pairwise_dice": {
+        "48-64": 0.39473191046330036,
+        "48-96": 0.13997168582592445,
+        "64-96": 0.09825894910755788
+      },
+      "min_pairwise_dice": 0.09825894910755788,
+      "volume_span_relative_to_64": 9.899833772784591
+    },
+    "LIDC-IDRI-0447-n3-c4": {
+      "case": "LIDC-IDRI-0447",
+      "volumes_mm3": {
+        "48": 44051.527356226026,
+        "64": 74409.94930132342,
+        "96": 0.0
+      },
+      "pairwise_dice": {
+        "48-64": 0.5304138882355559,
+        "48-96": 0.0,
+        "64-96": 0.0
+      },
+      "min_pairwise_dice": 0.0,
+      "volume_span_relative_to_64": 1.0
+    },
+    "LIDC-IDRI-0473-n1-c0": {
+      "case": "LIDC-IDRI-0473",
+      "volumes_mm3": {
+        "48": 0.0,
+        "64": 7199.31487785912,
+        "96": 4012.2364724136005
+      },
+      "pairwise_dice": {
+        "48-64": 0.0,
+        "48-96": 0.0,
+        "64-96": 0.4525470778002851
+      },
+      "min_pairwise_dice": 0.0,
+      "volume_span_relative_to_64": 1.0
+    },
+    "LIDC-IDRI-0473-n2-c1": {
+      "case": "LIDC-IDRI-0473",
+      "volumes_mm3": {
+        "48": 0.0,
+        "64": 55633.82233163688,
+        "96": 22585.44266682968
+      },
+      "pairwise_dice": {
+        "48-64": 0.0,
+        "48-96": 0.0,
+        "64-96": 0.3535572952512044
+      },
+      "min_pairwise_dice": 0.0,
+      "volume_span_relative_to_64": 1.0
+    },
+    "LIDC-IDRI-0473-n4-c4": {
+      "case": "LIDC-IDRI-0473",
+      "volumes_mm3": {
+        "48": 1287.78491389208,
+        "64": 53.832942187520004,
+        "96": 126255.072224168
+      },
+      "pairwise_dice": {
+        "48-64": 0.08025078369905957,
+        "48-96": 0.017397497873126208,
+        "64-96": 0.0008524013744972164
+      },
+      "min_pairwise_dice": 0.0008524013744972164,
+      "volume_span_relative_to_64": 2344.3125
+    },
+    "LIDC-IDRI-0473-n3-c6": {
+      "case": "LIDC-IDRI-0473",
+      "volumes_mm3": {
+        "48": 7255.671239211681,
+        "64": 24855.678775644003,
+        "96": 323183.5450036113
+      },
+      "pairwise_dice": {
+        "48-64": 0.33979463537300925,
+        "48-96": 0.014249822449961435,
+        "64-96": 0.00941100270439446
+      },
+      "min_pairwise_dice": 0.00941100270439446,
+      "volume_span_relative_to_64": 12.710490693739423
+    },
+    "LIDC-IDRI-0606-n1-c0": {
+      "case": "LIDC-IDRI-0606",
+      "volumes_mm3": {
+        "48": 1711.8437061309817,
+        "64": 4664.872884750367,
+        "96": 1565.6411018371584
+      },
+      "pairwise_dice": {
+        "48-64": 0.5071146607913339,
+        "48-96": 0.5931681178834561,
+        "64-96": 0.49040471660442064
+      },
+      "min_pairwise_dice": 0.49040471660442064,
+      "volume_span_relative_to_64": 0.6643764705882353
+    },
+    "LIDC-IDRI-0606-n2-c8": {
+      "case": "LIDC-IDRI-0606",
+      "volumes_mm3": {
+        "48": 1661.7923641204836,
+        "64": 80994.34024238588,
+        "96": 72006.02658081056
+      },
+      "pairwise_dice": {
+        "48-64": 0.02520591797276146,
+        "48-96": 0.04291069608698157,
+        "64-96": 0.05789856798370843
+      },
+      "min_pairwise_dice": 0.02520591797276146,
+      "volume_span_relative_to_64": 0.9794826112645976
+    },
+    "LIDC-IDRI-0884-n2-c0": {
+      "case": "LIDC-IDRI-0884",
+      "volumes_mm3": {
+        "48": 918.3373927251303,
+        "64": 2490.9763971937955,
+        "96": 1731.9424297373105
+      },
+      "pairwise_dice": {
+        "48-64": 0.525141471301536,
+        "48-96": 0.5748752079866889,
+        "64-96": 0.7061741287038246
+      },
+      "min_pairwise_dice": 0.525141471301536,
+      "volume_span_relative_to_64": 0.6313343660101792
+    },
+    "hero-134503-T0": {
+      "case": "134503",
+      "volumes_mm3": {
+        "48": 330.328125,
+        "64": 347.4140625,
+        "96": 135.421875
+      },
+      "pairwise_dice": {
+        "48-64": 0.7189542483660131,
+        "48-96": 0.5679347826086957,
+        "64-96": 0.4849279161205767
+      },
+      "min_pairwise_dice": 0.4849279161205767,
+      "volume_span_relative_to_64": 0.6102003642987249
+    },
+    "hero-134503-T1": {
+      "case": "134503",
+      "volumes_mm3": {
+        "48": 560.1531982421875,
+        "64": 552.8213500976562,
+        "96": 329.93316650390625
+      },
+      "pairwise_dice": {
+        "48-64": 0.7931488801054019,
+        "48-96": 0.7018121911037891,
+        "64-96": 0.632890365448505
+      },
+      "min_pairwise_dice": 0.632890365448505,
+      "volume_span_relative_to_64": 0.41644562334217505
+    },
+    "hero-134503-T2": {
+      "case": "134503",
+      "volumes_mm3": {
+        "48": 929.7111511230468,
+        "64": 774.3438720703124,
+        "96": 1326.8531799316404
+      },
+      "pairwise_dice": {
+        "48-64": 0.7966845441248172,
+        "48-96": 0.707658321060383,
+        "64-96": 0.6824831949387109
+      },
+      "min_pairwise_dice": 0.6824831949387109,
+      "volume_span_relative_to_64": 0.713519313304721
+    }
+  },
+  "reader_pairwise": [
+    {
+      "dice": 0.8583941605839416,
+      "iou": 0.7519181585677749,
+      "prediction_volume_mm3": 232.04262526865998,
+      "reference_volume_mm3": 239.61671689463998,
+      "relative_volume_error": -0.031609195402298895,
+      "case": "LIDC-IDRI-0052",
+      "group": "1",
+      "reader_a": "Nodule 002",
+      "reader_b": "IL057_159650"
+    },
+    {
+      "dice": 0.75177304964539,
+      "iou": 0.6022727272727273,
+      "prediction_volume_mm3": 232.04262526865998,
+      "reference_volume_mm3": 156.30170900885997,
+      "relative_volume_error": 0.4845814977973568,
+      "case": "LIDC-IDRI-0052",
+      "group": "1",
+      "reader_a": "Nodule 002",
+      "reader_b": "MI014_13738"
+    },
+    {
+      "dice": 0.7968545216251638,
+      "iou": 0.6623093681917211,
+      "prediction_volume_mm3": 232.04262526865998,
+      "reference_volume_mm3": 293.32391206067996,
+      "relative_volume_error": -0.20892018779342725,
+      "case": "LIDC-IDRI-0052",
+      "group": "1",
+      "reader_a": "Nodule 002",
+      "reader_b": "2"
+    },
+    {
+      "dice": 0.768695652173913,
+      "iou": 0.6242937853107344,
+      "prediction_volume_mm3": 239.61671689463998,
+      "reference_volume_mm3": 156.30170900885997,
+      "relative_volume_error": 0.5330396475770924,
+      "case": "LIDC-IDRI-0052",
+      "group": "1",
+      "reader_a": "IL057_159650",
+      "reader_b": "MI014_13738"
+    },
+    {
+      "dice": 0.8578811369509044,
+      "iou": 0.751131221719457,
+      "prediction_volume_mm3": 239.61671689463998,
+      "reference_volume_mm3": 293.32391206067996,
+      "relative_volume_error": -0.18309859154929575,
+      "case": "LIDC-IDRI-0052",
+      "group": "1",
+      "reader_a": "IL057_159650",
+      "reader_b": "2"
+    },
+    {
+      "dice": 0.6860643185298622,
+      "iou": 0.5221445221445221,
+      "prediction_volume_mm3": 156.30170900885997,
+      "reference_volume_mm3": 293.32391206067996,
+      "relative_volume_error": -0.46713615023474175,
+      "case": "LIDC-IDRI-0052",
+      "group": "1",
+      "reader_a": "MI014_13738",
+      "reader_b": "2"
+    },
+    {
+      "dice": 0.6339144215530903,
+      "iou": 0.46403712296983757,
+      "prediction_volume_mm3": 1806.0765759041396,
+      "reference_volume_mm3": 1235.2654888189197,
+      "relative_volume_error": 0.46209587513935335,
+      "case": "LIDC-IDRI-0052",
+      "group": "2",
+      "reader_a": "Nodule 001",
+      "reader_b": "IL057_159648"
+    },
+    {
+      "dice": 0.21483278626135768,
+      "iou": 0.12034322869477163,
+      "prediction_volume_mm3": 1806.0765759041396,
+      "reference_volume_mm3": 12668.012521343639,
+      "relative_volume_error": -0.8574301554516796,
+      "case": "LIDC-IDRI-0052",
+      "group": "2",
+      "reader_a": "Nodule 001",
+      "reader_b": "MI014_13717"
+    },
+    {
+      "dice": 0.49772727272727274,
+      "iou": 0.3313161875945537,
+      "prediction_volume_mm3": 1806.0765759041396,
+      "reference_volume_mm3": 617.6327444094599,
+      "relative_volume_error": 1.9241917502787067,
+      "case": "LIDC-IDRI-0052",
+      "group": "2",
+      "reader_a": "Nodule 001",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.13906497622820918,
+      "iou": 0.07472855013838621,
+      "prediction_volume_mm3": 1235.2654888189197,
+      "reference_volume_mm3": 12668.012521343639,
+      "relative_volume_error": -0.9024894010218502,
+      "case": "LIDC-IDRI-0052",
+      "group": "2",
+      "reader_a": "IL057_159648",
+      "reader_b": "MI014_13717"
+    },
+    {
+      "dice": 0.5908584169453734,
+      "iou": 0.41930379746835444,
+      "prediction_volume_mm3": 1235.2654888189197,
+      "reference_volume_mm3": 617.6327444094599,
+      "relative_volume_error": 1.0,
+      "case": "LIDC-IDRI-0052",
+      "group": "2",
+      "reader_a": "IL057_159648",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.09152630215081628,
+      "iou": 0.047957853573756246,
+      "prediction_volume_mm3": 12668.012521343639,
+      "reference_volume_mm3": 617.6327444094599,
+      "relative_volume_error": 19.510590858416947,
+      "case": "LIDC-IDRI-0052",
+      "group": "2",
+      "reader_a": "MI014_13717",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.8349528643944888,
+      "iou": 0.7166687414415536,
+      "prediction_volume_mm3": 5939.483642578125,
+      "reference_volume_mm3": 4581.451416015625,
+      "relative_volume_error": 0.2964196502914238,
+      "case": "LIDC-IDRI-0080",
+      "group": "2",
+      "reader_a": "Nodule 004",
+      "reader_b": "IL057_201470"
+    },
+    {
+      "dice": 0.8544196370283327,
+      "iou": 0.7458399817643037,
+      "prediction_volume_mm3": 5939.483642578125,
+      "reference_volume_mm3": 5747.222900390625,
+      "relative_volume_error": 0.03345280764635605,
+      "case": "LIDC-IDRI-0080",
+      "group": "2",
+      "reader_a": "Nodule 004",
+      "reader_b": "MI014_20607"
+    },
+    {
+      "dice": 0.7959512819086814,
+      "iou": 0.6610623556581986,
+      "prediction_volume_mm3": 5939.483642578125,
+      "reference_volume_mm3": 7778.9306640625,
+      "relative_volume_error": -0.23646528050215776,
+      "case": "LIDC-IDRI-0080",
+      "group": "2",
+      "reader_a": "Nodule 004",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.780469788742798,
+      "iou": 0.6399757722592369,
+      "prediction_volume_mm3": 4581.451416015625,
+      "reference_volume_mm3": 5747.222900390625,
+      "relative_volume_error": -0.20284083366520644,
+      "case": "LIDC-IDRI-0080",
+      "group": "2",
+      "reader_a": "IL057_201470",
+      "reader_b": "MI014_20607"
+    },
+    {
+      "dice": 0.7355101536942164,
+      "iou": 0.5816655276774383,
+      "prediction_volume_mm3": 4581.451416015625,
+      "reference_volume_mm3": 7778.9306640625,
+      "relative_volume_error": -0.41104354648881913,
+      "case": "LIDC-IDRI-0080",
+      "group": "2",
+      "reader_a": "IL057_201470",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.7739861244289018,
+      "iou": 0.6313029076186971,
+      "prediction_volume_mm3": 5747.222900390625,
+      "reference_volume_mm3": 7778.9306640625,
+      "relative_volume_error": -0.261180855237348,
+      "case": "LIDC-IDRI-0080",
+      "group": "2",
+      "reader_a": "MI014_20607",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.7744200893807193,
+      "iou": 0.6318805348150721,
+      "prediction_volume_mm3": 2854.156494140625,
+      "reference_volume_mm3": 4315.948486328125,
+      "relative_volume_error": -0.33869542160155564,
+      "case": "LIDC-IDRI-0080",
+      "group": "1",
+      "reader_a": "IL057_203646",
+      "reader_b": "MI014_20609"
+    },
+    {
+      "dice": 0.78415991902834,
+      "iou": 0.6449531737773153,
+      "prediction_volume_mm3": 2854.156494140625,
+      "reference_volume_mm3": 3176.116943359375,
+      "relative_volume_error": -0.10136920490031232,
+      "case": "LIDC-IDRI-0080",
+      "group": "1",
+      "reader_a": "IL057_203646",
+      "reader_b": "3"
+    },
+    {
+      "dice": 0.8244399185336049,
+      "iou": 0.7013167013167013,
+      "prediction_volume_mm3": 4315.948486328125,
+      "reference_volume_mm3": 3176.116943359375,
+      "relative_volume_error": 0.3588758107134278,
+      "case": "LIDC-IDRI-0080",
+      "group": "1",
+      "reader_a": "MI014_20609",
+      "reader_b": "3"
+    },
+    {
+      "dice": 0.7631184407796102,
+      "iou": 0.616969696969697,
+      "prediction_volume_mm3": 395.80331994629995,
+      "reference_volume_mm3": 547.0567314972075,
+      "relative_volume_error": -0.27648578811369506,
+      "case": "LIDC-IDRI-0206",
+      "group": "2",
+      "reader_a": "09876",
+      "reader_b": "IL057_123244"
+    },
+    {
+      "dice": 0.6108647450110865,
+      "iou": 0.4397446129289705,
+      "prediction_volume_mm3": 395.80331994629995,
+      "reference_volume_mm3": 879.2488035949949,
+      "relative_volume_error": -0.54983922829582,
+      "case": "LIDC-IDRI-0206",
+      "group": "2",
+      "reader_a": "09876",
+      "reader_b": "Nodule 001"
+    },
+    {
+      "dice": 0.7838884585592564,
+      "iou": 0.6445859872611465,
+      "prediction_volume_mm3": 395.80331994629995,
+      "reference_volume_mm3": 516.6646908584737,
+      "relative_volume_error": -0.23392612859097128,
+      "case": "LIDC-IDRI-0206",
+      "group": "2",
+      "reader_a": "09876",
+      "reader_b": "8066"
+    },
+    {
+      "dice": 0.7205153617443013,
+      "iou": 0.5631293570875291,
+      "prediction_volume_mm3": 547.0567314972075,
+      "reference_volume_mm3": 879.2488035949949,
+      "relative_volume_error": -0.3778135048231511,
+      "case": "LIDC-IDRI-0206",
+      "group": "2",
+      "reader_a": "IL057_123244",
+      "reader_b": "Nodule 001"
+    },
+    {
+      "dice": 0.7827242524916943,
+      "iou": 0.6430131004366813,
+      "prediction_volume_mm3": 547.0567314972075,
+      "reference_volume_mm3": 516.6646908584737,
+      "relative_volume_error": 0.05882352941176472,
+      "case": "LIDC-IDRI-0206",
+      "group": "2",
+      "reader_a": "IL057_123244",
+      "reader_b": "8066"
+    },
+    {
+      "dice": 0.6632911392405063,
+      "iou": 0.4962121212121212,
+      "prediction_volume_mm3": 879.2488035949949,
+      "reference_volume_mm3": 516.6646908584737,
+      "relative_volume_error": 0.7017783857729138,
+      "case": "LIDC-IDRI-0206",
+      "group": "2",
+      "reader_a": "Nodule 001",
+      "reader_b": "8066"
+    },
+    {
+      "dice": 0.95,
+      "iou": 0.9047619047619048,
+      "prediction_volume_mm3": 67.14520606231875,
+      "reference_volume_mm3": 74.21312248993125,
+      "relative_volume_error": -0.09523809523809523,
+      "case": "LIDC-IDRI-0206",
+      "group": "1",
+      "reader_a": "09879",
+      "reader_b": "IL057_123247"
+    },
+    {
+      "dice": 0.8349514563106796,
+      "iou": 0.7166666666666667,
+      "prediction_volume_mm3": 67.14520606231875,
+      "reference_volume_mm3": 78.45387234649874,
+      "relative_volume_error": -0.14414414414414412,
+      "case": "LIDC-IDRI-0206",
+      "group": "1",
+      "reader_a": "09879",
+      "reader_b": "Nodule 002"
+    },
+    {
+      "dice": 0.7167630057803468,
+      "iou": 0.5585585585585585,
+      "prediction_volume_mm3": 67.14520606231875,
+      "reference_volume_mm3": 55.1297481353775,
+      "relative_volume_error": 0.21794871794871784,
+      "case": "LIDC-IDRI-0206",
+      "group": "1",
+      "reader_a": "09879",
+      "reader_b": "8072"
+    },
+    {
+      "dice": 0.8333333333333334,
+      "iou": 0.7142857142857143,
+      "prediction_volume_mm3": 74.21312248993125,
+      "reference_volume_mm3": 78.45387234649874,
+      "relative_volume_error": -0.05405405405405406,
+      "case": "LIDC-IDRI-0206",
+      "group": "1",
+      "reader_a": "IL057_123247",
+      "reader_b": "Nodule 002"
+    },
+    {
+      "dice": 0.6994535519125683,
+      "iou": 0.5378151260504201,
+      "prediction_volume_mm3": 74.21312248993125,
+      "reference_volume_mm3": 55.1297481353775,
+      "relative_volume_error": 0.34615384615384626,
+      "case": "LIDC-IDRI-0206",
+      "group": "1",
+      "reader_a": "IL057_123247",
+      "reader_b": "8072"
+    },
+    {
+      "dice": 0.6666666666666666,
+      "iou": 0.5,
+      "prediction_volume_mm3": 78.45387234649874,
+      "reference_volume_mm3": 55.1297481353775,
+      "relative_volume_error": 0.42307692307692313,
+      "case": "LIDC-IDRI-0206",
+      "group": "1",
+      "reader_a": "Nodule 002",
+      "reader_b": "8072"
+    },
+    {
+      "dice": 0.8497409326424871,
+      "iou": 0.7387387387387387,
+      "prediction_volume_mm3": 77.7470807037375,
+      "reference_volume_mm3": 58.66370634918375,
+      "relative_volume_error": 0.32530120481927716,
+      "case": "LIDC-IDRI-0206",
+      "group": "4",
+      "reader_a": "10262",
+      "reader_b": "IL057_123250"
+    },
+    {
+      "dice": 0.8859649122807017,
+      "iou": 0.7952755905511811,
+      "prediction_volume_mm3": 77.7470807037375,
+      "reference_volume_mm3": 83.40141384582749,
+      "relative_volume_error": -0.06779661016949157,
+      "case": "LIDC-IDRI-0206",
+      "group": "4",
+      "reader_a": "10262",
+      "reader_b": "8162"
+    },
+    {
+      "dice": 0.8059701492537313,
+      "iou": 0.675,
+      "prediction_volume_mm3": 58.66370634918375,
+      "reference_volume_mm3": 83.40141384582749,
+      "relative_volume_error": -0.2966101694915254,
+      "case": "LIDC-IDRI-0206",
+      "group": "4",
+      "reader_a": "IL057_123250",
+      "reader_b": "8162"
+    },
+    {
+      "dice": 0.8895889588958896,
+      "iou": 0.80113482842475,
+      "prediction_volume_mm3": 1289.9411333734797,
+      "reference_volume_mm3": 1219.9093030151996,
+      "relative_volume_error": 0.05740740740740735,
+      "case": "LIDC-IDRI-0447",
+      "group": "2",
+      "reader_a": "81210",
+      "reader_b": "IL057_195860"
+    },
+    {
+      "dice": 0.8248514595711702,
+      "iou": 0.70191250824357,
+      "prediction_volume_mm3": 1289.9411333734797,
+      "reference_volume_mm3": 1625.0396764856796,
+      "relative_volume_error": -0.20620945319740502,
+      "case": "LIDC-IDRI-0447",
+      "group": "2",
+      "reader_a": "81210",
+      "reader_b": "Nodule 001"
+    },
+    {
+      "dice": 0.8843556960206866,
+      "iou": 0.7926860674736029,
+      "prediction_volume_mm3": 1289.9411333734797,
+      "reference_volume_mm3": 1330.9812920242996,
+      "relative_volume_error": -0.030834512022630878,
+      "case": "LIDC-IDRI-0447",
+      "group": "2",
+      "reader_a": "81210",
+      "reader_b": "4384"
+    },
+    {
+      "dice": 0.8118051879301218,
+      "iou": 0.6832256627311205,
+      "prediction_volume_mm3": 1219.9093030151996,
+      "reference_volume_mm3": 1625.0396764856796,
+      "relative_volume_error": -0.2493049119555144,
+      "case": "LIDC-IDRI-0447",
+      "group": "2",
+      "reader_a": "IL057_195860",
+      "reader_b": "Nodule 001"
+    },
+    {
+      "dice": 0.8811808118081181,
+      "iou": 0.787598944591029,
+      "prediction_volume_mm3": 1219.9093030151996,
+      "reference_volume_mm3": 1330.9812920242996,
+      "relative_volume_error": -0.08345120226308345,
+      "case": "LIDC-IDRI-0447",
+      "group": "2",
+      "reader_a": "IL057_195860",
+      "reader_b": "4384"
+    },
+    {
+      "dice": 0.8388740287861419,
+      "iou": 0.7224659938569548,
+      "prediction_volume_mm3": 1625.0396764856796,
+      "reference_volume_mm3": 1330.9812920242996,
+      "relative_volume_error": 0.22093352192362103,
+      "case": "LIDC-IDRI-0447",
+      "group": "2",
+      "reader_a": "Nodule 001",
+      "reader_b": "4384"
+    },
+    {
+      "dice": 0.5985915492957746,
+      "iou": 0.4271356783919598,
+      "prediction_volume_mm3": 32.380308660279994,
+      "reference_volume_mm3": 74.55001296203999,
+      "relative_volume_error": -0.5656565656565656,
+      "case": "LIDC-IDRI-0447",
+      "group": "1",
+      "reader_a": "81219",
+      "reader_b": "IL057_196382"
+    },
+    {
+      "dice": 0.8333333333333334,
+      "iou": 0.7142857142857143,
+      "prediction_volume_mm3": 32.380308660279994,
+      "reference_volume_mm3": 26.35606518859999,
+      "relative_volume_error": 0.22857142857142865,
+      "case": "LIDC-IDRI-0447",
+      "group": "1",
+      "reader_a": "81219",
+      "reader_b": "4409"
+    },
+    {
+      "dice": 0.5223880597014925,
+      "iou": 0.35353535353535354,
+      "prediction_volume_mm3": 74.55001296203999,
+      "reference_volume_mm3": 26.35606518859999,
+      "relative_volume_error": 1.8285714285714287,
+      "case": "LIDC-IDRI-0447",
+      "group": "1",
+      "reader_a": "IL057_196382",
+      "reader_b": "4409"
+    },
+    {
+      "dice": 0.8066298342541437,
+      "iou": 0.6759259259259259,
+      "prediction_volume_mm3": 67.29117773440001,
+      "reference_volume_mm3": 84.95511188968001,
+      "relative_volume_error": -0.20792079207920788,
+      "case": "LIDC-IDRI-0473",
+      "group": "1",
+      "reader_a": "0201",
+      "reader_b": "5428"
+    },
+    {
+      "dice": 0.6987951807228916,
+      "iou": 0.5370370370370371,
+      "prediction_volume_mm3": 67.29117773440001,
+      "reference_volume_mm3": 72.33801606448,
+      "relative_volume_error": -0.06976744186046513,
+      "case": "LIDC-IDRI-0473",
+      "group": "1",
+      "reader_a": "0201",
+      "reader_b": "Nodule 005"
+    },
+    {
+      "dice": 0.592,
+      "iou": 0.42045454545454547,
+      "prediction_volume_mm3": 67.29117773440001,
+      "reference_volume_mm3": 37.8512874756,
+      "relative_volume_error": 0.7777777777777777,
+      "case": "LIDC-IDRI-0473",
+      "group": "1",
+      "reader_a": "0201",
+      "reader_b": "IL057_131654"
+    },
+    {
+      "dice": 0.8128342245989305,
+      "iou": 0.6846846846846847,
+      "prediction_volume_mm3": 84.95511188968001,
+      "reference_volume_mm3": 72.33801606448,
+      "relative_volume_error": 0.17441860465116288,
+      "case": "LIDC-IDRI-0473",
+      "group": "1",
+      "reader_a": "5428",
+      "reader_b": "Nodule 005"
+    },
+    {
+      "dice": 0.6164383561643836,
+      "iou": 0.44554455445544555,
+      "prediction_volume_mm3": 84.95511188968001,
+      "reference_volume_mm3": 37.8512874756,
+      "relative_volume_error": 1.2444444444444445,
+      "case": "LIDC-IDRI-0473",
+      "group": "1",
+      "reader_a": "5428",
+      "reader_b": "IL057_131654"
+    },
+    {
+      "dice": 0.6717557251908397,
+      "iou": 0.5057471264367817,
+      "prediction_volume_mm3": 72.33801606448,
+      "reference_volume_mm3": 37.8512874756,
+      "relative_volume_error": 0.9111111111111112,
+      "case": "LIDC-IDRI-0473",
+      "group": "1",
+      "reader_a": "Nodule 005",
+      "reader_b": "IL057_131654"
+    },
+    {
+      "dice": 0.7441860465116279,
+      "iou": 0.5925925925925926,
+      "prediction_volume_mm3": 44.580405249040005,
+      "reference_volume_mm3": 63.926618847680004,
+      "relative_volume_error": -0.3026315789473685,
+      "case": "LIDC-IDRI-0473",
+      "group": "2",
+      "reader_a": "0205",
+      "reader_b": "5431"
+    },
+    {
+      "dice": 0.7154471544715447,
+      "iou": 0.5569620253164557,
+      "prediction_volume_mm3": 44.580405249040005,
+      "reference_volume_mm3": 58.879780517600004,
+      "relative_volume_error": -0.24285714285714288,
+      "case": "LIDC-IDRI-0473",
+      "group": "2",
+      "reader_a": "0205",
+      "reader_b": "Nodule 003"
+    },
+    {
+      "dice": 0.6041666666666666,
+      "iou": 0.43283582089552236,
+      "prediction_volume_mm3": 44.580405249040005,
+      "reference_volume_mm3": 36.16900803224,
+      "relative_volume_error": 0.2325581395348837,
+      "case": "LIDC-IDRI-0473",
+      "group": "2",
+      "reader_a": "0205",
+      "reader_b": "IL057_85663"
+    },
+    {
+      "dice": 0.7397260273972602,
+      "iou": 0.5869565217391305,
+      "prediction_volume_mm3": 63.926618847680004,
+      "reference_volume_mm3": 58.879780517600004,
+      "relative_volume_error": 0.08571428571428563,
+      "case": "LIDC-IDRI-0473",
+      "group": "2",
+      "reader_a": "5431",
+      "reader_b": "Nodule 003"
+    },
+    {
+      "dice": 0.7226890756302521,
+      "iou": 0.5657894736842105,
+      "prediction_volume_mm3": 63.926618847680004,
+      "reference_volume_mm3": 36.16900803224,
+      "relative_volume_error": 0.7674418604651163,
+      "case": "LIDC-IDRI-0473",
+      "group": "2",
+      "reader_a": "5431",
+      "reader_b": "IL057_85663"
+    },
+    {
+      "dice": 0.6371681415929203,
+      "iou": 0.4675324675324675,
+      "prediction_volume_mm3": 58.879780517600004,
+      "reference_volume_mm3": 36.16900803224,
+      "relative_volume_error": 0.627906976744186,
+      "case": "LIDC-IDRI-0473",
+      "group": "2",
+      "reader_a": "Nodule 003",
+      "reader_b": "IL057_85663"
+    },
+    {
+      "dice": 0.7017543859649122,
+      "iou": 0.5405405405405406,
+      "prediction_volume_mm3": 38.692427197280004,
+      "reference_volume_mm3": 57.19750107424,
+      "relative_volume_error": -0.32352941176470584,
+      "case": "LIDC-IDRI-0473",
+      "group": "4",
+      "reader_a": "0208",
+      "reader_b": "Nodule 010"
+    },
+    {
+      "dice": 0.8085106382978723,
+      "iou": 0.6785714285714286,
+      "prediction_volume_mm3": 38.692427197280004,
+      "reference_volume_mm3": 40.37470664064,
+      "relative_volume_error": -0.04166666666666663,
+      "case": "LIDC-IDRI-0473",
+      "group": "4",
+      "reader_a": "0208",
+      "reader_b": "IL057_85664"
+    },
+    {
+      "dice": 0.7586206896551724,
+      "iou": 0.6111111111111112,
+      "prediction_volume_mm3": 57.19750107424,
+      "reference_volume_mm3": 40.37470664064,
+      "relative_volume_error": 0.41666666666666674,
+      "case": "LIDC-IDRI-0473",
+      "group": "4",
+      "reader_a": "Nodule 010",
+      "reader_b": "IL057_85664"
+    },
+    {
+      "dice": 0.7567567567567568,
+      "iou": 0.6086956521739131,
+      "prediction_volume_mm3": 32.80444914552,
+      "reference_volume_mm3": 29.439890258800002,
+      "relative_volume_error": 0.11428571428571432,
+      "case": "LIDC-IDRI-0473",
+      "group": "3",
+      "reader_a": "5437",
+      "reader_b": "Nodule 009"
+    },
+    {
+      "dice": 0.8506497159250718,
+      "iou": 0.740113547376664,
+      "prediction_volume_mm3": 1465.0993709564211,
+      "reference_volume_mm3": 1136.5459709167483,
+      "relative_volume_error": 0.28908060777749167,
+      "case": "LIDC-IDRI-0606",
+      "group": "1",
+      "reader_a": "59325",
+      "reader_b": "39625"
+    },
+    {
+      "dice": 0.8962343981383541,
+      "iou": 0.8119789171058936,
+      "prediction_volume_mm3": 1465.0993709564211,
+      "reference_volume_mm3": 1302.0666370391848,
+      "relative_volume_error": 0.12521074519500952,
+      "case": "LIDC-IDRI-0606",
+      "group": "1",
+      "reader_a": "59325",
+      "reader_b": "9608"
+    },
+    {
+      "dice": 0.855096706743335,
+      "iou": 0.7468724317413935,
+      "prediction_volume_mm3": 1465.0993709564211,
+      "reference_volume_mm3": 1334.5561046600344,
+      "relative_volume_error": 0.0978177431735936,
+      "case": "LIDC-IDRI-0606",
+      "group": "1",
+      "reader_a": "59325",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.8868751125247555,
+      "iou": 0.7967435842139314,
+      "prediction_volume_mm3": 1136.5459709167483,
+      "reference_volume_mm3": 1302.0666370391848,
+      "relative_volume_error": -0.12712150162976288,
+      "case": "LIDC-IDRI-0606",
+      "group": "1",
+      "reader_a": "39625",
+      "reader_b": "9608"
+    },
+    {
+      "dice": 0.8534201954397395,
+      "iou": 0.7443181818181818,
+      "prediction_volume_mm3": 1136.5459709167483,
+      "reference_volume_mm3": 1334.5561046600344,
+      "relative_volume_error": -0.14837153196622432,
+      "case": "LIDC-IDRI-0606",
+      "group": "1",
+      "reader_a": "39625",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.8867673179396093,
+      "iou": 0.7965696051057041,
+      "prediction_volume_mm3": 1302.0666370391848,
+      "reference_volume_mm3": 1334.5561046600344,
+      "relative_volume_error": -0.02434477464634277,
+      "case": "LIDC-IDRI-0606",
+      "group": "1",
+      "reader_a": "9608",
+      "reader_b": "0"
+    },
+    {
+      "dice": 0.8952831158154352,
+      "iou": 0.8104186046511628,
+      "prediction_volume_mm3": 2668.4701789810056,
+      "reference_volume_mm3": 2695.4801022964507,
+      "relative_volume_error": -0.010020449897750527,
+      "case": "LIDC-IDRI-0884",
+      "group": "2",
+      "reader_a": "IL057_195832",
+      "reader_b": "4344"
+    },
+    {
+      "dice": 0.8952066757228799,
+      "iou": 0.8102933427015633,
+      "prediction_volume_mm3": 2668.4701789810056,
+      "reference_volume_mm3": 3012.4332840593256,
+      "relative_volume_error": -0.11418115279048491,
+      "case": "LIDC-IDRI-0884",
+      "group": "2",
+      "reader_a": "IL057_195832",
+      "reader_b": "81163"
+    },
+    {
+      "dice": 0.8724961479198767,
+      "iou": 0.7738298599248378,
+      "prediction_volume_mm3": 2668.4701789810056,
+      "reference_volume_mm3": 3055.4286721941157,
+      "relative_volume_error": -0.1266462204582356,
+      "case": "LIDC-IDRI-0884",
+      "group": "2",
+      "reader_a": "IL057_195832",
+      "reader_b": "Nodule 002"
+    },
+    {
+      "dice": 0.9015934331240947,
+      "iou": 0.8208194126956216,
+      "prediction_volume_mm3": 2695.4801022964507,
+      "reference_volume_mm3": 3012.4332840593256,
+      "relative_volume_error": -0.10521500457456545,
+      "case": "LIDC-IDRI-0884",
+      "group": "2",
+      "reader_a": "4344",
+      "reader_b": "81163"
+    },
+    {
+      "dice": 0.8720406402760471,
+      "iou": 0.7731135282121007,
+      "prediction_volume_mm3": 2695.4801022964507,
+      "reference_volume_mm3": 3055.4286721941157,
+      "relative_volume_error": -0.11780624210716217,
+      "case": "LIDC-IDRI-0884",
+      "group": "2",
+      "reader_a": "4344",
+      "reader_b": "Nodule 002"
+    },
+    {
+      "dice": 0.8837209302325582,
+      "iou": 0.7916666666666666,
+      "prediction_volume_mm3": 3012.4332840593256,
+      "reference_volume_mm3": 3055.4286721941157,
+      "relative_volume_error": -0.014071802273137313,
+      "case": "LIDC-IDRI-0884",
+      "group": "2",
+      "reader_a": "81163",
+      "reader_b": "Nodule 002"
+    }
+  ],
+  "aggregate": {
+    "48": {
+      "group_median_reader_dice": {
+        "n": 18,
+        "median": 0.06440306537137828,
+        "min": 0.0,
+        "max": 0.6020464515646832,
+        "p25": 0.004538281461948223,
+        "p75": 0.35015547825423543
+      },
+      "group_median_abs_volume_error": {
+        "n": 18,
+        "median": 14.240367811409644,
+        "min": 0.2874297005623956,
+        "max": 1948.9666666666667,
+        "p25": 1.0,
+        "p75": 188.31862348178137
+      },
+      "group_median_hd95_mm": {
+        "n": 16,
+        "median": 21.21449545516301,
+        "min": 2.807601802095446,
+        "max": 32.286338736058624,
+        "p25": 10.142929997785913,
+        "p75": 29.112219178131824
+      },
+      "technical_pass_count": 4,
+      "groups": 18
+    },
+    "64": {
+      "group_median_reader_dice": {
+        "n": 18,
+        "median": 0.032700163208174024,
+        "min": 0.0006070171178827243,
+        "max": 0.7567071931683251,
+        "p25": 0.0069077440824626786,
+        "p75": 0.4057904005007416
+      },
+      "group_median_abs_volume_error": {
+        "n": 18,
+        "median": 57.61689218538014,
+        "min": 0.12448533800331918,
+        "max": 3292.8,
+        "p25": 2.7421968451347998,
+        "p75": 188.5821264317945
+      },
+      "group_median_hd95_mm": {
+        "n": 18,
+        "median": 26.357672318819724,
+        "min": 1.689191573982211,
+        "max": 42.16588406617193,
+        "p25": 7.699129965602153,
+        "p75": 34.55529344684846
+      },
+      "technical_pass_count": 5,
+      "groups": 18
+    },
+    "96": {
+      "group_median_reader_dice": {
+        "n": 18,
+        "median": 0.02307488005099076,
+        "min": 0.0,
+        "max": 0.7583970801576451,
+        "p25": 0.001029016929412337,
+        "p75": 0.4448799588601412
+      },
+      "group_median_abs_volume_error": {
+        "n": 18,
+        "median": 55.26125087427872,
+        "min": 0.1877913679236498,
+        "max": 10413.781684981685,
+        "p25": 0.829524966542459,
+        "p75": 1338.4097654046261
+      },
+      "group_median_hd95_mm": {
+        "n": 17,
+        "median": 45.815499276033115,
+        "min": 1.9285193233709659,
+        "max": 65.4392031878456,
+        "p25": 4.90192928239906,
+        "p75": 55.62057724417128
+      },
+      "technical_pass_count": 6,
+      "groups": 18
+    }
+  },
+  "size_bins": {
+    "small": {
+      "reader_equivalent_diameter_range_mm": [
+        0,
+        6
+      ],
+      "groups": 9,
+      "dice64": {
+        "n": 9,
+        "median": 0.006057488999371393,
+        "min": 0.0006070171178827243,
+        "max": 0.4909090909090909,
+        "p25": 0.0024334920721929415,
+        "p75": 0.024482528377476075
+      }
+    },
+    "medium": {
+      "reader_equivalent_diameter_range_mm": [
+        6,
+        10
+      ],
+      "groups": 2,
+      "dice64": {
+        "n": 2,
+        "median": 0.2867766461740601,
+        "min": 0.009458509331736536,
+        "max": 0.5640947830163837,
+        "p25": 0.14811757775289833,
+        "p75": 0.4254357145952219
+      }
+    },
+    "large": {
+      "reader_equivalent_diameter_range_mm": [
+        10,
+        null
+      ],
+      "groups": 7,
+      "dice64": {
+        "n": 7,
+        "median": 0.30852244935325773,
+        "min": 0.028393668609320008,
+        "max": 0.7567071931683251,
+        "p25": 0.17720125428294126,
+        "p75": 0.4862200924553739
+      }
+    }
+  },
+  "reader_pairwise_dice_summary": {
+    "n": 73,
+    "median": 0.7838884585592564,
+    "min": 0.09152630215081628,
+    "max": 0.95,
+    "p25": 0.6994535519125683,
+    "p75": 0.8534201954397395
+  },
+  "group_reader_pairwise_median_dice_summary": {
+    "n": 15,
+    "median": 0.7750481695568401,
+    "min": 0.3562800294943152,
+    "max": 0.8894638029777191,
+    "p25": 0.7304425081564271,
+    "p75": 0.8189757339841134
+  },
+  "lidc_volume_span_relative_to64": {
+    "n": 18,
+    "median": 1.0,
+    "min": 0.0943396226415094,
+    "max": 2344.3125,
+    "p25": 0.8025211551510797,
+    "p75": 8.793134604825717
+  },
+  "accepted_for_patient_findings": false
+}

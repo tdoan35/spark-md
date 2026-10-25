@@ -1,0 +1,109 @@
+{
+  "image": "/home/ty/spark-md-b/vols/134503_42269693.nii.gz",
+  "image_sha256": "1834ab3250fd3b1777fc8abc96fbe3d8f1c1b3a12018621c97c646105c728a71",
+  "crop": "/home/ty/spark-md-b/vista-probe-20261024-05/T0/crop.nii.gz",
+  "crop_sha256": "203c4105365a1cb2d394a630a126da968b3f72a41df9bc856ac012cf4dd147b7",
+  "detector_box_lps": [
+    60.5625,
+    -192.5,
+    -230.75,
+    7.125,
+    7.125,
+    7.0
+  ],
+  "original_shape": [
+    512,
+    512,
+    151
+  ],
+  "original_affine": [
+    [
+      0.0,
+      -0.5625,
+      0.0,
+      157.71875
+    ],
+    [
+      -0.5625,
+      0.0,
+      0.0,
+      320.71875
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      -349.29998779296875
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "detector_center_voxel": [
+    227.9444444444444,
+    388.05555555555554,
+    59.274993896484375
+  ],
+  "foreground_original_voxel": [
+    230,
+    391,
+    59
+  ],
+  "foreground_crop_voxel": [
+    60,
+    60,
+    16
+  ],
+  "crop_start": [
+    170,
+    331,
+    43
+  ],
+  "crop_stop": [
+    284,
+    445,
+    75
+  ],
+  "crop_shape": [
+    114,
+    114,
+    32
+  ],
+  "crop_affine": [
+    [
+      0.0,
+      -0.5625,
+      0.0,
+      -28.46875
+    ],
+    [
+      -0.5625,
+      0.0,
+      0.0,
+      225.09375
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      -263.29998779296875
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "crop_actual_extent_mm": [
+    64.125,
+    64.125,
+    64.0
+  ],
+  "point_physical_roundtrip_error_mm": 0.0,
+  "foreground_hu": 92.0,
+  "same_hu_values_in_crop": true
+}

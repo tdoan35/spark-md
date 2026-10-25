@@ -1,0 +1,108 @@
+{
+  "path": "tmp/vista-conditioning-20261024-02/hero-134503-T0/tumor23_regular.nii.gz",
+  "shape": [
+    114,
+    114,
+    32
+  ],
+  "affine": [
+    [
+      0.0,
+      -0.5625,
+      0.0,
+      -28.46875
+    ],
+    [
+      -0.5625,
+      0.0,
+      0.0,
+      225.09375
+    ],
+    [
+      0.0,
+      0.0,
+      2.0,
+      -263.29998779296875
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "labels": {
+    "0": 414994,
+    "1": 878
+  },
+  "same_shape": true,
+  "same_affine": true,
+  "naive_positive_voxels": 878,
+  "foreground_voxels": 878,
+  "uncomputed_voxels": 0,
+  "foreground_bbox_voxels": [
+    [
+      15,
+      7,
+      5
+    ],
+    [
+      81,
+      65,
+      19
+    ]
+  ],
+  "foreground_volume_mm3": 555.609375,
+  "foreground_bbox_extent_mm": [
+    37.6875,
+    33.1875,
+    30.0
+  ],
+  "foreground_components": 12,
+  "foreground_at_prompt": true,
+  "nearest_foreground_to_prompt_mm": 0.0,
+  "pipeline_s": 0.2897400980000384,
+  "sha256": "3a3d5c5b1d06ab249f584b334e17f7f017e4f088a80973beb22c23f30c6a0dd3",
+  "native_labels": [
+    0.0,
+    23.0
+  ],
+  "foreground_label": 23,
+  "trace": {
+    "class_head_calls": 1,
+    "point_head_labels": [
+      [
+        1
+      ]
+    ],
+    "point_head_class_vector": [
+      [
+        23
+      ]
+    ]
+  },
+  "processed_point": [
+    19.5,
+    19.5,
+    21.333333333333332
+  ],
+  "input_point_flag": 1,
+  "preprocessed_point_labels": [
+    1
+  ],
+  "peak_gpu_allocated_gib": 2.641035556793213,
+  "review": {
+    "technical_pass": false,
+    "reasons": [
+      "foreground_extent_exceeds_detector_limit",
+      "foreground_too_close_to_crop_edge"
+    ],
+    "crop_edge_clearance_mm": 4.21875,
+    "touches_crop_face": false,
+    "accepted_for_patient_findings": false,
+    "boundary_accuracy": "unverified; no independent contour reference"
+  },
+  "dice_vs_gb10_point_baseline": 0.7694463910301331,
+  "per_reader": [],
+  "median_reader_dice": null
+}
