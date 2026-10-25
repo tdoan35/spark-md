@@ -14,6 +14,7 @@ export function ReplayBanner({ demo, uid }: { demo: DemoState | null; uid: strin
           <MonitorPlay className="size-3.5" />
           <span className="font-medium">Time machine replay</span>
           <span className="text-replay/70">{demo.patient_id} · {demo.timepoint ?? "—"} · {waiting}</span>
+          {demo.mode === "cached" && <span className="rounded border border-replay/40 px-1 py-0.5 text-[10px]">cached results</span>}
           {demo.speed !== 1 && <span className="rounded bg-replay px-1 py-0.5 font-mono text-[10px] text-white">{demo.speed}×</span>}
           <button aria-label="Stop replay" className="rounded p-0.5 hover:bg-replay/10" onClick={() => void api.demoStop()}>
             <X className="size-3" />

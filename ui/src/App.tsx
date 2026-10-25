@@ -4,7 +4,7 @@ import { HashRouter, Routes, Route, useLocation, useNavigate, matchPath } from "
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { useSse } from "@/api/use-sse"
-import { ApiError } from "@/api/client"
+import { ApiError, API_BASE } from "@/api/client"
 import { AppContext, type AppCtx } from "@/lib/app-context"
 import { useTheme } from "@/lib/ui-hooks"
 import { usePref } from "@/lib/prefs"
@@ -58,6 +58,10 @@ function Shell() {
     })
     return sub
   }, [sse])
+  // A reload mid-replay must still show the banner (SSE demo_state only fires on phase changes).
+  useEffect(() => {
+    fetch(`${API_BASE}/api/demo/state`).then((r) => (r.ok ? r.json() : null)).then((d) => d && setDemo((cur) => cur ?? (d as DemoState))).catch(() => {})
+  }, [])
 
   const uid = matchPath("/study/:uid", loc.pathname)?.params.uid ?? null
   // A study reached straight from the worklist fills the active "New study" slot, so it owns a tab.

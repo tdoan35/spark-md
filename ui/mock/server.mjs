@@ -439,8 +439,8 @@ function dropTimepoint(patientId, timepoint) {
   return { status: 200, body: { ok: true, study_uid: spec.study_uid } }
 }
 
-function replay(patientId, timepoints, speed) {
-  state.demo = { replaying: true, patient_id: patientId, timepoint: null, speed: speed ?? SPEED, mode: "live", waiting_for: null, phase: "dropping" }
+function replay(patientId, timepoints, speed, mode) {
+  state.demo = { replaying: true, patient_id: patientId, timepoint: null, speed: speed ?? SPEED, mode: mode === "cached" ? "cached" : "live", waiting_for: null, phase: "dropping" }
   emit("demo_state", state.demo)
   const tps = timepoints?.length ? timepoints : ["T0", "T1", "T2"]
   let i = 0
@@ -706,7 +706,7 @@ const server = http.createServer(async (req, res) => {
     if (p === "/api/demo/replay" && m === "POST") {
       if (asAgent) return json(res, 403, { error: "loopback_only" })
       const b = await readBody(req)
-      const r = replay(b.patient_id, b.timepoints, b.speed)
+      const r = replay(b.patient_id, b.timepoints, b.speed, b.mode)
       return json(res, r.status, r.body)
     }
     if (p === "/api/demo/stop" && m === "POST") {
