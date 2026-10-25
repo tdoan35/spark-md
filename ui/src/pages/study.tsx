@@ -67,7 +67,7 @@ export function StudyPage({ uid }: { uid: string }) {
                 <AlertTriangle className="size-3" /> Needs confirmation — no category yet
               </div>
             )}
-            <Inspector uid={uid} tab={tab} setTab={setTab} findings={findings} selected={selected} setSelected={setSelected} study={study} />
+            <Inspector uid={uid} tab={tab} setTab={setTab} findings={findings} selected={selected} setSelected={setSelected} />
           </div>
         </div>
       </div>
@@ -118,7 +118,7 @@ function StudyHeader({ study, onToggleInspector, inspectorOpen }: { study: Study
   )
 }
 
-function Inspector({ uid, tab, setTab, findings, selected, setSelected, study }: { uid: string; tab: InspectorTab; setTab: (t: InspectorTab) => void; findings: Findings | undefined; selected: string | null; setSelected: (id: string) => void; study: StudyDetail }) {
+function Inspector({ uid, tab, setTab, findings, selected, setSelected }: { uid: string; tab: InspectorTab; setTab: (t: InspectorTab) => void; findings: Findings | undefined; selected: string | null; setSelected: (id: string) => void }) {
   const { status } = useApp().sse
   return (
     <div className="flex h-full min-h-0 flex-col px-3 pt-2">
@@ -134,7 +134,7 @@ function Inspector({ uid, tab, setTab, findings, selected, setSelected, study }:
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto pb-3">
         {tab === "assessment" ? (
-          <Assessment findings={findings} selected={selected} setSelected={setSelected} study={study} />
+          <Assessment findings={findings} selected={selected} setSelected={setSelected} />
         ) : (
           <StudyActivity studyUid={uid} />
         )}
@@ -143,7 +143,7 @@ function Inspector({ uid, tab, setTab, findings, selected, setSelected, study }:
   )
 }
 
-function Assessment({ findings, selected, setSelected, study }: { findings: Findings | undefined; selected: string | null; setSelected: (id: string) => void; study: StudyDetail }) {
+function Assessment({ findings, selected, setSelected }: { findings: Findings | undefined; selected: string | null; setSelected: (id: string) => void }) {
   const a = findings?.assessment
   const [openRules, setOpenRules] = useState(false)
   if (!findings) return <div className="flex items-center gap-2 text-xs text-muted-foreground"><Loader2 className="size-3 animate-spin" /> Waiting for findings…</div>
@@ -154,7 +154,7 @@ function Assessment({ findings, selected, setSelected, study }: { findings: Find
           <div className="text-[10px] uppercase tracking-wide text-muted-foreground">Management</div>
           <div className="mt-1 flex items-center gap-2">
             <span className={cn("rounded px-2 py-1 font-mono text-sm font-semibold tabular-nums", lungRadsClass(a.lung_rads))}>Lung-RADS {a.lung_rads}</span>
-            {study.priority_reason && <span className="text-[11px] text-warn">{study.priority_reason}</span>}
+            {a.driver_nodule_id && <span className="text-[11px] text-muted-foreground">{findings.nodules.find((n) => n.nodule_id === a.driver_nodule_id)?.lobe ?? "—"} · driver nodule</span>}
           </div>
           <p className="mt-1.5 text-[13px] leading-snug">{a.management}</p>
           <button onClick={() => setOpenRules((o) => !o)} className="mt-1 flex items-center gap-1 text-[10px] text-muted-foreground hover:text-foreground">
