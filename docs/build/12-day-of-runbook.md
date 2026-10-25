@@ -265,7 +265,8 @@ Everything below runs with the box **offline**: Wi-Fi off and LAN cable out also
 4. Clear the hero's OpenClaw ask sessions (A, needs Ty's approval) so old long answers can't bias the takes.
 
 **B. Dry run (online, ~10 min, Joyce clicking)**
-1. Relaunch Electron fullscreen on the box display (tmux `sparkmd-ui`; command in this file's §Agents note / ask the advisor).
+1. Relaunch Electron on the box display (then fullscreen it):
+   `tmux kill-session -t sparkmd-ui; pkill -x electron; tmux new-session -d -s sparkmd-ui -c ~/spark-md-app/ui "DISPLAY=:1 XAUTHORITY=/run/user/1000/gdm/Xauthority SPARKMD_UI_URL=http://127.0.0.1:8100/ ./node_modules/electron/dist/electron --ozone-platform=x11 --remote-debugging-address=127.0.0.1 --remote-debugging-port=9350 --user-data-dir=$HOME/.config/spark-md-ui-desktop ."`
 2. `POST /api/demo/reset` → worklist empty; then `POST /api/demo/replay {"patient_id":"134503","timepoints":["T0","T1"]}`.
 3. Joyce: T0 confirm → category 3 → wait for drafts → Approve both → T1 confirm → 4B → drafts → Approve both → inbox shows 2 letters. Ask one warm-up chip per study (first ask per study costs ~13 s; warm ~5 s), then the on-camera chips: "Show me the nodule", "Compare it to last year", "Why did you flag this?". Voice only with the real mic tested.
 4. Time each wait (drop→awaiting ~39 s; confirm→drafts ~97 s at G4 with thinking on; re-measure with thinking off). These waits become labelled cuts ("time skipped" / "N× speed") in the edit.
