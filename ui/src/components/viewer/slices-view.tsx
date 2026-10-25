@@ -23,7 +23,7 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
   const stack = findings?.assets.slice_stack ?? null
   const [color, setColor] = usePref("sparkmd-slice-color", false)
   const [index, setIndex] = useState<number | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [keyImage, setKeyImage] = useState<{ url: string; w: number; h: number } | null>(null)
   const wheelAcc = useRef(0)
   const wrap = useRef<HTMLDivElement>(null)
 
@@ -38,10 +38,11 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
 
   useEffect(() => {
     const off = viewerBus.subscribe((cmd) => {
+      if (cmd.study_uid !== uid) return
       if (cmd.command === "show_nodule" && "nodule_id" in cmd && cmd.nodule_id) onSelect(cmd.nodule_id)
     })
     return off
-  }, [onSelect])
+  }, [uid, onSelect])
 
   useEffect(() => {
     const el = wrap.current
@@ -70,19 +71,25 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
     const ks = findings.assets.key_slices ?? []
 
     const slice = ks.find((k) => k.nodule_id === selected) ?? ks[0]
+    const imageUrl = slice ? keySliceUrl(slice) : null
+    const loaded = keyImage?.url === imageUrl ? keyImage : null
     return (
       <div className="flex h-full flex-col">
         <div className="flex items-center gap-2 px-3 pb-1 text-[10px] text-white/50">
           <span>Axial key slice</span>
           <span className="ml-auto font-mono">{slice ? slice.name : "no key slice"}</span>
         </div>
-        <div className="relative grid min-h-0 flex-1 place-items-center overflow-hidden p-3">
-          {slice && (
-            <div ref={wrap} className="relative" style={{ containerType: "size" }}>
-              <div className="relative" style={{ width: "min(100cqw, calc(100cqh * 1))" }}>
-                <img src={keySliceUrl(slice)} alt={`Key slice for ${slice.nodule_id}`} className="block w-full" style={{ imageRendering: "pixelated", filter: color ? "none" : "grayscale(1)" }} onLoad={() => setLoading(false)} />
-                <Bracket box={slice.box_px} w={512} h={512} color="var(--warn)" />
-              </div>
+        <div ref={wrap} className="relative grid min-h-0 flex-1 place-items-center overflow-hidden" style={{ containerType: "size" }}>
+          {slice && imageUrl && (
+            <div className="relative" style={{ width: `min(100cqw, calc(100cqh * ${loaded ? loaded.w / loaded.h : 1}))` }}>
+              <img
+                src={imageUrl}
+                alt={`Key slice for ${slice.nodule_id}`}
+                className="block w-full"
+                style={{ imageRendering: "pixelated", filter: color ? "none" : "grayscale(1)" }}
+                onLoad={(e) => setKeyImage({ url: imageUrl, w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })}
+              />
+              {loaded && <Bracket box={slice.box_px} w={loaded.w} h={loaded.h} color="var(--warn)" />}
             </div>
           )}
         </div>
@@ -122,7 +129,7 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
                 }}
               >
                 <img src={url(i)!} alt={`Slice ${i}`} className="block w-full" style={{ imageRendering: "pixelated", filter: color ? undefined : "grayscale(1)" }} />
-                {o === 0 && <Bracket box={onSlice ? nodeSlice?.box_px ?? null : null} w={256} h={256} color="var(--warn)" />}
+                {o === 0 && <Bracket box={onSlice ? nodeSlice?.box_px ?? null : null} w={stack.size[0]} h={stack.size[1]} color="var(--warn)" />}
               </button>
             )
           })}
@@ -145,7 +152,6 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
             </button>
           ))}
         </div>
-        <div className="absolute bottom-1 left-1/2 hidden -translate-x-1/2 text-[9px] text-white/30">{loading ? "loading…" : ""}</div>
       </div>
     </div>
   )

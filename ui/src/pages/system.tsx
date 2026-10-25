@@ -18,6 +18,7 @@ export function Sparkline({ series }: { series: number[] }) {
 export function SystemPage() {
   const { status } = useApp().sse
   const { data, isError } = useNetstats()
+  const stale = !!data && status !== "live"
   const [hist, setHist] = useState<number[]>([])
   useEffect(() => {
     if (!data) return
@@ -37,14 +38,14 @@ export function SystemPage() {
           <div className="flex items-center gap-1.5 text-xs font-medium">
             <ShieldCheck className="size-3.5 text-ok" /> Network monitor
           </div>
-          <span className={`flex items-center gap-1 text-[11px] ${data?.link_up ? "text-ok" : "text-muted-foreground"}`}>
+          <span className={`flex items-center gap-1 text-[11px] ${data?.link_up && !stale ? "text-ok" : "text-muted-foreground"}`}>
             {data?.link_up ? <Wifi className="size-3" /> : <WifiOff className="size-3" />}
-            {!data ? (isError ? "Monitor unavailable" : "Reading…") : data.link_up ? "Link up" : "Link down · unplugged"}
+            {!data ? (isError ? "Monitor unavailable" : "Reading…") : stale ? `Last known link ${data.link_up ? "up" : "down"}` : data.link_up ? "Link up" : "Link down · unplugged"}
           </span>
         </div>
         <div className="flex items-baseline gap-3">
           <div className="font-mono text-4xl tabular-nums">{data ? bytes(data.tx_bytes) : "—"}</div>
-          <div className="text-xs text-muted-foreground">sent on external interfaces</div>
+          <div className="text-xs text-muted-foreground">{stale ? "sent on external interfaces · last known / stale" : "sent on external interfaces"}</div>
         </div>
         <div className="mt-1 font-mono text-[11px] text-muted-foreground">{data ? bytes(data.rx_bytes) : "—"} received · since {data?.since ? new Date(data.since).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" }) : "—"}</div>
         <div className="mt-3"><Sparkline series={hist.length ? hist : [0, 0, 0]} /></div>

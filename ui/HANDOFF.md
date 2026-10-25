@@ -80,3 +80,12 @@ Never point tests at the real worker's confirm/approve; never touch W's window (
   524,118 bytes transmitted over a 10 s sample; ~289 MB cumulative since baseline. Do not
   reset/hide these numbers for the video. Ty must disconnect LAN and disable Wi-Fi for the
   unplugged/baseline-reset near-zero shot. No interface changes made by U.
+
+## UI review corrections
+- Slice overlays use stack metadata size or the loaded fallback image's natural dimensions;
+  fallback fitting preserves non-square aspect ratios. Child viewer commands reject other UIDs.
+- System counters retain their values but show "last known / stale" while SSE is down/connecting;
+  cached link status is explicitly "Last known". Reconnection removes the stale label.
+- Electron smoke verified 640×320 → 320×640 fallback changes and 800×400 stack boxes (zero
+  pixel-centre error), foreign/current/changed-study command routing, and disconnect/reconnect.
+  `tsc -b` + Vite build passed. Screenshot: `/tmp/sparkmd-review-stale-and-stack.png`.
