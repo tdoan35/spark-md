@@ -139,9 +139,29 @@ export function ViewerPane({
           {mode === "slices" && <SlicesView uid={uid} findings={findings} selected={selected} onSelect={onSelect} />}
           {mode === "compare" && <CompareView findings={findings} selected={selected} onSelect={onSelect} study={study} />}
           {mode === "3d" && (
-          <div className="pointer-events-none absolute bottom-2 left-3 font-mono text-[10px] text-white/40">
+          <div className="pointer-events-none absolute bottom-2 left-3 max-w-[40%] font-mono text-[10px] text-white/40">
             {study.timepoint} · {nodule ? `${nodule.lobe} · mean ${nodule.mean_mm ?? nodule.proposal?.mean_mm ?? "—"} mm` : "No nodule selected"}
           </div>
+          )}
+          {mode === "3d" && !!findings?.nodules.length && (
+            <div role="group" aria-label="Nodule shortcuts" className="absolute bottom-3 right-3 flex max-h-[50%] max-w-[55%] flex-col gap-1.5 overflow-y-auto">
+              {findings.nodules.map((n, i) => (
+                <button
+                  key={n.nodule_id}
+                  type="button"
+                  aria-label={`Focus nodule ${i + 1} · ${n.lobe}`}
+                  aria-pressed={selected === n.nodule_id}
+                  title={n.nodule_id}
+                  onClick={() => viewerBus.emit({ command: "show_nodule", study_uid: uid, nodule_id: n.nodule_id })}
+                  className={cn(
+                    "min-h-8 shrink-0 rounded-md border px-3 py-1.5 text-left text-sm shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
+                    selected === n.nodule_id ? "border-white/60 bg-white/20 text-white" : "border-white/20 bg-well/95 text-white/75 hover:border-white/40 hover:bg-white/10 hover:text-white",
+                  )}
+                >
+                  Nodule {i + 1} · {n.lobe}
+                </button>
+              ))}
+            </div>
           )}
         </div>
         {extrasOpen && <ExtrasPanel findings={findings} onClose={() => setExtrasOpen(false)} uid={uid} />}

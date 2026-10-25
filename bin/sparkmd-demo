@@ -5,6 +5,7 @@
 #   DEMO_DELAY_S=0 bin/sparkmd-demo  replay as soon as the window is up
 #   bin/sparkmd-demo --wait          reset + launch, then wait for Enter before starting the replay
 #   bin/sparkmd-demo --no-replay     reset + launch only
+#   DEMO_BASELINE=1 bin/sparkmd-demo --wait   restore the saved human-reviewed baseline (bin/sparkmd-baseline) instead of an empty reset
 set -uo pipefail
 API=${SPARKMD_API:-http://127.0.0.1:8100}
 UI_DIR=${SPARKMD_UI_DIR:-$HOME/spark-md-app/ui}
@@ -18,10 +19,15 @@ post() { curl -s -m 30 -X POST "$API$1" -H 'Content-Type: application/json' -d "
 
 curl -s -m 3 "$API/api/health" >/dev/null || { say "FAIL worker not answering at $API (bin/sparkmd-start first)"; exit 1; }
 
-say "stop any running replay, reset demo (re-seeds cohort, zeroes network counters)"
-post /api/demo/stop '{}' >/dev/null
-out=$(post /api/demo/reset '{}') || { say "FAIL reset"; exit 1; }
-say "reset: ${out:0:160}"
+if [[ -n ${DEMO_BASELINE:-} ]]; then
+  say "restore the saved baseline (reset + snapshot; worker restart re-baselines network counters)"
+  "$(dirname "$0")/sparkmd-baseline" restore || { say "FAIL baseline restore"; exit 1; }
+else
+  say "stop any running replay, reset demo (re-seeds cohort, zeroes network counters)"
+  post /api/demo/stop '{}' >/dev/null
+  out=$(post /api/demo/reset '{}') || { say "FAIL reset"; exit 1; }
+  say "reset: ${out:0:160}"
+fi
 
 say "relaunch Electron (single window, CDP $PORT)"
 tmux kill-session -t sparkmd-ui 2>/dev/null
