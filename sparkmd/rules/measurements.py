@@ -6,7 +6,7 @@ from . import _diameter, growth_per_12mo
 
 def sphere_volume(mean_mm):
     """Sphere-equivalent volume, not a segmented volume (build/04 confirm flow)."""
-    return math.pi / 6 * _diameter(mean_mm, "mean_mm") ** 3
+    return math.pi / 6 * _diameter(mean_mm, "mean_mm", allow_zero=True) ** 3
 
 
 def confirmed_measurement(long_mm, short_mm=None):
@@ -16,8 +16,6 @@ def confirmed_measurement(long_mm, short_mm=None):
     if not 0 < short_mm <= long_mm <= 100:
         raise ValueError("require 0 < short_mm <= long_mm <= 100")
     mean_mm = round((long_mm + short_mm) / 2, 1)
-    if mean_mm <= 0:
-        raise ValueError("rounded mean_mm must be positive")
     return {"long_mm": long_mm, "short_mm": short_mm, "mean_mm": mean_mm,
             "volume_mm3": sphere_volume(mean_mm)}
 
@@ -45,8 +43,8 @@ def longitudinal_change(current, prior, interval_days):
     """
     if not _confirmed(current) or not _confirmed(prior):
         return None
-    current_mean = _diameter(current["mean_mm"], "current mean_mm")
-    prior_mean = _diameter(prior["mean_mm"], "prior mean_mm")
+    current_mean = _diameter(current["mean_mm"], "current mean_mm", allow_zero=True)
+    prior_mean = _diameter(prior["mean_mm"], "prior mean_mm", allow_zero=True)
     delta = current_mean - prior_mean
     growth = growth_per_12mo(delta, interval_days)
     if growth is None:

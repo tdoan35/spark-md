@@ -43,7 +43,7 @@ def _diameter(value, name, *, allow_zero=False):
 def classify(nodule):
     """Return category/rule for one confirmed nodule, without mutating it."""
     kind = nodule.get("type")
-    diameter = _diameter(nodule.get("mean_mm"), "mean_mm")
+    diameter = _diameter(nodule.get("mean_mm"), "mean_mm", allow_zero=True)
     growth = nodule.get("growth_mm")
     growing = growth is not None and math.isfinite(float(growth)) and float(growth) > 1.5
     new = bool(nodule.get("new", False))

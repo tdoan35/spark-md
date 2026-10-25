@@ -112,6 +112,12 @@ class TestConfirmedMeasurements(unittest.TestCase):
             with self.subTest(long_mm=long_mm, short_mm=short_mm), self.assertRaises(ValueError):
                 confirmed_measurement(long_mm, short_mm)
 
+    def test_positive_subprecision_diameter_obeys_v08_rounding(self):
+        measurement = confirmed_measurement(.01, .01)
+        self.assertEqual(measurement["mean_mm"], 0.0)
+        self.assertEqual(measurement["volume_mm3"], 0.0)
+        self.assertEqual(classify(dict(measurement, type="solid"))["lung_rads"], "2")
+
     def test_doubling_and_non_growth(self):
         self.assertAlmostEqual(vdt_days(100, 200, 365), 365)
         for prior, current, days in [(0, 100, 365), (100, 100, 365), (100, 90, 365), (100, 200, None)]:

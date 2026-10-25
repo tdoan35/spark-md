@@ -86,10 +86,6 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
                 translation[:3, 3] = proposal.start
                 nib.save(nib.Nifti1Image(proposal.mask.astype(np.uint8), volume.affine @ translation), cache / f'{nid}_proposal_mask.nii.gz')
             nodules.append(nodule)
-        progress('match')
-        # No validated lobe/track matcher is specified by 04; retain null identity.
-        progress('rules')
-        # Clinical assessment deliberately absent until the worker's human gate.
         progress('render')
         for nodule in nodules:
             slices.append(save_key_slice(volume, nodule, nodule['nodule_id'], cache, study_uid))
