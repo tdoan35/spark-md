@@ -87,7 +87,7 @@ function StudyHeader({ study, onToggleInspector, inspectorOpen }: { study: Study
         <div className="flex items-baseline gap-2">
           <span className="text-[15px] font-semibold tracking-tight">Patient {study.patient_id}</span>
           <span className="text-xs text-muted-foreground">
-            Chest CT · {study.timepoint} · {dayLabel(study.day_offset)}
+            Chest CT · Time point {study.timepoint} · {dayLabel(study.day_offset)}
           </span>
           <span className={cn("text-[11px]", study.priority === "urgent" ? "text-alert" : study.priority === "elevated" ? "text-warn" : "text-muted-foreground")}>
             {study.priority === "routine" ? "Routine" : study.priority === "elevated" ? "Elevated" : "Urgent"}
