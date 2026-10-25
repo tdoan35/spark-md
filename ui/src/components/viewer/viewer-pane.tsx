@@ -39,7 +39,7 @@ export function ViewerPane({
   /** Rendered under the imaging well only — the chat rail keeps full height beside it (08). */
   bottom?: ReactNode
 }) {
-  const [mode, setMode] = useState<Mode>("3d")
+  const [mode, setMode] = useState<Mode>("slices")
   const [extrasOpen, setExtrasOpen] = useState(false)
   const [cmdTick, setCmdTick] = useState<{ command: ViewerCommand["command"]; nodule_id?: string } | null>(null)
   const qc = useQueryClient()
@@ -106,11 +106,11 @@ export function ViewerPane({
             onValueChange={(v) => v && setMode(v as Mode)}
             className="rounded-md bg-white/5"
           >
-            <ToggleGroupItem value="3d" className="h-6 px-1.5 text-[11px] text-white/70 data-[state=on]:bg-white/15 data-[state=on]:text-white" aria-label="3D anatomy">
-              <Box className="mr-1 size-3.5" /> 3D anatomy
-            </ToggleGroupItem>
             <ToggleGroupItem value="slices" className="h-6 px-1.5 text-[11px] text-white/70 data-[state=on]:bg-white/15 data-[state=on]:text-white" aria-label="CT slices">
               <Images className="mr-1 size-3.5" /> CT slices
+            </ToggleGroupItem>
+            <ToggleGroupItem value="3d" className="h-6 px-1.5 text-[11px] text-white/70 data-[state=on]:bg-white/15 data-[state=on]:text-white" aria-label="3D anatomy">
+              <Box className="mr-1 size-3.5" /> 3D anatomy
             </ToggleGroupItem>
             <ToggleGroupItem value="compare" className="h-6 px-1.5 text-[11px] text-white/70 data-[state=on]:bg-white/15 data-[state=on]:text-white" aria-label="Compare">
               <Columns2 className="mr-1 size-3.5" /> Compare
