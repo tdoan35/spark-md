@@ -16,6 +16,7 @@ import { toast } from "sonner"
 import { StudyActivity } from "@/components/agent-log"
 import { ViewerPane } from "@/components/viewer/viewer-pane"
 import { ReportSheet } from "@/components/report-sheet"
+import { RiskCard } from "@/components/risk-card"
 
 export type InspectorTab = "assessment" | "activity"
 
@@ -176,6 +177,7 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
           Confirm each diameter below. Growth, VDT and Lung-RADS are computed by code after the last confirm.
         </div>
       )}
+      <RiskCard studyUid={findings.study_uid} patientId={findings.patient_id} timepoint={findings.timepoint} />
 
       <div>
         <div className="mb-1 flex items-center justify-between text-[10px] uppercase tracking-wide text-muted-foreground">
