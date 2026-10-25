@@ -1,5 +1,5 @@
 # 09: Voice (push-to-talk ASR, fixed commands, spoken answers)
-Status: ASR + TTS **validated on GB10 with synthetic voices (Oct 24)**. **Unverified:** real human voices, the microphone on the event box, Electron mic capture, the worker routes (06 doesn't exist yet). Bench record: `docs/benchmarks/2026-10-24-voice-gb10.md`.
+Status: ASR + TTS **validated on GB10 with synthetic voices (Oct 24)**. **Oct 25, on the box:** `/api/asr` + `/api/tts` live behind the worker; Electron push-to-talk (getUserMedia → AudioWorklet → 16 kHz WAV → `/api/asr` → transcript bubble → `submit`) and post-`done` TTS fetch verified end to end in a CDP-driven Electron run (fake tone device + a TTS-generated "Show me the nodule." clip fed through a patched `getUserMedia`): ASR 92–116 ms, keyup → transcript bubble ~0.5 s, miss-clip toast verified; `/api/tts` clip 0.9 s idle / ~12 s with concurrent GPU benches; playback (`onended`) verified on a null sink. **Unverified:** real human voices and audible output on the event mic/speaker (no capture device on the box at 13:20; `arecord -l` empty). Bench record: `docs/benchmarks/2026-10-24-voice-gb10.md`.
 Rebuild budget on the day: 45 min ASR (whisper.cpp build + `/api/asr` + PTT in the UI), +20 min TTS. Worker agent does the routes; UI agent does capture/playback. **Oct 25:** `/api/ask` (text path, incl. the immediate viewer action below) moved to agent A (`sparkmd/ask.py`) so the ask chips work without voice; V adds only `/api/asr`, `/api/tts` and push-to-talk on top.
 
 ## Purpose and scope
@@ -158,9 +158,8 @@ function toWav16k(chunks: Float32Array[], inRate: number): Blob {
 ```
 
 ## Open / unverified
-- **Real voices** (Ty, Joyce) on the actual mic: not tested. All numbers above are from Qwen3-TTS synthetic speakers. Record with `bench/voice/` naming (`<speaker>_<clip_id>.wav`, 16 kHz) and rerun `bench_asr.py`.
+- ~~Electron `getUserMedia` + AudioWorklet on the box's desktop~~ verified headless Oct 25 (see Status); real mic input still pending. Worklet must be a same-origin `public/` file — the page CSP (`script-src 'self'`) rejects blob:-URL worklet modules.
 - **Speaker/microphone:** Ty confirmed he will bring a plug-in speaker/microphone. Test input and output on the event box at 08:30 together with the WebGL probe (`arecord -l` lists capture devices; select the PipeWire/Pulse input/output). Repeat the real-voice and room-noise tests on that device, with playback interrupted by push-to-talk.
-- Electron `getUserMedia` + AudioWorklet on the box's desktop: unverified (RDP on spark-2 doesn't pass a mic through).
 - Immediate viewer action and duplicate suppression: approved; end-to-end implementation unverified (see Interfaces).
 - TTS is in scope (Ty confirmed Oct 24); show "Synthetic voice (Qwen3-TTS, on device)" in the UI. The image is a third-party community build (MIT, `mARTin-B78/dgx-spark-faster-qwen3-tts`); it's pinned by digest and runs on loopback only.
 - TTS while a real imaging job runs: throughput/latency not measured. Capacity check with a touched 25 GiB imaging reservation passed (36.84 GiB minimum available); real imaging peak and complete UI/recording co-load remain unverified.
