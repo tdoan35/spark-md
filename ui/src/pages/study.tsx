@@ -302,7 +302,7 @@ function NoduleList({ findings, drafting, selected, onSelectNodule }: { findings
         {findings.placeholder && <span className="rounded bg-replay-soft px-1.5 py-0.5 text-[9px] normal-case text-replay">placeholder numbers</span>}
         <Button size="sm" variant="outline" className="h-6 px-2 text-[10px] normal-case" disabled={busy || !pending.length || !pending.every((n) => validDiameters(draftFor(n)))} onClick={() => void confirm(pending)}>Confirm all</Button>
       </div>
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {findings.nodules.map((n, i) => (
           <NoduleBlock key={n.nodule_id} n={n} idx={i} drafting={drafting} selected={selected === n.nodule_id} onSelect={() => onSelectNodule(n.nodule_id)}
             draft={draftFor(n)} editing={!n.confirmation.confirmed || !!drafts[n.nodule_id]} busy={busy} error={errors[n.nodule_id]}
@@ -325,7 +325,7 @@ function NoduleBlock({ n, idx, drafting, selected, onSelect, draft, editing, bus
   const valid = validDiameters(draft)
 
   return (
-    <div className={cn("rounded-md p-1.5 transition-colors", selected ? "bg-muted/70 ring-1 ring-border" : "hover:bg-muted/40")} onClick={onSelect}>
+    <div className={cn("rounded-lg border p-2 transition-colors", selected ? "border-foreground/25 bg-muted/70" : "hover:bg-muted/40")} onClick={onSelect}>
       <div className="flex items-start gap-2">
         <span className="mt-0.5 w-4 shrink-0 font-mono text-[10px] text-muted-foreground">{idx + 1}</span>
         <div className="min-w-0 flex-1">
