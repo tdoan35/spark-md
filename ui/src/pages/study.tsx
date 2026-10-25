@@ -47,7 +47,7 @@ export function StudyPage({ uid }: { uid: string }) {
       <StudyHeader study={study} onToggleInspector={() => setOpen((o) => !o)} inspectorOpen={open} />
       <div
         className={cn("grid min-h-0 flex-1", open ? "inspector-open" : "inspector-closed")}
-        style={{ gridTemplateColumns: open ? "minmax(0,1fr) var(--inspector-w)" : "minmax(0,1fr) 0px" }}
+        style={{ gridTemplateColumns: open ? "minmax(0,1fr) var(--inspector-w)" : "minmax(0,1fr) 0px", transition: "grid-template-columns 220ms ease" }}
       >
         <div className="flex min-h-0 min-w-0 flex-col">
           <div className="min-h-0 flex-1 px-3 pb-1">

@@ -12,7 +12,6 @@ export interface AppCtx {
   newTab: () => void
   toggleTheme: () => void
   openSearch: () => void
-  go: (path: string) => void
 }
 
 export const AppContext = createContext<AppCtx | null>(null)

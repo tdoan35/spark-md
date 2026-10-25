@@ -100,11 +100,9 @@ function Shell() {
     [activeId, navigate, tabs],
   )
 
-  const go = useCallback((path: string) => navigate(path), [navigate])
-
   const ctx: AppCtx = useMemo(
-    () => ({ sse, demo, openStudy, openWorklistTab, closeTab, toggleTheme, openSearch: () => setSearchOpen(true), go, history: { canBack: true, canForward: true }, newTab }),
-    [sse, demo, openStudy, openWorklistTab, closeTab, toggleTheme, go, newTab, tabs],
+    () => ({ sse, demo, openStudy, openWorklistTab, closeTab, toggleTheme, openSearch: () => setSearchOpen(true), newTab }),
+    [sse, demo, openStudy, openWorklistTab, closeTab, toggleTheme, newTab],
   )
   return (
     <AppContext.Provider value={ctx}>
