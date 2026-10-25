@@ -194,8 +194,6 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
           Confirm each diameter below. Growth, VDT and Lung-RADS are computed by code after the last confirm.
         </div>
       )}
-      <RiskCard studyUid={findings.study_uid} patientId={findings.patient_id} timepoint={findings.timepoint} />
-
       <NoduleList findings={findings} drafting={study?.status === "analyzed"} selected={selected} onSelectNodule={setSelected} />
 
       {findings.extras && (
@@ -218,6 +216,7 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
           </div>
         </div>
       )}
+      <RiskCard studyUid={findings.study_uid} patientId={findings.patient_id} timepoint={findings.timepoint} />
       <div className="flex items-center gap-1.5 pt-1 text-[10px] text-muted-foreground/70">
         <Sparkles className="size-3" /> Every number comes from the worker · research demo, not for clinical use
       </div>

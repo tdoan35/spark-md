@@ -1,5 +1,4 @@
 import riskFixture from "../../../fixtures/sybil_risk.json"
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
 
 type RiskCardProps = {
@@ -38,7 +37,6 @@ export function RiskCard({ studyUid, patientId, timepoint }: RiskCardProps) {
     <Card size="sm" aria-label="Sybil research risk" className="gap-2 rounded-lg bg-muted/30 text-muted-foreground shadow-none">
       <CardHeader className="flex flex-row items-center justify-between gap-2">
         <h3 className="text-xs font-medium">Sybil risk estimate</h3>
-        <Badge variant="outline" className="h-4 rounded-sm px-1 text-[9px] font-normal text-muted-foreground">Offline</Badge>
       </CardHeader>
       <CardContent className="space-y-2">
         <dl className="grid grid-cols-2 gap-3">
