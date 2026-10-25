@@ -1,0 +1,1 @@
+{"placeholder":true,"patients":[{"patient_id":"fixture-134503","studies":[{"study_uid":"fixture-T0","timepoint":"T0","day_offset":23,"long_mm":10.0,"short_mm":10.0},{"study_uid":"fixture-T1","timepoint":"T1","day_offset":394,"long_mm":14.0,"short_mm":14.0},{"study_uid":"fixture-T2","timepoint":"T2","day_offset":765,"long_mm":16.0,"short_mm":16.0}]}]}
