@@ -7,18 +7,19 @@ Clips are cut together, so each one only needs its own beat. Everything shown is
 1. OBS on the box: a scene with **Window Capture of the Spark MD Electron window only** (terminals, OBS and the agent's UI stay off-camera). 1920x1080, 30 fps, output folder `~/recordings/`, filename format `%CCYY%MM%DD-%hh%mm%ss`.
 2. OBS hotkeys: **Start Recording = Ctrl+Alt+R**, **Stop Recording = Ctrl+Alt+S** (Settings → Hotkeys).
 3. Spark MD window maximized; theme light; voice muted unless the mic was tested.
-4. Joyce sits at the box: she does every **Confirm** and **Approve** click (human gate, AGENTS.md rule 4). The agent pauses for her.
+4. For this submission video the computer-use agent operates the UI, including Confirm and Approve, standing in for the radiologist (Ty's decision, Oct 25). The product's gate is unchanged: only the loopback UI can confirm/approve; the AI agent in the sandbox cannot. In the live demo Joyce clicks.
 5. The computer-use agent needs internet, so these clips are recorded **online**. Don't show the network monitor in them. The unplug / "0 bytes sent" shot is a separate clip Ty and Joyce film by hand at the end (Clip 6).
 
 ## Master prompt (paste first)
 ```
 You are operating the Spark MD demo on a Dell GB10 (Ubuntu desktop) to record short screen clips with OBS
 for a hackathon video. Spark MD is a lung CT screening research demo: the AI detects and proposes, code computes
-Lung-RADS, and a human radiologist confirms every measurement and approves every report.
+Lung-RADS, and the radiologist (you, operating the UI for this video) confirms measurements and approves reports.
 
 HARD RULES
-1. Never click "Confirm", "Confirm all", "Approve", or edit a diameter. Those are human-only steps. When a clip
-   reaches one, stop moving, say "JOYCE: please click <button> now", and wait until the screen shows the result.
+1. You operate the UI as the radiologist would, including "Confirm all", "Confirm" and "Approve" when a clip says
+   so. Before each of those clicks, pause ~1.5 s with the pointer on the button so the viewer sees it. Never edit
+   a diameter (keep the proposed values) unless a clip says so.
 2. Never type in terminals except the exact commands Ty gives you. Never run anything with sudo, reset, stop, kill
    or rm. Never close the Spark MD window.
 3. Recording: start with Ctrl+Alt+R, stop with Ctrl+Alt+S. One clip per recording. After stopping, say the clip
@@ -43,14 +44,14 @@ Clip 1. Ty has already run the launcher; the app shows the worklist and is waiti
 5. Wait until the banner says "Waiting for radiologist" (~30 s). Then say "Ready for Clip 2".
 ```
 
-## Clip 2: nodule + radiologist confirmation + Lung-RADS (~35 s)  → script 0:20-1:00
+## Clip 2: nodule + confirmation + Lung-RADS (~35 s)  → script 0:20-1:00
 ```
 Clip 2.
 1. Ctrl+Alt+R. Open patient 134503 (worklist row). Hold 2 s on the header ("Patient 134503 · 1 screen").
 2. 3D anatomy tab: let it orbit 4 s. Click the Vessels toggle on, hold 2 s, off. Click "Focus nodule", hold 3 s.
 3. CT slices tab: hold on the color slice 2 s; click a nodule marker above the slider; hold 3 s on the boxed nodule.
 4. Assessment panel: move the pointer over each proposed nodule row (lobe, proposed diameter), 2 s each.
-5. Say "JOYCE: please click Confirm all now". Wait for the category to appear.
+5. Pause 1.5 s on "Confirm all", then click it. Wait for the category to appear.
 6. Hold 4 s on "Lung-RADS 3" and the management text "6-month LDCT".
 7. Ctrl+Alt+S. Report.
 ```
@@ -71,9 +72,9 @@ Clip 3. Wait until the agent log shows "Drafts ready" (~20 s after the confirm) 
 Clip 4.
 1. Ctrl+Alt+R. Click "Review & approve" in the header. The report sheet opens on the radiology report.
 2. Slowly scroll the report so the Findings and "Lung-RADS 3" lines are visible; hold 3 s.
-3. Say "JOYCE: please click Approve now". Wait for "Approved by Dr. Joyce (demo)".
+3. Pause 1.5 s on "Approve", then click it. Wait for the "Approved by …" state.
 4. Switch to the PCP letter tab; hold 3 s on the first paragraph.
-5. Say "JOYCE: please click Approve now". Wait for the toast "Delivered to Primary care physician".
+5. Pause 1.5 s on "Approve", then click it. Wait for the toast "Delivered to Primary care physician".
 6. Open the Inbox (sidebar). Hold 3 s on the delivered letter.
 7. Ctrl+Alt+S. Report.
 ```
@@ -84,12 +85,12 @@ Clip 5. After the T0 approvals the replay drops T1 by itself; wait until its ban
 (~30 s). Do not record the wait.
 1. Ctrl+Alt+R. Open patient 134503. Hold 2 s on the header pills (T0 ✓ · T1).
 2. Click the Compare tab. Hold 5 s: prior 6.5 mm vs current 10.4 mm, +3.9 mm over 357 days, both key slices boxed.
-3. Say "JOYCE: please click Confirm now". Wait for "Lung-RADS 4B" and the management text; hold 4 s.
+3. Pause 1.5 s on "Confirm", then click it. Wait for "Lung-RADS 4B" and the management text; hold 4 s.
 4. Click Worklist in the sidebar: the hero is now at the top, marked elevated, and listed under Priority
    patients. Hold 3 s.
 5. Reopen 134503; click the chip "Compare it to last year". Hold until the answer finishes.
 6. Ctrl+Alt+S. Report.
-7. (Off camera) Say "JOYCE: please approve both T1 reports" so the run completes; no recording needed.
+7. (Off camera, not recorded) Open "Review & approve" and approve both T1 reports so the run completes.
 ```
 
 ## Clip 6: air-gapped (Ty + Joyce by hand, no agent, at the end)
