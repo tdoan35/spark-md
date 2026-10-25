@@ -1,4 +1,5 @@
 """Smoke pass (11 §Run order): the worker contract surface, MCP, UI, LLM, sandbox route. Read-only."""
+import os
 import re
 import urllib.error
 import urllib.request
@@ -111,8 +112,13 @@ class Smoke(QA):
         if status == 404:
             self.skipTest('not built yet (404)')
         self.assertEqual(status, 200)
-        self.assertIsInstance(body, dict)
-        self.note = str(body)[:120]
+        self.assertFalse({'tx_bytes', 'rx_bytes', 'since', 'interfaces', 'link_up'} - set(body), body)
+        physical = {n for n in os.listdir('/sys/class/net') if os.path.exists(f'/sys/class/net/{n}/device')}
+        names = {i['name'] for i in body['interfaces']}
+        self.assertTrue(names <= physical, f'non-physical interfaces counted: {sorted(names - physical)} (00 v0.7: physical only)')
+        self.assertTrue(all({'name', 'up', 'tx_bytes'} <= set(i) for i in body['interfaces']))
+        self.assertEqual(body['tx_bytes'], sum(i['tx_bytes'] for i in body['interfaces']) if body['interfaces'] else body['tx_bytes'])
+        self.note = f"tx={body['tx_bytes']} B on {sorted(names)} link_up={body['link_up']}"
 
     def test_S11_sandbox_reaches_llm_and_worker(self):
         """sandbox -> LLM /v1/models and -> worker /api/health (agent/tests/acceptance.sh A1, A2)"""
