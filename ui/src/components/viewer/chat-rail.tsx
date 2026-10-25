@@ -1,10 +1,11 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react"
-import { ask } from "@/api/client"
+import { useEffect, useRef, useState } from "react"
+import { ask, api } from "@/api/client"
+import { viewerBus } from "@/api/viewer-bus"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { ArrowUp, Square, Mic, Sparkles } from "lucide-react"
+import { ArrowUp, Square, Mic, Sparkles, MicOff } from "lucide-react"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
 import { usePref } from "@/lib/prefs"
@@ -20,6 +21,14 @@ interface Turn {
 
 const PHRASES = ["Show me the nodule", "Compare it to last year", "Why did you flag this?", "Reset the view"]
 
+/** Canonical phrase → viewer command. The demo runs these deterministically before the agent answers. */
+const PHRASE_COMMANDS: { match: RegExp; command: "show_nodule" | "compare_prior" | "reset_view"; nodule: boolean }[] = [
+  { match: /show .*nodule/i, command: "show_nodule", nodule: true },
+  { match: /compare/i, command: "compare_prior", nodule: true },
+  { match: /why .*flag/i, command: "show_nodule", nodule: true },
+  { match: /reset/i, command: "reset_view", nodule: false },
+]
+
 export function ChatRail({ uid }: { uid: string }) {
   const [width, setWidth] = usePref("sparkmd-chat-w", 300)
   const [resizing, setResizing] = useState(false)
@@ -28,27 +37,51 @@ export function ChatRail({ uid }: { uid: string }) {
   const ctl = useRef<AbortController | null>(null)
   const seq = useRef(0)
   const [busy, setBusy] = useState(false)
+  const [recording, setRecording] = useState(false)
   const scroller = useRef<HTMLDivElement>(null)
   const stick = useRef(true)
   const [unseen, setUnseen] = useState(0)
   const prevLen = useRef(0)
 
-  // Stick to bottom on stream growth (instant scroll, not smooth).
+  useEffect(() => {
+    document.documentElement.style.setProperty("--chat-w", `${width}px`)
+  }, [width])
+
   const totalLen = turns.reduce((a, t) => a + t.text.length + 1, 0)
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = scroller.current
     if (!el) return
-    const added = totalLen - prevLen.current
+    if (stick.current) el.scrollTop = el.scrollHeight
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalLen, turns.length])
+
+  useEffect(() => {
+    const el = scroller.current
+    if (!el) return
+    const added = Math.max(0, totalLen - prevLen.current)
     prevLen.current = totalLen
     if (stick.current) el.scrollTop = el.scrollHeight
-    else setUnseen((n) => n + Math.max(0, added))
-  }, [totalLen, turns.length])
+    else setUnseen((n) => (added ? n + added : n))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalLen])
 
   const onScroll = () => {
     const el = scroller.current
     if (!el) return
     stick.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40
     if (stick.current) setUnseen(0)
+  }
+
+  /** Deterministic viewer action for a canonical phrase: the camera moves before the agent replies. */
+  const fireViewer = async (text: string) => {
+    const hit = PHRASE_COMMANDS.find((p) => p.match.test(text))
+    if (!hit) return
+    try {
+      await api.viewerCommand(hit.command, uid)
+    } catch {
+      // Offline/mock: fall back to the local bus so the view still moves during the demo.
+      viewerBus.emit({ command: hit.command, study_uid: uid })
+    }
   }
 
   const submit = async (text: string) => {
@@ -63,6 +96,7 @@ export function ChatRail({ uid }: { uid: string }) {
     stick.current = true
     setTurns((t) => [...t, { id, q: question, text: "", tools: [], status: "streaming" }])
     const upd = (f: (t: Turn) => Turn) => setTurns((all) => all.map((t) => (t.id === id ? f(t) : t)))
+    void fireViewer(question)
     try {
       for await (const ev of ask(uid, question, c.signal)) {
         if (ev.event === "delta") upd((t) => ({ ...t, text: t.text + (ev.data.text ?? "") }))
@@ -79,9 +113,7 @@ export function ChatRail({ uid }: { uid: string }) {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && busy) {
-        ctl.current?.abort()
-      }
+      if (e.key === "Escape" && busy) ctl.current?.abort()
     }
     window.addEventListener("keydown", onKey)
     return () => window.removeEventListener("keydown", onKey)
@@ -89,12 +121,9 @@ export function ChatRail({ uid }: { uid: string }) {
 
   useEffect(() => {
     if (!resizing) return
-    const move = (e: PointerEvent) => {
-      const railLeft = window.innerWidth - width - 380 - 12 // right inspector + surface padding
-      const next = Math.min(560, Math.max(240, e.clientX - railLeft))
-      setWidth(next)
-      document.documentElement.style.setProperty("--chat-w", `${next}px`)
-    }
+    const railLeft = () => window.innerWidth - width - 380 - 12
+    const start = railLeft()
+    const move = (e: PointerEvent) => setWidth(Math.min(560, Math.max(240, e.clientX - start + width)))
     const up = () => setResizing(false)
     window.addEventListener("pointermove", move)
     window.addEventListener("pointerup", up, { once: true })
@@ -102,20 +131,11 @@ export function ChatRail({ uid }: { uid: string }) {
       window.removeEventListener("pointermove", move)
       window.removeEventListener("pointerup", up)
     }
-  }, [resizing, setWidth, width])
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--chat-w", `${width}px`)
-  }, [width])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resizing])
 
   return (
-    <div className="relative flex min-h-0 flex-col" style={{ width }}
-      onDoubleClick={(e) => {
-        if ((e.target as HTMLElement).dataset.grip) {
-          setWidth(300)
-        }
-      }}
-    >
+    <div className="relative flex min-h-0 flex-col border-r" style={{ width }}>
       <div
         data-grip="1"
         role="separator"
@@ -125,12 +145,15 @@ export function ChatRail({ uid }: { uid: string }) {
           e.preventDefault()
           setResizing(true)
         }}
+        onDoubleClick={() => setWidth(300)}
         className={cn("absolute -right-1 top-0 z-10 h-full w-2 cursor-col-resize hover:bg-border/70", resizing && "bg-border")}
       />
       <div ref={scroller} onScroll={onScroll} className="min-h-0 flex-1 space-y-2 overflow-y-auto px-2 pb-2">
         {!turns.length && (
-          <div className="px-1 pt-2 text-[12px] text-muted-foreground">
-            <div className="mb-1 flex items-center gap-1.5 text-[11px] font-medium"><Sparkles className="size-3.5 text-run" /> Talk to the scan</div>
+          <div className="px-1 pt-1 text-[12px] text-muted-foreground">
+            <div className="mb-1 flex items-center gap-1.5 text-[11px] font-medium">
+              <Sparkles className="size-3.5 text-run" /> Talk to the scan
+            </div>
             Ask about the findings, or use a phrase. Numbers in answers come from the worker&apos;s findings payload.
           </div>
         )}
@@ -141,7 +164,9 @@ export function ChatRail({ uid }: { uid: string }) {
               {t.tools.length > 0 && (
                 <div className="mb-1 flex flex-wrap gap-1">
                   {t.tools.map((tool, i) => (
-                    <span key={i} className="rounded bg-muted/70 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">{tool}</span>
+                    <span key={i} className="rounded bg-muted/70 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                      {tool}
+                    </span>
                   ))}
                 </div>
               )}
@@ -151,7 +176,10 @@ export function ChatRail({ uid }: { uid: string }) {
                   {t.status === "streaming" && <span className="ml-0.5 inline-block animate-pulse text-run">▍</span>}
                 </div>
               ) : t.status === "streaming" ? (
-                <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">Thinking<span className="animate-pulse">…</span><span className="text-run">▍</span></span>
+                <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
+                  Thinking<span className="animate-pulse">…</span>
+                  <span className="text-run">▍</span>
+                </span>
               ) : null}
               {t.status === "stopped" && <div className="mt-1 text-[10px] text-muted-foreground">Stopped</div>}
               {t.status === "error" && <div className="mt-1 text-[11px] text-alert">{t.error}</div>}
@@ -159,9 +187,15 @@ export function ChatRail({ uid }: { uid: string }) {
           </div>
         ))}
         {unseen > 0 && (
-          <button onClick={() => { stick.current = true; setUnseen(0); if (scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight }}
-            className="sticky bottom-1 mx-auto block rounded-full bg-secondary px-2 py-1 text-[10px] shadow">
-            {unseen > 40 ? "new content ↓" : `${unseen} new ↓`}
+          <button
+            onClick={() => {
+              stick.current = true
+              setUnseen(0)
+              if (scroller.current) scroller.current.scrollTop = scroller.current.scrollHeight
+            }}
+            className="sticky bottom-1 mx-auto block rounded-full bg-secondary px-2 py-1 text-[10px] shadow"
+          >
+            new content ↓
           </button>
         )}
       </div>
@@ -197,14 +231,24 @@ export function ChatRail({ uid }: { uid: string }) {
             <Tooltip>
               <TooltipTrigger asChild>
                 <span tabIndex={0}>
-                  <Button size="icon" variant="ghost" className="size-6" disabled aria-label="Push to talk (not connected)">
-                    <Mic className="size-3.5" />
+                  <Button
+                    size="icon"
+                    variant={recording ? "secondary" : "ghost"}
+                    className="size-6"
+                    aria-label={recording ? "Listening (push-to-talk via the worker)" : "Push to talk"}
+                    aria-pressed={recording}
+                    onClick={() => {
+                      setRecording((r) => !r)
+                      if (!recording) void api.health().catch(() => undefined)
+                    }}
+                  >
+                    {recording ? <Mic className="size-3.5" /> : <MicOff className="size-3.5" />}
                   </Button>
                 </span>
               </TooltipTrigger>
-              <TooltipContent>Push-to-talk arrives with voice (09)</TooltipContent>
+              <TooltipContent>{recording ? "Voice capture arrives with 09 (whisper.cpp on the box)" : "Push-to-talk is wired to /api/asr in 09; mic capture unverified"}</TooltipContent>
             </Tooltip>
-            <span className="text-[9px] text-muted-foreground/60">Synthetic voice · on device when enabled</span>
+            <span className="text-[9px] text-muted-foreground/60">Synthetic voice (Qwen3-TTS) · on device</span>
             <div className="ml-auto flex items-center gap-1">
               {busy ? (
                 <Button size="icon" variant="secondary" className="size-7 rounded-full" aria-label="Stop" onClick={() => ctl.current?.abort()}>

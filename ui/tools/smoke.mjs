@@ -159,6 +159,7 @@ await wait(1200)
 report.chatClicked = await clickText("Show me the nodule")
 await wait(2500)
 report.chatText = await ev("document.body.innerText.includes('Talk to the scan')")
+report.chatBody = await ev("document.body.innerText.slice(0,600)")
 await shot("05-chat")
 
 // Confirm flow (real worker fixtures): press Confirm if present.
