@@ -135,7 +135,7 @@ export function ChatRail({ uid }: { uid: string }) {
   }, [resizing])
 
   return (
-    <div className="relative flex min-h-0 flex-col border-r" style={{ width }}>
+    <div className="relative flex min-h-0 flex-col" style={{ width }}>
       <div
         data-grip="1"
         role="separator"

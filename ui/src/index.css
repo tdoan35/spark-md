@@ -126,6 +126,7 @@
 @layer base {
   * { @apply border-border outline-ring/50; }
   body { @apply bg-background text-foreground font-sans; overflow: hidden; }
+  /* The app fills viewport height, so the window's scrollbar never appears; keep scroll areas styled. */
   html, body, #root { height: 100vh; }
 }
 
