@@ -58,9 +58,24 @@ export function StudyPage({ uid }: { uid: string }) {
       >
         <div className="flex min-h-0 min-w-0 flex-col">
           <div className="min-h-0 flex-1 px-3 pb-1">
-            <ViewerPane uid={uid} findings={findings} selected={selected} onSelect={onSelectNodule} study={study} paused={sheetOpen} />
+            <ViewerPane
+              uid={uid}
+              findings={findings}
+              selected={selected}
+              onSelect={onSelectNodule}
+              study={study}
+              paused={sheetOpen}
+              bottom={
+                <Strip
+                  study={study}
+                  findings={findings}
+                  selected={selected}
+                  onOpenStudy={openStudy}
+                  onCompare={() => viewerBus.emit({ command: "compare_prior", study_uid: uid, ...(selected ? { nodule_id: selected } : {}) })}
+                />
+              }
+            />
           </div>
-          <Strip study={study} findings={findings} selected={selected} onOpenStudy={openStudy} onCompare={() => viewerBus.emit({ command: "compare_prior", study_uid: uid, ...(selected ? { nodule_id: selected } : {}) })} />
         </div>
         <div
           ref={inspectorRef}

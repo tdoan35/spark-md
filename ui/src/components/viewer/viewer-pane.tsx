@@ -27,7 +27,7 @@ class ViewError extends Component<{ children: ReactNode }, { msg: string | null 
 }
 
 export function ViewerPane({
-  uid, findings, selected, onSelect, study, paused,
+  uid, findings, selected, onSelect, study, paused, bottom,
 }: {
   uid: string
   findings: Findings | undefined
@@ -36,6 +36,8 @@ export function ViewerPane({
   study: StudyDetail
   /** Freeze the 3D canvas (report sheet open); GL-on-EGL renders are CPU-bound on GB10. */
   paused?: boolean
+  /** Rendered under the imaging well only — the chat rail keeps full height beside it (08). */
+  bottom?: ReactNode
 }) {
   const [mode, setMode] = useState<Mode>("3d")
   const [extrasOpen, setExtrasOpen] = useState(false)
@@ -92,8 +94,10 @@ export function ViewerPane({
   const nodule = findings?.nodules.find((n) => n.nodule_id === selected)
 
   return (
-    <div className="grid h-full min-h-0 grid-cols-[var(--chat-w)_minmax(0,1fr)]" style={{ containerType: "inline-size" }}>
-      <ChatRail uid={uid} />
+    <div className="grid h-full min-h-0 grid-cols-[var(--chat-w)_minmax(0,1fr)] grid-rows-[minmax(0,1fr)_auto]" style={{ containerType: "inline-size" }}>
+      <div className="row-span-2 flex min-h-0 min-w-0">
+        <ChatRail uid={uid} />
+      </div>
       <div className={cn("relative min-h-0 min-w-0 overflow-hidden rounded-lg bg-well", extrasOpen && "col-span-2")}>
         <div className="flex h-9 items-center gap-2 px-2.5 text-[11px] text-white/60">
           <ToggleGroup
@@ -142,6 +146,7 @@ export function ViewerPane({
         </div>
         {extrasOpen && <ExtrasPanel findings={findings} onClose={() => setExtrasOpen(false)} uid={uid} />}
       </div>
+      {bottom && <div className="col-start-2 row-start-2 min-h-0 min-w-0">{bottom}</div>}
     </div>
   )
 }
