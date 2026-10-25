@@ -154,9 +154,12 @@ export function WorklistPage() {
           </table>
         </div>
       )}
-      <p className="mt-2 text-[11px] text-muted-foreground/70">
-        Hero patient 134503: {hero ? `${STATUS_LABEL[hero.status] ?? hero.status}${heroReports.data?.length ? ` · ${heroReports.data.length} reports` : ""}` : "not dropped yet"}. All numbers are placeholders — research demo.
-      </p>
+      <div className="mt-2 flex items-center justify-between text-[11px]">
+        <span className="text-muted-foreground/70">
+          Hero patient 134503: {hero ? `${STATUS_LABEL[hero.status] ?? hero.status}${heroReports.data?.length ? ` · ${heroReports.data.length} report${heroReports.data.length === 1 ? "" : "s"}` : ""}` : "not dropped yet"}. All numbers are placeholders.
+        </span>
+        <span className="text-muted-foreground/50">Priority, then Lung-RADS, then arrival · tie-break study UID</span>
+      </div>
     </div>
   )
 }
