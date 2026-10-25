@@ -1,0 +1,626 @@
+{
+  "pipeline_version": "0.5.0",
+  "cpu_only": true,
+  "live_cache_root": "/home/dell/spark-md-runtime-w/cache",
+  "stage_root": "/home/dell/sparkmd-b9-kdpcx8ph",
+  "runs": [
+    {
+      "timepoint": "T0",
+      "study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693",
+      "series_uid": "1.2.840.113654.2.55.191672868291879989699384719070844674759",
+      "volume_source": "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.191672868291879989699384719070844674759/volume.nii.gz",
+      "mask_source": "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.191672868291879989699384719070844674759/lung_sides.nii.gz",
+      "geometry_checked_against_live": false,
+      "cpu_render_s": 1.026042,
+      "node_triangles": {
+        "lung_right": 41656,
+        "lung_left": 41420,
+        "airways": 16764,
+        "vessels": 101584,
+        "skeleton": 94592
+      },
+      "total_triangles": 296016,
+      "bytes": 7115116,
+      "layer_audit": {
+        "source": "threshold-render-only",
+        "clinical_measurement": false,
+        "grid": {
+          "shape": [
+            193,
+            193,
+            201
+          ],
+          "affine_ras_mm": [
+            [
+              1.5,
+              0.0,
+              0.0,
+              -129.71875
+            ],
+            [
+              0.0,
+              1.5,
+              0.0,
+              33.28125
+            ],
+            [
+              0.0,
+              0.0,
+              1.5,
+              -349.29998779296875
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "spacing_mm": [
+            1.5,
+            1.5,
+            1.5
+          ],
+          "voxel_mm3": 3.375,
+          "resampling": {
+            "order": 1,
+            "mode": "constant",
+            "cval_hu": -1000
+          }
+        },
+        "body_parameters": {
+          "hu_above": -400,
+          "axial_largest_component": true,
+          "axial_fill_holes": true,
+          "connectivity": 4
+        },
+        "layers": {
+          "airways": {
+            "status": "present",
+            "reason": "trachea_seed_propagation",
+            "voxels": 12451,
+            "parameters": {
+              "hu_below": -950,
+              "superior_seed_slices": 10,
+              "seed_area_mm2_inclusive": [
+                30,
+                800
+              ],
+              "seed_midline_distance_mm_max": 15,
+              "dilation_iterations": 1,
+              "maximum_volume_mm3_exclusive": 400000,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 1,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 1
+            },
+            "extraction_status": "removed",
+            "volume_mm3": 42022.125
+          },
+          "vessels": {
+            "status": "present",
+            "reason": "large_components_retained",
+            "voxels": 24563,
+            "parameters": {
+              "hu_above": -600,
+              "lung_erosion_iterations": 2,
+              "minimum_component_mm3_exclusive": 300,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 0.6,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 1
+            },
+            "volume_mm3": 82900.125
+          },
+          "skeleton": {
+            "status": "present",
+            "reason": "large_components_retained",
+            "voxels": 205071,
+            "parameters": {
+              "hu_above": 250,
+              "body_erosion_iterations": 1,
+              "closing_iterations": 1,
+              "minimum_component_mm3_exclusive": 2000,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 1,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 2
+            },
+            "volume_mm3": 692114.625
+          }
+        }
+      },
+      "surface_provenance": {
+        "airways": {
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_step_size": 1,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        },
+        "vessels": {
+          "gaussian_sigma_voxels": 0.6,
+          "marching_cubes_step_size": 1,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        },
+        "skeleton": {
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_step_size": 2,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        }
+      },
+      "protected_file_sha256": {
+        "nodules.json": "681075681e4a32fa1a7cb5f8a2f33d76b0c5dc94f7ea90634e629417f2a3b832",
+        "findings.json": "651fb80469816c36d7df52ce7c4ec70ec3a68adcfe38dacf76fdab592b33022f",
+        "nodules.glb": "8000ceeb98668823b97bbdf6d8c2690f44d3bef043b97d4818fc8ec93894c234",
+        "stack.json": "182fc42705fcd7f659fa3aa796a33d273bfa74ae3ba786c34b6d9a73247afdc8",
+        "candidates.json": "c0bba1e85ecab4c29b5e92796da3ff31f7c00c65b87fa9bfe331e13cb5818286"
+      },
+      "new_lung_sha256": "bca5d5e092ae6355c0a03d23503769b58a4d78816db277ba43d1951318301702",
+      "marker_glb_identical": true,
+      "http_asset": {
+        "status": 200,
+        "bytes": 7115116,
+        "content_type": "model/gltf-binary"
+      },
+      "promoted_files": [
+        "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.191672868291879989699384719070844674759/lung.glb",
+        "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.191672868291879989699384719070844674759/mesh_stats.json"
+      ],
+      "protected_cache_files_unchanged": true
+    },
+    {
+      "timepoint": "T1",
+      "study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794",
+      "series_uid": "1.2.840.113654.2.55.22198691282350879638748709186011341024",
+      "volume_source": "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.22198691282350879638748709186011341024/volume.nii.gz",
+      "mask_source": "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.22198691282350879638748709186011341024/lung_sides.nii.gz",
+      "geometry_checked_against_live": false,
+      "cpu_render_s": 1.186556,
+      "node_triangles": {
+        "lung_right": 42658,
+        "lung_left": 41474,
+        "airways": 17204,
+        "vessels": 95704,
+        "skeleton": 98004
+      },
+      "total_triangles": 295044,
+      "bytes": 7090584,
+      "layer_audit": {
+        "source": "threshold-render-only",
+        "clinical_measurement": false,
+        "grid": {
+          "shape": [
+            208,
+            208,
+            211
+          ],
+          "affine_ras_mm": [
+            [
+              1.5,
+              0.0,
+              0.0,
+              -164.697265625
+            ],
+            [
+              0.0,
+              1.5,
+              0.0,
+              18.302738189697266
+            ],
+            [
+              0.0,
+              0.0,
+              1.5,
+              -350.29998779296875
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "spacing_mm": [
+            1.5,
+            1.5,
+            1.5
+          ],
+          "voxel_mm3": 3.375,
+          "resampling": {
+            "order": 1,
+            "mode": "constant",
+            "cval_hu": -1000
+          }
+        },
+        "body_parameters": {
+          "hu_above": -400,
+          "axial_largest_component": true,
+          "axial_fill_holes": true,
+          "connectivity": 4
+        },
+        "layers": {
+          "airways": {
+            "status": "present",
+            "reason": "trachea_seed_propagation",
+            "voxels": 12649,
+            "parameters": {
+              "hu_below": -950,
+              "superior_seed_slices": 10,
+              "seed_area_mm2_inclusive": [
+                30,
+                800
+              ],
+              "seed_midline_distance_mm_max": 15,
+              "dilation_iterations": 1,
+              "maximum_volume_mm3_exclusive": 400000,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 1,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 1
+            },
+            "extraction_status": "removed",
+            "volume_mm3": 42690.375
+          },
+          "vessels": {
+            "status": "present",
+            "reason": "large_components_retained",
+            "voxels": 23068,
+            "parameters": {
+              "hu_above": -600,
+              "lung_erosion_iterations": 2,
+              "minimum_component_mm3_exclusive": 300,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 0.6,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 1
+            },
+            "volume_mm3": 77854.5
+          },
+          "skeleton": {
+            "status": "present",
+            "reason": "large_components_retained",
+            "voxels": 215105,
+            "parameters": {
+              "hu_above": 250,
+              "body_erosion_iterations": 1,
+              "closing_iterations": 1,
+              "minimum_component_mm3_exclusive": 2000,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 1,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 2
+            },
+            "volume_mm3": 725979.375
+          }
+        }
+      },
+      "surface_provenance": {
+        "airways": {
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_step_size": 1,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        },
+        "vessels": {
+          "gaussian_sigma_voxels": 0.6,
+          "marching_cubes_step_size": 1,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        },
+        "skeleton": {
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_step_size": 2,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        }
+      },
+      "protected_file_sha256": {
+        "nodules.json": "9c248812fefc7db4bdb233d18521d08beed055bade4a05b7183c5b9712232822",
+        "findings.json": "8b2643d1fb5bec29d8b8cf3a4fe6b973afac99f8b097f65e48e31ec6c1f8ac76",
+        "nodules.glb": "3d405bca1af25fcf49b62a29df49363f5f1f895859b6c456a2169bf0d671a0e5",
+        "stack.json": "338aa3dbabcbe13601eef8a50a5ef5b9bf9c5ba57d10d9290cccccb39bf4de20",
+        "candidates.json": "3b047cac34d64de592c11a3f5a7282f30df5bbd8d4c9b5f29dd34e0c36a7e037"
+      },
+      "new_lung_sha256": "535e9d5c81bb93197e798acd7dc9cc7f6654a796b8582c92d8b5418eeb9cbeec",
+      "marker_glb_identical": true,
+      "http_asset": {
+        "status": 200,
+        "bytes": 7090584,
+        "content_type": "model/gltf-binary"
+      },
+      "promoted_files": [
+        "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.22198691282350879638748709186011341024/lung.glb",
+        "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.22198691282350879638748709186011341024/mesh_stats.json"
+      ],
+      "protected_cache_files_unchanged": true
+    },
+    {
+      "timepoint": "T2",
+      "study_uid": "1.2.840.113654.2.55.278333827878071825845925251507545037002",
+      "series_uid": "1.2.840.113654.2.55.48229687676636292501867215868097032173",
+      "volume_source": "/home/dell/spark-md-runtime-g2/cache/1.2.840.113654.2.55.48229687676636292501867215868097032173/volume.nii.gz",
+      "mask_source": "/home/dell/spark-md-runtime-g2/cache/1.2.840.113654.2.55.48229687676636292501867215868097032173/lung_sides.nii.gz",
+      "geometry_checked_against_live": true,
+      "cpu_render_s": 1.270779,
+      "node_triangles": {
+        "lung_right": 41872,
+        "lung_left": 40384,
+        "airways": 16268,
+        "vessels": 98778,
+        "skeleton": 96572
+      },
+      "total_triangles": 293874,
+      "bytes": 7062884,
+      "layer_audit": {
+        "source": "threshold-render-only",
+        "clinical_measurement": false,
+        "grid": {
+          "shape": [
+            221,
+            221,
+            203
+          ],
+          "affine_ras_mm": [
+            [
+              1.5,
+              0.0,
+              0.0,
+              -146.677734375
+            ],
+            [
+              0.0,
+              1.5,
+              0.0,
+              5.322261333465576
+            ],
+            [
+              0.0,
+              0.0,
+              1.5,
+              -336.3999938964844
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "spacing_mm": [
+            1.5,
+            1.5,
+            1.5
+          ],
+          "voxel_mm3": 3.375,
+          "resampling": {
+            "order": 1,
+            "mode": "constant",
+            "cval_hu": -1000
+          }
+        },
+        "body_parameters": {
+          "hu_above": -400,
+          "axial_largest_component": true,
+          "axial_fill_holes": true,
+          "connectivity": 4
+        },
+        "layers": {
+          "airways": {
+            "status": "present",
+            "reason": "trachea_seed_propagation",
+            "voxels": 12229,
+            "parameters": {
+              "hu_below": -950,
+              "superior_seed_slices": 10,
+              "seed_area_mm2_inclusive": [
+                30,
+                800
+              ],
+              "seed_midline_distance_mm_max": 15,
+              "dilation_iterations": 1,
+              "maximum_volume_mm3_exclusive": 400000,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 1,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 1
+            },
+            "extraction_status": "removed",
+            "volume_mm3": 41272.875
+          },
+          "vessels": {
+            "status": "present",
+            "reason": "large_components_retained",
+            "voxels": 24020,
+            "parameters": {
+              "hu_above": -600,
+              "lung_erosion_iterations": 2,
+              "minimum_component_mm3_exclusive": 300,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 0.6,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 1
+            },
+            "volume_mm3": 81067.5
+          },
+          "skeleton": {
+            "status": "present",
+            "reason": "large_components_retained",
+            "voxels": 213388,
+            "parameters": {
+              "hu_above": 250,
+              "body_erosion_iterations": 1,
+              "closing_iterations": 1,
+              "minimum_component_mm3_exclusive": 2000,
+              "connectivity": 6,
+              "gaussian_sigma_voxels": 1,
+              "marching_cubes_level": 0.5,
+              "marching_cubes_step_size": 2
+            },
+            "volume_mm3": 720184.5
+          }
+        }
+      },
+      "surface_provenance": {
+        "airways": {
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_step_size": 1,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        },
+        "vessels": {
+          "gaussian_sigma_voxels": 0.6,
+          "marching_cubes_step_size": 1,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        },
+        "skeleton": {
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_step_size": 2,
+          "marching_cubes_level": 0.5,
+          "measurement": false,
+          "surface_status": "emitted",
+          "surface_reason": "mask_surface"
+        }
+      },
+      "protected_file_sha256": {
+        "nodules.json": "105fc4915b964c1c103414d73e3c83663353e1be8f0dcb2fbb985171d6ad80a5",
+        "findings.json": "98f9dd03779088996e188da293fccee27e5977f2baf04a79738f0667d441399f",
+        "nodules.glb": "bc65ac00d31c90e70da9640086ff928609549c9a6a3f29dc59b4a5a9bd8ba710",
+        "stack.json": "11897633de6d00d9418f940941ec61811431a313c85c8dc607280200639144fe",
+        "candidates.json": "219b31d7ad4672366a83f98188bbcec7143da9ec11ace104c826d7b411c5a9bf"
+      },
+      "new_lung_sha256": "dafc9b27758d3913a2412a2047dab5dbe67372b4f4ebe4d802d0a06bce9354c5",
+      "marker_glb_identical": true,
+      "http_asset": {
+        "status": 404,
+        "reason": "T2 not registered in current live worklist; cache files ready for W replay"
+      },
+      "promoted_files": [
+        "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.48229687676636292501867215868097032173/lung.glb",
+        "/home/dell/spark-md-runtime-w/cache/1.2.840.113654.2.55.48229687676636292501867215868097032173/mesh_stats.json"
+      ],
+      "protected_cache_files_unchanged": true
+    }
+  ],
+  "confirmed_registry_rows_unchanged": true,
+  "registry_rows_checked": 3,
+  "registry_access": "read-only SQLite connection; no clinical or report writes",
+  "original_g2_cache_modified": false,
+  "date": "2026-10-25",
+  "machine": "event Dell GB10 Linux aarch64",
+  "tests": {
+    "imaging": "54 passed, 1 Mac-only skip",
+    "rules": "10 passed"
+  },
+  "visual_verification": {
+    "viewer": "standalone real GLTFLoader; CPU-only Electron/SwiftShader",
+    "runs": [
+      {
+        "timepoint": "T0",
+        "nodes": [
+          {
+            "name": "lung_right",
+            "triangles": 41656
+          },
+          {
+            "name": "lung_left",
+            "triangles": 41420
+          },
+          {
+            "name": "airways",
+            "triangles": 16764
+          },
+          {
+            "name": "vessels",
+            "triangles": 101584
+          },
+          {
+            "name": "skeleton",
+            "triangles": 94592
+          }
+        ],
+        "total": 296016,
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "timepoint": "T1",
+        "nodes": [
+          {
+            "name": "lung_right",
+            "triangles": 42658
+          },
+          {
+            "name": "lung_left",
+            "triangles": 41474
+          },
+          {
+            "name": "airways",
+            "triangles": 17204
+          },
+          {
+            "name": "vessels",
+            "triangles": 95704
+          },
+          {
+            "name": "skeleton",
+            "triangles": 98004
+          }
+        ],
+        "total": 295044,
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+      },
+      {
+        "timepoint": "T2",
+        "nodes": [
+          {
+            "name": "lung_right",
+            "triangles": 41872
+          },
+          {
+            "name": "lung_left",
+            "triangles": 40384
+          },
+          {
+            "name": "airways",
+            "triangles": 16268
+          },
+          {
+            "name": "vessels",
+            "triangles": 98778
+          },
+          {
+            "name": "skeleton",
+            "triangles": 96572
+          }
+        ],
+        "total": 293874,
+        "renderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)"
+      }
+    ],
+    "errors": {
+      "entries": [],
+      "nextSeq": 2,
+      "dropped": 0
+    }
+  },
+  "viewer_cache_note": "Reload the viewer to invalidate its in-memory GLTF URL cache; no worker restart is required for these already-promoted files.",
+  "render_api_change": "render_meshes(lung_split,nodules,output,study_uid,*,volume) now requires original HU Volume; pipeline caller migrated, no restore/detector run needed for cache-only render."
+}

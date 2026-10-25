@@ -10,10 +10,22 @@ import numpy as np
 from scipy import ndimage, sparse
 from skimage.measure import marching_cubes
 
+from .layers import build_layers
+
 
 _RAS_TO_GL = np.array([[-1., 0., 0.], [0., 0., 1.], [0., 1., 0.]])
 _MARKER = {'kind': 'detector_box_ellipsoid', 'measurement': False,
            'description': 'Display localization marker, not a validated segmented measurement'}
+_DISPLAY_SURFACE = {
+    'kind': 'threshold_anatomy_surface', 'measurement': False,
+    'description': 'Display-only threshold anatomy, not a validated segmented measurement'}
+_LAYER_SURFACES = {
+    'airways': {'gaussian_sigma_voxels': 1, 'marching_cubes_step_size': 1,
+                'color': (216 / 255, 230 / 255, 242 / 255, .22)},
+    'vessels': {'gaussian_sigma_voxels': .6, 'marching_cubes_step_size': 1,
+                'color': (227 / 255, 163 / 255, 174 / 255, .22)},
+    'skeleton': {'gaussian_sigma_voxels': 1, 'marching_cubes_step_size': 2,
+                 'color': (239 / 255, 228 / 255, 207 / 255, .22)}}
 
 
 def _outward(vertices, faces):
@@ -52,14 +64,14 @@ def _taubin(vertices, faces):
     return vertices
 
 
-def _lung_surface(labels, bounds, label, affine):
+def _mask_surface(cropped_mask, bounds, affine, *, sigma, step_size):
     # Crop before allocating float data; never copy the full CT per surface.
-    mask = np.pad(labels[bounds] == label, 4).astype(np.float32)
-    ndimage.gaussian_filter(mask, sigma=1, output=mask, mode='constant')
+    mask = np.pad(cropped_mask, 4).astype(np.float32)
+    ndimage.gaussian_filter(mask, sigma=sigma, output=mask, mode='constant')
     if mask.max() <= .5:
         return None
-    vertices, faces, _, _ = marching_cubes(mask, level=.5, step_size=2,
-                                           allow_degenerate=False)
+    vertices, faces, _, _ = marching_cubes(mask, level=.5, step_size=step_size,
+                                          allow_degenerate=False)
     vertices = _taubin(vertices, faces)
     faces = _outward(vertices, faces)
     vertices += np.array([part.start - 4 for part in bounds])
@@ -119,16 +131,17 @@ class _GLB:
         accessors.append(accessor)
         return len(accessors) - 1
 
-    def add(self, name, vertices, faces, *, translation=None, extras=None, lung=False):
+    def add(self, name, vertices, faces, *, translation=None, extras=None,
+            color=(1., .52, .12, 1.)):
         normals = _normals(vertices, faces)
         attributes = {'POSITION': self._accessor(vertices, 5126, 'VEC3', 34962, True),
                       'NORMAL': self._accessor(normals, 5126, 'VEC3', 34962)}
         indices = self._accessor(faces.reshape(-1), 5125, 'SCALAR', 34963)
         materials = self.document.setdefault('materials', [])
         materials.append({'name': name, 'pbrMetallicRoughness': {
-            'baseColorFactor': [.55, .72, .86, .22] if lung else [1., .52, .12, 1.],
+            'baseColorFactor': list(color),
             'metallicFactor': 0., 'roughnessFactor': .8},
-            'alphaMode': 'BLEND' if lung else 'OPAQUE'})
+            'alphaMode': 'BLEND' if color[3] < 1 else 'OPAQUE'})
         meshes = self.document.setdefault('meshes', [])
         mesh = {'name': name, 'primitives': [{'attributes': attributes, 'indices': indices,
                                              'material': len(materials) - 1, 'mode': 4}]}
@@ -164,8 +177,8 @@ class _GLB:
                 'meshes': self.stats}
 
 
-def render_meshes(lung_split, nodules, output, study_uid):
-    """Write standalone lung/nodule GLBs and mesh_stats.json; return asset URLs."""
+def render_meshes(lung_split, nodules, output, study_uid, *, volume):
+    """Write display-only anatomy/nodule GLBs and mesh stats; return asset URLs."""
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     lungs, markers = _GLB(), _GLB()
@@ -173,9 +186,34 @@ def render_meshes(lung_split, nodules, output, study_uid):
     for label, name in ((1, 'lung_right'), (2, 'lung_left')):
         bounds = objects[label - 1] if label <= len(objects) else None
         if bounds is not None:
-            surface = _lung_surface(lung_split.labels, bounds, label, lung_split.affine)
+            surface = _mask_surface(lung_split.labels[bounds] == label, bounds,
+                                    lung_split.affine, sigma=1, step_size=2)
             if surface is not None:
-                lungs.add(name, *surface, lung=True)
+                lungs.add(name, *surface, color=(.55, .72, .86, .22),
+                          extras=_DISPLAY_SURFACE)
+    masks, layer_audit = build_layers(volume, lung_split)
+    layer_provenance = {}
+    for name, recipe in _LAYER_SURFACES.items():
+        provenance = {key: value for key, value in recipe.items() if key != 'color'}
+        provenance.update(marching_cubes_level=.5, measurement=False,
+                          surface_status='omitted', surface_reason='mask_absent_or_rejected')
+        layer_provenance[name] = provenance
+        mask = masks[name]
+        if mask is None:
+            continue
+        objects = ndimage.find_objects(mask, max_label=1)
+        bounds = objects[0] if objects else None
+        if bounds is None:
+            provenance['surface_reason'] = 'empty_mask'
+            continue
+        surface = _mask_surface(mask[bounds], bounds, lung_split.affine,
+                                sigma=recipe['gaussian_sigma_voxels'],
+                                step_size=recipe['marching_cubes_step_size'])
+        if surface is None:
+            provenance['surface_reason'] = 'no_surface_at_level_0_5_after_smoothing'
+            continue
+        lungs.add(name, *surface, color=recipe['color'], extras=_DISPLAY_SURFACE)
+        provenance.update(surface_status='emitted', surface_reason='mask_surface')
     for nodule in nodules:
         vertices, faces = _ellipsoid(nodule['size_mm'])
         center = (_RAS_TO_GL @ np.asarray(nodule['center_mm'], dtype=float)).tolist()
@@ -183,11 +221,14 @@ def render_meshes(lung_split, nodules, output, study_uid):
     stats = {'coordinate_mapping': {'input': 'RAS mm', 'output': '(-R,S,A) mm',
                                     'recentered': False},
              'provenance': {'lung': 'threshold LungSplit labels: 1 right, 2 left',
+                            'measurement': False,
                             'lung_affine_ras_mm': np.asarray(lung_split.affine).tolist(),
                             'gaussian_sigma_voxels': 1, 'marching_cubes_level': .5,
                             'marching_cubes_step_size': 2,
                             'taubin': {'iterations': 10, 'lambda': .5, 'mu': -.53},
+                            'layers': layer_provenance,
                             'nodules': dict(_MARKER)},
+             'layer_audit': layer_audit,
              'lung': lungs.save(output / 'lung.glb'),
              'nodules': markers.save(output / 'nodules.glb')}
     (output / 'mesh_stats.json').write_text(json.dumps(stats, indent=2, allow_nan=False) + '\n')

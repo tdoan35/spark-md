@@ -27,7 +27,7 @@ from .volume import dicom_to_volume
 
 # One heavyweight imaging job at a time in the host worker process.
 _IMAGING_LOCK = threading.Lock()
-PIPELINE_VERSION = '0.4.0'
+PIPELINE_VERSION = '0.5.0'
 # Demo operating point, not a validated clinical sensitivity threshold.
 # Admission is independent of A7 success and never selects track identity.
 MIN_NODULE_SCORE = 0.90
@@ -110,7 +110,7 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
         progress('match')
         tracks = prepare_tracks(registry, home, study, nodules)
         progress('render')
-        assets = render_meshes(lung_split, nodules, cache, study_uid)
+        assets = render_meshes(lung_split, nodules, cache, study_uid, volume=volume)
         assets.update(render_slices(volume, nodules, cache, study_uid))
         with registry.transaction() as db:
             # Recheck within the shared write lock before replacing unconfirmed rows.
