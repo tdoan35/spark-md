@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# Spark MD status: the start-all table (01 §Start-all) with live, read-only checks. Starts and stops nothing.
+# Usage: bin/sparkmd-status [--only llm,worker,...]   Exit code = number of FAIL lines.
+set -uo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/sparkmd-lib.sh"
+[[ "${1:-}" == --only ]] && ONLY="${2:-}"
+
+avail="$(mem_avail_gib)"
+if (( avail >= MEM_FLOOR_GIB )); then say OK preflight "MemAvailable ${avail} GiB (floor ${MEM_FLOOR_GIB})"; else say FAIL preflight "MemAvailable ${avail} GiB < ${MEM_FLOOR_GIB} GiB floor"; fi
+docker info >/dev/null 2>&1 || say FAIL docker "docker not usable by $(id -un)"
+
+want spark0 && { if c_spark0; then say OK spark0 "spark0 has $SPARK0_ADDR"; else say FAIL spark0 "spark0 / $SPARK0_ADDR missing"; print_sudo_hint; fi; }
+
+want fw && { if c_fw; then say OK fw ":8000/:8100 DROP rules applied on $(phys_ifaces | tr '\n' ' ')(marker $FW_MARKER; rules themselves need root to read)"
+  else say WARN fw "no firewall marker: :8000 (LLM) and :8100 (worker) bind 0.0.0.0 and may be reachable on $(phys_ifaces | tr '\n' ' ')"; print_sudo_hint; fi; }
+
+want llm && {
+  if c_llm; then say OK llm "$LLM_NAME answers at $LLM_URL"
+  elif c_llm_container; then say WARN llm "container qwen38-27b-tf is running but $LLM_URL/models does not answer (still loading?)"
+  else say FAIL llm "no LLM at $LLM_URL (start: bin/sparkmd-start --only llm)"; fi; }
+
+want sandbox && {
+  if ! c_gateway; then say FAIL sandbox "OpenShell gateway user service not active ($GATEWAY_UNIT)"
+  elif ! c_sbx_ready; then say FAIL sandbox "sandbox $SANDBOX is not Ready (openshell sandbox list)"
+  elif c_sbx_llm; then
+    if ss -ltnH 'sport = :18789' 2>/dev/null | grep -q LISTEN; then say OK sandbox "gateway active, $SANDBOX Ready, reaches host.openshell.internal:8000, OpenClaw forward on 127.0.0.1:18789"
+    else say WARN sandbox "$SANDBOX Ready and reaches the LLM, but nothing listens on 127.0.0.1:18789 (try: nemoclaw $SANDBOX recover)"; fi
+  else say FAIL sandbox "$SANDBOX Ready but cannot reach host.openshell.internal:8000 (LLM down, or bind/firewall; see 07)"; fi; }
+
+want worker && {
+  pane="$(worker_session_pid)"; lp="$(listener_pid "$SPARKMD_PORT")"
+  if c_worker; then
+    how="not under tmux session $WORKER_SESSION"; [[ -n $pane ]] && how="tmux $WORKER_SESSION pid $pane"
+    if c_worker_spark0; then say OK worker "health 200 on 127.0.0.1 and $SPARK0_ADDR:$SPARKMD_PORT ($how, listener pid ${lp:-?})"
+    else say WARN worker "health 200 on 127.0.0.1 but not on $SPARK0_ADDR:$SPARKMD_PORT (sandbox cannot reach it; bind is ${SPARKMD_BIND})"; fi
+  elif [[ -n $pane ]]; then say WARN worker "tmux $WORKER_SESSION exists (pid $pane) but /api/health does not answer (starting? log: $LOG_DIR/sparkmd-worker.log)"
+  else say FAIL worker "no worker on $WORKER_URL"; fi; }
+
+want asr && { if c_asr; then say OK asr "whisper-server answers on 127.0.0.1:8178"; else say WARN asr "whisper-server down (UI falls back to chips and clicks)"; fi; }
+want tts && { if c_tts; then say OK tts "TTS answers on 127.0.0.1:8020"; else say WARN tts "TTS down (UI falls back to mute)"; fi; }
+
+want ui && {
+  p="$(ui_pid)"
+  if [[ -n $p ]]; then say OK ui "Electron running (pid $p), worker serves UI: $(c_ui_served && echo yes || echo NO)"
+  elif c_ui_served; then say WARN ui "worker serves the UI but Electron is not running"
+  else say WARN ui "Electron not running and GET $WORKER_URL/ is not 200 (npx vite build in ui/?)"; fi
+  chrome_sandbox_ok || { say WARN ui "Electron SUID sandbox not set (ui/README.md): chrome-sandbox must be root:root mode 4755"; print_sudo_hint; }; }
+
+summary
+exit "$N_FAIL"

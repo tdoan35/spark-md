@@ -1,0 +1,120 @@
+#!/usr/bin/env bash
+# Spark MD start-all (01 §Start-all). Idempotent: every step checks "already up?" first and never restarts a running service.
+# Order: preflight -> spark0 -> firewall check -> LLM -> sandbox/gateway -> worker -> voice -> UI.
+# Usage: bin/sparkmd-start [--only llm,sandbox,worker,asr,tts,ui] [--dry-run]    Exit code 1 on the first fatal FAIL.
+# --dry-run (or SPARKMD_DRYRUN=1) prints every mutating command as 'DRY: ...' instead of running it.
+# No network, no downloads, no sudo (missing sudo steps are printed). Logs: ~/logs/*.log
+set -uo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/sparkmd-lib.sh"
+[[ "${1:-}" == --only ]] && ONLY="${2:-}"
+[[ "${1:-}" == --dry-run || "${3:-}" == --dry-run ]] && SPARKMD_DRYRUN=1
+fatal() { say FAIL "$1" "$2"; shift 2; [[ $# -gt 0 ]] && hint "$@"; summary; exit 1; }
+
+# 1. preflight
+avail="$(mem_avail_gib)"
+(( avail >= MEM_FLOOR_GIB )) || fatal preflight "MemAvailable ${avail} GiB < ${MEM_FLOOR_GIB} GiB floor; free memory first (docker ps; no second GPU job)"
+docker info >/dev/null 2>&1 || fatal preflight "docker not usable by $(id -un) (docker group?)"
+say OK preflight "MemAvailable ${avail} GiB, docker usable, HF_HUB_OFFLINE/TRANSFORMERS_OFFLINE/NEMOCLAW_DISABLE_TELEMETRY=1"
+
+# 2. spark0 (sudo at the console)
+if want spark0; then
+  if c_spark0; then say OK spark0 "spark0 has $SPARK0_ADDR"
+  else say FAIL spark0 "spark0 / $SPARK0_ADDR missing (zero-sudo fallback: docker0 172.17.0.1, 07 gotcha 7)"; print_sudo_hint; summary; exit 1; fi
+fi
+
+# 3. :8000/:8100 firewall (R7 says before the LLM when the box is on Wi-Fi); warn and continue
+if want fw; then
+  if c_fw; then say OK fw "firewall marker present"
+  else say WARN fw "no firewall marker: :8000 and :8100 bind 0.0.0.0, external interfaces ($(phys_ifaces | tr '\n' ' ')) are not confirmed blocked"; print_sudo_hint; fi
+fi
+
+# 4. LLM: reuse the recipe's start.sh (02); it also says "already running" and leaves a running server alone
+if want llm; then
+  if c_llm; then say OK llm "already up: $LLM_NAME at $LLM_URL (not restarted)"
+  elif c_llm_container; then
+    say WARN llm "container running, waiting up to 180 s for $LLM_URL/models (not restarting)"
+    wait_for 180 c_llm && say OK llm "$LLM_NAME answers" || fatal llm "container qwen38-27b-tf running but API never answered; docker logs qwen38-27b-tf"
+  else
+    [[ -x $LLM_DIR/start.sh ]] || fatal llm "$LLM_DIR/start.sh missing"
+    say OK llm "starting TensorFold (31-70 s expected, up to 300 s allowed); log $LOG_DIR/sparkmd-llm.log"
+    act bash -c 'cd "$1" && HOST=0.0.0.0 PORT=8000 SERVED_NAME=qwen3.8-27b PARALLEL=4 CONTEXT=65536 KV_POOL_GB=16 PREPARE=0 WAIT_TIMEOUT=300 timeout 330 ./start.sh >>"$2" 2>&1' _ "$LLM_DIR" "$LOG_DIR/sparkmd-llm.log" || fatal llm "start.sh failed; tail $LOG_DIR/sparkmd-llm.log"
+    c_llm && say OK llm "$LLM_NAME answers at $LLM_URL" || fatal llm "start.sh returned but $LLM_URL/models does not list $LLM_NAME"
+  fi
+fi
+
+# 5. OpenShell gateway + sandbox: docker.sock proxy (event-box workaround, agent/README.md) -> gateway user service -> sandbox
+if want sandbox; then
+  if ! c_proxy; then
+    act bash -c 'cd "$1" && setsid nohup python3 -I agent/setup/docker-sock-proxy.py >>"$2" 2>&1 &' _ "$REPO" "$LOG_DIR/sparkmd-docker-proxy.log"
+    wait_for 10 c_proxy && say OK sandbox "started the docker.sock proxy ($DOCKER_PROXY_SOCK)" || say WARN sandbox "docker.sock proxy socket did not appear (gateway may not reach docker)"
+  fi
+  c_gateway || { act systemctl --user start "$GATEWAY_UNIT" 2>/dev/null; wait_for 40 c_gateway; }
+  c_gateway || fatal sandbox "gateway service $GATEWAY_UNIT not active: journalctl --user -u $GATEWAY_UNIT"
+  if ! wait_for 60 c_sbx_ready; then
+    say WARN sandbox "$SANDBOX not Ready: nemoclaw $SANDBOX start, then recover"
+    act nemoclaw "$SANDBOX" start >>"$LOG_DIR/sparkmd-sandbox.log" 2>&1
+    act nemoclaw "$SANDBOX" recover >>"$LOG_DIR/sparkmd-sandbox.log" 2>&1
+    wait_for 120 c_sbx_ready || fatal sandbox "$SANDBOX still not Ready (may need re-onboarding: 07; log $LOG_DIR/sparkmd-sandbox.log)"
+  fi
+  c_sbx_llm || fatal sandbox "$SANDBOX is Ready but cannot reach host.openshell.internal:8000 (LLM bind/firewall, 07)"
+  say OK sandbox "gateway active, $SANDBOX Ready, reaches the LLM (policy persistence after reboot is unverified: run tests/acceptance/run.py --only V4,V5)"
+fi
+
+# 6. worker (W's launch: detached tmux session, appends to ~/logs/sparkmd-worker.log); never restarts a running one
+if want worker; then
+  if c_worker; then say OK worker "already up on $WORKER_URL (not restarted)"
+  elif tmux has-session -t "$WORKER_SESSION" 2>/dev/null; then
+    say WARN worker "tmux $WORKER_SESSION exists, waiting up to 90 s for health (not restarting)"
+    wait_for 90 c_worker && say OK worker "health 200" || fatal worker "tmux $WORKER_SESSION is alive but /api/health never answered; tail $LOG_DIR/sparkmd-worker.log"
+  else
+    [[ -f $SPARKMD_ENV_FILE ]] || fatal worker "SPARKMD_ENV_FILE $SPARKMD_ENV_FILE missing (hook token/URL are required)"
+    [[ -x $SPARKMD_PYTHON ]] || fatal worker "SPARKMD_PYTHON $SPARKMD_PYTHON missing"
+    [[ -d $SPARKMD_HOME ]] || fatal worker "SPARKMD_HOME $SPARKMD_HOME missing (registry/cache live there; it is never created or wiped here)"
+    cmd="exec env SPARKMD_HOME=$(printf %q "$SPARKMD_HOME") SPARKMD_ENV_FILE=$(printf %q "$SPARKMD_ENV_FILE") SPARKMD_PYTHON=$(printf %q "$SPARKMD_PYTHON") SPARKMD_MODELS=$(printf %q "$SPARKMD_MODELS") SPARKMD_BIND=$SPARKMD_BIND SPARKMD_PORT=$SPARKMD_PORT HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 NEMOCLAW_DISABLE_TELEMETRY=1 bash $(printf %q "$REPO/scripts/start_worker.sh") >> $(printf %q "$LOG_DIR/sparkmd-worker.log") 2>&1"
+    act tmux new-session -d -s "$WORKER_SESSION" -c "$REPO" "$cmd" || fatal worker "tmux could not start session $WORKER_SESSION"
+    wait_for 90 c_worker || fatal worker "no health after 90 s; tail $LOG_DIR/sparkmd-worker.log"
+    c_worker_spark0 && say OK worker "started in tmux $WORKER_SESSION; health 200 on 127.0.0.1 and $SPARK0_ADDR" \
+                    || say WARN worker "started, but $SPARK0_ADDR:$SPARKMD_PORT does not answer (sandbox cannot reach it; spark0/bind?)"
+  fi
+fi
+
+# 7. voice: warn and continue (UI falls back to chips + mute)
+if want asr; then
+  if c_asr; then say OK asr "already up on 127.0.0.1:8178"
+  elif [[ ! -x $ASR_BIN || ! -f $ASR_MODEL_DIR/ggml-small.en.bin ]]; then say WARN asr "whisper-server not built ($ASR_BIN) or model missing in $ASR_MODEL_DIR: voice off (09 step 1)"
+  else
+    act tmux new-session -d -s "$ASR_SESSION" "exec $(printf %q "$ASR_BIN") -m $(printf %q "$ASR_MODEL_DIR/ggml-small.en.bin") --host 127.0.0.1 --port 8178 -l en -t 8 -nt --vad -vm $(printf %q "$ASR_MODEL_DIR/ggml-silero-v5.1.2.bin") >> $(printf %q "$LOG_DIR/sparkmd-asr.log") 2>&1"
+    wait_for 60 c_asr && say OK asr "whisper-server started on 127.0.0.1:8178" || say WARN asr "whisper-server did not answer in 60 s; tail $LOG_DIR/sparkmd-asr.log"
+  fi
+fi
+if want tts; then
+  img="$(docker images --format '{{.Repository}}:{{.Tag}}' 2>/dev/null | grep -m1 'faster-qwen3-tts.*:v6.15.0')"
+  if c_tts; then say OK tts "already up on 127.0.0.1:8020"
+  elif docker ps -a --format '{{.Names}}' | grep -qx "$TTS_CONTAINER"; then
+    act docker start "$TTS_CONTAINER" >/dev/null 2>&1
+    wait_for 90 c_tts && say OK tts "restarted container $TTS_CONTAINER" || say WARN tts "container $TTS_CONTAINER started but /health did not answer in 90 s"
+  elif [[ -z $img || ! -d $TTS_MODEL || ! -d $TTS_CONFIG ]]; then say WARN tts "TTS image (v6.15.0 pinned, 09 step 5), model ($TTS_MODEL) or config dir ($TTS_CONFIG) missing: spoken answers off"
+  else
+    act docker run -d --name "$TTS_CONTAINER" --gpus all -p 127.0.0.1:8020:8000 -e HF_HUB_OFFLINE=1 -e TRANSFORMERS_OFFLINE=1 \
+      -v "$TTS_MODEL":/models/Qwen3-TTS:ro -v "$TTS_CONFIG":/config "$img" >/dev/null 2>&1
+    wait_for 120 c_tts && say OK tts "started $TTS_CONTAINER on 127.0.0.1:8020 (first request captures CUDA graphs: send a warm-up)" || say WARN tts "container started but /health did not answer in 120 s"
+  fi
+fi
+
+# 8. Electron UI
+if want ui; then
+  p="$(ui_pid)"
+  if [[ -n $p ]]; then say OK ui "Electron already running (pid $p)"
+  elif ! c_worker; then say WARN ui "worker is down, not opening the UI"
+  elif ! c_ui_served; then say WARN ui "GET $WORKER_URL/ is not 200: run 'npx vite build' in ui/ (worker serves ui/dist)"
+  elif [[ ! -x $ELECTRON ]]; then say WARN ui "$ELECTRON missing: npm ci + node node_modules/electron/install.js from nodehouse (ui/README.md)"
+  else
+    chrome_sandbox_ok || { say WARN ui "Electron SUID sandbox not set (ui/README.md: chown root:root + chmod 4755 chrome-sandbox); it may refuse to start"; print_sudo_hint; }
+    act bash -c 'cd "$1/ui" && SPARKMD_UI_URL="$2/" DISPLAY="${DISPLAY:-:0}" setsid nohup "$3" . >>"$4" 2>&1 &' _ "$REPO" "$WORKER_URL" "$ELECTRON" "$LOG_DIR/sparkmd-ui.log"
+    sleep 6
+    [[ -n "$(ui_pid)" ]] && say OK ui "Electron started on $WORKER_URL/ (DISPLAY=${DISPLAY:-:0})" || say WARN ui "Electron exited; tail $LOG_DIR/sparkmd-ui.log (needs the box's desktop session / DISPLAY)"
+  fi
+fi
+
+summary
+exit "$N_FAIL"

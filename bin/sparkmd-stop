@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+# Spark MD stop, reverse of start: UI, voice, worker, sandbox, LLM (01 §Start-all). Leaves spark0, the registry, cache/ and outbox/ alone.
+# Usage: bin/sparkmd-stop [--only ui,asr,tts,worker,sandbox,llm] [--dry-run]    (e.g. --only worker for a worker restart)
+# Only stops what it can identify as Spark MD's own. The worker is stopped the way W specified: SIGTERM to the tmux pane pid,
+# then WAIT FOR THAT PID TO EXIT (listener closure is not enough; SSE clients can hold uvicorn's drain), SIGKILL after 40 s.
+set -uo pipefail
+. "$(dirname "${BASH_SOURCE[0]}")/sparkmd-lib.sh"
+[[ "${1:-}" == --only ]] && ONLY="${2:-}"
+[[ "${1:-}" == --dry-run || "${3:-}" == --dry-run ]] && SPARKMD_DRYRUN=1
+
+if want ui; then
+  p="$(ui_pid)"
+  if [[ -z $p ]]; then say OK ui "Electron not running"
+  else
+    act pkill -TERM -f "$ELECTRON" 2>/dev/null
+    if [[ -n ${SPARKMD_DRYRUN:-} ]]; then say OK ui "dry run"
+    elif wait_for 10 bash -c "! pgrep -f '$ELECTRON' >/dev/null"; then say OK ui "Electron stopped"
+    else pkill -KILL -f "$ELECTRON" 2>/dev/null; say WARN ui "Electron needed SIGKILL"; fi
+  fi
+fi
+
+if want asr; then
+  if tmux has-session -t "$ASR_SESSION" 2>/dev/null; then act tmux kill-session -t "$ASR_SESSION" && say OK asr "whisper-server stopped"
+  else say OK asr "not managed here / not running"; fi
+fi
+if want tts; then
+  if [[ "$(docker inspect -f '{{.State.Running}}' "$TTS_CONTAINER" 2>/dev/null)" == true ]]; then act docker stop "$TTS_CONTAINER" >/dev/null && say OK tts "container $TTS_CONTAINER stopped (kept, not removed)"
+  else say OK tts "not running"; fi
+fi
+
+if want worker; then
+  pane="$(worker_session_pid)"; lp="$(listener_pid "$SPARKMD_PORT")"
+  if [[ -z $pane ]]; then
+    if [[ -n $lp ]]; then say WARN worker "listener pid $lp on :$SPARKMD_PORT is not in tmux $WORKER_SESSION: not stopping a process I did not start (kill -TERM $lp yourself)"
+    else say OK worker "not running"; fi
+  else
+    act kill -TERM "$pane" 2>/dev/null
+    if [[ -n ${SPARKMD_DRYRUN:-} ]]; then say OK worker "dry run: would SIGTERM pid $pane and wait for it to exit (40 s, then SIGKILL)"
+    elif wait_for 40 bash -c "! kill -0 $pane 2>/dev/null"; then say OK worker "pid $pane exited after SIGTERM"
+    else kill -KILL "$pane" 2>/dev/null; sleep 1; say WARN worker "pid $pane ignored SIGTERM for 40 s (SSE drain?); sent SIGKILL"; fi
+    tmux has-session -t "$WORKER_SESSION" 2>/dev/null && act tmux kill-session -t "$WORKER_SESSION"
+  fi
+fi
+
+if want sandbox; then
+  if c_gateway; then
+    act nemoclaw "$SANDBOX" stop >>"$LOG_DIR/sparkmd-sandbox.log" 2>&1
+    act systemctl --user stop "$GATEWAY_UNIT" 2>/dev/null
+    say OK sandbox "sandbox stopped, gateway service stopped (workspace kept; restart is unverified: see 01 unknowns)"
+  else say OK sandbox "gateway not active"; fi
+fi
+
+if want llm; then
+  if [[ "$(docker inspect -f '{{.State.Running}}' qwen38-27b-tf 2>/dev/null)" == true ]]; then
+    act bash -c 'cd "$1" && ./stop.sh >>"$2" 2>&1' _ "$LLM_DIR" "$LOG_DIR/sparkmd-llm.log" && say OK llm "TensorFold stopped (frees ~36 GiB)" || say FAIL llm "stop.sh failed; docker ps"
+  else say OK llm "not running"; fi
+fi
+
+summary
+exit "$N_FAIL"

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# The root-only steps of start-all, in one place so a console paste can't wrap (01 gotcha): run it yourself at the console.
+#   sudo bash bin/sparkmd-sudo           run every step (idempotent): spark0, :8000/:8100 DROP on the physical interfaces,
+#                                         Electron chrome-sandbox SUID (ui/README.md), firewall marker
+#   bash bin/sparkmd-sudo --print        only print what is still needed (what start/status print as hints)
+# The agent scripts never run this. iptables rules and the marker vanish at reboot: rerun after every reboot.
+set -uo pipefail
+here="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+SUDO_USER_HOME="$(getent passwd "${SUDO_USER:-dell}" | cut -d: -f6)"
+HOME="${SUDO_USER_HOME:-$HOME}" . "$here/sparkmd-lib.sh"
+if [[ "${1:-}" == --print || $EUID -ne 0 ]]; then
+  [[ $EUID -ne 0 ]] && echo "not root: printing what is needed (run: sudo bash $here/sparkmd-sudo)"
+  sudo_cmds | sed 's/^/  /'; exit 0
+fi
+rc=0
+while IFS= read -r cmd; do
+  if bash -c "$cmd"; then echo "OK   $cmd" | cut -c1-160; else echo "FAIL $cmd" | cut -c1-160; rc=1; fi
+done < <(sudo_cmds all)
+exit $rc
