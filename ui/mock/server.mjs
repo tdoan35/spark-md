@@ -827,7 +827,7 @@ const server = http.createServer(async (req, res) => {
       if (r.status === "approved")
         return json(res, 409, { report: r, outbox_id: state.outbox.find((o) => o.report_id === r.report_id)?.id ?? null, already_approved: true })
       r.status = "approved"
-      r.approved_by = String(b.approver ?? "").trim() || "Dr. Joyce (demo)"
+      r.approved_by = String(b.approver ?? "").trim() || "Dr. Spark (demo)"
       r.approved_at = now()
       // Like the worker: only a pcp_letter is delivered (outbox row + outbox_delivered); payload = the approved report.
       let o = null

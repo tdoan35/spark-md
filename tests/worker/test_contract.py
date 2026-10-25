@@ -51,7 +51,7 @@ class WorkerContract(unittest.TestCase):
         return result
 
     def confirm(self, uid, long, short):
-        status, body, _ = request(f'/api/nodules/{uid}-N1/confirm', {'long_mm': long, 'short_mm': short, 'by': 'Dr. Joyce (test)'})
+        status, body, _ = request(f'/api/nodules/{uid}-N1/confirm', {'long_mm': long, 'short_mm': short, 'by': 'Dr. Spark (test)'})
         self.assertEqual(status, 200, body)
         return body
 
@@ -153,7 +153,7 @@ class WorkerContract(unittest.TestCase):
         thread = threading.Thread(target=subscriber, daemon=True)
         thread.start()
         self.assertTrue(connected.wait(3))
-        status, approved, _ = request(f'/api/reports/{letter["report_id"]}/approve', {'approver': 'Dr. Joyce'})
+        status, approved, _ = request(f'/api/reports/{letter["report_id"]}/approve', {'approver': 'Dr. Spark'})
         self.assertEqual(status, 200)
         self.assertFalse(approved['already_approved'])
         thread.join(2)
@@ -162,7 +162,7 @@ class WorkerContract(unittest.TestCase):
         self.assertEqual(status, 409)
         self.assertTrue(again['already_approved'])
         self.assertEqual(again['outbox_id'], approved['outbox_id'])
-        self.assertEqual(again['report']['approved_by'], 'Dr. Joyce')
+        self.assertEqual(again['report']['approved_by'], 'Dr. Spark')
         self.assertEqual(len(request('/api/outbox')[1]), 1)
         self.assertEqual(request('/api/nodules/fixture-T0-N1/confirm', {'long_mm': 12, 'by': 'test'})[0], 409)
         mcp('get_study', {'study_uid': 'fixture-T0'})

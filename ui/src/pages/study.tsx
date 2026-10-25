@@ -8,6 +8,7 @@ import { useApp } from "@/lib/app-context"
 import type { StudyDetail, Findings, Nodule } from "@/api/types"
 import { mm, mmNum, hu, signed, days, dayLabel, STATUS_LABEL, lungRadsClass } from "@/lib/format"
 import { cn } from "@/lib/utils"
+import { readApprover } from "@/lib/prefs"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
@@ -80,7 +81,7 @@ export function StudyPage({ uid }: { uid: string }) {
         <div
           ref={inspectorRef}
           inert={!open}
-          className={cn("min-h-0 min-w-0 overflow-hidden border-l", !open && "invisible")}
+          className={cn("min-h-0 min-w-0 overflow-hidden", !open && "invisible")}
           style={{ width: "var(--inspector-w)" }}
         >
           <div className="flex h-full w-(--inspector-w) flex-col">
@@ -259,7 +260,7 @@ function NoduleList({ findings, drafting, selected, onSelectNodule }: { findings
   const confirm = async (nodes: Nodule[]) => {
     if (busy || !nodes.length || !nodes.every((n) => validDiameters(draftFor(n)))) return
     const values = nodes.map((n) => ({ id: n.nodule_id, ...draftFor(n) }))
-    const by = localStorage.getItem("sparkmd-approver") ?? "Dr. Joyce (demo)"
+    const by = readApprover()
     const succeeded: string[] = []
     setBusy(true)
     setErrors((old) => {
@@ -410,7 +411,7 @@ function Strip({ study, findings, selected, onOpenStudy, onCompare }: { study: S
   const all = [...study.priors, { study_uid: study.study_uid, timepoint: study.timepoint, day_offset: study.day_offset, status: study.status, lung_rads: study.lung_rads }]
   const n = findings?.nodules.find((x) => x.nodule_id === selected)
   return (
-    <div className="shrink-0 border-t px-4 pb-2 pt-2" style={{ containerType: "inline-size" }}>
+    <div className="shrink-0 px-4 pb-2 pt-2" style={{ containerType: "inline-size" }}>
       <div className="flex items-center gap-2">
         <span className="text-[11px] font-medium text-muted-foreground">Longitudinal comparison · {all.length} total scans</span>
         <div className="ml-auto flex items-center gap-1.5">

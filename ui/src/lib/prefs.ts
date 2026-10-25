@@ -19,6 +19,17 @@ export function writePref<T>(key: string, value: T) {
   }
 }
 
+/** Rename the former demo preference without changing custom names or signed records. */
+export function readApprover(): string {
+  const saved = localStorage.getItem("sparkmd-approver")
+  const fallback = "Dr. Spark (demo)"
+  if (saved === "Dr. Joyce (demo)") {
+    localStorage.setItem("sparkmd-approver", fallback)
+    return fallback
+  }
+  return saved ?? fallback
+}
+
 export function usePref<T>(key: string, initial: T) {
   const [v, setV] = useState<T>(() => readPref(key, initial))
   useEffect(() => writePref(key, v), [key, v])

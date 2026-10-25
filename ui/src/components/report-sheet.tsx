@@ -9,6 +9,7 @@ import { qk } from "@/api/keys"
 import { api, ApiError } from "@/api/client"
 import { hm } from "@/lib/format"
 import { cn } from "@/lib/utils"
+import { readApprover } from "@/lib/prefs"
 import { toast } from "sonner"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
@@ -20,7 +21,7 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
   const { data: reports, isLoading } = useReports(uid)
   const patient = usePatientOf(uid)
   const [tab, setTab] = useState<Tab>("radiology")
-  const [approver, setApprover] = useState(() => localStorage.getItem("sparkmd-approver") ?? "Dr. Joyce (demo)")
+  const [approver, setApprover] = useState(readApprover)
   const [result, setResult] = useState<ApproveResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
