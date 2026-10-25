@@ -14,4 +14,4 @@ Box-side, as `ty`, after R8 (NemoClaw onboard, sandbox `spark-md-openclaw`) and 
 | 6 | `tests/acceptance.sh` | 07 §Acceptance tests + confirm-flow checks |
 
 Unverified until run on the box: `openclaw config set` syntax for nested keys/arrays, the `tools.deny` group
-names, whether `tools.profile minimal` hides MCP tools (A6 checks), `sandbox exec` passing long arguments.
+names, whether `tools.profile minimal` hides MCP tools (A6 checks), `openshell sandbox exec` passing argv unchanged (JSON bodies, `sh -c`, long base64).
