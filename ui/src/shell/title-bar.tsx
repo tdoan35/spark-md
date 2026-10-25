@@ -94,9 +94,10 @@ export function TitleBar({
       </div>
 
       <div className="flex h-full min-w-0 flex-1 items-center">
+        {/* Size to the tabs, shrinking only on overflow so New tab follows the last tab. */}
         <div
           ref={stripRef}
-          className="scrollbar-none flex h-full min-w-0 flex-1 items-center gap-0.5 overflow-x-auto px-1"
+          className="scrollbar-none flex h-full min-w-0 flex-initial items-center gap-0.5 overflow-x-auto px-1"
           role="tablist"
           aria-label="Open studies"
         >
