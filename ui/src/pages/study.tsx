@@ -78,7 +78,8 @@ export function StudyPage({ uid }: { uid: string }) {
 function StudyHeader({ study, onToggleInspector, inspectorOpen }: { study: StudyDetail; onToggleInspector: () => void; inspectorOpen: boolean }) {
   const { data: reports } = useReports(study.study_uid)
   const [sheetOpen, setSheetOpen] = useState(false)
-  const draft = reports?.find((r) => r.status === "draft" && r.kind === "radiology")
+  // Any draft (either kind) is worth opening: the sheet has both tabs.
+  const draft = reports?.find((r) => r.status === "draft")
   const lr = study.lung_rads
   return (
     <div className="flex h-[60px] shrink-0 items-center gap-4 px-5">
@@ -98,7 +99,7 @@ function StudyHeader({ study, onToggleInspector, inspectorOpen }: { study: Study
           {lr && <span className={cn("rounded px-1.5 py-0.5 font-mono text-[10px] tabular-nums", lungRadsClass(lr))}>Lung-RADS {lr}</span>}
         </div>
       </div>
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex items-center gap-2" data-hdr-reports={reports ? `${reports.length}:${reports.map((r) => r.kind + r.status).join(",")}` : "none"}>
         {draft ? (
           <Button size="sm" className="h-8 gap-1 text-xs" onClick={() => setSheetOpen(true)}>
             Review &amp; approve <ChevronRight className="size-3.5" />

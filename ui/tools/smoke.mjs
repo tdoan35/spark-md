@@ -12,6 +12,7 @@ const UI = path.resolve(import.meta.dirname, "..", "dist")
 const WORKER = process.env.WORKER_URL ?? "http://127.0.0.1:8100"
 const API = process.env.API_BASE ?? process.env.MOCK_URL ?? WORKER // mock at 8101 or the real worker at 8100
 const SERVE_STATIC = process.env.SERVE_STATIC !== "0"
+const MOCK_MODE = API.includes(":8101") || API.includes(":8102")
 
 const MIME = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".woff2": "font/woff2", ".json": "application/json", ".glb": "model/gltf-binary" }
 
@@ -178,12 +179,33 @@ if (confirmBtn) {
   report.afterConfirm = await ev("document.body.innerText.slice(700,1800)")
 }
 
+// Mock-only: drop T1 so the hero has a prior + a category change (worklist reorder check).
+if (MOCK_MODE) {
+  await clickText("Worklist")
+  await wait(700)
+  const dropBtn = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.innerText.includes('Drop next scan')); if(!b||b.disabled) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
+  if (dropBtn) await click(dropBtn.x, dropBtn.y)
+  await wait(6000)
+  report.worklistAfter = await ev("document.querySelector('tbody').innerText")
+  const t1 = await ev(`(() => { const r=[...document.querySelectorAll('tbody tr')].find(r=>r.innerText.includes('T1')); if(!r) return null; const b=r.getBoundingClientRect(); return {x:b.x+120,y:b.y+15} })()`)
+  if (t1) { await click(t1.x, t1.y); await wait(2500)
+    const c2 = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.innerText.trim()==='Confirm' && !b.disabled); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
+    if (c2) { await click(c2.x, c2.y); await wait(3000) }
+    const c3 = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>b.innerText.trim()==='Confirm' && !b.disabled); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2} })()`)
+    if (c3) { await click(c3.x, c3.y); await wait(3500) }
+    report.t1Assessment = await ev("document.body.innerText.match(/Lung-RADS [0-9ABX]+/)?.[0] ?? null")
+    await shot("06b-t1")
+  }
+}
+
 // Report sheet + Approve via a real mouse click.
-const reviewPos = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>/Review\\b/.test(b.innerText) || b.innerText.includes('View approved')); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2, label: b.innerText} })()`)
+const reviewPos = await ev(`(() => { const labels=[...document.querySelectorAll('button')].map(b=>b.innerText); window.__labels = labels; const b=[...document.querySelectorAll('button')].find(b=>/Review\\b/.test(b.innerText) || b.innerText.includes('View approved')); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2, label: b.innerText} })()`)
+report.labels = await ev("window.__labels")
 report.sheetBtn = !!reviewPos
 if (reviewPos) await click(reviewPos.x, reviewPos.y)
 await wait(900)
 await shot("07-sheet")
+report.sheetBody = await ev("document.body.innerText.slice(-700)")
 const approveBtn = await ev(`(() => { const b=[...document.querySelectorAll('button')].find(b=>/^Approve$/.test(b.innerText.trim())); if(!b) return null; const r=b.getBoundingClientRect(); return {x:r.x+r.width/2,y:r.y+r.height/2,disabled:b.disabled} })()`)
 report.approveBtn = approveBtn ? { ...approveBtn, disabled: !!approveBtn.disabled } : null
 if (approveBtn && !approveBtn.disabled) {

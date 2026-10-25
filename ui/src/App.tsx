@@ -60,9 +60,16 @@ function Shell() {
   }, [sse])
 
   const uid = matchPath("/study/:uid", loc.pathname)?.params.uid ?? null
+  // A study reached straight from the worklist fills the active "New study" slot, so it owns a tab.
+  const studyPath = useMemo(() => {
+    const own = matchPath("/study/:uid", currentPathNoSearch(loc))
+    if (!own) return null
+    const slot = new URLSearchParams(loc.search).get("tab")
+    return slot ? currentPathNoSearch(loc) : `/study/${own.params.uid}?tab=study-${own.params.uid}`
+  }, [loc.pathname, loc.search])
   const slot = new URLSearchParams(loc.search).get("tab")
   const activeId = uid ? (slot ?? `study-${uid}`) : loc.pathname === "/" ? slot : null
-  const currentPath = loc.pathname + loc.search
+  const currentPath = studyPath ?? loc.pathname + loc.search
 
   // Upsert the active slot on pathname/search changes (study tabs only).
   useEffect(() => {
@@ -124,6 +131,10 @@ function Shell() {
       <Toaster position="top-center" offset={44} toastOptions={{ classNames: { description: "!text-muted-foreground" } }} />
     </AppContext.Provider>
   )
+}
+
+function currentPathNoSearch(loc: { pathname: string }) {
+  return loc.pathname
 }
 
 function StudyRoute() {
