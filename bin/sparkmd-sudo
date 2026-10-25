@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # The root-only steps of start-all, in one place so a console paste can't wrap (01 gotcha): run it yourself at the console.
 #   sudo bash bin/sparkmd-sudo           run every step (idempotent): spark0, :8000/:8100 DROP on the physical interfaces,
-#                                         Electron chrome-sandbox SUID (ui/README.md), firewall marker
+#                                         Electron chrome-sandbox SUID (ui/README.md), docker.sock ACL for the user, firewall marker
 #   bash bin/sparkmd-sudo --print        only print what is still needed (what start/status print as hints)
 # The agent scripts never run this. iptables rules and the marker vanish at reboot: rerun after every reboot.
 set -uo pipefail

@@ -75,6 +75,7 @@ ui_pid()    { pgrep -af "$ELECTRON" | grep -v -- '--type=' | awk '{print $1}' | 
 worker_session_pid() { tmux display-message -p -t "$WORKER_SESSION" '#{pane_pid}' 2>/dev/null; }
 listener_pid() { ss -ltnpH "sport = :$1" 2>/dev/null | grep -o 'pid=[0-9]*' | head -n1 | cut -d= -f2; }
 chrome_sandbox_ok() { local f="$REPO/ui/node_modules/electron/dist/chrome-sandbox"; [[ -u $f && "$(stat -c %U "$f")" == root ]]; }
+docker_sock_acl_ok() { getfacl -p /var/run/docker.sock 2>/dev/null | grep -q "^user:$(id -un):rw"; }
 mem_avail_gib() { awk '/MemAvailable/ {printf "%d", $2/1048576}' /proc/meminfo; }
 
 # --- sudo commands: only ever printed (never run here); bin/sparkmd-sudo runs them as root --------------
@@ -94,6 +95,9 @@ sudo_cmds() {
       done
     done
     echo "touch $FW_MARKER"
+  fi
+  if [[ -n $all ]] || ! docker_sock_acl_ok; then     # event box: the systemd user manager predates dell's docker group (agent/README.md)
+    echo "setfacl -m u:$(id -un ${SUDO_USER:-}):rw /var/run/docker.sock"
   fi
   if [[ -n $all ]] || ! chrome_sandbox_ok; then      # ui/README.md: Electron on Linux aarch64 needs the SUID sandbox once
     echo "chown root:root $REPO/ui/node_modules/electron/dist/chrome-sandbox && chmod 4755 $REPO/ui/node_modules/electron/dist/chrome-sandbox"
