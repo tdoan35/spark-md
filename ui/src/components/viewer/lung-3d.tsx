@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type ComponentRef } from "react"
-import { Canvas, useFrame, useThree } from "@react-three/fiber"
+import { Canvas, useThree } from "@react-three/fiber"
 import { CameraControls, useGLTF } from "@react-three/drei"
 import * as THREE from "three"
 import type { Findings, ViewerCommand } from "@/api/types"
@@ -117,11 +117,12 @@ function Controls({
   nodesRef: { current: Map<string, THREE.Vector3> }
 }) {
   const ccObj = useRef<ComponentRef<typeof CameraControls> | null>(null)
-  const shared = useRef({ auto: true, focused: false, center: new THREE.Vector3(), radius: 140, lastInteract: 0 })
+  const shared = useRef({ focused: false, center: new THREE.Vector3(), radius: 140 })
 
   // Lung bounding sphere from every loaded mesh (glbs nest meshes under Group nodes,
   // and real anatomy is NOT origin-centred — a wrong center/home target frames empty space).
   const scene = useThree((s) => s.scene)
+  const invalidate = useThree((s) => s.invalidate)
   useEffect(() => {
     const box = new THREE.Box3()
     scene.traverse((o) => {
@@ -132,7 +133,7 @@ function Controls({
     if (!box.isEmpty()) box.getBoundingSphere(sphere)
     shared.current.center.copy(sphere.center)
     shared.current.radius = Math.min(400, Math.max(100, sphere.radius || 140))
-  }, [scene, findings.study_uid, ready])
+  }, [scene, findings.study_uid, ready, invalidate])
 
   const home = (cc2: ComponentRef<typeof CameraControls>) => {
     const fov = (35 * Math.PI) / 180
@@ -145,7 +146,6 @@ function Controls({
     const cc2 = ccObj.current
     if (!cc2) return
     shared.current.focused = true
-    shared.current.auto = false
     const dir = new THREE.Vector3(p.x - shared.current.center.x, 0, p.z - shared.current.center.z)
     if (dir.lengthSq() < 1) dir.set(0, 0, 1)
     dir.normalize().add(new THREE.Vector3(0, 0, 0.35)).setY(0.3).normalize()
@@ -165,7 +165,6 @@ function Controls({
     } else if (command?.command === "reset_view") {
       home(cc2)
       shared.current.focused = false
-      shared.current.auto = true
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [command])
@@ -173,42 +172,25 @@ function Controls({
   useEffect(() => {
     const cc2 = ccObj.current
     if (cc2 && !shared.current.focused) home(cc2)
+    invalidate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [findings.study_uid, ready])
-
-  useFrame((_, dt) => {
-    const cc2 = ccObj.current
-    const sh = shared.current
-    if (!cc2) return
-    const since = performance.now() - sh.lastInteract
-    if (!sh.auto || sh.focused || since < 6000) return
-    void cc2.rotate(0.18 * dt, 0, false)
-  })
-
+  }, [findings.study_uid, ready, selected])
   return (
-    <CameraControls
-      ref={ccObj}
-      makeDefault
-      minDistance={40}
-      maxDistance={900}
-      onStart={() => {
-        shared.current.lastInteract = performance.now()
-      }}
-      onEnd={() => {
-        shared.current.lastInteract = performance.now()
-      }}
-    />
+    <CameraControls ref={ccObj} makeDefault minDistance={40} maxDistance={900} />
   )
 }
 
+
 export default function Lung3D({
-  findings, selected, onSelect, command,
+  findings, selected, onSelect, command, paused,
 }: {
   uid: string
   findings: Findings | undefined
   selected: string | null
   onSelect: (id: string) => void
   command: { command: ViewerCommand["command"]; nodule_id?: string } | null
+  /** Freeze rendering entirely (report sheet open): demand frameloop already idles at 0 frames. */
+  paused?: boolean
 }) {
   const lung = findings?.assets.lung_mesh ? resolveAsset(findings.assets.lung_mesh) : null
   const nod = findings?.assets.nodule_mesh ? resolveAsset(findings.assets.nodule_mesh) : null
@@ -220,8 +202,10 @@ export default function Lung3D({
   }, [])
   if (!findings || !lung || !nod)
     return <div className="grid h-full place-items-center text-[11px] text-white/50">No 3D assets for this study</div>
+  // Demand frameloop: GL-on-EGL translation is CPU-bound on GB10, so a 60 fps loop burns a core.
+  // drei CameraControls invalidates on change/rest, so drags and damped tweens still animate.
   return (
-    <Canvas camera={{ fov: 35, near: 1, far: 5000, position: [0, 0, 600] }} gl={{ antialias: true }} dpr={[1, 1.5]}>
+    <Canvas camera={{ fov: 35, near: 1, far: 5000, position: [0, 0, 600] }} gl={{ antialias: true }} dpr={1} frameloop={paused ? "never" : "demand"}>
       <color attach="background" args={["#0b0d10"]} />
       <ambientLight intensity={1.2} />
       <directionalLight position={[200, 400, 600]} intensity={1.6} />

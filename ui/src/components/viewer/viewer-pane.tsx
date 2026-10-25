@@ -27,13 +27,15 @@ class ViewError extends Component<{ children: ReactNode }, { msg: string | null 
 }
 
 export function ViewerPane({
-  uid, findings, selected, onSelect, study,
+  uid, findings, selected, onSelect, study, paused,
 }: {
   uid: string
   findings: Findings | undefined
   selected: string | null
   onSelect: (id: string) => void
   study: StudyDetail
+  /** Freeze the 3D canvas (report sheet open); GL-on-EGL renders are CPU-bound on GB10. */
+  paused?: boolean
 }) {
   const [mode, setMode] = useState<Mode>("3d")
   const [extrasOpen, setExtrasOpen] = useState(false)
@@ -126,7 +128,7 @@ export function ViewerPane({
           {mode === "3d" && (
             <ViewError>
               <Suspense fallback={<div className="grid h-full place-items-center text-[11px] text-white/50">Loading anatomy…</div>}>
-                <Lung3D uid={uid} findings={findings} selected={selected} onSelect={onSelect} command={cmdTick} />
+                <Lung3D uid={uid} findings={findings} selected={selected} onSelect={onSelect} command={cmdTick} paused={paused} />
               </Suspense>
             </ViewError>
           )}

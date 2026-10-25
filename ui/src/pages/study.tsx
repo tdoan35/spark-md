@@ -31,6 +31,7 @@ export function StudyPage({ uid }: { uid: string }) {
     if (findings && !selected) setSelected(findings.nodules[0]?.nodule_id ?? null)
   }, [findings, selected])
   useEffect(() => localStorage.setItem("sparkmd-inspector", open ? "open" : "closed"), [open])
+  const [sheetOpen, setSheetOpen] = useState(false)
 
   const inspectorRef = useRef<HTMLDivElement>(null)
 
@@ -48,14 +49,14 @@ export function StudyPage({ uid }: { uid: string }) {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <StudyHeader study={study} onToggleInspector={() => setOpen((o) => !o)} inspectorOpen={open} />
+      <StudyHeader study={study} onToggleInspector={() => setOpen((o) => !o)} inspectorOpen={open} sheetOpen={sheetOpen} setSheetOpen={setSheetOpen} />
       <div
         className={cn("grid min-h-0 flex-1", open ? "inspector-open" : "inspector-closed")}
         style={{ gridTemplateColumns: open ? "minmax(0,1fr) var(--inspector-w)" : "minmax(0,1fr) 0px", transition: "grid-template-columns 220ms ease" }}
       >
         <div className="flex min-h-0 min-w-0 flex-col">
           <div className="min-h-0 flex-1 px-3 pb-1">
-            <ViewerPane uid={uid} findings={findings} selected={selected} onSelect={setSelected} study={study} />
+            <ViewerPane uid={uid} findings={findings} selected={selected} onSelect={setSelected} study={study} paused={sheetOpen} />
           </div>
           <Strip study={study} findings={findings} selected={selected} onSelect={setSelected} />
         </div>
@@ -79,9 +80,8 @@ export function StudyPage({ uid }: { uid: string }) {
   )
 }
 
-function StudyHeader({ study, onToggleInspector, inspectorOpen }: { study: StudyDetail; onToggleInspector: () => void; inspectorOpen: boolean }) {
+function StudyHeader({ study, onToggleInspector, inspectorOpen, sheetOpen, setSheetOpen }: { study: StudyDetail; onToggleInspector: () => void; inspectorOpen: boolean; sheetOpen: boolean; setSheetOpen: (v: boolean) => void }) {
   const { data: reports } = useReports(study.study_uid)
-  const [sheetOpen, setSheetOpen] = useState(false)
   // Any draft (either kind) is worth opening: the sheet has both tabs.
   const draft = reports?.find((r) => r.status === "draft")
   const lr = study.lung_rads

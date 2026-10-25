@@ -21,7 +21,7 @@ export function ExtrasPanel({ findings, uid, onClose }: { findings: Findings | u
     { k: "cac", icon: Heart, label: "Coronary calcium", value: e?.cac?.agatston != null ? `${e.cac.agatston}` : "—", sub: "experimental · Agatston" },
   ]
   return (
-    <div className="absolute bottom-3 right-3 w-56 rounded-lg border border-white/10 bg-black/45 p-2 backdrop-blur">
+    <div className="absolute bottom-3 right-3 w-56 rounded-lg border border-white/10 bg-black/70 p-2">
       <div className="mb-1 flex items-center justify-between px-1 text-[10px] text-white/60">
         <span>Screenings · agent-triggered</span>
         <button onClick={onClose} className="rounded p-0.5 hover:bg-white/10" aria-label="Hide extras">
