@@ -9,4 +9,5 @@ WORKER="$WORKER_HOST:$WORKER_PORT"
 SPARKMD_HOME="${SPARKMD_HOME:-/srv/spark-md}"
 # Holds SPARKMD_HOOK_URL / SPARKMD_HOOK_TOKEN for the worker (00 §Env). Never committed.
 SPARKMD_ENV_FILE="${SPARKMD_ENV_FILE:-$SPARKMD_HOME/.env}"
-sbx() { openshell sandbox exec -n "$SANDBOX" -- "$@"; }
+# timeout + closed stdin: one exec hung for 10+ min on the box (Oct 25) and stalled the suite.
+sbx() { timeout "${SBX_TIMEOUT:-120}" openshell sandbox exec -n "$SANDBOX" -- "$@" </dev/null; }

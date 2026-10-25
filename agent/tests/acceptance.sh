@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 07 §Acceptance tests + §Confirm-flow update checks, run from the box host against the live sandbox.
-# Usage: agent/tests/acceptance.sh [--with-llm]   (--with-llm adds A12/A13, which start agent runs)
+# Usage: agent/tests/acceptance.sh [--with-llm]   (--with-llm adds A12-A14, which start agent runs; read-only tools)
 # Prints PASS/FAIL per check; exit code = number of failures. A failure is recorded, not rerun silently (11).
 set -uo pipefail
 . "$(dirname "$0")/../setup/env.sh"
@@ -51,10 +51,14 @@ if [ "${1:-}" = "--with-llm" ]; then
   # A12: the agent still sees and calls MCP tools under tools.profile=minimal (setup/30, unverified).
   # Calls OpenClaw's gateway chatCompletions on the host; the worker auto-logs agent tool calls (06).
   GT="$(nemoclaw "$SANDBOX" gateway-token --quiet)"
+  # Only rows newer than this count (the worker's agent-log persists across runs).
+  LOGMAX="$(curl -s "http://127.0.0.1:$WORKER_PORT/api/agent-log?limit=500" | python3 -c 'import json,sys; print(max([r["id"] for r in json.load(sys.stdin)] or [0]))')"
   curl -s -m 180 -H "Authorization: Bearer $GT" -H 'Content-Type: application/json' \
     -d '{"model":"openclaw","messages":[{"role":"user","content":"Acceptance check: call the list_studies tool once, then reply DONE. Do not call any other tool."}]}' \
     http://127.0.0.1:18789/v1/chat/completions >/dev/null
-  curl -s "http://127.0.0.1:$WORKER_PORT/api/agent-log?limit=50" | grep -q 'list_studies' \
+  curl -s "http://127.0.0.1:$WORKER_PORT/api/agent-log?limit=500" | python3 -c '
+import json, sys
+sys.exit(0 if any(r["id"] > int(sys.argv[1]) and r.get("tool") == "list_studies" for r in json.load(sys.stdin)) else 1)' "$LOGMAX" \
     && ok "A12 agent called an MCP tool (list_studies in agent-log)" \
     || bad "A12 agent MCP tool call" "no list_studies in /api/agent-log; see setup/30 fallback"
   # A13: hook trigger admits a run (06 step 6). Token read from the env file, never printed.
@@ -64,6 +68,17 @@ if [ "${1:-}" = "--with-llm" ]; then
     -d '{"message":"Acceptance check: call list_studies once, then stop.","name":"spark-md","agentId":"main","deliver":false}' \
     http://127.0.0.1:18789/hooks/agent)"
   expect A13 "hook /hooks/agent admitted" 200 "$R" '"ok":true'
+  # A14: /api/ask keeps one OpenClaw session per study via the OpenAI `user` field (sparkmd/ask.py).
+  # Same user recalls a codeword from turn 1; a different user does not.
+  WORD="KIWI-$RANDOM"; U="spark-md-ask-acceptance-$WORD"
+  ask() { python3 -c 'import json,sys; print(json.dumps({"model":"openclaw","user":sys.argv[1],"messages":[{"role":"user","content":sys.argv[2]}]}))' "$1" "$2" \
+    | curl -s -m 300 -H "Authorization: Bearer $GT" -H 'Content-Type: application/json' -d @- http://127.0.0.1:18789/v1/chat/completions \
+    | python3 -c 'import json,sys; print(json.load(sys.stdin)["choices"][0]["message"]["content"])' 2>/dev/null; }
+  Q="What codeword did I give you earlier in this conversation? Reply with only the codeword, or NONE. Do not call any tools."
+  ask "$U" "Remember this codeword for later: $WORD. Reply only OK. Do not call any tools." >/dev/null
+  SAME="$(ask "$U" "$Q")"; OTHER="$(ask "$U-other" "$Q")"
+  if grep -q "$WORD" <<<"$SAME" && ! grep -q "$WORD" <<<"$OTHER"; then ok "A14 one session per user field (same recalls, other does not)"
+  else bad "A14 session per user field" "same=$(head -c 60 <<<"$SAME") other=$(head -c 60 <<<"$OTHER")"; fi
 fi
 
 echo "denials seen by OpenShell (07: visible in logs):"

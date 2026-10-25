@@ -132,7 +132,7 @@ Acceptance tests to add (not run): `POST /api/nodules/1/confirm` from the sandbo
 
 ## Open / unverified
 - **Priority rule (ours, Ty Oct 25):** phase 2 calls `set_priority(elevated)` when `assessment.lung_rads` starts with "4" (4A/4B/4X); otherwise no priority call. Our rule, not ACR wording; the agent only string-matches the code-assigned category. Skill: event repo `agent/skill/AGENTS.md`.
-- `/api/ask` (event repo `sparkmd/ask.py`): one session per study via the OpenAI `user` field (`spark-md-ask-<uid>`) on the gateway chatCompletions endpoint — **unverified** that OpenClaw keys sessions on it. Stub tests pass on the Mac (`tests/ask/test_ask.py`, 6/6, Oct 25).
+- `/api/ask` (event repo `sparkmd/ask.py`): one session per study via the OpenAI `user` field (`spark-md-ask-<uid>`) on the gateway chatCompletions endpoint — **verified on the event box (Oct 25, ~19:30 UTC)**: same `user` recalls a turn-1 codeword (plain and streamed), a different `user` does not (acceptance A14). Turn 2 on a warm session: 2 s, 4645/4769 prompt tokens cached; prompt is ~4.7k tokens under `tools.profile minimal` (not the 60k of C5). Acceptance 14/14 pass, box.
 - Hermes (H2) and custom-loop (H3) harnesses: **not run** — bake-off curtailed for time; OpenClaw chosen as NVIDIA's reference stack having passed all gates. Reopen only if OpenClaw blocks us.
 - Sandbox cold build time (image not cached), offline install (E6 kit), `openshell term` TUI view of denials (logs API verified instead).
 - Whether removing the cloud presets breaks any OpenClaw runtime feature that expects clawhub (not observed).
