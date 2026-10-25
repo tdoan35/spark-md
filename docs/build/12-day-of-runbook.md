@@ -254,6 +254,33 @@ Highest value first to keep: the spine (G3) → time machine → talk to the sca
 - Writeup (if still required): problem, who pays, why local, what it does, stack, credits, limits. State what is unvalidated (measurements need radiologist confirmation; VISTA masks failed validation; growth normalized to 12 months is our interpretation).
 - **Pitch deck (due 19:00)** for the top-8 round: 3 min demo + 2 min Q&A. Start the skeleton in the morning; finish 17:30–19:00. If the GB10 is not available again for the live demo, the demo is the video + deck.
 
+## Recording procedure (offline; console only) — written Oct 25 ~13:55
+
+Everything below runs with the box **offline**: Wi-Fi off and LAN cable out also cut every Claude Code session (incl. Ty's advisor), Orca and the Mac's SSH. So the dry run happens online first; the recording itself needs nobody but Ty + Joyce at the console.
+
+**A. Before 15:15 freeze (online)**
+1. Every agent: commit, report, stop. `git status` clean; push to GitHub (`git push github main`) and the box mirror (`git push origin main`).
+2. Rebuild the UI once from the committed tree: `cd ~/spark-md-app/ui && npm run build` (never `npm ci`; it undoes the Electron sandbox fix).
+3. `bin/sparkmd-status`: LLM, worker, sandbox/gateway, whisper, TTS, fw, dups all OK. **Do not** run Q's runner with sandbox probes or off-loopback 403 probes during recording (they write rows into the on-screen agent log).
+4. Clear the hero's OpenClaw ask sessions (A, needs Ty's approval) so old long answers can't bias the takes.
+
+**B. Dry run (online, ~10 min, Joyce clicking)**
+1. Relaunch Electron fullscreen on the box display (tmux `sparkmd-ui`; command in this file's §Agents note / ask the advisor).
+2. `POST /api/demo/reset` → worklist empty; then `POST /api/demo/replay {"patient_id":"134503","timepoints":["T0","T1"]}`.
+3. Joyce: T0 confirm → category 3 → wait for drafts → Approve both → T1 confirm → 4B → drafts → Approve both → inbox shows 2 letters. Ask one warm-up chip per study (first ask per study costs ~13 s; warm ~5 s), then the on-camera chips: "Show me the nodule", "Compare it to last year", "Why did you flag this?". Voice only with the real mic tested.
+4. Time each wait (drop→awaiting ~39 s; confirm→drafts ~97 s at G4 with thinking on; re-measure with thinking off). These waits become labelled cuts ("time skipped" / "N× speed") in the edit.
+
+**C. Recording (offline)**
+1. At the console: stop Orca/SSH sessions you don't need; **pull the LAN cable, turn Wi-Fi off** (capture this for the unplug shot).
+2. `POST /api/demo/reset` (zeroes the network counters) from a box terminal: `curl -s -X POST 127.0.0.1:8100/api/demo/reset -H 'Content-Type: application/json' -d '{}'`. Monitor should read ~0 bytes sent and link down.
+3. Start screen capture; replay T0,T1 as in B; Joyce does every Confirm/Approve; agent log visible during the time machine; disclaimer visible throughout.
+4. Stop capture. Keep the raw file; note wall-clock times of each cut for the labels.
+
+**D. After recording**
+1. Wi-Fi on, cable in; copy the video off the box; upload (Joyce).
+2. Final QA quick pass on the submitted commit (online, sandbox probes OK now), tag, push by 17:00.
+3. **Before returning the box (17:15):** wipe Ty's credentials: `gh auth logout`; `rm -rf ~/.omp ~/.claude ~/.config/gh`; remove Ty's key from `~/.ssh/authorized_keys`; delete `~/spark-md-app*`, `~/spark-md`, `~/spark-md-runtime-w`, `~/spark-md-render-cache`, `~/qwen38-27b-tensorfold`, `~/sparkmd-voice`, `~/logs`; stop containers (`docker stop qwen38-27b-tf sparkmd-tts`) and the OpenShell sandbox/gateway; `docker image rm` the loaded images. Ask the organizers if they wipe boxes anyway.
+
 ## Submission checklist (due 17:30: video + repo; GB10 returned)
 
 - [ ] Working demo on the GB10, cold restart tested

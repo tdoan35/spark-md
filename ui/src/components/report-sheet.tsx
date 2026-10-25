@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useQueryClient } from "@tanstack/react-query"
 import { CheckCheck, Loader2, Lock, X } from "lucide-react"
 import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet"
@@ -24,6 +24,7 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
   const [result, setResult] = useState<ApproveResult | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+  const inFlight = useRef(false)
   const qc = useQueryClient()
 
   const active = reports?.filter((r) => r.kind === tab).sort((a, b) => b.version - a.version)[0]
@@ -39,17 +40,19 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
     localStorage.setItem("sparkmd-approver", approver)
   }, [approver])
 
-  const approved: Report | null = result?.report.status === "approved" ? result.report : active?.status === "approved" ? active : null
+  const approved: Report | null = result?.report.report_id === active?.report_id && result?.report.status === "approved" ? result.report : active?.status === "approved" ? active : null
 
   const approve = async () => {
-    if (!active) return
+    if (!active || inFlight.current) return
     const name = approver.trim()
     if (!name) return
+    inFlight.current = true
     setPending(true)
     setError(null)
     try {
       const r = await api.approve(active.report_id, name)
       setResult(r)
+      qc.setQueryData<Report[]>(qk.reports(uid), (current) => current?.map((report) => report.report_id === r.report.report_id ? r.report : report))
       void qc.invalidateQueries({ queryKey: qk.reports(uid) })
       void qc.invalidateQueries({ queryKey: qk.outbox })
       void qc.invalidateQueries({ queryKey: qk.worklist })
@@ -64,6 +67,7 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
       else if (e instanceof ApiError && e.status === 403) setError("Approval only works from this device (loopback only).")
       else setError((e as Error).message ?? "Approve failed")
     } finally {
+      inFlight.current = false
       setPending(false)
     }
   }
@@ -72,7 +76,7 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         side="right"
-        className="w-[480px] gap-0 p-0 data-[side=right]:top-(--titlebar-h)! data-[side=right]:bottom-(--footer-h)! data-[side=right]:h-auto!"
+        className="data-[side=right]:w-[560px]! data-[side=right]:sm:max-w-[560px]! animate-none! transition-none! gap-0 p-0 data-[side=right]:top-(--titlebar-h)! data-[side=right]:bottom-(--footer-h)! data-[side=right]:h-auto!"
         // Close only via the X / Escape, so a stray click beside the sheet never drops the review.
         onInteractOutside={(e) => e.preventDefault()}
         onOpenAutoFocus={(e) => {
@@ -81,21 +85,22 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
         }}
       >
         <div className="flex h-full flex-col">
-          <div className="border-b px-5 py-3">
-            <SheetTitle className="text-sm">Report review · patient {patient ?? "—"}</SheetTitle>
-            <SheetDescription className="mt-0.5 text-[11px]">Read the text, then approve. Only a human click approves — no tool, no shortcut.</SheetDescription>
-            <div className="mt-2 flex gap-1">
+          <div className="shrink-0 border-b px-6 py-4">
+            <SheetTitle className="pr-8 text-base">Report review · patient {patient ?? "—"}</SheetTitle>
+            <SheetDescription className="mt-1 pr-5 text-xs leading-relaxed">Read the text, then approve. Only a human click approves — no tool, no shortcut.</SheetDescription>
+            <div className="mt-3 flex gap-1">
               {(["radiology", "pcp_letter"] as Tab[]).map((k) => {
                 const latest = reports?.filter((r) => r.kind === k).sort((a, b) => b.version - a.version)[0]
                 return (
                   <button
                     key={k}
+                    disabled={pending}
                     onClick={() => {
                       setTab(k)
                       setResult(null)
                       setError(null)
                     }}
-                    className={cn("flex h-6 items-center gap-1.5 rounded px-2 text-[11px]", tab === k ? "bg-muted font-medium" : "text-muted-foreground hover:bg-muted/60")}
+                    className={cn("flex h-8 items-center gap-2 rounded px-3 text-sm disabled:opacity-60", tab === k ? "bg-muted font-medium" : "text-muted-foreground hover:bg-muted/60")}
                   >
                     {k === "radiology" ? "Radiology report" : "PCP letter"}
                     {latest?.status === "approved" && <CheckCheck className="size-3 text-ok" />}
@@ -105,29 +110,31 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
             </div>
           </div>
 
-          <div className="min-h-0 flex-1 overflow-y-auto px-5 py-4">
+          <div className="min-h-0 flex-1 overflow-y-auto px-6 py-4">
             {isLoading && <div className="flex items-center gap-2 text-xs text-muted-foreground"><Loader2 className="size-3 animate-spin" /> Loading…</div>}
             {!isLoading && !active && <div className="text-sm text-muted-foreground">No {tab === "radiology" ? "report" : "letter"} yet — the agent drafts after the last diameter is confirmed.</div>}
             {active && (
-              <article className="report-md text-[13px] leading-relaxed">
+              <article className="report-md text-[15px] leading-relaxed [&_h1]:text-lg [&_h2]:text-sm [&_h3]:text-base [&_table]:text-sm">
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{active.markdown}</ReactMarkdown>
-                <div className="mt-3 border-t pt-2 font-mono text-[10px] text-muted-foreground">
-                  {active.report_id} · v{active.version} · {active.status}
-                  {approved && <> · approved by {approved.approved_by} on {hm(approved.approved_at)}</>}
+                <div className="mt-4 break-all border-t pt-3 font-mono text-xs text-muted-foreground">
+                  {active.report_id} · v{active.version} · {approved ? "approved" : active.status}
                 </div>
               </article>
             )}
           </div>
 
-          <div className="border-t px-5 py-3">
+          <div className="shrink-0 border-t px-6 py-4">
             {approved ? (
-              <div className="flex items-center gap-2 rounded-md bg-ok-soft px-2.5 py-2 text-[12px] text-ok">
-                <CheckCheck className="size-4" /> Approved by {approved.approved_by} on {hm(approved.approved_at)}{approved.kind === "pcp_letter" ? " — delivered to the EHR inbox." : "."}
+              <div role="status" className="flex items-start gap-2 rounded-md bg-ok-soft px-3 py-3 text-sm font-medium text-ok">
+                <CheckCheck className="mt-0.5 size-4 shrink-0" />
+                <div>Approved by {approved.approved_by} at {hm(approved.approved_at)}
+                  {approved.kind === "pcp_letter" && <div className="mt-1 text-xs font-normal">Delivered to the EHR inbox.</div>}
+                </div>
               </div>
             ) : (
               <div className="flex items-center gap-2">
-                <label htmlFor="approver-input" className="text-[11px] text-muted-foreground">Approver</label>
-                <Input id="approver-input" value={approver} onChange={(e) => setApprover(e.target.value)} className="h-8 flex-1 text-[12px]" />
+                <label htmlFor="approver-input" className="text-xs text-muted-foreground">Approver</label>
+                <Input id="approver-input" value={approver} disabled={pending} onChange={(e) => setApprover(e.target.value)} className="h-9 min-w-0 flex-1 text-sm" />
                 <Button
                   disabled={!active || pending || !approver.trim()}
                   onClick={(e) => {
@@ -145,11 +152,11 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
               </div>
             )}
             {error && (
-              <div role="alert" className="mt-2 flex items-start gap-1.5 rounded-md bg-alert-soft px-2 py-1.5 text-[11px] text-alert">
-                <X className="mt-0.5 size-3 shrink-0" /> {error}
+              <div role="alert" className="mt-2 flex items-start gap-2 rounded-md bg-alert-soft px-3 py-2 text-sm text-alert">
+                <X className="mt-0.5 size-4 shrink-0" /> {error}
               </div>
             )}
-            <p className="mt-2 text-[10px] text-muted-foreground/70">Research demo, not for clinical use. Approval is logged and written to the mock outbox only.</p>
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">Research demo, not for clinical use. Approval is logged and written to the mock EHR outbox only.</p>
           </div>
         </div>
       </SheetContent>
