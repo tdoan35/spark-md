@@ -124,14 +124,14 @@ def main():
     if not nodules or findings['assessment'] is not None or job.get('study_status') != 'awaiting_confirmation':
         raise RuntimeError(f'G2 contract failed: {findings}')
     if set(findings['pending_confirmation']) != {n['nodule_id'] for n in nodules}:
-        raise RuntimeError('Every detected nodule must remain pending human confirmation')
+        raise RuntimeError('Every admitted nodule must remain pending human confirmation')
     if any(n.get(key) is not None for n in nodules for key in ('long_mm', 'short_mm', 'mean_mm', 'volume_mm3')):
         raise RuntimeError('Pipeline populated accepted sizes before confirmation')
     if not any(n['proposal']['mean_mm'] is not None for n in nodules):
-        raise RuntimeError('No A7 diameter proposal: inspect cache nodules.json reasons; candidates must stay visible')
+        raise RuntimeError('No A7 diameter proposal: inspect cache nodules.json reasons; admitted candidates must stay visible')
     slices = findings['assets']['key_slices']
     if {s['nodule_id'] for s in slices} != {n['nodule_id'] for n in nodules}:
-        raise RuntimeError('A candidate has no key slice')
+        raise RuntimeError('An admitted nodule has no key slice')
     for item in slices:
         with urllib.request.urlopen(base + item['url'], timeout=15) as response:
             if response.read(8) != b'\x89PNG\r\n\x1a\n':

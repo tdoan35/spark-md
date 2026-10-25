@@ -1,0 +1,105 @@
+{
+  "verification": "CPU replay of real G2 cached volumes and detector outputs; no GPU calls or source registry/cache changes",
+  "admission_rule": "det-score-ge-0.90-v1",
+  "runs": [
+    {
+      "timepoint": "T0",
+      "source_candidates": 3,
+      "confirmation_nodules": 2,
+      "excluded_candidates": 1,
+      "excluded_failed_proposals": 0,
+      "pending_confirmation": [
+        "Nd5313f8c74ab53a6a714a7fad51901b9",
+        "Nd6cf9f91a2785f0082d2772d5d7c9f10"
+      ],
+      "assessment": null,
+      "hero_track_id": "T4633f348396a5148a6cdf34d4842d20b",
+      "hero_matching": {
+        "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+        "prior_nodule_id": null,
+        "status": "new",
+        "confidence": "none",
+        "distance_mm": null,
+        "rule": "lobe-position-mutual-v1",
+        "flags": [],
+        "candidates": [],
+        "prior_study_uid": null
+      }
+    },
+    {
+      "timepoint": "T1",
+      "source_candidates": 7,
+      "confirmation_nodules": 1,
+      "excluded_candidates": 6,
+      "excluded_failed_proposals": 4,
+      "pending_confirmation": [
+        "N171ebd90451f5fcaab562d561d47b15b"
+      ],
+      "assessment": null,
+      "hero_track_id": "T4633f348396a5148a6cdf34d4842d20b",
+      "hero_matching": {
+        "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+        "prior_nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+        "status": "matched",
+        "confidence": "high",
+        "distance_mm": 2.8317389396558577,
+        "rule": "lobe-position-mutual-v1",
+        "flags": [
+          "automatic_link_audited",
+          "approximate_lobe_rule"
+        ],
+        "candidates": [
+          {
+            "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+            "distance_mm": 2.8317389396558577
+          }
+        ],
+        "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+      }
+    },
+    {
+      "timepoint": "T2",
+      "source_candidates": 8,
+      "confirmation_nodules": 1,
+      "excluded_candidates": 7,
+      "excluded_failed_proposals": 3,
+      "pending_confirmation": [
+        "Neeaf7ce7e05054f7b119a772d7a802a9"
+      ],
+      "assessment": null,
+      "hero_track_id": "T4633f348396a5148a6cdf34d4842d20b",
+      "hero_matching": {
+        "nodule_id": "Neeaf7ce7e05054f7b119a772d7a802a9",
+        "prior_nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+        "status": "matched",
+        "confidence": "high",
+        "distance_mm": 3.737098299747242,
+        "rule": "lobe-position-mutual-v1",
+        "flags": [
+          "automatic_link_audited",
+          "approximate_lobe_rule"
+        ],
+        "candidates": [
+          {
+            "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+            "distance_mm": 3.737098299747242
+          }
+        ],
+        "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+      }
+    }
+  ],
+  "pipeline_version": "0.3.0",
+  "original_evidence": "tests/imaging/gb10-g2-results.json",
+  "tests": {
+    "imaging": "30 passed, 1 Mac-only test skipped",
+    "rules": "10 passed"
+  },
+  "limits": [
+    "Demo score operating point is not clinically validated; low-score lesions can be excluded.",
+    "Existing registries and caches are preserved; W must load pipeline 0.3.0 for a fresh run.",
+    "No new GPU inference or worker HTTP run performed; coordinated through Ty.",
+    "Matcher gates unchanged: admitted missing geometry remains unresolved, and ambiguous/boundary candidates remain unlinked.",
+    "No human confirmation, growth, VDT or category in the cached hero replay."
+  ]
+}

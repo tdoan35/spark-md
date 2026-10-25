@@ -36,7 +36,15 @@ If a run failed, inspect its job/error/cache before retrying. The runner never r
 
 Event-box run used `~/.venvs/spark-md/bin/python`, `SPARKMD_KIT=$HOME/spark-md`, `SPARKMD_MODELS=$SPARKMD_KIT/models`, and isolated `SPARKMD_HOME=$HOME/spark-md-runtime-g2`. The original failed attempt remains in `$HOME/spark-md-runtime`; neither registry was reset. Run the command above sequentially with `--timepoint T0`, then `--timepoint T1`, then `--timepoint T2`, supplying the complete patient source root. The runner refuses existing completed/failed evidence, rather than treating it as a fresh run. Both smoke homes lack `day_offsets.csv`, so intervals remain unknown.
 
-All 18 candidates stayed visible/pending; 4 T1 and 3 T2 A7 proposals failed closed with `core_below_minus600_hu`. The highest-score hero linked T0→T1; T2 stayed unlinked with `incomplete_prior_geometry` (some prior candidates have no approximate lung/lobe frame). No confirmation, approval, growth, VDT or category was produced. The temporary smoke worker is stopped after evidence capture; caches/registries remain available for inspection.
+Original pipeline 0.2 run: all 18 candidates stayed visible/pending; 4 T1 and 3 T2 A7 proposals failed closed with `core_below_minus600_hu`. The highest-score hero linked T0→T1; T2 stayed unlinked with `incomplete_prior_geometry` (some prior candidates have no approximate lung/lobe frame). No confirmation, approval, growth, VDT or category was produced. The temporary smoke worker is stopped after evidence capture; caches/registries remain available for inspection.
+
+### Admission update — pipeline 0.3.0
+
+Rule announced to Ty before commit: register a confirmation nodule **iff `det_score >= 0.90`**, inclusive; no size cutoff, no top-k, no requirement that A7 succeed. This is a demo operating point, **not validated clinical sensitivity**; it can exclude true low-score lesions. Build/04 had no separate nodule-admission cutoff. Every raw detector candidate stays in `candidates.json` with stable ID, score, admission decision/reason and A7 result/failure reason; excluded candidates are also summarized in registry `agent_events`. Only admitted candidates get nodule rows, matching, key slices and confirmation requirements. An admitted A7 failure still requires manual measurement.
+
+CPU replay of the real G2 cached volumes/detector outputs through the updated pipeline registers **T0/T1/T2 = 2/1/1**, versus original **3/7/8**; all 7 failed secondary proposals remain audit-only. The hero shares one track across all three studies; T1→T2 links at **3.737 mm**. Its original blocker came from excluded low-score priors with missing geometry. The matcher itself is unchanged: missing geometry on an admitted prior still blocks confidence, as do the distance, ambiguity and lobe-boundary gates.
+
+Evidence: [`admission-replay-results.json`](admission-replay-results.json); imaging **30 passed + 1 Mac-only skip**, rules **10 passed**. No new GPU run, no live-worker restart and no existing registry/cache edits: W must load pipeline **0.3.0** before fresh analysis. Replaying cached detections is CPU integration proof, not fresh GPU/HTTP acceptance. Existing 0.2 studies retain their original confirmation counts and tracks.
 
 ## 3. Timing and audit checks
 

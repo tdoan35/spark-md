@@ -26,7 +26,11 @@ from .volume import dicom_to_volume
 
 # One heavyweight imaging job at a time in the host worker process.
 _IMAGING_LOCK = threading.Lock()
-PIPELINE_VERSION = '0.2.0'
+PIPELINE_VERSION = '0.3.0'
+# Demo operating point, not a validated clinical sensitivity threshold.
+# Admission is independent of A7 success and never selects track identity.
+MIN_NODULE_SCORE = 0.90
+ADMISSION_RULE = 'det-score-ge-0.90-v1'
 
 
 def _json(path, content):
@@ -87,17 +91,29 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
         volume = dicom_to_volume(series['path'], volume_path)
         progress('detect')
         candidates = detect(volume_path)
+        for index, candidate in enumerate(candidates):
+            admitted = candidate['det_score'] >= MIN_NODULE_SCORE
+            candidate.update(
+                nodule_id='N' + uuid.uuid5(uuid.NAMESPACE_OID, f'{series["series_uid"]}:{index}').hex,
+                admitted=admitted, admission_rule=ADMISSION_RULE,
+                admission_reason=None if admitted else 'det_score_below_0.90')
         _json(cache / 'candidates.json', candidates)
         progress('segment')
         proposals = [propose_a7(volume, candidate) for candidate in candidates]
+        for candidate, proposal in zip(candidates, proposals):
+            candidate.update(proposal.values)
+        # Retain every detector candidate, including excluded A7 failures.
+        _json(cache / 'candidates.json', candidates)
         lung_split = split_lungs(volume)
         _json(cache / 'lung_geometry.json', lung_split.geometry)
         nib.save(nib.Nifti1Image(lung_split.labels, lung_split.affine), cache / 'lung_sides.nii.gz')
         progress('characterize')
         nodules, slices = [], []
-        for index, (candidate, proposal) in enumerate(zip(candidates, proposals)):
-            nid = 'N' + uuid.uuid5(uuid.NAMESPACE_OID, f'{series["series_uid"]}:{index}').hex
-            nodule = dict(candidate, **proposal.values, nodule_id=nid,
+        for candidate, proposal in zip(candidates, proposals):
+            if not candidate['admitted']:
+                continue
+            nid = candidate['nodule_id']
+            nodule = dict(candidate,
                           long_mm=None, short_mm=None, mean_mm=None, volume_mm3=None,
                           track_id=None, lobe=None, type='solid', type_source='unverified-solid-default')
             nodule.update(lung_split.label(candidate['center_mm']))
@@ -118,6 +134,16 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
             db.execute('DELETE FROM assessments WHERE study_uid=?', (study_uid,))
             db.execute('DELETE FROM nodules WHERE study_uid=?', (study_uid,))
             persist_tracks(db, tracks)
+            admission = {
+                'rule': ADMISSION_RULE, 'min_det_score': MIN_NODULE_SCORE,
+                'admitted': [c['nodule_id'] for c in candidates if c['admitted']],
+                'excluded': [{k: c[k] for k in ('nodule_id', 'det_score', 'admission_reason', 'proposal_reason')}
+                             for c in candidates if not c['admitted']],
+            }
+            db.execute('INSERT INTO agent_events(ts,study_uid,source,message,payload_json) VALUES (?,?,?,?,?)',
+                       (datetime.now(timezone.utc).isoformat(), study_uid, 'system',
+                        f"Candidate admission {ADMISSION_RULE}: {len(nodules)}/{len(candidates)} require confirmation; excluded candidates retained in cache",
+                        json.dumps(admission)))
             for nodule in nodules:
                 db.execute('''INSERT INTO nodules
                     (nodule_id,study_uid,series_uid,track_id,lobe,center_mm,proposed_long_mm,proposed_short_mm,
