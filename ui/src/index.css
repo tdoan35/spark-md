@@ -135,10 +135,10 @@ html.maximized { --win-radius: 0px; }
 
 @layer base {
   * { @apply border-border outline-ring/50; }
-  /* Transparent frameless window: the root is the opaque rounded shell; the OS shows
-     through nothing else. Square corners when maximized/fullscreen (html.maximized). */
+  /* Gray shell backing fills the gutters and rounded cutouts around the main surface.
+     Square corners when maximized/fullscreen (html.maximized). */
   body { @apply bg-transparent text-foreground font-sans; overflow: hidden; }
-  #root { background: var(--background); border-radius: var(--win-radius); }
+  #root { background: var(--sidebar); border-radius: var(--win-radius); }
   html, body, #root { height: 100vh; }
 }
 

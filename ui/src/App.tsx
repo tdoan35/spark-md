@@ -114,7 +114,7 @@ function Shell() {
       <Sidebar expanded={sidebarOpen} />
       <main
         style={{ paddingLeft: sidebarOpen ? "calc(var(--sidebar-width) + 8px)" : "56px" }}
-        className="fixed bottom-(--footer-h) left-0 right-0 top-(--titlebar-h) transition-[padding] duration-200 ease-linear"
+        className="fixed bottom-(--footer-h) left-0 right-2 top-(--titlebar-h) transition-[padding] duration-200 ease-linear"
       >
         <div className="relative h-full overflow-hidden rounded-xl border bg-background">
           <ReplayBanner demo={demo} uid={uid} />
