@@ -211,7 +211,7 @@ function CarouselWell({ stack, nodules, selected, driver, color, onSelect }: Pro
               className="absolute left-1/2 top-1/2 overflow-hidden rounded-lg border border-white/15 bg-black shadow-2xl outline-none focus-visible:ring-2 focus-visible:ring-white/80"
               style={{
                 width: `min(58cqw, calc(88cqh * ${stack.size[0] / stack.size[1]}))`,
-                transform: `translate(-50%, -50%) translateX(${offset * 67}%) translateZ(${-distance * 115}px) rotateY(${Math.max(-48, Math.min(48, -offset * 33))}deg) scale(${1 - Math.min(distance, 3) * 0.09})`,
+                transform: `translate(-50%, -50%) translateX(${offset * 67}%) translateZ(${-distance * 115}px) rotateY(${Math.max(-48, Math.min(48, -offset * 33))}deg) scale(${(1 - Math.min(distance, 1) * 0.085) * (1 - Math.min(distance, 3) * 0.09)})`,
                 zIndex: outgoing ? 20 : 10 - Math.round(distance * 2),
                 opacity: (outgoing ? 1 - blend : jumping ? blend : 1) * Math.max(0, Math.min(1, 3 - distance)),
                 filter: `brightness(${1 - Math.min(distance, 3) * 0.18})`,
