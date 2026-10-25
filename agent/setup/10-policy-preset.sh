@@ -6,7 +6,7 @@ set -euo pipefail
 
 apply() {
   openshell policy update "$SANDBOX" \
-    --add-endpoint "$WORKER:read-write:rest:enforce" \
+    --add-endpoint "$WORKER::rest:enforce" \
     --binary /usr/bin/curl --binary /usr/local/bin/node --binary /usr/local/bin/openclaw \
     --add-allow "$WORKER:GET:/api/**" \
     --add-allow "$WORKER:POST:/api/studies/*/select-series" \
@@ -21,30 +21,33 @@ apply() {
     --wait
 }
 
-# Gotcha 4: the read-write access preset expands to broad METHOD /** rules; a second explicit
-# update replaces them. Check the final rules and re-apply once if any broad write rule is left.
+# Gotcha 4: an access preset (read-write) expands to broad METHOD ** rules that openshell 0.0.116
+# merges with the explicit ones (box, Oct 25), so the endpoint has an empty access segment. Check
+# that this endpoint is enforce and holds exactly the explicit rules.
 check() {
   openshell policy get "$SANDBOX" --full -o json | python3 -c '
 import json, sys
-host, doc = sys.argv[1], json.load(sys.stdin)
-bad = []
+host, port, doc = sys.argv[1], int(sys.argv[2]), json.load(sys.stdin)
+eps = []
 def walk(o):
     if isinstance(o, dict):
-        s = json.dumps(o)
-        vals = {str(v) for v in o.values() if not isinstance(v, (dict, list))}
-        if host in s and len(s) < 2000:
-            if "audit" in vals: bad.append("audit mode: " + s[:200])
-            if vals & {"/**", "**"} and vals & {"POST", "PUT", "PATCH", "DELETE", "*"}: bad.append("broad rule: " + s[:200])
+        if o.get("host") == host and o.get("port") == port: eps.append(o)
         for v in o.values(): walk(v)
     elif isinstance(o, list):
         for v in o: walk(v)
 walk(doc)
-print("\n".join(bad) or "policy OK: enforce, explicit rules only")
-sys.exit(1 if bad else 0)' "$WORKER_HOST"
+bad = [] if eps else ["no endpoint for %s:%d" % (host, port)]
+for ep in eps:
+    if ep.get("enforcement") != "enforce": bad.append("not enforce: %s" % ep.get("enforcement"))
+    for r in ep.get("rules", []):
+        a = r.get("allow", {})
+        if a.get("path") in ("**", "/**"): bad.append("broad rule: %s %s" % (a.get("method"), a.get("path")))
+print("\n".join(bad) or "policy OK: enforce, explicit rules only (%d)" % sum(len(e.get("rules", [])) for e in eps))
+sys.exit(1 if bad else 0)' "$WORKER_HOST" "$WORKER_PORT"
 }
 
 apply
-check || { echo "re-applying once (Gotcha 4)"; apply; check; }
+check
 
 # Gotcha 6: drop OpenShell's cloud presets. Keep _provider_* and managed_inference (the LLM route).
 for rule in clawhub npm_registry nvidia openclaw_api openclaw_docs; do

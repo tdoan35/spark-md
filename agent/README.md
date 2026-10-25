@@ -15,3 +15,11 @@ Box-side, as `ty`, after R8 (NemoClaw onboard, sandbox `spark-md-openclaw`) and 
 
 Unverified until run on the box: `openclaw config set` syntax for nested keys/arrays, the `tools.deny` group
 names, whether `tools.profile minimal` hides MCP tools (A6 checks), `openshell sandbox exec` passing argv unchanged (JSON bodies, `sh -c`, long base64).
+
+Event box, Oct 25 (R8): the systemd user manager predates `dell`'s docker-group membership, so the OpenShell
+gateway user service can't open `docker.sock` (no sudo to restart `user@1000`). Workaround, already applied:
+`setsid nohup python3 -I agent/setup/docker-sock-proxy.py &` from a docker-group shell, plus drop-in
+`~/.config/systemd/user/nemoclaw-openshell-gateway.service.d/docker-group.conf` setting
+`DOCKER_HOST=unix:///run/user/1000/docker-proxy.sock`. Onboard also needed
+`openshell settings set -g nemoclaw --global --key providers_v2_enabled --value true --yes`. The kit's
+`nemoclaw-src` is unbuilt (no node_modules/dist), so the installer ran online, pinned `NEMOCLAW_INSTALL_TAG=v0.0.137`.
