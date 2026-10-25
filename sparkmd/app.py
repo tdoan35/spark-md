@@ -261,6 +261,8 @@ def create_app(config=None):
 
     from .demo import install_demo
     install_demo(app, worker, gate)
+    from .ask import router as ask_router
+    app.include_router(ask_router)
     if worker.config.ui_dir.is_dir():
         app.mount('/', StaticFiles(directory=worker.config.ui_dir, html=True), name='ui')
     return app

@@ -73,6 +73,10 @@ def findings(worker, uid, agent=False):
         return {'error': 'study not found'}, 404
     series = r.one('SELECT * FROM series WHERE study_uid=? AND selected=1', (uid,))
     raw = r.all('SELECT * FROM nodules WHERE study_uid=? ORDER BY nodule_id', (uid,))
+    cache = worker.config.home/'cache'/series['series_uid'] if series else None
+    proposal_audit = {}
+    if cache and (cache/'nodules.json').is_file():
+        proposal_audit = {n['nodule_id']: n for n in json.loads((cache/'nodules.json').read_text())}
     nodules = []
     for n in raw:
         confirmed = n['confirmed_at'] is not None
@@ -81,6 +85,10 @@ def findings(worker, uid, agent=False):
         item['confirmation'] = {'confirmed': confirmed, 'edited': bool(n['edited']), 'by': n['confirmed_by'], 'at': n['confirmed_at']}
         if not agent:
             item['proposal'] = {'source': n['proposal_source'], 'long_mm': n['proposed_long_mm'], 'short_mm': n['proposed_short_mm'], 'mean_mm': n['proposed_mean_mm'], 'box_mean_mm': n['box_mean_mm']}
+            reason = proposal_audit.get(n['nodule_id'], {}).get('proposal_reason')
+            if n['proposed_long_mm'] is None or n['proposed_short_mm'] is None:
+                reason = reason or 'proposal_reason_unavailable'
+            item['proposal']['reason'] = reason
         if agent and not confirmed:
             for field in ('long_mm', 'short_mm', 'mean_mm', 'volume_mm3'):
                 item.pop(field)
@@ -92,7 +100,6 @@ def findings(worker, uid, agent=False):
         assessment.pop('study_uid')
     extra = r.one('SELECT * FROM extras WHERE study_uid=?', (uid,))
     extras = None if not extra else {'emphysema_laa950_pct': extra['emphysema_pct'], 'vertebra': {'label': extra['vertebra_label'], 'mean_hu': extra['vertebra_hu']}, 'cac': json.loads(extra['cac_json'] or 'null')}
-    cache = worker.config.home/'cache'/series['series_uid'] if series else None
     metadata = {}
     if cache and (cache/'findings.json').exists():
         metadata = json.loads((cache/'findings.json').read_text())

@@ -3,7 +3,7 @@ name = "spark-md"
 version = "0.1.0"
 description = "Air-gapped lung CT research worker"
 requires-python = ">=3.12"
-dependencies = ["fastapi==0.162.0", "uvicorn==0.54.0", "pydantic==2.14.1", "pydicom==3.0.2"]
+dependencies = ["fastapi==0.162.0", "uvicorn==0.54.0", "pydantic==2.14.1", "pydicom==3.0.2", "httpx==0.28.1"]
 
 [project.scripts]
 sparkmd-worker = "sparkmd.__main__:main"
