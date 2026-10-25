@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { ask, api } from "@/api/client"
-import { viewerBus } from "@/api/viewer-bus"
+import { ask } from "@/api/client"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -24,14 +23,6 @@ interface Turn {
 }
 
 const PHRASES = ["Show me the nodule", "Compare it to last year", "Why did you flag this?", "Reset the view"]
-
-/** Canonical phrase → viewer command. The demo runs these deterministically before the agent answers. */
-const PHRASE_COMMANDS: { match: RegExp; command: "show_nodule" | "compare_prior" | "reset_view"; nodule: boolean }[] = [
-  { match: /show .*nodule/i, command: "show_nodule", nodule: true },
-  { match: /compare/i, command: "compare_prior", nodule: true },
-  { match: /why .*flag/i, command: "show_nodule", nodule: true },
-  { match: /reset/i, command: "reset_view", nodule: false },
-]
 
 export function ChatRail({ uid }: { uid: string }) {
   const [width, setWidth] = usePref("sparkmd-chat-w", 300)
@@ -81,19 +72,7 @@ export function ChatRail({ uid }: { uid: string }) {
     if (stick.current) setUnseen(0)
   }
 
-  /** Deterministic viewer action for a canonical phrase: the camera moves before the agent replies. */
-  const fireViewer = async (text: string) => {
-    const hit = PHRASE_COMMANDS.find((p) => p.match.test(text))
-    if (!hit) return
-    try {
-      await api.viewerCommand(hit.command, uid)
-    } catch {
-      // Offline/mock: fall back to the local bus so the view still moves during the demo.
-      viewerBus.emit({ command: hit.command, study_uid: uid })
-    }
-  }
-
-  const submit = async (text: string, display?: string, opts?: { viewer?: boolean }) => {
+  const submit = async (text: string, display?: string) => {
     const question = text.trim()
     if (!question || busy) return
     ctl.current?.abort()
@@ -106,8 +85,7 @@ export function ChatRail({ uid }: { uid: string }) {
     stick.current = true
     setTurns((t) => [...t, { id, q: display ?? question, text: "", tools: [], status: "streaming" }])
     const upd = (f: (t: Turn) => Turn) => setTurns((all) => all.map((t) => (t.id === id ? f(t) : t)))
-    // Voice skips this: /api/ask emits viewer_command SSE itself (09); never move the camera locally.
-    if (opts?.viewer !== false) void fireViewer(question)
+    // /api/ask owns deterministic viewer actions for both typed and spoken requests (09).
     let acc = ""
     try {
       for await (const ev of ask(uid, question, c.signal)) {
@@ -141,7 +119,7 @@ export function ChatRail({ uid }: { uid: string }) {
     setPttState("transcribing")
     try {
       const r = await postAsr(clip.wav)
-      if (r.command && r.phrase) submit(r.phrase, r.text.trim() || r.phrase, { viewer: false })
+      if (r.command && r.phrase) submit(r.phrase, r.text.trim() || r.phrase)
       else
         toast.info("Didn't catch that", {
           description: r.text?.trim() ? `Heard: “${r.text.trim()}”` : "No speech detected",
