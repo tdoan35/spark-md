@@ -3,6 +3,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { useReports, useStudy, useFindings } from "@/api/hooks"
 import { api } from "@/api/client"
 import { qk } from "@/api/keys"
+import { viewerBus } from "@/api/viewer-bus"
 import { useApp } from "@/lib/app-context"
 import type { StudyDetail, Findings } from "@/api/types"
 import { mm, mmNum, hu, signed, days, dayLabel, STATUS_LABEL, lungRadsClass } from "@/lib/format"
@@ -21,14 +22,15 @@ import { RiskCard } from "@/components/risk-card"
 export type InspectorTab = "assessment" | "activity"
 
 export function StudyPage({ uid }: { uid: string }) {
+  const { openStudy } = useApp()
   const { data: study, isLoading, isError } = useStudy(uid)
   const { data: findings } = useFindings(uid)
   const [tab, setTab] = useState<InspectorTab>("assessment")
   const [open, setOpen] = useState(() => localStorage.getItem("sparkmd-inspector") !== "closed")
-  const [selected, setSelected] = useState<string | null>(null)
+  const [selected, onSelectNodule] = useState<string | null>(null)
 
   useEffect(() => {
-    if (findings && !selected) setSelected(findings.nodules[0]?.nodule_id ?? null)
+    if (findings && !selected) onSelectNodule(findings.nodules[0]?.nodule_id ?? null)
   }, [findings, selected])
   useEffect(() => localStorage.setItem("sparkmd-inspector", open ? "open" : "closed"), [open])
   const [sheetOpen, setSheetOpen] = useState(false)
@@ -56,9 +58,9 @@ export function StudyPage({ uid }: { uid: string }) {
       >
         <div className="flex min-h-0 min-w-0 flex-col">
           <div className="min-h-0 flex-1 px-3 pb-1">
-            <ViewerPane uid={uid} findings={findings} selected={selected} onSelect={setSelected} study={study} paused={sheetOpen} />
+            <ViewerPane uid={uid} findings={findings} selected={selected} onSelect={onSelectNodule} study={study} paused={sheetOpen} />
           </div>
-          <Strip study={study} findings={findings} selected={selected} onSelect={setSelected} />
+          <Strip study={study} findings={findings} selected={selected} onOpenStudy={openStudy} onCompare={() => viewerBus.emit({ command: "compare_prior", study_uid: uid, ...(selected ? { nodule_id: selected } : {}) })} />
         </div>
         <div
           ref={inspectorRef}
@@ -72,7 +74,7 @@ export function StudyPage({ uid }: { uid: string }) {
                 <AlertTriangle className="size-3" /> Needs confirmation — no category yet
               </div>
             )}
-            <Inspector uid={uid} tab={tab} setTab={setTab} findings={findings} selected={selected} setSelected={setSelected} />
+            <Inspector uid={uid} tab={tab} setTab={setTab} findings={findings} selected={selected} setSelected={onSelectNodule} />
           </div>
         </div>
       </div>
@@ -332,7 +334,7 @@ function NoduleBlock({ uid, n, idx, drafting, selected, onSelect }: { uid: strin
   )
 }
 
-function Strip({ study, findings, selected, onSelect }: { study: StudyDetail; findings: Findings | undefined; selected: string | null; onSelect: (id: string) => void }) {
+function Strip({ study, findings, selected, onOpenStudy, onCompare }: { study: StudyDetail; findings: Findings | undefined; selected: string | null; onOpenStudy: (studyUid: string) => void; onCompare: () => void }) {
   const all = [...study.priors, { study_uid: study.study_uid, timepoint: study.timepoint, day_offset: study.day_offset, status: study.status, lung_rads: study.lung_rads }]
   const n = findings?.nodules.find((x) => x.nodule_id === selected)
   return (
@@ -347,6 +349,7 @@ function Strip({ study, findings, selected, onSelect }: { study: StudyDetail; fi
           ) : (
             <span className="text-[11px] text-muted-foreground/70">baseline · no growth comparison</span>
           )}
+          <Button size="sm" variant="outline" className="h-6 px-2 text-[10px]" disabled={!n?.prior} onClick={onCompare}>Compare</Button>
         </div>
       </div>
       <div className="mt-1.5 flex gap-1.5 overflow-x-auto">
@@ -355,7 +358,7 @@ function Strip({ study, findings, selected, onSelect }: { study: StudyDetail; fi
           return (
             <button
               key={s.study_uid}
-              onClick={() => (mine ? undefined : onSelect(s.study_uid))}
+              onClick={() => { if (!mine) onOpenStudy(s.study_uid) }}
               className={cn("flex h-9 min-w-0 flex-1 items-center gap-2 rounded-md border px-2 text-left text-[11px]", mine ? "border-foreground/30 bg-muted/60" : "hover:bg-muted/40")}
             >
               <span className="font-medium">{s.timepoint}</span>
