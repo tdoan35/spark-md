@@ -82,14 +82,9 @@ export function TitleBar({
         <IconBtn label="Toggle sidebar" onClick={onToggleSidebar} active={sidebarOpen}>
           <PanelLeft className="size-4" />
         </IconBtn>
-        <button
-          aria-label="Search studies"
-          onClick={app.openSearch}
-          className="no-drag flex h-7 min-w-0 flex-1 items-center gap-1.5 rounded-md px-2 text-xs text-muted-foreground hover:bg-muted hover:text-foreground"
-        >
-          <Search className="size-3.5 shrink-0" />
-          <span className="truncate">Search</span>
-        </button>
+        <IconBtn label="Search studies" onClick={app.openSearch}>
+          <Search className="size-4" />
+        </IconBtn>
         <IconBtn label="Back" disabled={!canBack} onClick={() => navigate(-1)}>
           <ArrowLeft className="size-4" />
         </IconBtn>
