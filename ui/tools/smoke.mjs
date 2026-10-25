@@ -128,6 +128,11 @@ await send("Emulation.setDeviceMetricsOverride", { width: Number(process.env.WID
 await wait(4000)
 
 const report = {}
+const consoleLogs = []
+ws.addEventListener("message", (m) => {
+  const msg = JSON.parse(m.data)
+  if (msg.method === "Runtime.consoleAPICalled" && msg.params.type === "error") consoleLogs.push(msg.params.args.map((a) => a.value ?? a.description).join(" "))
+})
 report.debug = await ev("({href: location.href, title: document.title, last: Object.fromEntries(globalThis.__sparkmdLast ?? [])})")
 await ev("document.documentElement.classList.remove('dark')")
 report.bodyStart = await ev("document.body.innerText.slice(0,600)")
@@ -148,6 +153,8 @@ if (hero) {
 }
 report.url = await ev("location.hash")
 report.canvas = await ev("(() => { const c=document.querySelector('canvas'); return c ? [c.width,c.height] : null })()")
+report.dbg = await ev("(() => { const t=document.createElement('canvas'); const g=t.getContext('webgl2'); return {webgl2: !!g, err: document.querySelector('main')?.innerText.includes('3D scene unavailable')} })()")
+report.gl = await ev(`(() => { const c=document.querySelector('canvas'); if(!c) return null; const g=c.getContext('webgl2'); if(!g) return 'no-context'; const d=g.getExtension('WEBGL_debug_renderer_info'); return { renderer: d ? g.getParameter(d.UNMASKED_RENDERER_WEBGL) : g.getParameter(g.RENDERER), vendor: d ? g.getParameter(d.UNMASKED_VENDOR_WEBGL) : g.getParameter(g.VENDOR) } })()`)
 report.studyBody = await ev("document.body.innerText.slice(600,2200)")
 report.colsStudy = await ev("[...document.querySelectorAll('main div')].filter(d=>getComputedStyle(d).display==='grid').slice(0,3).map(d=>getComputedStyle(d).gridTemplateColumns)")
 await shot("02-study")
@@ -238,6 +245,7 @@ report.inboxRows = await ev("document.querySelectorAll('li button').length")
 report.nonLoopback = netUrls.filter((u) => !/^(https?|ws):\/\/(127\.0\.0\.1|localhost|\[::1\])(:|\/)/.test(u))
 report.requests = netUrls.length
 report.exceptions = consoleErrors.slice(0, 5)
+report.consoleErrors = consoleLogs.slice(0, 6)
 report.log = logLines.filter((l) => /blocked|Error|error/.test(l)).slice(0, 8)
 fs.writeFileSync(path.join(SHOTS, "report.json"), JSON.stringify(report, null, 1))
 console.log(JSON.stringify(report, null, 1))
