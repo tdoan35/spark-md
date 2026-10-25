@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { days, mm, signed } from "@/lib/format"
 import { ChevronLeft, ChevronRight, Columns2 } from "lucide-react"
 import { usePref } from "@/lib/prefs"
-import { SliceImage } from "./slices/slice-image"
+import { SliceImage, sliceSizeLabel } from "./slices/slice-image"
 import { SliceColorToggle } from "./slices/slice-color-toggle"
 import { SliceCarousel } from "./slices/slice-carousel"
 
@@ -19,6 +19,7 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
   if (!findings) return <div className="grid h-full place-items-center text-[11px] text-white/50">Waiting for findings…</div>
   const stack = findings.assets.slice_stack
   const slice = findings.assets.key_slices?.find((s) => s.nodule_id === selected) ?? findings.assets.key_slices?.[0]
+  const sliceNodule = findings.nodules.find((n) => n.nodule_id === slice?.nodule_id)
   const imageUrl = slice ? (slice.nodule_id && !slice.name.includes(slice.nodule_id) ? `/api/studies/${uid}/assets/key_axial_${slice.nodule_id}.png` : slice.url) : null
   return (
     <div className="relative flex h-full min-h-0 flex-col">
@@ -31,14 +32,14 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
         <SliceCarousel key={`${uid}:${stack.url_pattern}`} stack={stack} nodules={findings.nodules} selected={selected} driver={findings.assessment?.driver_nodule_id ?? null} color={color} onSelect={onSelect} />
       ) : (
         <div className="min-h-0 flex-1 p-3">
-          {slice && imageUrl ? <SliceImage src={imageUrl} alt={`Key slice for ${slice.nodule_id}`} color={color} box={slice.box_px} fit /> : <div className="grid h-full place-items-center text-[11px] text-white/50">No key slice available</div>}
+          {slice && imageUrl ? <SliceImage src={imageUrl} alt={`Key slice for ${slice.nodule_id}`} color={color} box={slice.box_px} sizeLabel={sliceSizeLabel(sliceNodule?.mean_mm, sliceNodule?.proposal?.mean_mm)} fit /> : <div className="grid h-full place-items-center text-[11px] text-white/50">No key slice available</div>}
         </div>
       )}
     </div>
   )
 }
 
-function CompareSlice({ slice, label, diameter, pending, color }: { slice: KeySlice | undefined; label: string; diameter: number | null | undefined; pending?: boolean; color: boolean }) {
+function CompareSlice({ slice, label, diameter, proposed, pending, color }: { slice: KeySlice | undefined; label: string; diameter: number | null | undefined; proposed?: number | null; pending?: boolean; color: boolean }) {
   return (
     <div className="flex min-h-0 min-w-0 flex-col rounded bg-white/5 p-2">
       <div className="mb-2 flex items-baseline justify-between gap-2 text-[11px] text-white/60">
@@ -46,7 +47,7 @@ function CompareSlice({ slice, label, diameter, pending, color }: { slice: KeySl
         <span className="font-mono text-lg text-white/90">{mm(diameter)}</span>
       </div>
       <div className="min-h-0 flex-1">
-        {slice ? <SliceImage src={slice.url} alt={`${label} axial key slice with nodule box`} color={color} box={slice.box_px} fit /> : <div className="grid h-full place-items-center text-[11px] text-white/50">{pending ? "Loading matched prior…" : "Matched key slice unavailable"}</div>}
+        {slice ? <SliceImage src={slice.url} alt={`${label} axial key slice with nodule box`} color={color} box={slice.box_px} sizeLabel={sliceSizeLabel(diameter, proposed)} fit /> : <div className="grid h-full place-items-center text-[11px] text-white/50">{pending ? "Loading matched prior…" : "Matched key slice unavailable"}</div>}
       </div>
       <div className="mt-2 text-[10px] text-white/40">Axial key slice · worker-supplied box</div>
     </div>
@@ -96,7 +97,7 @@ export function CompareView({ findings, selected, onSelect, study }: { findings:
             <span className="text-[11px] text-white/40">No comparison</span>
           )}
         </div>
-        <CompareSlice slice={currentSlice} label={`Current · ${study.timepoint}`} diameter={nodule?.mean_mm} color={color} />
+        <CompareSlice slice={currentSlice} label={`Current · ${study.timepoint}`} diameter={nodule?.mean_mm} proposed={nodule?.proposal?.mean_mm} color={color} />
       </div>
       <div className="mt-2 flex items-center gap-1 px-1 text-[10px] text-white/40">
         <ChevronLeft className="size-3" />

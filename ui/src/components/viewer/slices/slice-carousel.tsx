@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import type { Findings, SliceStack } from "@/api/types"
 import { mm } from "@/lib/format"
-import { SliceImage, preloadSlice } from "./slice-image"
+import { SliceImage, preloadSlice, sliceSizeLabel } from "./slice-image"
 
 type Props = {
   stack: SliceStack
@@ -142,6 +142,7 @@ function CarouselWell({ stack, nodules, selected, driver, color, onSelect }: Pro
   if (jumping) visible.push(clamp(from, stack.count))
   const boxMetadata = stack.nodule_slices.find((slice) => slice.nodule_id === selected)
     ?? stack.nodule_slices.find((slice) => slice.nodule_id === driver)
+  const boxNodule = nodules.find((nodule) => nodule.nodule_id === boxMetadata?.nodule_id)
   const currentZ = stack.z_mm[target]
   const stopDrag = () => { drag.current = null }
 
@@ -218,7 +219,7 @@ function CarouselWell({ stack, nodules, selected, driver, color, onSelect }: Pro
                 willChange: position !== target ? "transform, opacity" : undefined,
               }}
             >
-              <SliceImage src={sliceUrl(stack, index)} alt={`Axial CT slice ${index + 1}`} color={color} size={stack.size} box={box} className="block w-full select-none" />
+              <SliceImage src={sliceUrl(stack, index)} alt={`Axial CT slice ${index + 1}`} color={color} size={stack.size} box={box} sizeLabel={sliceSizeLabel(boxNodule?.mean_mm, boxNodule?.proposal?.mean_mm)} className="block w-full select-none" />
             </button>
           )
         })}

@@ -1,5 +1,13 @@
 import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
+import { mm } from "@/lib/format"
+
+/** Format worker diameters only; never present an unconfirmed proposal as a measurement. */
+export function sliceSizeLabel(mean: number | null | undefined, proposed?: number | null): string {
+  if (mean != null) return mm(mean)
+  if (proposed != null) return `Proposed ${mm(proposed)}`
+  return "Size unavailable"
+}
 
 // Matplotlib's piecewise-linear jet channels, sampled once at all 256 grayscale values.
 const CHANNELS = [
@@ -75,12 +83,13 @@ export function preloadSlice(src: string): void {
   void loadSlice(src).then(jetCanvas).catch(() => { /* visible slice reports its own load error */ })
 }
 
-export function SliceImage({ src, alt, color, box, size, className, fit = false }: {
+export function SliceImage({ src, alt, color, box, size, sizeLabel, className, fit = false }: {
   src: string
   alt: string
   color: boolean
   box?: [number, number, number, number] | null
   size?: [number, number]
+  sizeLabel?: string
   className?: string
   fit?: boolean
 }) {
@@ -115,8 +124,24 @@ export function SliceImage({ src, alt, color, box, size, className, fit = false 
         {slice && box && failed !== src && (
           <svg viewBox={`0 0 ${boxW} ${boxH}`} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden>
             <rect x={box[0] - pad} y={box[1] - pad} width={box[2] + pad * 2} height={box[3] + pad * 2} fill="none" stroke="black" strokeWidth={5} vectorEffect="non-scaling-stroke" />
-            <rect x={box[0] - pad} y={box[1] - pad} width={box[2] + pad * 2} height={box[3] + pad * 2} fill="none" stroke="white" strokeWidth={2} vectorEffect="non-scaling-stroke" />
+            <rect x={box[0] - pad} y={box[1] - pad} width={box[2] + pad * 2} height={box[3] + pad * 2} fill="none" stroke="#39ff14" strokeWidth={2} vectorEffect="non-scaling-stroke" />
           </svg>
+        )}
+        {slice && box && sizeLabel && failed !== src && (
+          <span
+            data-nodule-size-label
+            className="pointer-events-none absolute z-10 whitespace-nowrap rounded border px-1.5 py-0.5 font-mono text-[11px] font-semibold leading-tight shadow-sm"
+            style={{
+              color: "#39ff14",
+              borderColor: "#39ff14",
+              backgroundColor: "rgba(0,0,0,0.88)",
+              ...(box[0] > boxW / 2
+                ? { right: `${Math.max(1, (boxW - box[0] - box[2] - pad) / boxW * 100)}%` }
+                : { left: `${Math.max(1, (box[0] - pad) / boxW * 100)}%` }),
+              top: `${(box[1] - pad < boxH * 0.1 ? box[1] + box[3] + pad : box[1] - pad) / boxH * 100}%`,
+              transform: box[1] - pad < boxH * 0.1 ? "translateY(4px)" : "translateY(calc(-100% - 4px))",
+            }}
+          >{sizeLabel}</span>
         )}
         {!slice && failed !== src && <span className="absolute inset-0 grid place-items-center text-[10px] text-white/50">Loading CT slice…</span>}
         {failed === src && <span role="status" className="absolute inset-0 grid place-items-center text-[11px] text-white/60">CT slice unavailable</span>}
