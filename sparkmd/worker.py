@@ -13,6 +13,7 @@ from .config import Config
 from .events import Events
 from .findings import findings, recompute, rules_module
 from .intake import Intake
+from .netstats import NetStats
 from .registry import Registry
 
 STAGES = ['organize', 'select', 'volume', 'detect', 'segment', 'characterize', 'match', 'rules', 'render']
@@ -30,10 +31,13 @@ class Worker:
         self.events = Events()
         self.jobs = {}
         self.jobs_lock = threading.RLock()
+        self.demo_state = {}
+        self.analysis_modes = {}
         self.analysis_lock = threading.Lock()
         self.stop = threading.Event()
         self.intake = Intake(self.registry, self.config.home, self.status, self.organized, self.log)
         self.threads = []
+        self.netstats = NetStats(log=self.log)
         if self.config.fake_seed:
             self.seed()
 
@@ -59,6 +63,10 @@ class Worker:
     def organized(self, uid):
         with self.jobs_lock:
             self.jobs = {key: job for key, job in self.jobs.items() if job['study_uid'] != uid}
+            study = self.registry.one('SELECT patient_id,timepoint FROM studies WHERE study_uid=?', (uid,))
+            replay = self.demo_state
+            if replay.get('replaying') and study and study['patient_id'] == replay['patient_id'] and study['timepoint'] == replay['timepoint']:
+                self.analysis_modes[uid] = replay['mode']
         self.log('system', 'Study organized; agent triage requested', uid)
         self.trigger(uid)
 
@@ -130,6 +138,56 @@ class Worker:
             payload = self.job_payload(job)
         self.events.emit('job_progress', payload)
 
+    def _restore_cached_analysis(self, job, series, cache):
+        """Reuse recorded proposals, never confirmed values or a detector fallback."""
+        metadata_path, nodules_path = cache/'findings.json', cache/'nodules.json'
+        if not metadata_path.is_file() or not nodules_path.is_file():
+            raise ValueError('cached analysis unavailable; run a live analysis first')
+        metadata = json.loads(metadata_path.read_text())
+        nodules = json.loads(nodules_path.read_text())
+        version = tuple(int(part) for part in metadata.get('pipeline_version', '').split('.'))
+        if len(version) != 3 or version < (0, 3, 0) or not isinstance(metadata.get('assets'), dict) or not isinstance(nodules, list):
+            raise ValueError('cached analysis requires complete admitted v0.3+ proposals')
+        uid = job['study_uid']
+        self.progress(job, 'match')
+        study = self.registry.one('SELECT * FROM studies WHERE study_uid=?', (uid,))
+        tracks = {}
+        fields = ('nodule_id', 'study_uid', 'series_uid', 'track_id', 'lobe', 'center_mm',
+                  'proposed_long_mm', 'proposed_short_mm', 'proposed_mean_mm',
+                  'proposal_source', 'box_mean_mm', 'mean_hu', 'type', 'det_score')
+        rows = []
+        for nodule in nodules:
+            track_id = nodule['track_id']
+            if not track_id:
+                raise ValueError('cached nodule is missing its audited track')
+            matching = nodule['matching']
+            if matching['status'] == 'matched':
+                prior = self.registry.one('''SELECT n.track_id,s.study_uid,s.patient_id,s.rank FROM nodules n
+                    JOIN studies s USING(study_uid) WHERE n.nodule_id=?''', (matching['prior_nodule_id'],))
+                if not prior or prior['track_id'] != track_id or prior['study_uid'] != matching['prior_study_uid'] or prior['patient_id'] != study['patient_id'] or prior['rank'] >= study['rank']:
+                    raise ValueError('cached prior unavailable or changed; restore studies chronologically')
+            origin = self.registry.one('SELECT patient_id,first_study_uid FROM tracks WHERE track_id=?', (track_id,))
+            if origin and origin['patient_id'] != study['patient_id']:
+                raise ValueError('cached track belongs to another patient')
+            tracks[track_id] = (track_id, study['patient_id'], origin['first_study_uid'] if origin else uid)
+            nodule.update(study_uid=uid, series_uid=series['series_uid'],
+                          long_mm=None, short_mm=None, mean_mm=None, volume_mm3=None)
+            values = dict(nodule, center_mm=json.dumps(nodule['center_mm']))
+            rows.append(tuple(values[field] for field in fields))
+        with self.registry.transaction() as db:
+            if db.execute('SELECT 1 FROM nodules WHERE study_uid=? AND confirmed_at IS NOT NULL', (uid,)).fetchone():
+                raise ValueError('Cannot replace radiologist-confirmed findings')
+            db.execute('DELETE FROM assessments WHERE study_uid=?', (uid,))
+            db.execute('DELETE FROM nodules WHERE study_uid=?', (uid,))
+            db.executemany('INSERT OR IGNORE INTO tracks(track_id,patient_id,first_study_uid) VALUES (?,?,?)', tracks.values())
+            db.executemany(f"INSERT INTO nodules ({','.join(fields)}) VALUES ({','.join('?' for _ in fields)})", rows)
+        for nodule in nodules:
+            self.log('system', 'Cached track audit restored', uid, {'mode': 'cached', 'matching': nodule['matching']})
+        nodules_path.write_text(json.dumps(nodules, indent=2, allow_nan=False))
+        self.progress(job, 'render')
+        self.log('system', 'Cached results reused from earlier run; radiologist confirmation required', uid,
+                 {'mode': 'cached', 'pipeline_version': metadata['pipeline_version']})
+
     def run_job(self, job, series):
         # GB10 imaging jobs share unified memory; never run two GPU pipelines together.
         with self.analysis_lock:
@@ -141,7 +199,9 @@ class Worker:
             self.status(uid, 'analyzing')
             cache = self.config.home/'cache'/series['series_uid']
             cache.mkdir(parents=True, exist_ok=True)
-            if self.config.fake:
+            if job['mode'] == 'cached':
+                self._restore_cached_analysis(job, series, cache)
+            elif self.config.fake:
                 for stage in STAGES:
                     self.progress(job, stage)
                     if self.stop.wait(max(0, self.config.fake_seconds) / len(STAGES)):
@@ -183,8 +243,10 @@ class Worker:
         with self.jobs_lock:
             job = next((j for j in self.jobs.values() if j['study_uid'] == uid and j['state'] != 'failed'), None)
             if job is None:
+                if self.registry.one('SELECT 1 FROM nodules WHERE study_uid=? AND confirmed_at IS NOT NULL', (uid,)):
+                    return {'error': 'Cannot replace radiologist-confirmed findings'}, 409
                 job = {'job_id': uuid.uuid4().hex, 'study_uid': uid, 'state': 'queued', 'stage': 'organize', 'stage_index': 0,
-                       'started': time.monotonic(), 'error': None}
+                       'started': time.monotonic(), 'error': None, 'mode': self.analysis_modes.get(uid, 'live')}
                 self.jobs[job['job_id']] = job
                 thread = threading.Thread(target=self.run_job, args=(job, series), daemon=True)
                 self.threads.append(thread)

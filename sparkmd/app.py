@@ -52,11 +52,25 @@ def create_app(config=None):
         for row in worker.registry.all("SELECT study_uid FROM studies WHERE status='analyzing'"):
             worker.status(row['study_uid'], 'organized')
             worker.log('system', 'Interrupted analysis can be restarted', row['study_uid'])
-        yield
-        worker.stop.set()
-        for thread in worker.threads:
-            await asyncio.to_thread(thread.join)
-        worker.registry.close()
+        async def publish_netstats():
+            while True:
+                worker.events.emit('net_stats', worker.netstats.sample())
+                await asyncio.sleep(2)
+
+        monitor = asyncio.create_task(publish_netstats())
+        try:
+            yield
+        finally:
+            await worker.stop_demo()
+            worker.stop.set()
+            monitor.cancel()
+            try:
+                await monitor
+            except asyncio.CancelledError:
+                pass
+            for thread in worker.threads:
+                await asyncio.to_thread(thread.join)
+            worker.registry.close()
 
     app = FastAPI(title='Spark MD research worker', lifespan=lifespan)
     app.state.worker = worker
@@ -203,6 +217,10 @@ def create_app(config=None):
         except ValueError: last = None
         return StreamingResponse(worker.events.stream(last), media_type='text/event-stream', headers={'Cache-Control': 'no-cache', 'X-Accel-Buffering': 'no'})
 
+    @app.get('/api/netstats')
+    async def netstats():
+        return worker.netstats.sample()
+
     @app.get('/api/outbox')
     async def outbox():
         rows = worker.registry.all('''SELECT o.*,r.study_uid,s.patient_id FROM outbox o JOIN reports r USING(report_id)
@@ -263,6 +281,8 @@ def create_app(config=None):
     install_demo(app, worker, gate)
     from .ask import router as ask_router
     app.include_router(ask_router)
+    from .voice import router as voice_router
+    app.include_router(voice_router)
     if worker.config.ui_dir.is_dir():
         app.mount('/', StaticFiles(directory=worker.config.ui_dir, html=True), name='ui')
     return app
