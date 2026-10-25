@@ -47,6 +47,14 @@ function createWindow() {
 
 app.whenReady().then(() => {
   if (!process.env.SPARKMD_DEVMENU) Menu.setApplicationMenu(null)
+  // No remote frames, no popups, no device permissions: the product is one local page.
+  app.on("web-contents-created", (_e, contents) => {
+    contents.setWindowOpenHandler(() => ({ action: "deny" }))
+    contents.on("will-navigate", (event, url) => {
+      if (!hostAllowed(url)) event.preventDefault()
+    })
+  })
+  session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(false))
   session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
     if (hostAllowed(details.url)) return cb({})
     console.warn("[sparkmd] blocked non-local request:", details.url)
