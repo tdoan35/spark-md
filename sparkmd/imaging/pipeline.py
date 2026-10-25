@@ -15,18 +15,19 @@ import uuid
 
 import nibabel as nib
 import numpy as np
-from PIL import Image
 
 from sparkmd.registry import Registry
 from .detector import detect
 from .lobes import split_lungs
+from .meshes import render_meshes
+from .slices import render_slices
 from .proposals import propose_a7
 from .tracking import prepare_tracks, persist_tracks
 from .volume import dicom_to_volume
 
 # One heavyweight imaging job at a time in the host worker process.
 _IMAGING_LOCK = threading.Lock()
-PIPELINE_VERSION = '0.3.0'
+PIPELINE_VERSION = '0.4.0'
 # Demo operating point, not a validated clinical sensitivity threshold.
 # Admission is independent of A7 success and never selects track identity.
 MIN_NODULE_SCORE = 0.90
@@ -35,22 +36,6 @@ ADMISSION_RULE = 'det-score-ge-0.90-v1'
 
 def _json(path, content):
     path.write_text(json.dumps(content, indent=2, allow_nan=False))
-
-
-def save_key_slice(volume, candidate, nodule_id, output, study_uid):
-    image = nib.as_closest_canonical(nib.Nifti1Image(volume.hu, volume.affine))
-    xyz = np.linalg.solve(image.affine, np.r_[candidate['center_mm'], 1])[:3]
-    k = int(np.clip(round(xyz[2]), 0, image.shape[2] - 1))
-    axial = np.asarray(image.dataobj)[:, :, k]
-    grayscale = (np.clip((axial + 1350) / 1500, 0, 1) * 255).astype(np.uint8)
-    pixels = np.flipud(grayscale.T)[:, ::-1]
-    name = f'key_axial_{nodule_id}.png'
-    Image.fromarray(pixels).save(output / name)
-    spacing = np.linalg.norm(image.affine[:3, :3], axis=0)
-    w, h = np.asarray(candidate['size_mm'][:2]) / spacing[:2]
-    x, y = image.shape[0] - 1 - xyz[0], image.shape[1] - 1 - xyz[1]
-    return {'name': name, 'url': f'/api/studies/{study_uid}/assets/{name}', 'plane': 'axial',
-            'nodule_id': nodule_id, 'box_px': [float(x - w / 2), float(y - h / 2), float(w), float(h)]}
 
 
 def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
@@ -108,7 +93,7 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
         _json(cache / 'lung_geometry.json', lung_split.geometry)
         nib.save(nib.Nifti1Image(lung_split.labels, lung_split.affine), cache / 'lung_sides.nii.gz')
         progress('characterize')
-        nodules, slices = [], []
+        nodules = []
         for candidate, proposal in zip(candidates, proposals):
             if not candidate['admitted']:
                 continue
@@ -125,8 +110,8 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
         progress('match')
         tracks = prepare_tracks(registry, home, study, nodules)
         progress('render')
-        for nodule in nodules:
-            slices.append(save_key_slice(volume, nodule, nodule['nodule_id'], cache, study_uid))
+        assets = render_meshes(lung_split, nodules, cache, study_uid)
+        assets.update(render_slices(volume, nodules, cache, study_uid))
         with registry.transaction() as db:
             # Recheck within the shared write lock before replacing unconfirmed rows.
             if db.execute('SELECT 1 FROM nodules WHERE study_uid=? AND confirmed_at IS NOT NULL', (study_uid,)).fetchone():
@@ -164,7 +149,7 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
         findings = {'pipeline_version': PIPELINE_VERSION,
                     'lung': {'mask_source': 'threshold', 'volume_ml': lung_split.geometry['volume_ml'],
                              'lobe_rule': lung_split.geometry['lobe_rule'], 'approximate': True},
-                    'assets': {'lung_mesh': None, 'nodule_mesh': None, 'key_slices': slices},
+                    'assets': assets,
                     'unverified': ['GB10 detector smoke', 'day-of A7 seed/background choices',
                                    'solid type assumption', 'height-based lobes and translation-only matching']}
         _json(cache / 'findings.json', findings)

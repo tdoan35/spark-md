@@ -1,0 +1,569 @@
+{
+  "date": "2026-10-25",
+  "machine": "event Dell GB10 Linux aarch64",
+  "pipeline_version": "0.4.0",
+  "verification": "Ty-approved CPU cached-volume/detector replay through real worker HTTP analysis and assets; no GPU inference, no original registry/cache writes",
+  "source_g2_runtime": "/home/dell/spark-md-runtime-g2",
+  "isolated_render_cache_home": "/home/dell/spark-md-render-cache",
+  "gpu_inference_calls": 0,
+  "tests": {
+    "imaging": "39 passed, 1 Mac-only skip",
+    "rules": "10 passed"
+  },
+  "min_memavailable_gib_during_cpu_replay": 73.037,
+  "asset_contract": {
+    "cache": "cache/<series_uid>/",
+    "lung_mesh": "/api/studies/<study_uid>/assets/lung.glb",
+    "nodule_mesh": "/api/studies/<study_uid>/assets/nodules.glb",
+    "key_slices": "key_axial_<nodule_id>.png, objects with name/url/plane/nodule_id/box_px",
+    "slice_stack": "stack_000.jpg etc + stack.json; count/spacing_mm/z_mm/size/url_pattern/index_digits/nodule_slices",
+    "coordinate_mapping": "(-R,S,A) mm, not recentered",
+    "nodule_geometry": "one named node/mesh per admitted nodule_id, detector-box ellipsoid marker, not a measurement",
+    "extras": null
+  },
+  "ui_verification": {
+    "runtime": "Electron 44.5.1 headless SwiftShader CPU software rendering",
+    "loaded_through_real_ui": [
+      "T0 lung.glb",
+      "T0 nodules.glb",
+      "T0 superior-first axial JPEG stack"
+    ],
+    "actual_loaded_nodule_world_centers_mm": {
+      "Nd5313f8c74ab53a6a714a7fad51901b9": [
+        60.5625,
+        -230.75,
+        192.5
+      ],
+      "Nd6cf9f91a2785f0082d2772d5d7c9f10": [
+        -54.3125,
+        -79.3125,
+        125.75
+      ]
+    },
+    "application_errors": [],
+    "failed_asset_requests": [],
+    "limit": "Existing UI Controls framing includes only meshes parented to Scene; actual GLTF meshes are parented to Group, so default camera misses unrecentered CT. Reported to Ty for U. QA-only manual camera framebuffer visually showed lung surfaces and nodule marker; product source not modified.",
+    "hardware_gpu_fps": "unverified"
+  },
+  "runs": [
+    {
+      "timepoint": "T0",
+      "study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693",
+      "series_uid": "1.2.840.113654.2.55.191672868291879989699384719070844674759",
+      "render_stage_s": 0.245498,
+      "pending_confirmation": [
+        "Nd5313f8c74ab53a6a714a7fad51901b9",
+        "Nd6cf9f91a2785f0082d2772d5d7c9f10"
+      ],
+      "admitted_a7_failures": 0,
+      "mesh_stats": {
+        "coordinate_mapping": {
+          "input": "RAS mm",
+          "output": "(-R,S,A) mm",
+          "recentered": false
+        },
+        "provenance": {
+          "lung": "threshold LungSplit labels: 1 right, 2 left",
+          "lung_affine_ras_mm": [
+            [
+              1.5,
+              0.0,
+              0.0,
+              -129.71875
+            ],
+            [
+              0.0,
+              1.5,
+              0.0,
+              33.28125
+            ],
+            [
+              0.0,
+              0.0,
+              1.5,
+              -349.29998779296875
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_level": 0.5,
+          "marching_cubes_step_size": 2,
+          "taubin": {
+            "iterations": 10,
+            "lambda": 0.5,
+            "mu": -0.53
+          },
+          "nodules": {
+            "kind": "detector_box_ellipsoid",
+            "measurement": false,
+            "description": "Display localization marker, not a validated segmented measurement"
+          }
+        },
+        "lung": {
+          "bytes": 1995920,
+          "nodes": 2,
+          "vertices": 41544,
+          "triangles": 83076,
+          "meshes": [
+            {
+              "name": "lung_right",
+              "vertices": 20832,
+              "triangles": 41656
+            },
+            {
+              "name": "lung_left",
+              "vertices": 20712,
+              "triangles": 41420
+            }
+          ]
+        },
+        "nodules": {
+          "bytes": 48760,
+          "nodes": 2,
+          "vertices": 964,
+          "triangles": 1920,
+          "meshes": [
+            {
+              "name": "Nd5313f8c74ab53a6a714a7fad51901b9",
+              "vertices": 482,
+              "triangles": 960
+            },
+            {
+              "name": "Nd6cf9f91a2785f0082d2772d5d7c9f10",
+              "vertices": 482,
+              "triangles": 960
+            }
+          ]
+        }
+      },
+      "downloaded_meshes": [
+        {
+          "field": "lung_mesh",
+          "url": "/api/studies/1.2.840.113654.2.55.287891883636097181196539925596142269693/assets/lung.glb",
+          "bytes": 1995920,
+          "content_type": "model/gltf-binary"
+        },
+        {
+          "field": "nodule_mesh",
+          "url": "/api/studies/1.2.840.113654.2.55.287891883636097181196539925596142269693/assets/nodules.glb",
+          "bytes": 48760,
+          "content_type": "model/gltf-binary"
+        }
+      ],
+      "stack_bytes": 7215402,
+      "hero_matching": {
+        "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+        "prior_nodule_id": null,
+        "status": "new",
+        "confidence": "none",
+        "distance_mm": null,
+        "rule": "lobe-position-mutual-v1",
+        "flags": [],
+        "candidates": [],
+        "prior_study_uid": null
+      },
+      "hero_track_id": "T4633f348396a5148a6cdf34d4842d20b",
+      "assessment": null,
+      "extras": null,
+      "key_slices": [
+        {
+          "name": "key_axial_Nd5313f8c74ab53a6a714a7fad51901b9.png",
+          "url": "/api/studies/1.2.840.113654.2.55.287891883636097181196539925596142269693/assets/key_axial_Nd5313f8c74ab53a6a714a7fad51901b9.png",
+          "plane": "axial",
+          "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+          "box_px": [
+            381.72222222222223,
+            221.61111111111111,
+            12.666666666666666,
+            12.666666666666666
+          ]
+        },
+        {
+          "name": "key_axial_Nd6cf9f91a2785f0082d2772d5d7c9f10.png",
+          "url": "/api/studies/1.2.840.113654.2.55.287891883636097181196539925596142269693/assets/key_axial_Nd6cf9f91a2785f0082d2772d5d7c9f10.png",
+          "plane": "axial",
+          "nodule_id": "Nd6cf9f91a2785f0082d2772d5d7c9f10",
+          "box_px": [
+            179.74999999999997,
+            342.55555555555554,
+            8.166666666666666,
+            8.11111111111111
+          ]
+        }
+      ],
+      "slice_stack_summary": {
+        "count": 151,
+        "spacing_mm": 2.0,
+        "size": [
+          512,
+          512
+        ],
+        "z_first_mm": -49.29998779296875,
+        "z_last_mm": -349.29998779296875,
+        "url_pattern": "/api/studies/1.2.840.113654.2.55.287891883636097181196539925596142269693/assets/stack_{i}.jpg",
+        "index_digits": 3,
+        "nodule_slices": [
+          {
+            "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+            "index": 91,
+            "box_px": [
+              381.72222222222223,
+              221.61111111111111,
+              12.666666666666666,
+              12.666666666666666
+            ],
+            "half_range": 2
+          },
+          {
+            "nodule_id": "Nd6cf9f91a2785f0082d2772d5d7c9f10",
+            "index": 15,
+            "box_px": [
+              179.74999999999997,
+              342.55555555555554,
+              8.166666666666666,
+              8.11111111111111
+            ],
+            "half_range": 1
+          }
+        ]
+      }
+    },
+    {
+      "timepoint": "T1",
+      "study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794",
+      "series_uid": "1.2.840.113654.2.55.22198691282350879638748709186011341024",
+      "render_stage_s": 0.218727,
+      "pending_confirmation": [
+        "N171ebd90451f5fcaab562d561d47b15b"
+      ],
+      "admitted_a7_failures": 0,
+      "mesh_stats": {
+        "coordinate_mapping": {
+          "input": "RAS mm",
+          "output": "(-R,S,A) mm",
+          "recentered": false
+        },
+        "provenance": {
+          "lung": "threshold LungSplit labels: 1 right, 2 left",
+          "lung_affine_ras_mm": [
+            [
+              1.5,
+              0.0,
+              0.0,
+              -164.697265625
+            ],
+            [
+              0.0,
+              1.5,
+              0.0,
+              18.302734375
+            ],
+            [
+              0.0,
+              0.0,
+              1.5,
+              -350.29998779296875
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_level": 0.5,
+          "marching_cubes_step_size": 2,
+          "taubin": {
+            "iterations": 10,
+            "lambda": 0.5,
+            "mu": -0.53
+          },
+          "nodules": {
+            "kind": "detector_box_ellipsoid",
+            "measurement": false,
+            "description": "Display localization marker, not a validated segmented measurement"
+          }
+        },
+        "lung": {
+          "bytes": 2021404,
+          "nodes": 2,
+          "vertices": 42078,
+          "triangles": 84132,
+          "meshes": [
+            {
+              "name": "lung_right",
+              "vertices": 21337,
+              "triangles": 42658
+            },
+            {
+              "name": "lung_left",
+              "vertices": 20741,
+              "triangles": 41474
+            }
+          ]
+        },
+        "nodules": {
+          "bytes": 24520,
+          "nodes": 1,
+          "vertices": 482,
+          "triangles": 960,
+          "meshes": [
+            {
+              "name": "N171ebd90451f5fcaab562d561d47b15b",
+              "vertices": 482,
+              "triangles": 960
+            }
+          ]
+        }
+      },
+      "downloaded_meshes": [
+        {
+          "field": "lung_mesh",
+          "url": "/api/studies/1.2.840.113654.2.55.338192170618430390797938564720496105794/assets/lung.glb",
+          "bytes": 2021404,
+          "content_type": "model/gltf-binary"
+        },
+        {
+          "field": "nodule_mesh",
+          "url": "/api/studies/1.2.840.113654.2.55.338192170618430390797938564720496105794/assets/nodules.glb",
+          "bytes": 24520,
+          "content_type": "model/gltf-binary"
+        }
+      ],
+      "stack_bytes": 7878429,
+      "hero_matching": {
+        "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+        "prior_nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+        "status": "matched",
+        "confidence": "high",
+        "distance_mm": 2.8317389396558577,
+        "rule": "lobe-position-mutual-v1",
+        "flags": [
+          "automatic_link_audited",
+          "approximate_lobe_rule"
+        ],
+        "candidates": [
+          {
+            "nodule_id": "Nd5313f8c74ab53a6a714a7fad51901b9",
+            "distance_mm": 2.8317389396558577
+          }
+        ],
+        "prior_study_uid": "1.2.840.113654.2.55.287891883636097181196539925596142269693"
+      },
+      "hero_track_id": "T4633f348396a5148a6cdf34d4842d20b",
+      "assessment": null,
+      "extras": null,
+      "key_slices": [
+        {
+          "name": "key_axial_N171ebd90451f5fcaab562d561d47b15b.png",
+          "url": "/api/studies/1.2.840.113654.2.55.338192170618430390797938564720496105794/assets/key_axial_N171ebd90451f5fcaab562d561d47b15b.png",
+          "plane": "axial",
+          "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+          "box_px": [
+            375.60322580645163,
+            216.9967741935484,
+            15.793548387096774,
+            15.896774193548387
+          ]
+        }
+      ],
+      "slice_stack_summary": {
+        "count": 158,
+        "spacing_mm": 2.0,
+        "size": [
+          512,
+          512
+        ],
+        "z_first_mm": -36.29998779296875,
+        "z_last_mm": -350.29998779296875,
+        "url_pattern": "/api/studies/1.2.840.113654.2.55.338192170618430390797938564720496105794/assets/stack_{i}.jpg",
+        "index_digits": 3,
+        "nodule_slices": [
+          {
+            "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+            "index": 91,
+            "box_px": [
+              375.60322580645163,
+              216.9967741935484,
+              15.793548387096774,
+              15.896774193548387
+            ],
+            "half_range": 2
+          }
+        ]
+      }
+    },
+    {
+      "timepoint": "T2",
+      "study_uid": "1.2.840.113654.2.55.278333827878071825845925251507545037002",
+      "series_uid": "1.2.840.113654.2.55.48229687676636292501867215868097032173",
+      "render_stage_s": 0.214262,
+      "pending_confirmation": [
+        "Neeaf7ce7e05054f7b119a772d7a802a9"
+      ],
+      "admitted_a7_failures": 0,
+      "mesh_stats": {
+        "coordinate_mapping": {
+          "input": "RAS mm",
+          "output": "(-R,S,A) mm",
+          "recentered": false
+        },
+        "provenance": {
+          "lung": "threshold LungSplit labels: 1 right, 2 left",
+          "lung_affine_ras_mm": [
+            [
+              1.5,
+              0.0,
+              0.0,
+              -146.677734375
+            ],
+            [
+              0.0,
+              1.5,
+              0.0,
+              5.322265625
+            ],
+            [
+              0.0,
+              0.0,
+              1.5,
+              -336.3999938964844
+            ],
+            [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ]
+          ],
+          "gaussian_sigma_voxels": 1,
+          "marching_cubes_level": 0.5,
+          "marching_cubes_step_size": 2,
+          "taubin": {
+            "iterations": 10,
+            "lambda": 0.5,
+            "mu": -0.53
+          },
+          "nodules": {
+            "kind": "detector_box_ellipsoid",
+            "measurement": false,
+            "description": "Display localization marker, not a validated segmented measurement"
+          }
+        },
+        "lung": {
+          "bytes": 1976184,
+          "nodes": 2,
+          "vertices": 41132,
+          "triangles": 82256,
+          "meshes": [
+            {
+              "name": "lung_right",
+              "vertices": 20938,
+              "triangles": 41872
+            },
+            {
+              "name": "lung_left",
+              "vertices": 20194,
+              "triangles": 40384
+            }
+          ]
+        },
+        "nodules": {
+          "bytes": 24628,
+          "nodes": 1,
+          "vertices": 482,
+          "triangles": 960,
+          "meshes": [
+            {
+              "name": "Neeaf7ce7e05054f7b119a772d7a802a9",
+              "vertices": 482,
+              "triangles": 960
+            }
+          ]
+        }
+      },
+      "downloaded_meshes": [
+        {
+          "field": "lung_mesh",
+          "url": "/api/studies/1.2.840.113654.2.55.278333827878071825845925251507545037002/assets/lung.glb",
+          "bytes": 1976184,
+          "content_type": "model/gltf-binary"
+        },
+        {
+          "field": "nodule_mesh",
+          "url": "/api/studies/1.2.840.113654.2.55.278333827878071825845925251507545037002/assets/nodules.glb",
+          "bytes": 24628,
+          "content_type": "model/gltf-binary"
+        }
+      ],
+      "stack_bytes": 7901182,
+      "hero_matching": {
+        "nodule_id": "Neeaf7ce7e05054f7b119a772d7a802a9",
+        "prior_nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+        "status": "matched",
+        "confidence": "high",
+        "distance_mm": 3.737098299747242,
+        "rule": "lobe-position-mutual-v1",
+        "flags": [
+          "automatic_link_audited",
+          "approximate_lobe_rule"
+        ],
+        "candidates": [
+          {
+            "nodule_id": "N171ebd90451f5fcaab562d561d47b15b",
+            "distance_mm": 3.737098299747242
+          }
+        ],
+        "prior_study_uid": "1.2.840.113654.2.55.338192170618430390797938564720496105794"
+      },
+      "hero_track_id": "T4633f348396a5148a6cdf34d4842d20b",
+      "assessment": null,
+      "extras": null,
+      "key_slices": [
+        {
+          "name": "key_axial_Neeaf7ce7e05054f7b119a772d7a802a9.png",
+          "url": "/api/studies/1.2.840.113654.2.55.278333827878071825845925251507545037002/assets/key_axial_Neeaf7ce7e05054f7b119a772d7a802a9.png",
+          "plane": "axial",
+          "nodule_id": "Neeaf7ce7e05054f7b119a772d7a802a9",
+          "box_px": [
+            371.4943892045454,
+            206.1555634469697,
+            20.276669034090908,
+            20.423248106060605
+          ]
+        }
+      ],
+      "slice_stack_summary": {
+        "count": 152,
+        "spacing_mm": 2.0,
+        "size": [
+          512,
+          512
+        ],
+        "z_first_mm": -34.399993896484375,
+        "z_last_mm": -336.3999938964844,
+        "url_pattern": "/api/studies/1.2.840.113654.2.55.278333827878071825845925251507545037002/assets/stack_{i}.jpg",
+        "index_digits": 3,
+        "nodule_slices": [
+          {
+            "nodule_id": "Neeaf7ce7e05054f7b119a772d7a802a9",
+            "index": 84,
+            "box_px": [
+              371.4943892045454,
+              206.1555634469697,
+              20.276669034090908,
+              20.423248106060605
+            ],
+            "half_range": 3
+          }
+        ]
+      }
+    }
+  ]
+}

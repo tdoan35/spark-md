@@ -46,6 +46,22 @@ CPU replay of the real G2 cached volumes/detector outputs through the updated pi
 
 Evidence: [`admission-replay-results.json`](admission-replay-results.json); imaging **30 passed + 1 Mac-only skip**, rules **10 passed**. No new GPU run, no live-worker restart and no existing registry/cache edits: W must load pipeline **0.3.0** before fresh analysis. Replaying cached detections is CPU integration proof, not fresh GPU/HTTP acceptance. Existing 0.2 studies retain their original confirmation counts and tracks.
 
+### B9 render update — pipeline 0.4.0
+
+Ty approved the first full **CPU-only cached render**; no detector/GPU calls, live-data resets, G3 edits or original G2 cache writes. The real worker HTTP analysis/assets routes passed using cached real volumes/detector outputs. Threshold surfaces use Gaussian sigma 1, marching cubes step 2 and Taubin smoothing; `lung.glb` has `lung_right`/`lung_left`. `nodules.glb` has one node/mesh per admitted `nodule_id`, with exact `(-R,S,A)` mm translation and detector-box ellipsoid geometry: **display markers, not measurements**. No recentering; extras remain null.
+
+`findings.json.assets` retains `lung_mesh`, `nodule_mesh`, `key_slices`; optional `slice_stack` is the existing 08 addition, not a renamed 00 field. Cache-root files are `lung.glb`, `nodules.glb`, `mesh_stats.json`, `key_axial_<nodule_id>.png`, `stack_NNN.jpg`, `stack.json`. `key_slices[]` has `name,url,plane,nodule_id,box_px`. `slice_stack` has `count,spacing_mm,z_mm,size,url_pattern,index_digits,nodule_slices`; each nodule entry has `nodule_id,index,box_px,half_range`. Index 0 is most superior; `{i}` is zero-padded; `size=[width,height]`. Half-range uses detector depth, not an unconfirmed diameter. PNG/JPEG orientations and boxes share the original canonical grid. The asset route must retain `.jpg` support.
+
+| Cached hero | Render stage seconds | Lung triangles | Admitted nodule mesh nodes | Axial JPEG count |
+| --- | ---: | ---: | ---: | ---: |
+| T0 | 0.245498 | 83076 | 2 | 151 |
+| T1 | 0.218727 | 84132 | 1 | 158 |
+| T2 | 0.214262 | 82256 | 1 | 152 |
+
+All admitted A7 proposals succeeded; T1→T2 remains linked at 3.737 mm, with one hero track across all scans. Evidence: [`render-results.json`](render-results.json). Imaging **39 passed + 1 Mac-only skip**, rules **10 passed**. CPU replay sampled minimum MemAvailable **73.037 GiB**. Actual Electron 44.5.1/SwiftShader UI loaded both T0 GLBs and the CT stack; nodule world centers matched the prescribed map. **UI blocker reported to Ty/U:** `Controls` currently frames only meshes with parent type `Scene`, but GLTFLoader's actual parents are `Group`; default camera misses the unrecentered CT. QA-only manual camera capture showed the lung surfaces/marker; no product/UI workaround was applied. Hardware-GPU fps remains unverified.
+
+Staged cache-only outputs for W: `$HOME/spark-md-render-cache/cache/<sid>/`. The staging registry is an isolated CPU-smoke fixture (no real day offsets), **not a replacement live registry**. `run_analysis` has no restore/reuse path and still calls detection: W owns detector-free restoration of cached `nodules.json` and `findings.json`, not `candidates.json`. Preserve `nodule_id`, `track_id`, RAS `center_mm`, proposal fields and the `matching` audit (`prior_nodule_id,prior_study_uid,status,confidence,distance_mm,rule,flags,candidates`). Restore chronologically and retain the earliest origin per track. Cached proposal files do not store subsequent human confirmations; never infer/overwrite accepted evidence from them. G4 replay must use admitted v0.3+ caches rather than original v0.2 G2 counts. Isolated preview worker/browser are stopped; W/G2 runtimes were not changed.
+
 ## 3. Timing and audit checks
 
 Baseline only, from build/04 (Oct 24; **not event-box acceptance deadlines**):
