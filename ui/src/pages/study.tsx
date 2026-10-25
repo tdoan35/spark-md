@@ -5,7 +5,7 @@ import { api } from "@/api/client"
 import { qk } from "@/api/keys"
 import { viewerBus } from "@/api/viewer-bus"
 import { useApp } from "@/lib/app-context"
-import type { StudyDetail, Findings } from "@/api/types"
+import type { StudyDetail, Findings, Nodule } from "@/api/types"
 import { mm, mmNum, hu, signed, days, dayLabel, STATUS_LABEL, lungRadsClass } from "@/lib/format"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -181,18 +181,7 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
       )}
       <RiskCard studyUid={findings.study_uid} patientId={findings.patient_id} timepoint={findings.timepoint} />
 
-      <div>
-        <div className="mb-1 flex items-center justify-between text-[10px] uppercase tracking-wide text-muted-foreground">
-          <span>Nodules · {findings.nodules.length}</span>
-          {findings.placeholder && <span className="rounded bg-replay-soft px-1.5 py-0.5 text-[9px] normal-case text-replay">placeholder numbers</span>}
-        </div>
-        <div className="space-y-1.5">
-          {findings.nodules.map((n, i) => (
-            <NoduleBlock key={n.nodule_id} uid={findings.study_uid} n={n} idx={i} drafting={study?.status === "analyzed"} selected={selected === n.nodule_id} onSelect={() => setSelected(n.nodule_id)} />
-          ))}
-          {!findings.nodules.length && <div className="text-xs text-muted-foreground">No nodules detected.</div>}
-        </div>
-      </div>
+      <NoduleList findings={findings} drafting={study?.status === "analyzed"} selected={selected} onSelectNodule={setSelected} />
 
       {findings.extras && (
         <div>
@@ -221,38 +210,104 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
   )
 }
 
-function NoduleBlock({ uid, n, idx, drafting, selected, onSelect }: { uid: string; n: import("@/api/types").Nodule; idx: number; drafting: boolean; selected: boolean; onSelect: () => void }) {
-  const qc = useQueryClient()
-  // The worker emits study_updated only after the last confirm (06), so refetch after each one.
-  const refetch = () => {
-    void qc.invalidateQueries({ queryKey: qk.findings(uid) })
-    void qc.invalidateQueries({ queryKey: qk.study(uid) })
-    void qc.invalidateQueries({ queryKey: qk.worklist })
+type DiameterDraft = { long: string; short: string }
+
+function initialDiameters(n: Nodule): DiameterDraft {
+  return {
+    long: String((n.confirmation.confirmed ? n.long_mm : n.proposal?.long_mm) ?? ""),
+    short: String((n.confirmation.confirmed ? n.short_mm : n.proposal?.short_mm) ?? ""),
   }
-  const [long, setLong] = useState(n.proposal?.long_mm != null ? String(n.proposal.long_mm) : n.long_mm != null ? String(n.long_mm) : "")
-  const [short, setShort] = useState(n.proposal?.short_mm != null ? String(n.proposal.short_mm) : n.short_mm != null ? String(n.short_mm) : "")
-  const [busy, setBusy] = useState(false)
-  const [err, setErr] = useState<string | null>(null)
-  const confirmed = n.confirmation.confirmed
-  const approver = () => localStorage.getItem("sparkmd-approver") ?? "Dr. Joyce (demo)"
+}
+
+function validDiameters({ long, short }: DiameterDraft) {
   const L = Number(long)
   const S = Number(short)
-  const valid = Number.isFinite(L) && Number.isFinite(S) && S > 0 && S <= L && L <= 100
+  return Number.isFinite(L) && Number.isFinite(S) && S > 0 && S <= L && L <= 100
+}
 
-  const submit = async () => {
+function NoduleList({ findings, drafting, selected, onSelectNodule }: { findings: Findings; drafting: boolean; selected: string | null; onSelectNodule: (id: string) => void }) {
+  const qc = useQueryClient()
+  const [drafts, setDrafts] = useState<Record<string, DiameterDraft>>({})
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({})
+  const [busy, setBusy] = useState(false)
+  const draftFor = (n: Nodule) => drafts[n.nodule_id] ?? initialDiameters(n)
+  const pending = findings.nodules.filter((n) => !n.confirmation.confirmed || drafts[n.nodule_id])
+  const cancel = (id: string) => {
+    setDrafts((old) => {
+      const next = { ...old }
+      delete next[id]
+      return next
+    })
+    setErrors((old) => ({ ...old, [id]: undefined }))
+  }
+
+  // Bulk confirmation uses the same endpoint as a single row; all derived values stay in the worker.
+  const confirm = async (nodes: Nodule[]) => {
+    if (busy || !nodes.length || !nodes.every((n) => validDiameters(draftFor(n)))) return
+    const values = nodes.map((n) => ({ id: n.nodule_id, ...draftFor(n) }))
+    const by = localStorage.getItem("sparkmd-approver") ?? "Dr. Joyce (demo)"
+    const succeeded: string[] = []
     setBusy(true)
-    setErr(null)
+    setErrors((old) => {
+      const next = { ...old }
+      for (const { id } of values) delete next[id]
+      return next
+    })
     try {
-      await api.confirm(n.nodule_id, L, S, approver())
-      refetch()
-      toast.success(`Confirmed ${n.lobe ?? "nodule"}`, { description: `${L.toFixed(1)} × ${S.toFixed(1)} mm · mean computed by the worker` })
-    } catch (e) {
-      const ae = e as { status?: number; message?: string }
-      setErr(ae.status === 403 ? "Confirm only works from this device (loopback)." : ae.message ?? "Confirm failed")
+      for (const { id, long, short } of values) {
+        try {
+          await api.confirm(id, Number(long), Number(short), by)
+          succeeded.push(id)
+        } catch (e) {
+          const ae = e as { status?: number; message?: string }
+          setErrors((old) => ({ ...old, [id]: ae.status === 403 ? "Confirm only works from this device (loopback)." : ae.message ?? "Confirm failed" }))
+        }
+      }
+      // A partially successful batch still refreshes each confirmed row and retains failed edits.
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: qk.findings(findings.study_uid) }),
+        qc.invalidateQueries({ queryKey: qk.study(findings.study_uid) }),
+        qc.invalidateQueries({ queryKey: qk.worklist }),
+      ])
+      setDrafts((old) => {
+        const next = { ...old }
+        for (const id of succeeded) delete next[id]
+        return next
+      })
+      if (succeeded.length) toast.success(`Confirmed ${succeeded.length} nodule${succeeded.length === 1 ? "" : "s"}`, { description: "Mean, growth and category are computed by the worker." })
     } finally {
       setBusy(false)
     }
   }
+
+  return (
+    <div>
+      <div className="mb-1 flex items-center justify-between gap-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+        <span>Nodules · {findings.nodules.length}</span>
+        {findings.placeholder && <span className="rounded bg-replay-soft px-1.5 py-0.5 text-[9px] normal-case text-replay">placeholder numbers</span>}
+        <Button size="sm" variant="outline" className="h-6 px-2 text-[10px] normal-case" disabled={busy || !pending.length || !pending.every((n) => validDiameters(draftFor(n)))} onClick={() => void confirm(pending)}>Confirm all</Button>
+      </div>
+      <div className="space-y-1.5">
+        {findings.nodules.map((n, i) => (
+          <NoduleBlock key={n.nodule_id} n={n} idx={i} drafting={drafting} selected={selected === n.nodule_id} onSelect={() => onSelectNodule(n.nodule_id)}
+            draft={draftFor(n)} editing={!n.confirmation.confirmed || !!drafts[n.nodule_id]} busy={busy} error={errors[n.nodule_id]}
+            onDraft={(draft) => setDrafts((old) => ({ ...old, [n.nodule_id]: draft }))}
+            onEdit={() => setDrafts((old) => ({ ...old, [n.nodule_id]: initialDiameters(n) }))}
+            onCancel={() => cancel(n.nodule_id)} onConfirm={() => void confirm([n])} />
+        ))}
+        {!findings.nodules.length && <div className="text-xs text-muted-foreground">No nodules detected.</div>}
+      </div>
+    </div>
+  )
+}
+
+function NoduleBlock({ n, idx, drafting, selected, onSelect, draft, editing, busy, error, onDraft, onEdit, onCancel, onConfirm }: {
+  n: Nodule; idx: number; drafting: boolean; selected: boolean; onSelect: () => void
+  draft: DiameterDraft; editing: boolean; busy: boolean; error: string | undefined
+  onDraft: (draft: DiameterDraft) => void; onEdit: () => void; onCancel: () => void; onConfirm: () => void
+}) {
+  const confirmed = n.confirmation.confirmed
+  const valid = validDiameters(draft)
 
   return (
     <div className={cn("rounded-md p-1.5 transition-colors", selected ? "bg-muted/70 ring-1 ring-border" : "hover:bg-muted/40")} onClick={onSelect}>
@@ -288,39 +343,42 @@ function NoduleBlock({ uid, n, idx, drafting, selected, onSelect }: { uid: strin
               )}
             </div>
           </div>
-          {!confirmed && (
+          {editing && (
             <div className="mt-1.5 flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
               <label className="flex items-center gap-1 text-[10px] text-muted-foreground">
                 long
-                <Input value={long} onChange={(e) => setLong(e.target.value)} inputMode="decimal" aria-label={`Long diameter mm, nodule ${idx + 1}`} className="h-6 w-14 px-1.5 font-mono text-[11px]" />
+                <Input value={draft.long} disabled={busy} onChange={(e) => onDraft({ ...draft, long: e.target.value })} inputMode="decimal" aria-label={`Long diameter mm, nodule ${idx + 1}`} className="h-6 w-14 px-1.5 font-mono text-[11px]" />
               </label>
               <label className="flex items-center gap-1 text-[10px] text-muted-foreground">
                 short
-                <Input value={short} onChange={(e) => setShort(e.target.value)} inputMode="decimal" aria-label={`Short diameter mm, nodule ${idx + 1}`} className="h-6 w-14 px-1.5 font-mono text-[11px]" />
+                <Input value={draft.short} disabled={busy} onChange={(e) => onDraft({ ...draft, short: e.target.value })} inputMode="decimal" aria-label={`Short diameter mm, nodule ${idx + 1}`} className="h-6 w-14 px-1.5 font-mono text-[11px]" />
               </label>
-              <Button size="sm" disabled={!valid || busy} onClick={() => void submit()} className="ml-auto h-6 gap-1 px-2 text-[10px]">
-                {busy ? <Loader2 className="size-3 animate-spin" /> : <Check className="size-3" />} Confirm
+              <Button size="sm" disabled={!valid || busy} onClick={onConfirm} className="ml-auto h-6 gap-1 px-2 text-[10px]">
+                {busy ? <Loader2 className="size-3 animate-spin" /> : <Check className="size-3" />} {confirmed ? "Re-confirm" : "Confirm"}
               </Button>
+              {confirmed && <Button size="sm" variant="ghost" disabled={busy} onClick={onCancel} className="h-6 px-1 text-[10px]">Cancel</Button>}
             </div>
           )}
           {!confirmed && n.proposal == null && <div className="mt-1 text-[10px] text-warn">No proposal — enter a diameter</div>}
-          {!confirmed && !valid && (long !== "" || short !== "") && <div className="mt-1 text-[10px] text-alert">Require 0 &lt; short ≤ long ≤ 100</div>}
-          {err && <div className="mt-1 text-[10px] text-alert">{err}</div>}
+          {editing && !valid && (draft.long !== "" || draft.short !== "") && <div className="mt-1 text-[10px] text-alert">Require 0 &lt; short ≤ long ≤ 100</div>}
+          {error && <div role="alert" className="mt-1 text-[10px] text-alert">{error}</div>}
           {confirmed && (
             <div className="mt-1 flex items-center justify-between text-[10px] text-muted-foreground">
               <span>
                 {mm(n.long_mm)} × {mm(n.short_mm)} · vol {mmNum(n.volume_mm3)} mm³
               </span>
-              <button
-                className="rounded px-1 text-muted-foreground hover:text-foreground"
+              {!editing && <button
+                disabled={busy}
+                className="rounded px-1 text-muted-foreground hover:text-foreground disabled:opacity-40"
                 onClick={(e) => {
                   e.stopPropagation()
-                  void api.confirm(n.nodule_id, Number(n.long_mm), Number(n.short_mm), approver()).then(refetch, (er) => toast.error(String((er as Error).message)))
+                  onEdit()
                 }}
-                title={`Confirmed by ${n.confirmation.by ?? "—"} · re-confirm to recompute`}
+                aria-label={`Edit diameters, nodule ${idx + 1}`}
+                title={`Confirmed by ${n.confirmation.by ?? "—"}`}
               >
-                by {n.confirmation.by} · re-confirm
-              </button>
+                Edit / re-confirm
+              </button>}
             </div>
           )}
           {n.confirmation.confirmed && (
