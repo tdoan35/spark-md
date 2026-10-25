@@ -65,7 +65,7 @@ c_fw()      { [[ -e $FW_MARKER ]]; }
 c_proxy()   { [[ -S $DOCKER_PROXY_SOCK ]]; }
 c_gateway() { systemctl --user is-active --quiet "$GATEWAY_UNIT" 2>/dev/null; }
 c_sbx_ready() { openshell sandbox list 2>/dev/null | strip_ansi | grep -E "^\s*$SANDBOX\b" | grep -q Ready; }
-c_sbx_llm() { local i; for i in 1 2 3; do timeout 30 openshell sandbox exec -n "$SANDBOX" -- curl -s -m 8 http://host.openshell.internal:8000/v1/models 2>/dev/null | grep -q "\"$LLM_NAME\"" && return 0; sleep 2; done; return 1; }
+c_sbx_llm() { local i; for i in 1 2 3; do SBX_LAST="$(timeout 30 openshell sandbox exec -n "$SANDBOX" -- curl -s -m 8 http://host.openshell.internal:8000/v1/models 2>&1)"; grep -q "\"$LLM_NAME\"" <<<"$SBX_LAST" && return 0; sleep 2; done; return 1; }
 c_worker()  { curl -sf -m 4 "$WORKER_URL/api/health" 2>/dev/null | grep -q '"status":"ok"'; }
 c_worker_spark0() { curl -sf -m 4 "http://$SPARK0_ADDR:$SPARKMD_PORT/api/health" 2>/dev/null | grep -q '"status":"ok"'; }
 c_asr()     { curl -s -m 3 -o /dev/null "http://127.0.0.1:8178/" 2>/dev/null; }
@@ -109,4 +109,23 @@ print_sudo_hint() {
   hint "needs sudo at the console (never run by this script). One line:  sudo bash $BIN_DIR/sparkmd-sudo"
   hint "or the exact commands (each as root):"
   while IFS= read -r l; do hint "  sudo bash -c '${l//\'/\'\\\'\'}'"; done <<<"$lines"
+}
+
+# --- duplicate processes (strays survive restarts and fight over a port): "what count pids" lines, empty = none ---
+count_dups() {
+  local pids n
+  pids="$(pgrep -x whisper-server | tr '\n' ' ')"; n=$(wc -w <<<"$pids")
+  (( n > 1 )) && echo "whisper-server x$n (pids $pids): keep the one in tmux sparkmd-asr ($(tmux display-message -p -t "$ASR_SESSION" '#{pane_pid}' 2>/dev/null)), kill -TERM the others"
+  pids="$(pgrep -f '(^|/)python[0-9.]* -m sparkmd$' | tr '\n' ' ')"; n=$(wc -w <<<"$pids")
+  (( n > 1 )) && echo "worker x$n (pids $pids): keep the one in tmux $WORKER_SESSION ($(worker_session_pid))"
+  n=$(docker ps --filter 'ancestor=tensorfold-qwen38-27b:v0.6.0' --format '{{.Names}}' 2>/dev/null | wc -l)
+  (( n > 1 )) && echo "LLM containers x$n ($(docker ps --filter 'ancestor=tensorfold-qwen38-27b:v0.6.0' --format '{{.Names}}' | tr '\n' ' ')): only qwen38-27b-tf should run"
+  n=$(docker ps --format '{{.Image}} {{.Names}}' 2>/dev/null | grep -ci 'qwen3-tts\|sparkmd-tts')
+  (( n > 1 )) && echo "TTS containers x$n ($(docker ps --format '{{.Names}} {{.Image}}' | grep -i 'qwen3-tts\|sparkmd-tts' | awk '{print $1}' | tr '\n' ' ')): only $TTS_CONTAINER should run"
+  local port
+  for port in 8000 8100 8178 8020; do
+    n=$(ss -ltnpH "sport = :$port" 2>/dev/null | grep -o 'pid=[0-9]*' | sort -u | wc -l)
+    (( n > 1 )) && echo ":$port has $n listener processes (SO_REUSEPORT strays split requests)"
+  done
+  return 0
 }

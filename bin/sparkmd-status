@@ -25,7 +25,7 @@ want sandbox && {
   elif c_sbx_llm; then
     if ss -ltnH 'sport = :18789' 2>/dev/null | grep -q LISTEN; then say OK sandbox "gateway active, $SANDBOX Ready, reaches host.openshell.internal:8000, OpenClaw forward on 127.0.0.1:18789"
     else say WARN sandbox "$SANDBOX Ready and reaches the LLM, but nothing listens on 127.0.0.1:18789 (try: nemoclaw $SANDBOX recover)"; fi
-  else say FAIL sandbox "$SANDBOX Ready but cannot reach host.openshell.internal:8000 (LLM down, or bind/firewall; see 07)"; fi; }
+  else say FAIL sandbox "$SANDBOX Ready but cannot reach host.openshell.internal:8000 after 3 tries (LLM down, or bind/firewall; see 07). Last probe output: ${SBX_LAST:0:120}"; fi; }
 
 want worker && {
   pane="$(worker_session_pid)"; lp="$(listener_pid "$SPARKMD_PORT")"
@@ -45,6 +45,10 @@ want ui && {
   elif c_ui_served; then say WARN ui "worker serves the UI but Electron is not running"
   else say WARN ui "Electron not running and GET $WORKER_URL/ is not 200 (npx vite build in ui/?)"; fi
   chrome_sandbox_ok || { say WARN ui "Electron SUID sandbox not set (ui/README.md): chrome-sandbox must be root:root mode 4755"; print_sudo_hint; }; }
+
+want dups && { d="$(count_dups)"
+  if [[ -z $d ]]; then say OK dups "no duplicate whisper-server / worker / LLM / TTS processes"
+  else say WARN dups "stray processes:"; while IFS= read -r l; do hint "$l"; done <<<"$d"; fi; }
 
 summary
 exit "$N_FAIL"
