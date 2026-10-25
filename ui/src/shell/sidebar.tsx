@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { useWorklist } from "@/api/hooks"
 import { useOutbox } from "@/api/hooks"
 import { PriorityPatients } from "@/shell/priority-patients"
+import { AllPatients } from "@/shell/all-patients"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 function Item({ to, icon: Icon, label, count, expanded }: { to: string; icon: typeof ListChecks; label: string; count?: number; expanded: boolean }) {
@@ -65,6 +66,7 @@ export function Sidebar({ expanded }: { expanded: boolean }) {
         </ul>
       </nav>
       <PriorityPatients expanded={expanded} />
+      <AllPatients expanded={expanded} />
     </aside>
   )
 }
