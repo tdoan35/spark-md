@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ComponentRef } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState, type ComponentRef } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { CameraControls, useGLTF } from "@react-three/drei"
 import * as THREE from "three"
@@ -31,9 +31,9 @@ const LUNG_SHADER = {
     }`,
 }
 
-function Lung({ url }: { url: string }) {
+function Lung({ url, onReady }: { url: string; onReady: () => void }) {
   const gltf = useGLTF(url, false, false)
-  const scene = gltf.scene.clone(true)
+  const scene = useMemo(() => gltf.scene.clone(true), [gltf])
   useEffect(() => {
     scene.traverse((o) => {
     const m = o as THREE.Mesh
@@ -48,13 +48,37 @@ function Lung({ url }: { url: string }) {
       m.material = mat
     }
     })
-  }, [scene])
+}, [scene])
+  useEffect(() => onReady(), [scene, onReady]) // attached after commit: the meshes are in the scene graph
   return <primitive object={scene} />
 }
 
-function Nodules({ url, selected, onSelect }: { url: string; selected: string | null; onSelect: (id: string) => void }) {
+function Nodules({
+  url, selected, onSelect, onReady, onNodes, nodules,
+}: {
+  url: string
+  selected: string | null
+  onSelect: (id: string) => void
+  onReady: () => void
+  onNodes: (m: Map<string, THREE.Vector3>) => void
+  nodules: { nodule_id: string; center_mm: [number, number, number] | null }[]
+}) {
   const gltf = useGLTF(url, false, false)
-  const scene = gltf.scene.clone(true)
+  const scene = useMemo(() => gltf.scene.clone(true), [gltf])
+  useEffect(() => {
+    const centers = new Map<string, THREE.Vector3>()
+    for (const n of nodules) {
+      const node = scene.getObjectByName(n.nodule_id)
+      if (!node) continue
+      const c = new THREE.Box3().setFromObject(node).getCenter(new THREE.Vector3())
+      centers.set(n.nodule_id, c)
+      if (n.center_mm) {
+        const d = c.distanceTo(rasToThree(n.center_mm))
+        if (d > 2) console.warn(`[sparkmd] nodule ${n.nodule_id} glb node is ${d.toFixed(1)} mm from center_mm`)
+      }
+    }
+    onNodes(centers)
+}, [scene, nodules, onNodes])
   useEffect(() => {
     scene.traverse((o) => {
       const m = o as THREE.Mesh
@@ -69,7 +93,8 @@ function Nodules({ url, selected, onSelect }: { url: string; selected: string | 
       })
       m.userData.nodule_id = m.name
     })
-  }, [selected])
+  }, [scene, selected])
+  useEffect(() => onReady(), [scene, onReady])
   return (
     <primitive
       object={scene}
@@ -83,28 +108,31 @@ function Nodules({ url, selected, onSelect }: { url: string; selected: string | 
 }
 
 function Controls({
-  findings, selected, command,
+  findings, selected, command, ready, nodesRef,
 }: {
   findings: Findings
   selected: string | null
   command: { command: ViewerCommand["command"]; nodule_id?: string } | null
+  ready: number
+  nodesRef: { current: Map<string, THREE.Vector3> }
 }) {
   const ccObj = useRef<ComponentRef<typeof CameraControls> | null>(null)
   const shared = useRef({ auto: true, focused: false, center: new THREE.Vector3(), radius: 140, lastInteract: 0 })
 
-  // Compute the lung bounding sphere from the loaded meshes' world positions.
+  // Lung bounding sphere from every loaded mesh (glbs nest meshes under Group nodes,
+  // and real anatomy is NOT origin-centred — a wrong center/home target frames empty space).
   const scene = useThree((s) => s.scene)
   useEffect(() => {
     const box = new THREE.Box3()
     scene.traverse((o) => {
       const m = o as THREE.Mesh
-      if (m.isMesh && (m.parent as THREE.Object3D | null)?.type === "Scene") box.expandByObject(m)
+      if (m.isMesh) box.expandByObject(m)
     })
     const sphere = new THREE.Sphere()
     if (!box.isEmpty()) box.getBoundingSphere(sphere)
     shared.current.center.copy(sphere.center)
     shared.current.radius = Math.min(400, Math.max(100, sphere.radius || 140))
-  }, [scene, findings.study_uid])
+  }, [scene, findings.study_uid, ready])
 
   const home = (cc2: ComponentRef<typeof CameraControls>) => {
     const fov = (35 * Math.PI) / 180
@@ -133,7 +161,7 @@ function Controls({
     if (command?.command === "show_nodule") {
       const id = command.nodule_id ?? selected
       const n = findings.nodules.find((x) => x.nodule_id === id)
-      if (n?.center_mm) flyTo(rasToThree(n.center_mm))
+      if (n?.center_mm && id) flyTo(nodesRef.current.get(id) ?? rasToThree(n.center_mm))
     } else if (command?.command === "reset_view") {
       home(cc2)
       shared.current.focused = false
@@ -144,9 +172,9 @@ function Controls({
 
   useEffect(() => {
     const cc2 = ccObj.current
-    if (cc2) home(cc2)
+    if (cc2 && !shared.current.focused) home(cc2)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [findings.study_uid])
+  }, [findings.study_uid, ready])
 
   useFrame((_, dt) => {
     const cc2 = ccObj.current
@@ -184,6 +212,12 @@ export default function Lung3D({
 }) {
   const lung = findings?.assets.lung_mesh ? resolveAsset(findings.assets.lung_mesh) : null
   const nod = findings?.assets.nodule_mesh ? resolveAsset(findings.assets.nodule_mesh) : null
+  const [ready, setReady] = useState(0)
+  const nodesRef = useRef(new Map<string, THREE.Vector3>())
+  const bumpReady = useCallback(() => setReady((r) => r + 1), [])
+  const handleNodes = useCallback((m: Map<string, THREE.Vector3>) => {
+    nodesRef.current = m
+  }, [])
   if (!findings || !lung || !nod)
     return <div className="grid h-full place-items-center text-[11px] text-white/50">No 3D assets for this study</div>
   return (
@@ -192,9 +226,9 @@ export default function Lung3D({
       <ambientLight intensity={1.2} />
       <directionalLight position={[200, 400, 600]} intensity={1.6} />
       <directionalLight position={[-300, -200, -400]} intensity={0.5} />
-      <Lung url={lung} />
-      <Nodules url={nod} selected={selected} onSelect={onSelect} />
-      <Controls findings={findings} selected={selected} command={command} />
+      <Lung url={lung} onReady={bumpReady} />
+      <Nodules url={nod} selected={selected} onSelect={onSelect} onReady={bumpReady} onNodes={handleNodes} nodules={findings.nodules} />
+      <Controls findings={findings} selected={selected} command={command} ready={ready} nodesRef={nodesRef} />
     </Canvas>
   )
 }
