@@ -34,6 +34,7 @@ class Worker:
         self.demo_state = {}
         self.analysis_modes = {}
         self.seeding_patient = None
+        self.background_studies = set()
         self.analysis_lock = threading.Lock()
         self.stop = threading.Event()
         self.intake = Intake(self.registry, self.config.home, self.status, self.organized, self.log)
@@ -69,6 +70,7 @@ class Worker:
             replay = self.demo_state
             if seeding:
                 self.analysis_modes[uid] = 'cached'
+                self.background_studies.add(uid)
             elif replay.get('replaying') and study and study['patient_id'] == replay['patient_id'] and study['timepoint'] == replay['timepoint']:
                 self.analysis_modes[uid] = replay['mode']
         if seeding:
@@ -232,7 +234,8 @@ class Worker:
             with self.registry.transaction() as db:
                 db.execute('UPDATE studies SET mode=? WHERE study_uid=?', (job['mode'], uid))
             self.status(uid, 'awaiting_confirmation')
-            if not self.registry.one('SELECT nodule_id FROM nodules WHERE study_uid=?', (uid,)):
+            # Even negative reset seeds must wait for the human gate, never phase 2.
+            if not job.get('seed_only') and not self.registry.one('SELECT nodule_id FROM nodules WHERE study_uid=?', (uid,)):
                 if recompute(self, uid):
                     self.trigger(uid, confirmed=True)
             with self.jobs_lock:
@@ -257,7 +260,8 @@ class Worker:
                 if self.registry.one('SELECT 1 FROM nodules WHERE study_uid=? AND confirmed_at IS NOT NULL', (uid,)):
                     return {'error': 'Cannot replace radiologist-confirmed findings'}, 409
                 job = {'job_id': uuid.uuid4().hex, 'study_uid': uid, 'state': 'queued', 'stage': 'organize', 'stage_index': 0,
-                       'started': time.monotonic(), 'error': None, 'mode': self.analysis_modes.get(uid, 'live')}
+                       'started': time.monotonic(), 'error': None, 'mode': self.analysis_modes.get(uid, 'live'),
+                       'seed_only': uid in self.background_studies}
                 self.jobs[job['job_id']] = job
                 thread = threading.Thread(target=self.run_job, args=(job, series), daemon=True)
                 self.threads.append(thread)

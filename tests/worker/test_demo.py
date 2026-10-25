@@ -71,6 +71,7 @@ class DemoReplay(unittest.IsolatedAsyncioTestCase):
         self.worker.seed = self.seed
         self.worker.intake = Intake(self.worker)
         self.worker.analysis_modes = {}
+        self.worker.background_studies = set()
         self.app = FastAPI()
 
         def gate(request, operation):

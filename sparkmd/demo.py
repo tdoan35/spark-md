@@ -3,7 +3,7 @@
 Each study waits for analysis, diameter confirmation, both drafts, and both human
 approvals before the next drop. Cached mode selects recorded v0.3+ proposals in
 the worker; stop drains any active intake before returning. Reset is explicit.
-Reset restores four cached, unconfirmed cohort baselines; the hero is replay-only.
+Reset restores cached control histories plus one LIDC study; the hero is replay-only.
 """
 
 import asyncio
@@ -172,7 +172,7 @@ def install_demo(app, worker, gate):
             with worker.jobs_lock:
                 if any(j['state'] in ('queued', 'running') for j in worker.jobs.values()):
                     return JSONResponse({'error': 'analysis running'}, status_code=409)
-                plans = seed_plan(worker.config.home) if not worker.config.fake and not worker.config.fake_seed else []
+                plans = seed_plan(worker.config.home, worker.intake.offsets()) if not worker.config.fake and not worker.config.fake_seed else []
                 selected = values.get('patient_ids')
                 if selected is None and not values.get('empty'):
                     selected = [path.name for path in (worker.config.home/'backlog').iterdir() if path.is_dir()]
@@ -182,6 +182,7 @@ def install_demo(app, worker, gate):
                     selected = sorted(set(selected) | {entry['patient_id'] for entry in plans})
                 removed = await asyncio.to_thread(worker.intake.reset, selected, bool(values.get('empty')))
                 worker.jobs = {key: job for key, job in worker.jobs.items() if job['study_uid'] not in removed}
+                worker.background_studies.difference_update(removed)
                 for uid in removed:
                     worker.analysis_modes.pop(uid, None)
             if worker.config.fake_seed and not values.get('empty'):

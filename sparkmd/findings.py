@@ -1,4 +1,8 @@
-"""Confirmed measurements only enter clinical calculations and rule assessment."""
+"""Confirmed sizes alone drive clinical calculations.
+
+UI findings.priors carries prior-study proposals without asserting nodule identity.
+nodules[].prior requires a real track link; agent results omit proposal history.
+"""
 import json
 
 
@@ -66,6 +70,59 @@ def recompute(worker, uid):
     return True
 
 
+def _proposal(nodule, audit):
+    reason = audit.get(nodule['nodule_id'], {}).get('proposal_reason')
+    if nodule['proposed_long_mm'] is None or nodule['proposed_short_mm'] is None:
+        reason = reason or 'proposal_reason_unavailable'
+    return {'source': nodule['proposal_source'], 'long_mm': nodule['proposed_long_mm'],
+            'short_mm': nodule['proposed_short_mm'], 'mean_mm': nodule['proposed_mean_mm'],
+            'box_mean_mm': nodule['box_mean_mm'], 'reason': reason}
+
+
+def _audit(worker, sid, audits):
+    if sid not in audits:
+        path = worker.config.home/'cache'/sid/'nodules.json'
+        audits[sid] = {n['nodule_id']: n for n in json.loads(path.read_text())} if path.is_file() else {}
+    return audits[sid]
+
+
+def _ui_history(worker, study, audits):
+    """Prior-study proposals, including unresolved tracks; no association is implied."""
+    priors = worker.registry.all('''SELECT study_uid,timepoint,day_offset FROM studies
+        WHERE patient_id=? AND rank<? ORDER BY rank DESC''', (study['patient_id'], study['rank']))
+    for prior in priors:
+        nodes = worker.registry.all('SELECT * FROM nodules WHERE study_uid=? ORDER BY nodule_id', (prior['study_uid'],))
+        prior['nodules'] = [{'nodule_id': n['nodule_id'], 'track_id': n['track_id'], 'lobe': n['lobe'],
+                            'confirmation': {'confirmed': n['confirmed_at'] is not None},
+                            'proposal': _proposal(n, _audit(worker, n['series_uid'], audits))} for n in nodes]
+    return priors
+
+
+def _ui_prior(worker, study, nodule, clinical, audits):
+    """Display tracked prior proposals without promoting them to clinical growth."""
+    prior = worker.registry.one('''SELECT n.*,s.day_offset,s.timepoint FROM nodules n
+        JOIN studies s ON s.study_uid=n.study_uid WHERE n.track_id=? AND s.patient_id=?
+        AND s.rank < ? ORDER BY s.rank DESC LIMIT 1''',
+        (nodule['track_id'], study['patient_id'], study['rank'])) if nodule['track_id'] else None
+    if not prior:
+        return None
+    sid = prior['series_uid']
+    interval = study['day_offset'] - prior['day_offset'] if study['day_offset'] is not None and prior['day_offset'] is not None else None
+    confirmed = prior['confirmed_at'] is not None
+    result = {'study_uid': prior['study_uid'], 'nodule_id': prior['nodule_id'], 'timepoint': prior['timepoint'],
+              'day_offset': prior['day_offset'], 'interval_days': interval,
+              'mean_mm': prior['mean_mm'] if confirmed else None,
+              'volume_mm3': prior['volume_mm3'] if confirmed else None,
+              'delta_mean_mm': None, 'growth_per_12mo_mm': None, 'growth_normalized': False,
+              'vdt_days': None, 'growing': None,
+              'confirmation': {'confirmed': confirmed, 'edited': bool(prior['edited']),
+                               'by': prior['confirmed_by'], 'at': prior['confirmed_at']},
+              'proposal': _proposal(prior, _audit(worker, sid, audits))}
+    if clinical and clinical['study_uid'] == prior['study_uid']:
+        result.update(clinical)
+    return result
+
+
 def findings(worker, uid, agent=False):
     r = worker.registry
     study = r.one('SELECT * FROM studies WHERE study_uid=?', (uid,))
@@ -77,6 +134,7 @@ def findings(worker, uid, agent=False):
     proposal_audit = {}
     if cache and (cache/'nodules.json').is_file():
         proposal_audit = {n['nodule_id']: n for n in json.loads((cache/'nodules.json').read_text())}
+    audits = {series['series_uid']: proposal_audit} if series else {}
     nodules = []
     for n in raw:
         confirmed = n['confirmed_at'] is not None
@@ -84,15 +142,14 @@ def findings(worker, uid, agent=False):
         item['center_mm'] = json.loads(n['center_mm'] or 'null')
         item['confirmation'] = {'confirmed': confirmed, 'edited': bool(n['edited']), 'by': n['confirmed_by'], 'at': n['confirmed_at']}
         if not agent:
-            item['proposal'] = {'source': n['proposal_source'], 'long_mm': n['proposed_long_mm'], 'short_mm': n['proposed_short_mm'], 'mean_mm': n['proposed_mean_mm'], 'box_mean_mm': n['box_mean_mm']}
-            reason = proposal_audit.get(n['nodule_id'], {}).get('proposal_reason')
-            if n['proposed_long_mm'] is None or n['proposed_short_mm'] is None:
-                reason = reason or 'proposal_reason_unavailable'
-            item['proposal']['reason'] = reason
+            item['proposal'] = _proposal(n, proposal_audit)
+            item['matching'] = proposal_audit.get(n['nodule_id'], {}).get('matching')
         if agent and not confirmed:
             for field in ('long_mm', 'short_mm', 'mean_mm', 'volume_mm3'):
                 item.pop(field)
         item['prior'] = growth(r, study, n) if confirmed else None
+        if not agent:
+            item['prior'] = _ui_prior(worker, study, n, item['prior'], audits)
         nodules.append(item)
     assessment = r.one('SELECT * FROM assessments WHERE study_uid=?', (uid,))
     if assessment:
@@ -107,4 +164,5 @@ def findings(worker, uid, agent=False):
             'series_uid': series['series_uid'] if series else None, 'pipeline_version': metadata.get('pipeline_version', '0.1.0'),
             'placeholder': worker.config.fake, 'lung': metadata.get('lung'), 'nodules': nodules,
             'pending_confirmation': [n['nodule_id'] for n in raw if n['confirmed_at'] is None],
+            **({'priors': _ui_history(worker, study, audits)} if not agent else {}),
             'assessment': assessment, 'extras': extras, 'assets': metadata.get('assets', {'lung_mesh': None, 'nodule_mesh': None, 'key_slices': []})}, 200
