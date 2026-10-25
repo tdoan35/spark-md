@@ -48,7 +48,6 @@ export function StudyPage({ uid }: { uid: string }) {
       </div>
     )
 
-  const awaiting = study.status === "awaiting_confirmation"
 
   return (
     <div className="flex h-full min-h-0 flex-col">
@@ -85,11 +84,6 @@ export function StudyPage({ uid }: { uid: string }) {
           style={{ width: "var(--inspector-w)" }}
         >
           <div className="flex h-full w-(--inspector-w) flex-col">
-            {awaiting && !findings?.assessment && (
-              <div className="mt-2 flex items-center gap-1.5 bg-warn-soft px-3 py-1.5 text-[11px] text-warn dark:bg-warn-soft/30">
-                <AlertTriangle className="size-3" /> {STATUS_LABEL.awaiting_confirmation} — no category yet
-              </div>
-            )}
             <Inspector uid={uid} tab={tab} setTab={setTab} findings={findings} selected={selected} setSelected={onSelectNodule} />
           </div>
         </div>
