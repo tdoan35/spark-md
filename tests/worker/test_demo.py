@@ -61,7 +61,7 @@ class DemoReplay(unittest.IsolatedAsyncioTestCase):
         for tp in ('T0', 'T1', 'T2'):
             (home/'backlog'/'hero'/tp).mkdir(parents=True)
         self.worker = SimpleNamespace(
-            config=SimpleNamespace(home=home, fake_seed=False), registry=Registry(home/'registry.sqlite'),
+            config=SimpleNamespace(home=home, fake=True, fake_seed=False), registry=Registry(home/'registry.sqlite'),
             jobs_lock=threading.RLock(), jobs={}, events=Events(), logs=[], netstats_resets=0, seeds=0,
         )
         self.worker.log = lambda *args: self.worker.logs.append(args)

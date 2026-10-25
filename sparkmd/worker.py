@@ -33,6 +33,7 @@ class Worker:
         self.jobs_lock = threading.RLock()
         self.demo_state = {}
         self.analysis_modes = {}
+        self.seeding_patient = None
         self.analysis_lock = threading.Lock()
         self.stop = threading.Event()
         self.intake = Intake(self.registry, self.config.home, self.status, self.organized, self.log)
@@ -64,11 +65,18 @@ class Worker:
         with self.jobs_lock:
             self.jobs = {key: job for key, job in self.jobs.items() if job['study_uid'] != uid}
             study = self.registry.one('SELECT patient_id,timepoint FROM studies WHERE study_uid=?', (uid,))
+            seeding = study and study['patient_id'] == self.seeding_patient
             replay = self.demo_state
-            if replay.get('replaying') and study and study['patient_id'] == replay['patient_id'] and study['timepoint'] == replay['timepoint']:
+            if seeding:
+                self.analysis_modes[uid] = 'cached'
+            elif replay.get('replaying') and study and study['patient_id'] == replay['patient_id'] and study['timepoint'] == replay['timepoint']:
                 self.analysis_modes[uid] = replay['mode']
-        self.log('system', 'Study organized; agent triage requested', uid)
-        self.trigger(uid)
+        if seeding:
+            self.log('system', 'Background seed organized; agent dispatch suppressed for cached analysis', uid,
+                     {'mode': 'cached'})
+        else:
+            self.log('system', 'Study organized; agent triage requested', uid)
+            self.trigger(uid)
 
     def trigger(self, uid, confirmed=False):
         key = f'study-{uid}' + ('-confirmed' if confirmed else '')

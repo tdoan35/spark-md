@@ -3,6 +3,7 @@
 Each study waits for analysis, diameter confirmation, both drafts, and both human
 approvals before the next drop. Cached mode selects recorded v0.3+ proposals in
 the worker; stop drains any active intake before returning. Reset is explicit.
+Reset restores three cached, unconfirmed cohort baselines; the hero is replay-only.
 """
 
 import asyncio
@@ -11,6 +12,8 @@ import time
 
 from fastapi import Request
 from fastapi.responses import JSONResponse
+
+from .seeding import seed_background, seed_plan
 
 
 class _ReplayStopped(Exception):
@@ -169,22 +172,26 @@ def install_demo(app, worker, gate):
             with worker.jobs_lock:
                 if any(j['state'] in ('queued', 'running') for j in worker.jobs.values()):
                     return JSONResponse({'error': 'analysis running'}, status_code=409)
+                plans = seed_plan(worker.config.home) if not worker.config.fake and not worker.config.fake_seed else []
                 selected = values.get('patient_ids')
                 if selected is None and not values.get('empty'):
                     selected = [path.name for path in (worker.config.home/'backlog').iterdir() if path.is_dir()]
                     if worker.config.fake_seed:
                         selected.extend(row['patient_id'] for row in worker.registry.all("SELECT patient_id FROM patients WHERE cohort='fixture'"))
+                if selected is not None and plans:
+                    selected = sorted(set(selected) | {entry['patient_id'] for entry in plans})
                 removed = await asyncio.to_thread(worker.intake.reset, selected, bool(values.get('empty')))
                 worker.jobs = {key: job for key, job in worker.jobs.items() if job['study_uid'] not in removed}
                 for uid in removed:
                     worker.analysis_modes.pop(uid, None)
             if worker.config.fake_seed and not values.get('empty'):
                 worker.seed()
+            seeded = await seed_background(worker, plans)
             worker.netstats.reset()
             worker.events.emit('worklist_changed', {'reason': 'reset', 'study_uid': None})
             update(replaying=False, patient_id=None, timepoint=None, speed=1, mode='live', phase='idle', waiting_for=None)
             worker.log('system', 'Demo reset; human confirmation and approval required', None)
-        return {'ok': True}
+        return {'ok': True, 'seeded': seeded}
 
     @app.get('/api/demo/state')
     async def demo_state(request: Request):
