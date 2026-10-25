@@ -1,0 +1,14 @@
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+dist/
+out/
+.env
+*.sqlite
+data/
+models/
+wheelhouse/
+*.tar
+.DS_Store
+._*
