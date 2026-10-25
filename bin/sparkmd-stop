@@ -16,6 +16,7 @@ if want ui; then
     if [[ -n ${SPARKMD_DRYRUN:-} ]]; then say OK ui "dry run"
     elif wait_for 10 bash -c "! pgrep -f '$ELECTRON' >/dev/null"; then say OK ui "Electron stopped"
     else pkill -KILL -f "$ELECTRON" 2>/dev/null; say WARN ui "Electron needed SIGKILL"; fi
+    tmux has-session -t sparkmd-ui-desktop 2>/dev/null && act tmux kill-session -t sparkmd-ui-desktop
   fi
 fi
 
