@@ -28,20 +28,30 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
   const inFlight = useRef(false)
   const qc = useQueryClient()
 
-  const active = reports?.filter((r) => r.kind === tab).sort((a, b) => b.version - a.version)[0]
+  const latestOf = (k: Tab) => reports?.filter((r) => r.kind === k).sort((a, b) => b.version - a.version)[0]
+  const active = latestOf(tab)
+  const advance = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     if (!open) {
       setResult(null)
       setError(null)
+      clearTimeout(advance.current)
+      return
     }
+    // Open on the first report still waiting for approval.
+    const next = (["radiology", "pcp_letter"] as Tab[]).find((k) => latestOf(k)?.status === "draft")
+    if (next) setTab(next)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
+  useEffect(() => () => clearTimeout(advance.current), [])
 
   useEffect(() => {
     localStorage.setItem("sparkmd-approver", approver)
   }, [approver])
 
-  const approved: Report | null = result?.report.report_id === active?.report_id && result?.report.status === "approved" ? result.report : active?.status === "approved" ? active : null
+  // While approving, keep the busy button up even if the SSE refetch lands first.
+  const approved: Report | null = pending ? null : result?.report.report_id === active?.report_id && result?.report.status === "approved" ? result.report : active?.status === "approved" ? active : null
 
   const approve = async () => {
     if (!active || inFlight.current) return
@@ -50,16 +60,28 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
     inFlight.current = true
     setPending(true)
     setError(null)
+    const started = performance.now()
     try {
       const r = await api.approve(active.report_id, name)
+      // The write is instant; hold the busy state ~0.6 s so the click visibly registers.
+      await new Promise((done) => setTimeout(done, Math.max(0, 600 - (performance.now() - started))))
       setResult(r)
       qc.setQueryData<Report[]>(qk.reports(uid), (current) => current?.map((report) => report.report_id === r.report.report_id ? r.report : report))
       void qc.invalidateQueries({ queryKey: qk.reports(uid) })
       void qc.invalidateQueries({ queryKey: qk.outbox })
       void qc.invalidateQueries({ queryKey: qk.worklist })
+      const letterNext = !r.already_approved && r.report.kind === "radiology" && latestOf("pcp_letter")?.status === "draft"
       toast.success(r.already_approved ? "Already approved" : `Approved by ${name}`, {
-        description: r.already_approved ? `Approved earlier by ${r.report.approved_by ?? "a radiologist"}` : r.outbox_id != null ? "Delivered to the EHR inbox" : "Signed and filed",
+        description: r.already_approved ? `Approved earlier by ${r.report.approved_by ?? "a radiologist"}` : r.outbox_id != null ? "Delivered to the EHR inbox" : letterNext ? "Report signed. Next: the PCP letter" : "Signed and filed",
       })
+      if (letterNext) {
+        // Leave the signed state on screen briefly, then move to the letter.
+        advance.current = setTimeout(() => {
+          setTab("pcp_letter")
+          setResult(null)
+          setError(null)
+        }, 1200)
+      }
     } catch (e) {
       if (e instanceof ApiError && e.status === 409) {
         const code = (e.body as { error?: string } | null)?.error
@@ -148,7 +170,15 @@ export function ReportSheet({ open, onOpenChange, uid }: { open: boolean; onOpen
                     void approve()
                   }}
                 >
-                  {pending ? <Loader2 className="size-4 animate-spin" /> : <Lock className="size-3.5" />} Approve
+                  {pending ? (
+                    <>
+                      <Loader2 className="size-4 animate-spin" /> {tab === "pcp_letter" ? "Signing & sending to EHR…" : "Signing…"}
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="size-3.5" /> Approve
+                    </>
+                  )}
                 </Button>
               </div>
             )}

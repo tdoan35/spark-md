@@ -20,6 +20,7 @@ import { StudyActivity } from "@/components/agent-log"
 import { ViewerPane } from "@/components/viewer/viewer-pane"
 import { ReportSheet } from "@/components/report-sheet"
 import { RiskCard } from "@/components/risk-card"
+import { ReportAction } from "@/components/report-action"
 
 export type InspectorTab = "assessment" | "activity"
 
@@ -99,8 +100,6 @@ function StudyHeader({ study, onToggleInspector, inspectorOpen, sheetOpen, setSh
   const { data: worklist } = useWorklist()
   const { openStudy } = useApp()
   const screens = patientScreens(study, worklist)
-  // Any draft (either kind) is worth opening: the sheet has both tabs.
-  const draft = reports?.find((r) => r.status === "draft")
   const lr = study.lung_rads
   return (
     <div className="flex min-h-[84px] shrink-0 items-center gap-4 px-5 py-2">
@@ -134,16 +133,8 @@ function StudyHeader({ study, onToggleInspector, inspectorOpen, sheetOpen, setSh
           })}
         </nav>
       </div>
-      <div className="ml-auto flex shrink-0 items-center gap-2" data-hdr-reports={reports ? `${reports.length}:${reports.map((r) => r.kind + r.status).join(",")}` : "none"}>
-        {draft ? (
-          <Button size="sm" className="h-8 gap-1 text-xs" onClick={() => setSheetOpen(true)}>
-            Review &amp; approve <ChevronRight className="size-3.5" />
-          </Button>
-        ) : reports?.some((r) => r.status === "approved") ? (
-          <Button size="sm" variant="outline" className="h-8 text-xs" onClick={() => setSheetOpen(true)}>
-            View approved reports
-          </Button>
-        ) : null}
+      <div className="ml-auto flex items-center gap-2" data-hdr-reports={reports ? `${reports.length}:${reports.map((r) => r.kind + r.status).join(",")}` : "none"}>
+        <ReportAction study={study} onOpen={() => setSheetOpen(true)} />
         <Button variant="ghost" size="icon" className="size-8" aria-label="Toggle inspector" aria-pressed={inspectorOpen} onClick={onToggleInspector}>
           <PanelRight className="size-4" />
         </Button>
