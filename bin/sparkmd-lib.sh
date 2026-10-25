@@ -65,7 +65,7 @@ c_fw()      { [[ -e $FW_MARKER ]]; }
 c_proxy()   { [[ -S $DOCKER_PROXY_SOCK ]]; }
 c_gateway() { systemctl --user is-active --quiet "$GATEWAY_UNIT" 2>/dev/null; }
 c_sbx_ready() { openshell sandbox list 2>/dev/null | strip_ansi | grep -E "^\s*$SANDBOX\b" | grep -q Ready; }
-c_sbx_llm() { local i; for i in 1 2; do timeout 30 openshell sandbox exec -n "$SANDBOX" -- curl -s -m 8 http://host.openshell.internal:8000/v1/models 2>/dev/null | grep -q "\"$LLM_NAME\"" && return 0; sleep 2; done; return 1; }
+c_sbx_llm() { local i; for i in 1 2 3; do timeout 30 openshell sandbox exec -n "$SANDBOX" -- curl -s -m 8 http://host.openshell.internal:8000/v1/models 2>/dev/null | grep -q "\"$LLM_NAME\"" && return 0; sleep 2; done; return 1; }
 c_worker()  { curl -sf -m 4 "$WORKER_URL/api/health" 2>/dev/null | grep -q '"status":"ok"'; }
 c_worker_spark0() { curl -sf -m 4 "http://$SPARK0_ADDR:$SPARKMD_PORT/api/health" 2>/dev/null | grep -q '"status":"ok"'; }
 c_asr()     { curl -s -m 3 -o /dev/null "http://127.0.0.1:8178/" 2>/dev/null; }
