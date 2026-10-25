@@ -134,9 +134,11 @@ export function ViewerPane({
           )}
           {mode === "slices" && <SlicesView uid={uid} findings={findings} selected={selected} onSelect={onSelect} />}
           {mode === "compare" && <CompareView findings={findings} selected={selected} onSelect={onSelect} study={study} />}
+          {mode === "3d" && (
           <div className="pointer-events-none absolute bottom-2 left-3 font-mono text-[10px] text-white/40">
             {study.timepoint} · {nodule ? `${nodule.lobe} · mean ${nodule.mean_mm ?? nodule.proposal?.mean_mm ?? "—"} mm` : "No nodule selected"}
           </div>
+          )}
         </div>
         {extrasOpen && <ExtrasPanel findings={findings} onClose={() => setExtrasOpen(false)} uid={uid} />}
       </div>

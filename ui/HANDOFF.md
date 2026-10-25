@@ -70,3 +70,13 @@ Never point tests at the real worker's confirm/approve; never touch W's window (
 - Human "Approved by" vs worker drafts mismatch: likely a mock behind the Mac's :5173. Real report IDs are hex, mock = `R1/R2`.
 - W's window needs a reload (W's call) to pick up the fixes above.
 - `pkill -f`/`grep [x]` patterns can match your own shell's command line; kill by PID.
+
+## Time-machine video shots
+- Compare now fetches the prior findings and matches `track_id` (not the first prior nodule):
+  both real 512×512 key slices + pixel-space boxes, 6.5 → 10.4 mm, +3.9 mm / 357 days,
+  worker `growing` label. Box-window shot: `/tmp/sparkmd-video/134503-t1-compare.png`.
+- Physical-interface monitor shot: `/tmp/sparkmd-video/physical-interface-monitor.png`.
+  Verified enP7s7/wlP9s9 have PCI device links; virtual interfaces excluded. NOT near-zero:
+  524,118 bytes transmitted over a 10 s sample; ~289 MB cumulative since baseline. Do not
+  reset/hide these numbers for the video. Ty must disconnect LAN and disable Wi-Fi for the
+  unplugged/baseline-reset near-zero shot. No interface changes made by U.

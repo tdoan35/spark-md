@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from "react"
 import { viewerBus } from "@/api/viewer-bus"
+import { useFindings } from "@/api/hooks"
 import type { Findings, KeySlice, StudyDetail } from "@/api/types"
 import { cn } from "@/lib/utils"
-import { mm } from "@/lib/format"
+import { days, mm, signed } from "@/lib/format"
 import { ChevronLeft, ChevronRight, Columns2 } from "lucide-react"
 import { usePref } from "@/lib/prefs"
 
@@ -150,12 +151,51 @@ export function SlicesView({ uid, findings, selected, onSelect }: { uid: string;
   )
 }
 
+function CompareSlice({ slice, label, diameter, pending }: { slice: KeySlice | undefined; label: string; diameter: number | null | undefined; pending?: boolean }) {
+  const [image, setImage] = useState<{ url: string; w: number; h: number } | null>(null)
+  const [failed, setFailed] = useState<string | null>(null)
+  const loaded = image?.url === slice?.url ? image : null
+  return (
+    <div className="flex min-h-0 min-w-0 flex-col rounded bg-white/5 p-2">
+      <div className="mb-2 flex items-baseline justify-between gap-2 text-[11px] text-white/60">
+        <span>{label}</span>
+        <span className="font-mono text-lg text-white/90">{mm(diameter)}</span>
+      </div>
+      <div className="grid min-h-0 flex-1 place-items-center" style={{ containerType: "size" }}>
+        {slice && failed !== slice.url ? (
+          <div className="relative" style={{ width: "min(100cqw, 100cqh)" }}>
+            <img
+              src={slice.url}
+              alt={`${label} axial key slice with nodule box`}
+              className="block w-full"
+              style={{ imageRendering: "pixelated" }}
+              onLoad={(e) => setImage({ url: slice.url, w: e.currentTarget.naturalWidth, h: e.currentTarget.naturalHeight })}
+              onError={() => setFailed(slice.url)}
+            />
+            {loaded && <Bracket box={slice.box_px} w={loaded.w} h={loaded.h} color="var(--warn)" />}
+          </div>
+        ) : (
+          <span className="text-center text-[11px] text-white/50">{pending ? "Loading matched prior…" : "Matched key slice unavailable"}</span>
+        )}
+      </div>
+      <div className="mt-2 text-[10px] text-white/40">Axial key slice · worker-supplied box</div>
+    </div>
+  )
+}
+
 export function CompareView({ findings, selected, onSelect, study }: { findings: Findings | undefined; selected: string | null; onSelect: (id: string) => void; study: StudyDetail }) {
   const nodule = findings?.nodules.find((n) => n.nodule_id === selected) ?? findings?.nodules[0]
+  const prior = nodule?.prior
+  const pq = useFindings(prior?.study_uid ?? null)
+  // Match the longitudinal track, never the first prior nodule (T0 can contain several).
+  const priorNodule = pq.data?.nodules.find((n) => n.track_id === nodule?.track_id)
+  const priorSlice = priorNodule ? pq.data?.assets.key_slices?.find((s) => s.nodule_id === priorNodule.nodule_id && s.plane === "axial") : undefined
+  const currentSlice = findings?.assets.key_slices?.find((s) => s.nodule_id === nodule?.nodule_id && s.plane === "axial")
+  const priorTimepoint = study.priors.find((p) => p.study_uid === prior?.study_uid)?.timepoint ?? "prior"
   return (
-    <div className="flex h-full flex-col p-2">
-      <div className="mb-1 flex items-center gap-2 px-1 text-[10px] text-white/50">
-        <Columns2 className="size-3.5" /> Prior | change | current · all values from `nodule.prior`
+    <div className="flex h-full min-h-0 flex-col p-2">
+      <div className="mb-2 flex items-center gap-2 px-1 text-[10px] text-white/50">
+        <Columns2 className="size-3.5" /> Longitudinal comparison · confirmed measurements
         <div className="ml-auto flex items-center gap-1">
           {findings?.nodules.map((n, i) => (
             <button key={n.nodule_id} onClick={() => onSelect(n.nodule_id)} className={cn("rounded px-1.5 font-mono text-[10px]", n.nodule_id === selected ? "bg-white/20 text-white" : "text-white/40 hover:bg-white/10")}>
@@ -164,41 +204,31 @@ export function CompareView({ findings, selected, onSelect, study }: { findings:
           ))}
         </div>
       </div>
-      <div className="grid min-h-0 flex-1 grid-cols-[1fr_168px_1fr] gap-2">
-        <div className="grid place-items-center rounded bg-white/5 p-2 text-[11px] text-white/60">
-          {nodule?.prior ? (
-            <div className="text-center">
-              <div className="font-mono text-2xl text-white/90">{mm(nodule.prior.mean_mm)}</div>
-              <div className="mt-1">prior {study.priors.find((p) => p.study_uid === nodule.prior?.study_uid)?.timepoint ?? "—"}</div>
-              <div className="text-[10px] text-white/40">{nodule.prior.interval_days} d</div>
-            </div>
-          ) : (
-            <span>baseline — no prior</span>
-          )}
-        </div>
-        <div className="grid place-items-center text-center">
-          {nodule?.prior ? (
+      <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_136px_minmax(0,1fr)] gap-2">
+        {prior ? (
+          <CompareSlice slice={priorSlice} label={`Prior · ${priorTimepoint}`} diameter={prior.mean_mm} pending={pq.isLoading} />
+        ) : (
+          <div className="grid place-items-center text-[11px] text-white/50">Baseline — no prior</div>
+        )}
+        <div className="flex flex-col items-center justify-center gap-1 text-center">
+          {prior ? (
             <>
-              <div className="font-mono text-lg text-white/90">{nodule.prior.delta_mean_mm! > 0 ? "+" : ""}{nodule.prior.delta_mean_mm?.toFixed(1)} mm</div>
-              <div className="text-[10px] text-white/50">over {nodule.prior.interval_days} d</div>
-              <div className="mt-1 font-mono text-[11px] text-white/70">{nodule.prior.growth_per_12mo_mm?.toFixed(1)} mm / 12 mo{nodule.prior.growth_normalized ? " · normalized" : ""}</div>
-              <div className="text-[10px] text-white/40">VDT {nodule.prior.vdt_days ?? "n/a"} d</div>
+              <div className="font-mono text-xl text-white/90">{signed(prior.delta_mean_mm)}</div>
+              <div className="text-[11px] text-white/60">over {prior.interval_days ?? "—"} days</div>
+              {prior.growing != null && <div className={cn("mt-2 rounded px-2 py-1 text-[11px]", prior.growing ? "bg-warn-soft text-warn" : "bg-white/5 text-white/60")}>{prior.growing ? "Growth confirmed" : "No growth flagged"}</div>}
+              <div className="mt-2 font-mono text-[10px] text-white/60">{mm(prior.growth_per_12mo_mm)} / 12 mo</div>
+              {prior.growth_normalized && <div className="text-[10px] text-white/40">normalized to 12 mo</div>}
+              <div className="text-[10px] text-white/50">VDT {days(prior.vdt_days)}</div>
             </>
           ) : (
-            <span className="text-[11px] text-white/40">no comparison</span>
+            <span className="text-[11px] text-white/40">No comparison</span>
           )}
         </div>
-        <div className="grid place-items-center rounded bg-white/5 p-2 text-[11px] text-white/60">
-          <div className="text-center">
-            <div className="font-mono text-2xl text-white/90">{mm(nodule?.mean_mm ?? nodule?.proposal?.mean_mm)}</div>
-            <div className="mt-1">current {study.timepoint}</div>
-            <div className="text-[10px] text-white/40">{nodule?.lobe ?? "—"}</div>
-          </div>
-        </div>
+        <CompareSlice slice={currentSlice} label={`Current · ${study.timepoint}`} diameter={nodule?.mean_mm} />
       </div>
-      <div className="mt-1 flex items-center gap-1 px-1 text-[10px] text-white/40">
+      <div className="mt-2 flex items-center gap-1 px-1 text-[10px] text-white/40">
         <ChevronLeft className="size-3" />
-        {nodule ? `${nodule.nodule_id}` : "—"}
+        <span>{nodule?.lobe ?? "No nodule selected"} · matched by longitudinal track</span>
         <ChevronRight className="size-3" />
       </div>
     </div>
