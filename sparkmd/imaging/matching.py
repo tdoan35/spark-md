@@ -69,6 +69,8 @@ def match_nodules(current, prior):
         elif not nodule.get('match_eligible', True):
             decision.update(status='unresolved', confidence='low',
                             flags=list(nodule.get('match_flags') or ['uncertain_lobe_position']))
+        elif any(prior_pos[j] is None or lobe_code(old.get('lobe')) is None for j, old in enumerate(prior)):
+            decision.update(status='unresolved', confidence='low', flags=['incomplete_prior_geometry'])
         elif candidates:
             distance, prior_id, j = candidates[0]
             decision['distance_mm'] = distance

@@ -1,10 +1,11 @@
 """Worker entry point: original DICOM -> detector -> unconfirmed A7 proposals.
 
-Uses W's registry; never assigns an assessment or confirms a diameter. General
-longitudinal/lobe matching remains open in build/04: track_id and lobe remain
-null rather than inventing identity. Registry's solid default is retained and
-recorded as an unverified type assumption in cache audit data.
+Uses W's registry; never assigns an assessment or confirms a diameter. Threshold
+height-based lobes are approximate; conservative lobe/position links and all
+unresolved candidates are explicitly audited. Registry's solid default remains
+an unverified type assumption in cache audit data.
 """
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -17,12 +18,14 @@ from PIL import Image
 
 from sparkmd.registry import Registry
 from .detector import detect
+from .lobes import split_lungs
 from .proposals import propose_a7
+from .tracking import prepare_tracks, persist_tracks
 from .volume import dicom_to_volume
 
 # One heavyweight imaging job at a time in the host worker process.
 _IMAGING_LOCK = threading.Lock()
-PIPELINE_VERSION = '0.1.0'
+PIPELINE_VERSION = '0.2.0'
 
 
 def _json(path, content):
@@ -74,6 +77,9 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
         _json(cache / 'candidates.json', candidates)
         progress('segment')
         proposals = [propose_a7(volume, candidate) for candidate in candidates]
+        lung_split = split_lungs(volume)
+        _json(cache / 'lung_geometry.json', lung_split.geometry)
+        nib.save(nib.Nifti1Image(lung_split.labels, lung_split.affine), cache / 'lung_sides.nii.gz')
         progress('characterize')
         nodules, slices = [], []
         for index, (candidate, proposal) in enumerate(zip(candidates, proposals)):
@@ -81,11 +87,14 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
             nodule = dict(candidate, **proposal.values, nodule_id=nid,
                           long_mm=None, short_mm=None, mean_mm=None, volume_mm3=None,
                           track_id=None, lobe=None, type='solid', type_source='unverified-solid-default')
+            nodule.update(lung_split.label(candidate['center_mm']))
             if proposal.mask is not None:
                 translation = np.eye(4)
                 translation[:3, 3] = proposal.start
                 nib.save(nib.Nifti1Image(proposal.mask.astype(np.uint8), volume.affine @ translation), cache / f'{nid}_proposal_mask.nii.gz')
             nodules.append(nodule)
+        progress('match')
+        tracks = prepare_tracks(registry, home, study, nodules)
         progress('render')
         for nodule in nodules:
             slices.append(save_key_slice(volume, nodule, nodule['nodule_id'], cache, study_uid))
@@ -95,19 +104,30 @@ def run_analysis(study_uid, *, registry: Registry, home=None, progress=None):
                 raise ValueError('Findings were confirmed during analysis; refusing replacement')
             db.execute('DELETE FROM assessments WHERE study_uid=?', (study_uid,))
             db.execute('DELETE FROM nodules WHERE study_uid=?', (study_uid,))
+            persist_tracks(db, tracks)
             for nodule in nodules:
                 db.execute('''INSERT INTO nodules
-                    (nodule_id,study_uid,series_uid,center_mm,proposed_long_mm,proposed_short_mm,
+                    (nodule_id,study_uid,series_uid,track_id,lobe,center_mm,proposed_long_mm,proposed_short_mm,
                      proposed_mean_mm,proposal_source,box_mean_mm,mean_hu,type,det_score)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''',
-                    (nodule['nodule_id'], study_uid, series['series_uid'], json.dumps(nodule['center_mm']),
-                     nodule['proposed_long_mm'], nodule['proposed_short_mm'], nodule['proposed_mean_mm'],
-                     nodule['proposal_source'], nodule['box_mean_mm'], nodule['mean_hu'], nodule['type'], nodule['det_score']))
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)''',
+                    (nodule['nodule_id'], study_uid, series['series_uid'], nodule['track_id'], nodule['lobe'],
+                     json.dumps(nodule['center_mm']), nodule['proposed_long_mm'], nodule['proposed_short_mm'],
+                     nodule['proposed_mean_mm'], nodule['proposal_source'], nodule['box_mean_mm'],
+                     nodule['mean_hu'], nodule['type'], nodule['det_score']))
+                decision = nodule['matching']
+                message = (f"Track link: {nodule['nodule_id']} <- {decision['prior_nodule_id']} (high confidence; approximate lobe)"
+                           if decision['status'] == 'matched' else
+                           f"LOW-CONFIDENCE TRACK UNLINKED: {nodule['nodule_id']}; {', '.join(decision['flags'])}"
+                           if decision['status'] == 'unresolved' else f"New nodule track: {nodule['nodule_id']}")
+                db.execute('INSERT INTO agent_events(ts,study_uid,source,message,payload_json) VALUES (?,?,?,?,?)',
+                           (datetime.now(timezone.utc).isoformat(), study_uid, 'system', message, json.dumps(decision)))
         _json(cache / 'nodules.json', nodules)
-        findings = {'pipeline_version': PIPELINE_VERSION, 'lung': None,
+        findings = {'pipeline_version': PIPELINE_VERSION,
+                    'lung': {'mask_source': 'threshold', 'volume_ml': lung_split.geometry['volume_ml'],
+                             'lobe_rule': lung_split.geometry['lobe_rule'], 'approximate': True},
                     'assets': {'lung_mesh': None, 'nodule_mesh': None, 'key_slices': slices},
                     'unverified': ['GB10 detector smoke', 'day-of A7 seed/background choices',
-                                   'solid type assumption', 'general lobe/track matching']}
+                                   'solid type assumption', 'height-based lobes and translation-only matching']}
         _json(cache / 'findings.json', findings)
         return {'study_uid': study_uid, 'study_status': 'awaiting_confirmation', 'nodules': nodules,
                 'assessment': None, 'assets': findings['assets']}
