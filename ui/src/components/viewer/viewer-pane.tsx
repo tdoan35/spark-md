@@ -39,7 +39,7 @@ export function ViewerPane({
   /** Rendered under the imaging well only — the chat rail keeps full height beside it (08). */
   bottom?: ReactNode
 }) {
-  const [mode, setMode] = useState<Mode>("slices")
+  const [mode, setMode] = useState<Mode>(() => study.priors.length ? "compare" : "slices")
   const [extrasOpen, setExtrasOpen] = useState(false)
   const [cmdTick, setCmdTick] = useState<{ command: ViewerCommand["command"]; nodule_id?: string } | null>(null)
   const qc = useQueryClient()

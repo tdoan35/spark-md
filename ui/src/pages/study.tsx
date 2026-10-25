@@ -1,12 +1,13 @@
 import { useRef, useState, useEffect } from "react"
-import { useQueryClient } from "@tanstack/react-query"
-import { useReports, useStudy, useFindings } from "@/api/hooks"
+import { useQueries, useQueryClient } from "@tanstack/react-query"
+import { useReports, useStudy, useFindings, useWorklist } from "@/api/hooks"
 import { api } from "@/api/client"
 import { qk } from "@/api/keys"
 import { viewerBus } from "@/api/viewer-bus"
 import { useApp } from "@/lib/app-context"
 import type { StudyDetail, Findings, Nodule } from "@/api/types"
 import { mm, mmNum, hu, signed, days, dayLabel, STATUS_LABEL, lungRadsClass } from "@/lib/format"
+import { compareScreens, patientScreens } from "@/lib/patient-studies"
 import { cn } from "@/lib/utils"
 import { readApprover } from "@/lib/prefs"
 import { Button } from "@/components/ui/button"
@@ -52,6 +53,7 @@ export function StudyPage({ uid }: { uid: string }) {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <StudyHeader study={study} onToggleInspector={() => setOpen((o) => !o)} inspectorOpen={open} sheetOpen={sheetOpen} setSheetOpen={setSheetOpen} />
+      <PriorReviewGuide study={study} />
       <div
         className={cn("grid min-h-0 flex-1", open ? "inspector-open" : "inspector-closed")}
         style={{ gridTemplateColumns: open ? "minmax(0,1fr) var(--inspector-w)" : "minmax(0,1fr) 0px", transition: "grid-template-columns 220ms ease" }}
@@ -94,14 +96,17 @@ export function StudyPage({ uid }: { uid: string }) {
 
 function StudyHeader({ study, onToggleInspector, inspectorOpen, sheetOpen, setSheetOpen }: { study: StudyDetail; onToggleInspector: () => void; inspectorOpen: boolean; sheetOpen: boolean; setSheetOpen: (v: boolean) => void }) {
   const { data: reports } = useReports(study.study_uid)
+  const { data: worklist } = useWorklist()
+  const { openStudy } = useApp()
+  const screens = patientScreens(study, worklist)
   // Any draft (either kind) is worth opening: the sheet has both tabs.
   const draft = reports?.find((r) => r.status === "draft")
   const lr = study.lung_rads
   return (
-    <div className="flex h-[60px] shrink-0 items-center gap-4 px-5">
+    <div className="flex min-h-[84px] shrink-0 items-center gap-4 px-5 py-2">
       <div className="min-w-0">
         <div className="flex items-baseline gap-2">
-          <span className="text-[15px] font-semibold tracking-tight">Patient {study.patient_id}</span>
+          <span className="text-[15px] font-semibold tracking-tight">Patient {study.patient_id} · {screens.length} {screens.length === 1 ? "screen" : "screens"}</span>
           <span className="text-xs text-muted-foreground">
             Chest CT · Time point {study.timepoint} · {dayLabel(study.day_offset)}
           </span>
@@ -114,8 +119,22 @@ function StudyHeader({ study, onToggleInspector, inspectorOpen, sheetOpen, setSh
           <span>{STATUS_LABEL[study.status] ?? study.status}</span>
           {lr && <span className={cn("rounded px-1.5 py-0.5 font-mono text-[10px] tabular-nums", lungRadsClass(lr))}>Lung-RADS {lr}</span>}
         </div>
+        <nav aria-label="Patient timepoints" className="mt-1.5 flex gap-1.5 overflow-x-auto pb-0.5">
+          {screens.map((screen) => {
+            const label = screen.status === "reported" ? "Drafts waiting" : STATUS_LABEL[screen.status] ?? screen.status
+            return <button key={screen.study_uid} data-timepoint={screen.timepoint}
+              aria-current={screen.study_uid === study.study_uid ? "page" : undefined}
+              aria-label={`${screen.timepoint} ${dayLabel(screen.day_offset)} · ${label}`}
+              title={label} onClick={() => { if (screen.study_uid !== study.study_uid) openStudy(screen.study_uid) }}
+              className={cn("flex shrink-0 items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", screen.study_uid === study.study_uid ? "border-foreground/30 bg-muted font-medium" : "text-muted-foreground hover:bg-muted/50")}>
+              <span className={screen.status === "approved" ? "text-ok" : "text-warn"} aria-hidden="true">{screen.status === "approved" ? "✓" : screen.status === "reported" ? "≡" : screen.status === "awaiting_confirmation" ? "●" : "○"}</span>
+              {screen.timepoint} {dayLabel(screen.day_offset)}
+              {screen.status === "reported" && <span className="text-warn">· drafts waiting</span>}
+            </button>
+          })}
+        </nav>
       </div>
-      <div className="ml-auto flex items-center gap-2" data-hdr-reports={reports ? `${reports.length}:${reports.map((r) => r.kind + r.status).join(",")}` : "none"}>
+      <div className="ml-auto flex shrink-0 items-center gap-2" data-hdr-reports={reports ? `${reports.length}:${reports.map((r) => r.kind + r.status).join(",")}` : "none"}>
         {draft ? (
           <Button size="sm" className="h-8 gap-1 text-xs" onClick={() => setSheetOpen(true)}>
             Review &amp; approve <ChevronRight className="size-3.5" />
@@ -132,6 +151,39 @@ function StudyHeader({ study, onToggleInspector, inspectorOpen, sheetOpen, setSh
       <ReportSheet open={sheetOpen} onOpenChange={setSheetOpen} uid={study.study_uid} />
     </div>
   )
+}
+
+function PriorReviewGuide({ study }: { study: StudyDetail }) {
+  const { openStudy } = useApp()
+  const { data: worklist } = useWorklist()
+  const earlier = patientScreens(study, worklist).filter((s) => compareScreens(s, study) < 0)
+  const queries = useQueries({ queries: earlier.map((s) => ({
+    queryKey: qk.findings(s.study_uid), queryFn: () => api.findings(s.study_uid), staleTime: 5_000, retry: false,
+  })) })
+  const pending = earlier.find((s, i) => {
+    const f = queries[i].isError ? undefined : queries[i].data
+    return f ? f.pending_confirmation.length > 0 || f.nodules.some((n) => !n.confirmation.confirmed)
+      : ["received", "organized", "analyzing", "awaiting_confirmation", "failed"].includes(s.status)
+  })
+  if (!pending) return null
+  return <div role="status" className="mx-5 mb-2 flex shrink-0 items-center gap-2 rounded-md bg-warn-soft px-3 py-2 text-xs text-warn">
+    <AlertTriangle className="size-3.5" />
+    <span>Review {pending.timepoint} first: growth needs a confirmed prior</span>
+    <Button variant="outline" size="sm" className="ml-auto h-6 text-[11px]" onClick={() => openStudy(pending.study_uid)}>Review {pending.timepoint}</Button>
+  </div>
+}
+
+function ConfirmedPriorSize({ n, studyUid }: { n: Nodule; studyUid: string }) {
+  const { data: study } = useStudy(studyUid)
+  const priorUid = n.prior?.study_uid ?? [...(study?.priors ?? [])].sort(compareScreens).at(-1)?.study_uid ?? null
+  const { data: prior, isError } = useFindings(priorUid)
+  const matched = prior?.nodules.find((p) => p.track_id === n.track_id)
+  if (!study?.priors.length) return null
+  return <div className="mt-1 text-[10px] text-muted-foreground" data-confirmed-prior={n.nodule_id}>
+    {matched?.confirmation.confirmed && matched.mean_mm != null
+      ? `prior ${mm(matched.mean_mm)} · ${prior?.timepoint} confirmed`
+      : prior ? "No confirmed matched prior" : isError ? "Confirmed prior unavailable" : "Loading confirmed prior…"}
+  </div>
 }
 
 function Inspector({ uid, tab, setTab, findings, selected, setSelected }: { uid: string; tab: InspectorTab; setTab: (t: InspectorTab) => void; findings: Findings | undefined; selected: string | null; setSelected: (id: string) => void }) {
@@ -298,7 +350,7 @@ function NoduleList({ findings, drafting, selected, onSelectNodule }: { findings
       </div>
       <div className="space-y-2">
         {findings.nodules.map((n, i) => (
-          <NoduleBlock key={n.nodule_id} n={n} idx={i} drafting={drafting} selected={selected === n.nodule_id} onSelect={() => onSelectNodule(n.nodule_id)}
+          <NoduleBlock key={n.nodule_id} studyUid={findings.study_uid} n={n} idx={i} drafting={drafting} selected={selected === n.nodule_id} onSelect={() => onSelectNodule(n.nodule_id)}
             draft={draftFor(n)} editing={!n.confirmation.confirmed || !!drafts[n.nodule_id]} busy={busy} error={errors[n.nodule_id]}
             onDraft={(draft) => setDrafts((old) => ({ ...old, [n.nodule_id]: draft }))}
             onEdit={() => setDrafts((old) => ({ ...old, [n.nodule_id]: initialDiameters(n) }))}
@@ -310,8 +362,8 @@ function NoduleList({ findings, drafting, selected, onSelectNodule }: { findings
   )
 }
 
-function NoduleBlock({ n, idx, drafting, selected, onSelect, draft, editing, busy, error, onDraft, onEdit, onCancel, onConfirm }: {
-  n: Nodule; idx: number; drafting: boolean; selected: boolean; onSelect: () => void
+function NoduleBlock({ studyUid, n, idx, drafting, selected, onSelect, draft, editing, busy, error, onDraft, onEdit, onCancel, onConfirm }: {
+  studyUid: string; n: Nodule; idx: number; drafting: boolean; selected: boolean; onSelect: () => void
   draft: DiameterDraft; editing: boolean; busy: boolean; error: string | undefined
   onDraft: (draft: DiameterDraft) => void; onEdit: () => void; onCancel: () => void; onConfirm: () => void
 }) {
@@ -337,6 +389,7 @@ function NoduleBlock({ n, idx, drafting, selected, onSelect, draft, editing, bus
                 <span className="text-[11px] text-muted-foreground"> mm</span>
               </div>
               <div className="mt-0.5 text-[9px] uppercase tracking-wide text-muted-foreground">{confirmed ? "confirmed mean" : n.proposal ? "proposed (A7)" : "no proposal"}</div>
+              <ConfirmedPriorSize n={n} studyUid={studyUid} />
             </div>
             <div className="ml-auto text-right text-[10px] leading-snug text-muted-foreground">
               <div>detector box {mm(n.proposal?.box_mean_mm)}</div>

@@ -81,7 +81,7 @@ export function CompareView({ findings, selected, onSelect, study }: { findings:
         {prior ? (
           <CompareSlice slice={priorSlice} label={`Prior · ${priorTimepoint}`} diameter={prior.mean_mm} pending={pq.isLoading} color={color} />
         ) : (
-          <div className="grid place-items-center text-[11px] text-white/50">Baseline — no prior</div>
+          <div className="grid place-items-center text-[11px] text-white/50">{study.priors.length ? "No matched prior for this nodule" : "Baseline — no prior"}</div>
         )}
         <div className="flex flex-col items-center justify-center gap-1 text-center">
           {prior ? (

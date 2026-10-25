@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { HashRouter, Routes, Route, useLocation, useNavigate, matchPath } from "react-router"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { useStudy, useWorklist } from "@/api/hooks"
 import { useSse } from "@/api/use-sse"
 import { ApiError, API_BASE } from "@/api/client"
 import { AppContext, type AppCtx } from "@/lib/app-context"
@@ -64,29 +65,32 @@ function Shell() {
   }, [])
 
   const uid = matchPath("/study/:uid", loc.pathname)?.params.uid ?? null
-  // A study reached straight from the worklist fills the active "New study" slot, so it owns a tab.
-  const studyPath = useMemo(() => {
-    const own = matchPath("/study/:uid", currentPathNoSearch(loc))
-    if (!own) return null
-    const slot = new URLSearchParams(loc.search).get("tab")
-    return slot ? currentPathNoSearch(loc) : `/study/${own.params.uid}?tab=study-${own.params.uid}`
-  }, [loc.pathname, loc.search])
+  const { data: worklist } = useWorklist()
+  const { data: activeStudy } = useStudy(uid)
+  const patientOf = useCallback((studyUid: string | null) =>
+    worklist?.find((s) => s.study_uid === studyUid)?.patient_id
+      ?? (activeStudy?.study_uid === studyUid ? activeStudy.patient_id : undefined), [worklist, activeStudy])
+  const patientId = patientOf(uid)
   const slot = new URLSearchParams(loc.search).get("tab")
-  const activeId = uid ? (slot ?? `study-${uid}`) : loc.pathname === "/" ? slot : null
-  const currentPath = studyPath ?? loc.pathname + loc.search
+  const activeId = uid ? (patientId ? `patient-${patientId}` : slot ?? `study-${uid}`) : loc.pathname === "/" ? slot : null
+  const currentPath = loc.pathname + loc.search
 
-  // Upsert the active slot on pathname/search changes (study tabs only).
+  // Patient identity owns the slot; the URL still owns the selected study and history.
   useEffect(() => {
     if (!activeId) return
-    setTabs((t) => {
-      const idx = t.findIndex((x) => x.id === activeId)
-      if (idx === -1) return [...t, { id: activeId, path: currentPath, uid, label: "New study" }]
-      if (t[idx].path === currentPath && t[idx].uid === uid) return t
-      const next = [...t]
-      next[idx] = { ...t[idx], path: currentPath, uid }
+    setTabs((tabs) => {
+      const next = tabs.filter((t) => t.id === activeId || !(
+        (uid && t.uid === uid) ||
+        (patientId && t.uid && patientOf(t.uid) === patientId) ||
+        (uid && t.uid === null && t.id === slot)
+      ))
+      const idx = next.findIndex((t) => t.id === activeId)
+      if (idx === -1) return [...next, { id: activeId, path: currentPath, uid, label: "New study" }]
+      if (next.length === tabs.length && next[idx].path === currentPath && next[idx].uid === uid) return tabs
+      next[idx] = { ...next[idx], path: currentPath, uid }
       return next
     })
-  }, [activeId, currentPath, uid])
+  }, [activeId, currentPath, uid, patientId, patientOf, slot])
 
   const openWorklistTab = useCallback(() => navigate(`/?tab=${crypto.randomUUID()}`), [navigate])
   const newTab = openWorklistTab
@@ -94,14 +98,13 @@ function Shell() {
 
   const openStudy = useCallback(
     (studyUid: string) => {
-      // Fill the active empty worklist slot if there is one; else reuse a study tab; else open a direct route.
+      const patient = patientOf(studyUid)
+      const existing = tabs.find((t) => t.uid === studyUid || (patient && t.uid && patientOf(t.uid) === patient))
       const empty = tabs.find((t) => t.uid === null && t.id === activeId)
-      if (empty) return navigate(`/study/${studyUid}?tab=${empty.id}`)
-      const existing = tabs.find((t) => t.uid === studyUid)
-      if (existing) return navigate(existing.path)
-      navigate(`/study/${studyUid}`)
+      const id = existing?.id ?? empty?.id ?? (patient ? `patient-${patient}` : `study-${studyUid}`)
+      navigate(`/study/${studyUid}?tab=${encodeURIComponent(id)}`)
     },
-    [activeId, navigate, tabs],
+    [activeId, navigate, tabs, patientOf],
   )
 
   const ctx: AppCtx = useMemo(
@@ -133,10 +136,6 @@ function Shell() {
       <Toaster position="top-center" offset={44} toastOptions={{ classNames: { description: "!text-muted-foreground" } }} />
     </AppContext.Provider>
   )
-}
-
-function currentPathNoSearch(loc: { pathname: string }) {
-  return loc.pathname
 }
 
 function StudyRoute() {

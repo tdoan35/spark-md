@@ -1,3 +1,4 @@
+import { compareScreens } from "@/lib/patient-studies"
 import { useMemo, useState } from "react"
 import { motion, AnimatePresence } from "motion/react"
 import { ListChecks, Play, RotateCcw, Loader2, WifiOff, FileText } from "lucide-react"
@@ -63,7 +64,8 @@ export function WorklistPage() {
       patient.allApproved = patient.allApproved && scan.status === "approved"
     }
     for (const patient of grouped.values()) {
-      patient.scans.sort((a, b) => a.timepoint.localeCompare(b.timepoint, undefined, { numeric: true }) || a.study_uid.localeCompare(b.study_uid))
+      patient.scans.sort(compareScreens)
+      patient.primary = [...patient.scans].reverse().find((s) => s.status !== "approved") ?? patient.scans[patient.scans.length - 1]
     }
     return [...grouped.values()]
   }, [data])
@@ -158,21 +160,21 @@ export function WorklistPage() {
                     <td className="border-b px-3 py-2.5 font-mono text-[13px] tabular-nums">
                       <button
                         className="rounded text-left hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                        aria-label={`Open patient ${r.patient_id}, highest-priority scan ${r.timepoint}`}
+                        aria-label={`Open patient ${r.patient_id}, current scan ${r.timepoint}`}
                         onClick={(e) => { e.stopPropagation(); app.openStudy(r.study_uid) }}
                       >
                         {r.patient_id}
                       </button>
                     </td>
                     <td className="border-b px-3 py-2.5 text-xs text-muted-foreground">
-                      <div>Chest CT · {scans.length} {scans.length === 1 ? "scan" : "scans"} · priority scan {r.timepoint}</div>
+                      <div>Chest CT · {scans.length} {scans.length === 1 ? "scan" : "scans"} · current scan {r.timepoint}</div>
                       <div className="mt-1 flex flex-wrap gap-1">
                         {scans.map((scan) => (
                           <button
                             key={scan.study_uid}
                             data-scan-uid={scan.study_uid}
                             aria-label={`Open ${scan.timepoint} scan for patient ${r.patient_id}`}
-                            title={`${scan.timepoint}${scan.day_offset != null ? ` · Day ${scan.day_offset}` : ""} · ${STATUS_LABEL[scan.status] ?? scan.status}${scan.lung_rads ? ` · Lung-RADS ${scan.lung_rads}` : ""}${scan.study_uid === r.study_uid ? " · highest-priority scan" : ""}`}
+                            title={`${scan.timepoint}${scan.day_offset != null ? ` · Day ${scan.day_offset}` : ""} · ${STATUS_LABEL[scan.status] ?? scan.status}${scan.lung_rads ? ` · Lung-RADS ${scan.lung_rads}` : ""}${scan.study_uid === r.study_uid ? " · current scan" : ""}`}
                             onClick={(e) => { e.stopPropagation(); app.openStudy(scan.study_uid) }}
                             className={cn("h-6 rounded border px-2 text-[11px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", scan.study_uid === r.study_uid ? "border-foreground/30 bg-muted text-foreground" : "border-border hover:bg-muted hover:text-foreground")}
                           >
@@ -205,7 +207,7 @@ export function WorklistPage() {
         <span className="text-muted-foreground/70">
           Hero patient 134503: {hero ? `${STATUS_LABEL[hero.status] ?? hero.status}${heroReports.data?.length ? ` · ${heroReports.data.length} report${heroReports.data.length === 1 ? "" : "s"}` : ""}` : "not dropped yet"}. All numbers are placeholders.
         </span>
-        <span className="text-muted-foreground/50">Clinical values reflect the highest-priority scan · reports cover all scans</span>
+        <span className="text-muted-foreground/50">Clinical values reflect the current scan · reports cover all scans</span>
       </div>
     </div>
   )
