@@ -7,9 +7,10 @@ const path = require("node:path")
 const START_URL = process.env.SPARKMD_UI_URL || "http://127.0.0.1:8100/"
 const ALLOWED_HOSTS = new Set(["127.0.0.1", "::1", "10.77.0.1"])
 
-// GB10 (linux arm64): gl-egl per 08; Mac dev: metal. Fallback on the box: --ozone-platform=x11.
-if (process.platform === "linux" && process.arch === "arm64") app.commandLine.appendSwitch("use-angle", "gl-egl")
-else if (process.platform === "darwin") app.commandLine.appendSwitch("use-angle", "metal")
+// Mac dev: metal. GB10 (linux arm64, X11): ANGLE's default GL backend. Do NOT pin gl-egl there:
+// on the X11 desktop its WebGL frames never reach the window (canvas stuck on its first frame
+// while the page keeps rendering), and it costs ~2× the GPU-process CPU of the default.
+if (process.platform === "darwin") app.commandLine.appendSwitch("use-angle", "metal")
 
 function hostAllowed(url) {
   try {
