@@ -1,5 +1,6 @@
-// Spark MD desktop shell. Frameless, loads the worker-served UI, refuses any
-// request that is not loopback / the sandbox worker address (air-gap belt-and-braces).
+// Spark MD desktop shell. Frameless (opaque; rounded corners come from CSS on #root), loads
+// the worker-served UI, refuses any request that is not loopback / the sandbox worker
+// address (air-gap belt-and-braces).
 const { app, BrowserWindow, ipcMain, Menu, session } = require("electron")
 const path = require("node:path")
 
@@ -27,7 +28,7 @@ function createWindow() {
     minWidth: 1280,
     minHeight: 800,
     frame: false,
-    backgroundColor: "#fafafa",
+    backgroundColor: "#fafafa", // opaque: a transparent window costs compositor work on X11
     show: false,
     webPreferences: {
       contextIsolation: true,
@@ -56,7 +57,8 @@ app.whenReady().then(() => {
       if (!hostAllowed(url)) event.preventDefault()
     })
   })
-  session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(false))
+  // 09 push-to-talk needs the mic: allow only `media` for the app origin; everything else stays denied.
+  session.defaultSession.setPermissionRequestHandler((wc, permission, callback) => callback(permission === "media" && hostAllowed(wc.getURL())))
   session.defaultSession.webRequest.onBeforeRequest((details, cb) => {
     if (hostAllowed(details.url)) return cb({})
     console.warn("[sparkmd] blocked non-local request:", details.url)

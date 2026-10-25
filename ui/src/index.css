@@ -53,6 +53,7 @@
 
 :root {
   --radius: 0.625rem;
+  --win-radius: 10px;
   --titlebar-h: 32px;
   --footer-h: 28px;
   --sidebar-width: 240px;
@@ -122,6 +123,7 @@
   --alert: #fca5a5; --alert-soft: #45161a;
   --well: #07080a;
 }
+html.maximized { --win-radius: 0px; }
 
 /* Thin scrollbars in every panel; the app itself never scrolls the window. */
 @supports selector(::-webkit-scrollbar) {
@@ -133,8 +135,10 @@
 
 @layer base {
   * { @apply border-border outline-ring/50; }
-  body { @apply bg-background text-foreground font-sans; overflow: hidden; }
-  /* The app fills viewport height, so the window's scrollbar never appears; keep scroll areas styled. */
+  /* Transparent frameless window: the root is the opaque rounded shell; the OS shows
+     through nothing else. Square corners when maximized/fullscreen (html.maximized). */
+  body { @apply bg-transparent text-foreground font-sans; overflow: hidden; }
+  #root { background: var(--background); border-radius: var(--win-radius); }
   html, body, #root { height: 100vh; }
 }
 

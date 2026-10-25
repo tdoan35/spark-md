@@ -35,7 +35,14 @@ export function TitleBar({
   const stripRef = useRef<HTMLDivElement>(null)
   const [maximized, setMaximized] = useState(false)
 
-  useEffect(() => window.sparkmd?.onState((s) => setMaximized(s?.maximized ?? false)), [])
+  // Rounded shell: square the corners while maximized/fullscreen (no desktop notches).
+  useEffect(() => {
+    window.sparkmd?.state().then((s) => setMaximized(s.maximized || s.fullscreen)).catch(() => {})
+    return window.sparkmd?.onState((s) => setMaximized(Boolean(s?.maximized || s?.fullscreen)))
+  }, [])
+  useEffect(() => {
+    document.documentElement.classList.toggle("maximized", maximized)
+  }, [maximized])
 
   const close = (id: string) => {
     if (tabs.length === 1) {
@@ -49,7 +56,7 @@ export function TitleBar({
   }
 
   return (
-    <header className="drag fixed inset-x-0 top-0 z-50 flex h-(--titlebar-h) items-center bg-sidebar">
+    <header className="drag fixed inset-x-0 top-0 z-50 flex h-(--titlebar-h) items-center rounded-t-(--win-radius) bg-sidebar">
       <div
         style={{ width: sidebarOpen ? "var(--sidebar-width)" : 172 }}
         className="flex h-full shrink-0 items-center gap-1 px-2 transition-[width] duration-200 ease-linear"

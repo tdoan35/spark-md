@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 export function Footer() {
   const { pathname } = useLocation()
   return (
-    <footer className="fixed inset-x-0 bottom-0 z-40 flex h-(--footer-h) items-center justify-between bg-sidebar px-4 text-[11px] text-muted-foreground">
+    <footer className="fixed inset-x-0 bottom-0 z-40 flex h-(--footer-h) items-center justify-between rounded-b-(--win-radius) bg-sidebar px-4 text-[11px] text-muted-foreground">
       <span className="flex items-center gap-1.5">
         <ShieldCheck className="size-3.5 text-ok" />
         Research demo, not for clinical use
