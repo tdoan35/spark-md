@@ -5,10 +5,14 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
-import { ArrowUp, Square, Mic, Sparkles, MicOff } from "lucide-react"
+import { ArrowUp, Square, Mic, Sparkles, Loader2, Volume2, VolumeX } from "lucide-react"
+import { usePref } from "@/lib/prefs"
+import { PushToTalk } from "@/lib/voice"
+import { postAsr } from "@/voice/asr"
+import { tts } from "@/voice/tts"
 import ReactMarkdown from "react-markdown"
 import remarkGfm from "remark-gfm"
-import { usePref } from "@/lib/prefs"
+import { toast } from "sonner"
 
 interface Turn {
   id: number
@@ -37,7 +41,12 @@ export function ChatRail({ uid }: { uid: string }) {
   const ctl = useRef<AbortController | null>(null)
   const seq = useRef(0)
   const [busy, setBusy] = useState(false)
-  const [recording, setRecording] = useState(false)
+  const [pttState, setPttState] = useState<"idle" | "recording" | "transcribing">("idle")
+  const [level, setLevel] = useState(0)
+  const [voiceOn, setVoiceOn] = usePref("sparkmd-voice", true)
+  const pttRef = useRef<PushToTalk | null>(null)
+  const maxHold = useRef<number | undefined>(undefined)
+  const pttHandlers = useRef<{ start: () => void; finish: () => void }>({ start: () => {}, finish: () => {} })
   const scroller = useRef<HTMLDivElement>(null)
   const stick = useRef(true)
   const [unseen, setUnseen] = useState(0)
@@ -84,26 +93,32 @@ export function ChatRail({ uid }: { uid: string }) {
     }
   }
 
-  const submit = async (text: string) => {
+  const submit = async (text: string, display?: string) => {
     const question = text.trim()
     if (!question || busy) return
     ctl.current?.abort()
+    tts.stop()
     const c = new AbortController()
     ctl.current = c
     const id = ++seq.current
     setBusy(true)
     setQ("")
     stick.current = true
-    setTurns((t) => [...t, { id, q: question, text: "", tools: [], status: "streaming" }])
+    setTurns((t) => [...t, { id, q: display ?? question, text: "", tools: [], status: "streaming" }])
     const upd = (f: (t: Turn) => Turn) => setTurns((all) => all.map((t) => (t.id === id ? f(t) : t)))
     void fireViewer(question)
+    let acc = ""
     try {
       for await (const ev of ask(uid, question, c.signal)) {
-        if (ev.event === "delta") upd((t) => ({ ...t, text: t.text + (ev.data.text ?? "") }))
-        else if (ev.event === "tool") upd((t) => ({ ...t, tools: [...t.tools, String(ev.data.tool ?? "tool")] }))
+        if (ev.event === "delta") {
+          acc += ev.data.text ?? ""
+          upd((t) => ({ ...t, text: t.text + (ev.data.text ?? "") }))
+        } else if (ev.event === "tool") upd((t) => ({ ...t, tools: [...t.tools, String(ev.data.tool ?? "tool")] }))
         else if (ev.event === "error") upd((t) => ({ ...t, status: "error", error: ev.data.message ?? "error" }))
       }
       upd((t) => (t.status === "streaming" ? { ...t, status: "done" } : t))
+      // 09: speak the answer only after `done` and only when not muted; failures stay silent.
+      if (!c.signal.aborted && voiceOn && acc.trim()) void tts.speak(acc)
     } catch (e) {
       upd((t) => (c.signal.aborted ? { ...t, status: "stopped" } : { ...t, status: "error", error: String((e as Error).message) }))
     } finally {
@@ -111,12 +126,75 @@ export function ChatRail({ uid }: { uid: string }) {
     }
   }
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && busy) ctl.current?.abort()
+  const finishPtt = async () => {
+    const p = pttRef.current
+    if (!p) return
+    pttRef.current = null
+    window.clearTimeout(maxHold.current)
+    setLevel(0)
+    const clip = await p.stop()
+    if (!clip) {
+      setPttState("idle")
+      return
     }
-    window.addEventListener("keydown", onKey)
-    return () => window.removeEventListener("keydown", onKey)
+    setPttState("transcribing")
+    try {
+      const r = await postAsr(clip.wav)
+      if (r.command && r.phrase) submit(r.phrase, r.text.trim() || r.phrase)
+      else
+        toast.info("Didn't catch that", {
+          description: r.text?.trim() ? `Heard: “${r.text.trim()}”` : "No speech detected",
+        })
+    } catch (e) {
+      toast.error("Voice recognition unavailable", { description: String((e as Error)?.message ?? e) })
+    } finally {
+      setPttState("idle")
+    }
+  }
+
+  const startPtt = () => {
+    if (pttRef.current || pttState === "transcribing") return
+    tts.stop() // 09: stop playback before capture so the speaker cannot feed the mic
+    setPttState("recording")
+    const p = new PushToTalk()
+    pttRef.current = p
+    p.start(setLevel).catch((e) => {
+      if (pttRef.current === p) pttRef.current = null
+      setPttState("idle")
+      toast.error("Microphone unavailable", { description: String((e as Error)?.message ?? e) })
+    })
+    maxHold.current = window.setTimeout(() => void finishPtt(), 6000) // 09: auto-stop at 6 s
+  }
+  pttHandlers.current = { start: startPtt, finish: () => void finishPtt() }
+
+  useEffect(() => {
+    const inField = (t: EventTarget | null) => t instanceof Element && !!t.closest("input, textarea, [contenteditable], button, [role=button]")
+    const down = (e: KeyboardEvent) => {
+      if (e.code === "Space" && !e.repeat && !e.altKey && !e.ctrlKey && !e.metaKey && !inField(e.target)) {
+        e.preventDefault()
+        pttHandlers.current.start()
+      }
+      if (e.key === "Escape" && busy) {
+        ctl.current?.abort()
+        tts.stop()
+      }
+    }
+    const up = (e: KeyboardEvent) => {
+      if (e.code === "Space") pttHandlers.current.finish()
+    }
+    const blur = () => {
+      if (pttRef.current) pttHandlers.current.finish()
+    }
+    window.addEventListener("keydown", down)
+    window.addEventListener("keyup", up)
+    window.addEventListener("blur", blur)
+    return () => {
+      window.removeEventListener("keydown", down)
+      window.removeEventListener("keyup", up)
+      window.removeEventListener("blur", blur)
+      pttRef.current?.abort()
+      tts.stop()
+    }
   }, [busy])
 
   useEffect(() => {
@@ -233,22 +311,48 @@ export function ChatRail({ uid }: { uid: string }) {
                 <span tabIndex={0}>
                   <Button
                     size="icon"
-                    variant={recording ? "secondary" : "ghost"}
+                    variant={pttState !== "idle" ? "secondary" : "ghost"}
                     className="size-6"
-                    aria-label={recording ? "Listening (push-to-talk via the worker)" : "Push to talk"}
-                    aria-pressed={recording}
-                    onClick={() => {
-                      setRecording((r) => !r)
-                      if (!recording) void api.health().catch(() => undefined)
+                    aria-label={pttState === "recording" ? "Listening — release to transcribe" : "Push to talk (hold, or hold Space)"}
+                    aria-pressed={pttState !== "idle"}
+                    disabled={pttState === "transcribing"}
+                    onPointerDown={(e) => {
+                      e.preventDefault()
+                      startPtt()
                     }}
+                    onPointerUp={() => void finishPtt()}
+                    onPointerLeave={() => void finishPtt()}
                   >
-                    {recording ? <Mic className="size-3.5" /> : <MicOff className="size-3.5" />}
+                    {pttState === "transcribing" ? (
+                      <Loader2 className="size-3.5 animate-spin" />
+                    ) : (
+                      <Mic className={cn("size-3.5", pttState === "recording" && "animate-pulse text-primary")} />
+                    )}
                   </Button>
                 </span>
               </TooltipTrigger>
-              <TooltipContent>{recording ? "Voice capture arrives with 09 (whisper.cpp on the box)" : "Push-to-talk is wired to /api/asr in 09; mic capture unverified"}</TooltipContent>
+              <TooltipContent>Hold to talk — or hold Space; whisper.cpp runs on the box</TooltipContent>
             </Tooltip>
+            {pttState === "recording" && (
+              <span className="h-1 w-8 overflow-hidden rounded-full bg-muted" aria-hidden>
+                <span className="block h-full bg-primary transition-[width] duration-75" style={{ width: `${Math.round(level * 100)}%` }} />
+              </span>
+            )}
+            {pttState === "transcribing" && <span className="text-[9px] text-muted-foreground/70">Transcribing…</span>}
             <span className="text-[9px] text-muted-foreground/60">Synthetic voice (Qwen3-TTS) · on device</span>
+            <Button
+              size="icon"
+              variant="ghost"
+              className="size-5"
+              aria-label={voiceOn ? "Mute spoken answers" : "Unmute spoken answers"}
+              aria-pressed={voiceOn}
+              onClick={() => {
+                tts.setMuted(!voiceOn) // muting also stops the current clip
+                setVoiceOn(!voiceOn)
+              }}
+            >
+              {voiceOn ? <Volume2 className="size-3" /> : <VolumeX className="size-3" />}
+            </Button>
             <div className="ml-auto flex items-center gap-1">
               {busy ? (
                 <Button size="icon" variant="secondary" className="size-7 rounded-full" aria-label="Stop" onClick={() => ctl.current?.abort()}>

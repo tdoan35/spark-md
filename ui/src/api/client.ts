@@ -61,16 +61,7 @@ export const api = {
   netstats: () => request<NetStats>("/api/netstats"),
   job: (jobId: string) => request<JobProgress>(`/api/jobs/${encodeURIComponent(jobId)}`),
   health: () => request<{ status: string }>("/api/health"),
-  /** 09: canonical phrase recognition on the box. Returns {text, command, phrase, score}. */
-  asr: async (wav: Blob) => {
-    const res = await fetch(`${API_BASE}/api/asr`, { method: "POST", headers: { "content-type": "audio/wav" }, body: wav })
-    return (await res.json()) as { text: string; command: string | null; phrase: string | null; score: number }
-  },
-  /** 09: spoken answer (24 kHz s16 PCM stream); optional, muted by default in the UI. */
-  tts: async (text: string) => {
-    const res = await fetch(`${API_BASE}/api/tts`, { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ text }) })
-    return res.ok
-  },
+  /** 09 voice lives in src/voice/{asr,tts}.ts (agent V): POST /api/asr, POST /api/tts. */
   saveReport: (uid: string, kind: ReportKind, markdown: string) =>
     request<Report>(`/api/studies/${encodeURIComponent(uid)}/reports`, {
       method: "POST",
