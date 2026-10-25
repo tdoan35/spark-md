@@ -93,7 +93,7 @@ export function ChatRail({ uid }: { uid: string }) {
     }
   }
 
-  const submit = async (text: string, display?: string) => {
+  const submit = async (text: string, display?: string, opts?: { viewer?: boolean }) => {
     const question = text.trim()
     if (!question || busy) return
     ctl.current?.abort()
@@ -106,7 +106,8 @@ export function ChatRail({ uid }: { uid: string }) {
     stick.current = true
     setTurns((t) => [...t, { id, q: display ?? question, text: "", tools: [], status: "streaming" }])
     const upd = (f: (t: Turn) => Turn) => setTurns((all) => all.map((t) => (t.id === id ? f(t) : t)))
-    void fireViewer(question)
+    // Voice skips this: /api/ask emits viewer_command SSE itself (09); never move the camera locally.
+    if (opts?.viewer !== false) void fireViewer(question)
     let acc = ""
     try {
       for await (const ev of ask(uid, question, c.signal)) {
@@ -140,7 +141,7 @@ export function ChatRail({ uid }: { uid: string }) {
     setPttState("transcribing")
     try {
       const r = await postAsr(clip.wav)
-      if (r.command && r.phrase) submit(r.phrase, r.text.trim() || r.phrase)
+      if (r.command && r.phrase) submit(r.phrase, r.text.trim() || r.phrase, { viewer: false })
       else
         toast.info("Didn't catch that", {
           description: r.text?.trim() ? `Heard: “${r.text.trim()}”` : "No speech detected",
