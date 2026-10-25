@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber"
 import { CameraControls, useGLTF } from "@react-three/drei"
 import * as THREE from "three"
 import type { Findings, ViewerCommand } from "@/api/types"
+import { Toggle } from "@/components/ui/toggle"
 
 /** RAS mm → three/glTF: x = patient Left (−R), y = Superior, z = Anterior. Right-handed, mm, not recentred. */
 /** Worker assets are paths; a relative URL resolves against the current page's origin and hash route. */
@@ -31,24 +32,80 @@ const LUNG_SHADER = {
     }`,
 }
 
-function Lung({ url, onReady }: { url: string; onReady: () => void }) {
+/** 08 §3D viewer layers: glb node name → colour and alpha multiplier on the lung fresnel shader. */
+type Layer = "lungs" | "airways" | "vessels" | "skeleton"
+type ToggleLayer = "vessels" | "skeleton"
+const LAYERS: Layer[] = ["lungs", "airways", "vessels", "skeleton"]
+const TOGGLES: ToggleLayer[] = ["vessels", "skeleton"]
+const LAYER_STYLE: Record<Layer, { color: string; alpha: number }> = {
+  lungs: { color: "#9db8d8", alpha: 1 },
+  airways: { color: "#d8e6f2", alpha: 1.7 },
+  vessels: { color: "#e3a3ae", alpha: 2.2 },
+  skeleton: { color: "#efe4cf", alpha: 0.9 },
+}
+const LUNG_ALPHA = 0.5
+/** Skeleton alpha multiplier while a nodule is focused, so the ribs don't sit between camera and nodule. */
+const SKELETON_FOCUSED = 0.25
+
+function layerOf(o: THREE.Object3D): Layer {
+  for (let p: THREE.Object3D | null = o; p; p = p.parent) {
+    if (p.name === "airways" || p.name === "vessels" || p.name === "skeleton") return p.name
+  }
+  return "lungs"
+}
+
+function Lung({
+  url, onReady, onLayers, hidden, focusRef,
+}: {
+  url: string
+  onReady: () => void
+  onLayers: (l: Layer[]) => void
+  hidden: Record<ToggleLayer, boolean>
+  focusRef: { current: boolean }
+}) {
   const gltf = useGLTF(url, false, false)
   const scene = useMemo(() => gltf.scene.clone(true), [gltf])
+  const invalidate = useThree((s) => s.invalidate)
+  const skeletonMats = useRef<THREE.ShaderMaterial[]>([])
   useEffect(() => {
+    const present = new Set<Layer>()
+    skeletonMats.current = []
     scene.traverse((o) => {
-    const m = o as THREE.Mesh
-    if (m.isMesh) {
+      const m = o as THREE.Mesh
+      if (!m.isMesh) return
+      const layer = layerOf(m)
+      present.add(layer)
       const mat = new THREE.ShaderMaterial({
         ...LUNG_SHADER,
-        uniforms: { uColor: { value: new THREE.Color("#9db8d8") }, uAlpha: { value: 0.5 } },
+        uniforms: { uColor: { value: new THREE.Color(LAYER_STYLE[layer].color) }, uAlpha: { value: LUNG_ALPHA * LAYER_STYLE[layer].alpha } },
         transparent: true,
         side: THREE.DoubleSide,
         depthWrite: false,
       })
       m.material = mat
-    }
+      m.userData.layer = layer
+      if (layer === "airways") m.renderOrder = 1
+      if (layer === "skeleton") skeletonMats.current.push(mat)
     })
-}, [scene])
+    onLayers(LAYERS.filter((l) => present.has(l)))
+  }, [scene, onLayers])
+  useEffect(() => {
+    scene.traverse((o) => {
+      if (o.name === "vessels" || o.name === "skeleton") o.visible = !hidden[o.name]
+    })
+    invalidate()
+  }, [scene, hidden, invalidate])
+  // Damp (λ 4) the skeleton toward its focused/unfocused alpha; requests frames only until it settles.
+  useFrame((_, delta) => {
+    const mats = skeletonMats.current
+    if (!mats.length) return
+    const target = LUNG_ALPHA * (focusRef.current ? SKELETON_FOCUSED : LAYER_STYLE.skeleton.alpha)
+    const cur = mats[0].uniforms.uAlpha.value as number
+    if (cur === target) return
+    const next = Math.abs(cur - target) < 1e-3 ? target : THREE.MathUtils.damp(cur, target, 4, Math.min(delta, 0.1))
+    for (const m of mats) m.uniforms.uAlpha.value = next
+    invalidate()
+  })
   useEffect(() => onReady(), [scene, onReady]) // attached after commit: the meshes are in the scene graph
   return <primitive object={scene} />
 }
@@ -109,7 +166,7 @@ function Nodules({
 }
 
 function Controls({
-  findings, selected, command, ready, nodesRef, paused,
+  findings, selected, command, ready, nodesRef, paused, focusRef, onHomed,
 }: {
   findings: Findings
   selected: string | null
@@ -117,12 +174,16 @@ function Controls({
   ready: number
   nodesRef: { current: Map<string, THREE.Vector3> }
   paused: boolean
+  focusRef: { current: boolean }
+  onHomed: (uid: string) => void
 }) {
   const ccObj = useRef<ComponentRef<typeof CameraControls> | null>(null)
-  const shared = useRef({ focused: false, center: new THREE.Vector3(), radius: 140 })
+  const shared = useRef({ center: new THREE.Vector3(), radius: 140 })
 
-  // Lung bounding sphere from every loaded mesh (glbs nest meshes under Group nodes,
+  // Lung bounding sphere from the lung + nodule meshes (glbs nest meshes under Group nodes,
   // and real anatomy is NOT origin-centred — a wrong center/home target frames empty space).
+  // Airways/vessels/skeleton layers are excluded: the trachea would pull the orbit centre up,
+  // and toggling a layer must not move home.
   const scene = useThree((s) => s.scene)
   const invalidate = useThree((s) => s.invalidate)
   const setFrameloop = useThree((s) => s.setFrameloop)
@@ -158,7 +219,7 @@ function Controls({
     scene.updateMatrixWorld(true)
     scene.traverse((o) => {
       const m = o as THREE.Mesh
-      if (m.isMesh) box.expandByObject(m)
+      if (m.isMesh && (m.userData.layer ?? "lungs") === "lungs") box.expandByObject(m)
     })
     if (box.isEmpty()) return
     const sphere = box.getBoundingSphere(new THREE.Sphere())
@@ -166,19 +227,21 @@ function Controls({
     shared.current.radius = Math.min(400, Math.max(100, sphere.radius || 140))
   }, [scene, findings.study_uid, ready, invalidate])
 
-  const home = (cc2: ComponentRef<typeof CameraControls>) => {
+  /** Anterior home view; `animate` false snaps (first load) so the canvas never shows a pre-home frame. */
+  const home = (cc2: ComponentRef<typeof CameraControls>, animate: boolean) => {
     const fov = (35 * Math.PI) / 180
     const d = (shared.current.radius / Math.sin(fov / 2)) * 0.82
+    const c = shared.current.center
     cc2.smoothTime = 0.18
-    startMotion()
-    void cc2.setLookAt(shared.current.center.x, shared.current.center.y, shared.current.center.z + d, shared.current.center.x, shared.current.center.y, shared.current.center.z, true).then(restMotion)
+    if (animate) startMotion()
+    void cc2.setLookAt(c.x, c.y, c.z + d, c.x, c.y, c.z, animate).then(animate ? restMotion : undefined)
     invalidate()
   }
 
   const flyTo = (p: THREE.Vector3) => {
     const cc2 = ccObj.current
     if (!cc2) return
-    shared.current.focused = true
+    focusRef.current = true
     const dir = new THREE.Vector3(p.x - shared.current.center.x, 0, p.z - shared.current.center.z)
     if (dir.lengthSq() < 1) dir.set(0, 0, 1)
     dir.normalize().add(new THREE.Vector3(0, 0, 0.35)).setY(0.3).normalize()
@@ -198,15 +261,16 @@ function Controls({
       const n = findings.nodules.find((x) => x.nodule_id === id)
       if (n?.center_mm && id) flyTo(nodesRef.current.get(id) ?? rasToThree(n.center_mm))
     } else if (command?.command === "reset_view") {
-      home(cc2)
-      shared.current.focused = false
+      home(cc2, true)
+      focusRef.current = false
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [command])
 
   useEffect(() => {
     const cc2 = ccObj.current
-    if (cc2 && !shared.current.focused) home(cc2)
+    if (cc2 && !focusRef.current) home(cc2, false)
+    onHomed(findings.study_uid)
     invalidate()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [findings.study_uid, ready])
@@ -256,19 +320,48 @@ export default function Lung3D({
   const handleNodes = useCallback((m: Map<string, THREE.Vector3>) => {
     nodesRef.current = m
   }, [])
+  const focusRef = useRef(false)
+  const [layers, setLayers] = useState<Layer[]>([])
+  const [hidden, setHidden] = useState<Record<ToggleLayer, boolean>>({ vessels: false, skeleton: false })
+  // The canvas stays transparent until the camera has snapped home for this study, then fades in.
+  const [shown, setShown] = useState<string | null>(null)
   if (!findings || !lung || !nod)
     return <div className="grid h-full place-items-center text-[11px] text-white/50">No 3D assets for this study</div>
   // Demand frameloop: GL-on-EGL translation is CPU-bound on GB10, so a 60 fps loop burns a core.
   // CameraControls renders continuously only during interaction/tweens, then returns to demand.
+  const visible = shown === findings.study_uid
   return (
-    <Canvas camera={{ fov: 35, near: 1, far: 5000, position: [0, 0, 600] }} gl={{ antialias: true }} dpr={1} frameloop={paused ? "never" : "demand"}>
-      <color attach="background" args={["#0b0d10"]} />
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[200, 400, 600]} intensity={1.6} />
-      <directionalLight position={[-300, -200, -400]} intensity={0.5} />
-      <Lung url={lung} onReady={bumpReady} />
-      <Nodules url={nod} selected={selected} onSelect={onSelect} onReady={bumpReady} onNodes={handleNodes} nodules={findings.nodules} />
-      <Controls findings={findings} selected={selected} command={command} ready={ready} nodesRef={nodesRef} paused={!!paused} />
-    </Canvas>
+    <div className="relative h-full">
+      <div className="h-full" style={{ opacity: visible ? 1 : 0, transition: visible ? "opacity 0.4s ease-out" : "none" }}>
+        <Canvas camera={{ fov: 35, near: 1, far: 5000, position: [0, 0, 600] }} gl={{ antialias: true }} dpr={1} frameloop={paused ? "never" : "demand"}>
+          <color attach="background" args={["#0b0d10"]} />
+          <ambientLight intensity={1.2} />
+          <directionalLight position={[200, 400, 600]} intensity={1.6} />
+          <directionalLight position={[-300, -200, -400]} intensity={0.5} />
+          <Lung url={lung} onReady={bumpReady} onLayers={setLayers} hidden={hidden} focusRef={focusRef} />
+          <Nodules url={nod} selected={selected} onSelect={onSelect} onReady={bumpReady} onNodes={handleNodes} nodules={findings.nodules} />
+          <Controls findings={findings} selected={selected} command={command} ready={ready} nodesRef={nodesRef} paused={!!paused} focusRef={focusRef} onHomed={setShown} />
+        </Canvas>
+      </div>
+      {TOGGLES.some((l) => layers.includes(l)) && (
+        <div className="absolute right-2.5 top-2 flex gap-1">
+          {TOGGLES.filter((l) => layers.includes(l)).map((l) => (
+            <Toggle
+              key={l}
+              size="sm"
+              pressed={!hidden[l]}
+              onPressedChange={(on) => setHidden((h) => ({ ...h, [l]: !on }))}
+              className="h-6 rounded-md bg-white/5 px-1.5 text-[11px] font-normal text-white/50 capitalize hover:bg-white/10 hover:text-white data-[state=on]:bg-white/15 data-[state=on]:text-white"
+              aria-label={`Show ${l}`}
+            >
+              {l}
+            </Toggle>
+          ))}
+        </div>
+      )}
+      {layers.length > 0 && (
+        <div className="pointer-events-none absolute left-3 top-2.5 font-mono text-[10px] text-white/40">Mesh layers · {layers.join(" · ")}</div>
+      )}
+    </div>
   )
 }
