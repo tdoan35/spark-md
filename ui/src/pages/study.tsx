@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 import { useReports, useStudy, useFindings } from "@/api/hooks"
 import { api } from "@/api/client"
+import { qk } from "@/api/keys"
 import { useApp } from "@/lib/app-context"
 import type { StudyDetail, Findings } from "@/api/types"
 import { mm, mmNum, hu, signed, days, dayLabel, STATUS_LABEL, lungRadsClass } from "@/lib/format"
@@ -146,6 +148,7 @@ function Inspector({ uid, tab, setTab, findings, selected, setSelected }: { uid:
 function Assessment({ findings, selected, setSelected }: { findings: Findings | undefined; selected: string | null; setSelected: (id: string) => void }) {
   const a = findings?.assessment
   const [openRules, setOpenRules] = useState(false)
+  const { data: study } = useStudy(findings?.study_uid ?? null)
   if (!findings) return <div className="flex items-center gap-2 text-xs text-muted-foreground"><Loader2 className="size-3 animate-spin" /> Waiting for findings…</div>
   return (
     <div className="space-y-3">
@@ -180,7 +183,7 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
         </div>
         <div className="space-y-1.5">
           {findings.nodules.map((n, i) => (
-            <NoduleBlock key={n.nodule_id} n={n} idx={i} selected={selected === n.nodule_id} onSelect={() => setSelected(n.nodule_id)} />
+            <NoduleBlock key={n.nodule_id} uid={findings.study_uid} n={n} idx={i} drafting={study?.status === "analyzed"} selected={selected === n.nodule_id} onSelect={() => setSelected(n.nodule_id)} />
           ))}
           {!findings.nodules.length && <div className="text-xs text-muted-foreground">No nodules detected.</div>}
         </div>
@@ -213,7 +216,14 @@ function Assessment({ findings, selected, setSelected }: { findings: Findings | 
   )
 }
 
-function NoduleBlock({ n, idx, selected, onSelect }: { n: import("@/api/types").Nodule; idx: number; selected: boolean; onSelect: () => void }) {
+function NoduleBlock({ uid, n, idx, drafting, selected, onSelect }: { uid: string; n: import("@/api/types").Nodule; idx: number; drafting: boolean; selected: boolean; onSelect: () => void }) {
+  const qc = useQueryClient()
+  // The worker emits study_updated only after the last confirm (06), so refetch after each one.
+  const refetch = () => {
+    void qc.invalidateQueries({ queryKey: qk.findings(uid) })
+    void qc.invalidateQueries({ queryKey: qk.study(uid) })
+    void qc.invalidateQueries({ queryKey: qk.worklist })
+  }
   const [long, setLong] = useState(n.proposal?.long_mm != null ? String(n.proposal.long_mm) : n.long_mm != null ? String(n.long_mm) : "")
   const [short, setShort] = useState(n.proposal?.short_mm != null ? String(n.proposal.short_mm) : n.short_mm != null ? String(n.short_mm) : "")
   const [busy, setBusy] = useState(false)
@@ -229,6 +239,7 @@ function NoduleBlock({ n, idx, selected, onSelect }: { n: import("@/api/types").
     setErr(null)
     try {
       await api.confirm(n.nodule_id, L, S, approver())
+      refetch()
       toast.success(`Confirmed ${n.lobe ?? "nodule"}`, { description: `${L.toFixed(1)} × ${S.toFixed(1)} mm · mean computed by the worker` })
     } catch (e) {
       const ae = e as { status?: number; message?: string }
@@ -299,7 +310,7 @@ function NoduleBlock({ n, idx, selected, onSelect }: { n: import("@/api/types").
                 className="rounded px-1 text-muted-foreground hover:text-foreground"
                 onClick={(e) => {
                   e.stopPropagation()
-                  void api.confirm(n.nodule_id, Number(n.long_mm), Number(n.short_mm), approver()).catch((er) => toast.error(String((er as Error).message)))
+                  void api.confirm(n.nodule_id, Number(n.long_mm), Number(n.short_mm), approver()).then(refetch, (er) => toast.error(String((er as Error).message)))
                 }}
                 title={`Confirmed by ${n.confirmation.by ?? "—"} · re-confirm to recompute`}
               >
@@ -309,7 +320,7 @@ function NoduleBlock({ n, idx, selected, onSelect }: { n: import("@/api/types").
           )}
           {n.confirmation.confirmed && (
             <div className="mt-1 flex items-center gap-1 text-[10px] text-run">
-              <Activity className="size-3" /> Confirmed by {n.confirmation.by}; drafting reports
+              <Activity className="size-3" /> Confirmed by {n.confirmation.by}{drafting && "; drafting reports"}
             </div>
           )}
         </div>
