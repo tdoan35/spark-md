@@ -64,3 +64,7 @@ Captures: `/tmp/sm-mock/*.png`, `/tmp/sm-worker/*.png` (not committed).
 - Voice (09): the mic button is a placeholder; `/api/asr` + `/api/tts` client calls are ready.
 - Chat rail resize maths uses a fixed 380 px inspector offset; re-check at ≤1550 px where the
   inspector is 352 px.
+
+Captures archived in `docs/benchmarks/2026-10-25-ui-shots/` (worklist, study 3D, slices, compare,
+chat, confirmed, T1 prior strip, report sheet, inbox, inspector collapsed) — mock + fake-imaging
+worker runs on the Mac, Oct 25.
