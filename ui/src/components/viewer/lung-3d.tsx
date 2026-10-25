@@ -4,6 +4,8 @@ import { CameraControls, useGLTF } from "@react-three/drei"
 import * as THREE from "three"
 import type { Findings, ViewerCommand } from "@/api/types"
 import { Toggle } from "@/components/ui/toggle"
+import { cn } from "@/lib/utils"
+import { Rotate3d } from "lucide-react"
 
 /** RAS mm → three/glTF: x = patient Left (−R), y = Superior, z = Anterior. Right-handed, mm, not recentred. */
 /** Worker assets are paths; a relative URL resolves against the current page's origin and hash route. */
@@ -44,6 +46,8 @@ const LAYER_STYLE: Record<Layer, { color: string; alpha: number }> = {
   skeleton: { color: "#efe4cf", alpha: 0.9 },
 }
 const LUNG_ALPHA = 0.5
+const TOGGLE_CLASS =
+  "h-6 rounded-md bg-white/5 px-1.5 text-[11px] font-normal text-white/50 hover:bg-white/10 hover:text-white data-[state=on]:bg-white/15 data-[state=on]:text-white"
 /** Skeleton alpha multiplier while a nodule is focused, so the ribs don't sit between camera and nodule. */
 const SKELETON_FOCUSED = 0.25
 
@@ -166,7 +170,7 @@ function Nodules({
 }
 
 function Controls({
-  findings, selected, command, ready, nodesRef, paused, focusRef, onHomed,
+  findings, selected, command, ready, nodesRef, paused, focusRef, onHomed, orbit,
 }: {
   findings: Findings
   selected: string | null
@@ -176,6 +180,7 @@ function Controls({
   paused: boolean
   focusRef: { current: boolean }
   onHomed: (uid: string) => void
+  orbit: boolean
 }) {
   const ccObj = useRef<ComponentRef<typeof CameraControls> | null>(null)
   const shared = useRef({ center: new THREE.Vector3(), radius: 140 })
@@ -187,30 +192,68 @@ function Controls({
   const scene = useThree((s) => s.scene)
   const invalidate = useThree((s) => s.invalidate)
   const setFrameloop = useThree((s) => s.setFrameloop)
-  const motion = useRef({ active: false, dragging: false, paused })
+  const get = useThree((s) => s.get)
+  // `active` = a tween or drag; `auto` = the idle auto-rotate. Either keeps the loop running.
+  const motion = useRef({ active: false, dragging: false, paused, auto: false, orbit, lastInteract: 0 })
   motion.current.paused = paused
+  motion.current.orbit = orbit
+  const syncLoop = () => {
+    const m = motion.current
+    const next = m.paused ? "never" : m.active || m.auto ? "always" : "demand"
+    if (get().frameloop !== next) setFrameloop(next)
+    invalidate()
+  }
   const startMotion = () => {
     motion.current.active = true
-    if (!motion.current.paused) setFrameloop("always")
-    invalidate()
+    syncLoop()
   }
   const restMotion = () => {
     if (motion.current.dragging) return
     motion.current.active = false
-    setFrameloop(motion.current.paused ? "never" : "demand")
-    invalidate()
+    syncLoop()
   }
+
+  // 08 auto-rotate: 0.18 rad/s about S, resumes 6 s after the last drag, stays put while a nodule
+  // is focused (until reset_view), off with the Orbit toggle or while the viewer is paused.
+  const resumeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
+  const canAuto = () => {
+    const m = motion.current
+    return m.orbit && !m.paused && !m.dragging && !focusRef.current
+  }
+  const stopAuto = () => {
+    clearTimeout(resumeTimer.current)
+    if (!motion.current.auto) return
+    motion.current.auto = false
+    syncLoop()
+  }
+  const scheduleAuto = () => {
+    clearTimeout(resumeTimer.current)
+    const wait = Math.max(0, motion.current.lastInteract + 6000 - performance.now())
+    resumeTimer.current = setTimeout(() => {
+      if (!canAuto() || motion.current.auto) return
+      motion.current.auto = true
+      syncLoop()
+    }, wait)
+  }
+  useEffect(() => () => clearTimeout(resumeTimer.current), [])
   useEffect(() => {
-    setFrameloop(paused ? "never" : motion.current.active ? "always" : "demand")
-    if (!paused) invalidate()
-  }, [paused, setFrameloop, invalidate])
+    if (orbit && !paused) scheduleAuto()
+    else stopAuto()
+    if (!paused) syncLoop()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orbit, paused])
+  useFrame((_, delta) => {
+    if (!motion.current.auto) return
+    if (!canAuto()) return stopAuto()
+    ccObj.current?.rotate(0.18 * Math.min(delta, 0.1), 0, false)
+  })
   // ANGLE translation can saturate a CPU core at 60 draws/s on this box. Keep controls
   // updating each frame, but cap expensive active WebGL drawing at 30 Hz.
   const lastDraw = useRef(0)
   useFrame(({ gl, scene: world, camera }) => {
     if (motion.current.paused) return
     const now = performance.now()
-    if (motion.current.active && now - lastDraw.current < 1000 / 30 - 1) return
+    if ((motion.current.active || motion.current.auto) && now - lastDraw.current < 1000 / 30 - 1) return
     lastDraw.current = now
     gl.render(world, camera)
   }, 1)
@@ -227,14 +270,26 @@ function Controls({
     shared.current.radius = Math.min(400, Math.max(100, sphere.radius || 140))
   }, [scene, findings.study_uid, ready, invalidate])
 
+  /** Auto-rotate accumulates azimuth: unwind to within π of the target so a tween goes the short way. */
+  const nearAzimuth = (cc2: ComponentRef<typeof CameraControls>, target: number) => {
+    cc2.normalizeRotations()
+    const d = cc2.azimuthAngle - target
+    if (d > Math.PI) cc2.rotate(-2 * Math.PI, 0, false)
+    else if (d < -Math.PI) cc2.rotate(2 * Math.PI, 0, false)
+  }
+
   /** Anterior home view; `animate` false snaps (first load) so the canvas never shows a pre-home frame. */
   const home = (cc2: ComponentRef<typeof CameraControls>, animate: boolean) => {
     const fov = (35 * Math.PI) / 180
     const d = (shared.current.radius / Math.sin(fov / 2)) * 0.82
     const c = shared.current.center
     cc2.smoothTime = 0.18
+    nearAzimuth(cc2, 0)
     if (animate) startMotion()
-    void cc2.setLookAt(c.x, c.y, c.z + d, c.x, c.y, c.z, animate).then(animate ? restMotion : undefined)
+    void cc2.setLookAt(c.x, c.y, c.z + d, c.x, c.y, c.z, animate).then(() => {
+      if (animate) restMotion()
+      if (motion.current.orbit) scheduleAuto()
+    })
     invalidate()
   }
 
@@ -248,6 +303,8 @@ function Controls({
     const dist = THREE.MathUtils.clamp(shared.current.radius * 1.6, 160, 400)
     const pos = p.clone().addScaledVector(dir, dist)
     cc2.smoothTime = 0.28
+    stopAuto()
+    nearAzimuth(cc2, Math.atan2(dir.x, dir.z))
     startMotion()
     void cc2.setLookAt(pos.x, pos.y, pos.z, p.x, p.y, p.z, true).then(restMotion)
     invalidate()
@@ -261,8 +318,10 @@ function Controls({
       const n = findings.nodules.find((x) => x.nodule_id === id)
       if (n?.center_mm && id) flyTo(nodesRef.current.get(id) ?? rasToThree(n.center_mm))
     } else if (command?.command === "reset_view") {
-      home(cc2, true)
       focusRef.current = false
+      motion.current.lastInteract = 0
+      stopAuto()
+      home(cc2, true)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [command])
@@ -284,10 +343,14 @@ function Controls({
       maxDistance={900}
       onStart={() => {
         motion.current.dragging = true
+        motion.current.lastInteract = performance.now()
+        stopAuto()
         startMotion()
       }}
       onEnd={() => {
         motion.current.dragging = false
+        motion.current.lastInteract = performance.now()
+        if (motion.current.orbit) scheduleAuto()
         if (ccObj.current?.active) startMotion()
         else restMotion()
       }}
@@ -323,6 +386,7 @@ export default function Lung3D({
   const focusRef = useRef(false)
   const [layers, setLayers] = useState<Layer[]>([])
   const [hidden, setHidden] = useState<Record<ToggleLayer, boolean>>({ vessels: false, skeleton: false })
+  const [orbit, setOrbit] = useState(true)
   // The canvas stays transparent until the camera has snapped home for this study, then fades in.
   const [shown, setShown] = useState<string | null>(null)
   if (!findings || !lung || !nod)
@@ -340,25 +404,26 @@ export default function Lung3D({
           <directionalLight position={[-300, -200, -400]} intensity={0.5} />
           <Lung url={lung} onReady={bumpReady} onLayers={setLayers} hidden={hidden} focusRef={focusRef} />
           <Nodules url={nod} selected={selected} onSelect={onSelect} onReady={bumpReady} onNodes={handleNodes} nodules={findings.nodules} />
-          <Controls findings={findings} selected={selected} command={command} ready={ready} nodesRef={nodesRef} paused={!!paused} focusRef={focusRef} onHomed={setShown} />
+          <Controls findings={findings} selected={selected} command={command} ready={ready} nodesRef={nodesRef} paused={!!paused} focusRef={focusRef} onHomed={setShown} orbit={orbit} />
         </Canvas>
       </div>
-      {TOGGLES.some((l) => layers.includes(l)) && (
-        <div className="absolute right-2.5 top-2 flex gap-1">
-          {TOGGLES.filter((l) => layers.includes(l)).map((l) => (
-            <Toggle
-              key={l}
-              size="sm"
-              pressed={!hidden[l]}
-              onPressedChange={(on) => setHidden((h) => ({ ...h, [l]: !on }))}
-              className="h-6 rounded-md bg-white/5 px-1.5 text-[11px] font-normal text-white/50 capitalize hover:bg-white/10 hover:text-white data-[state=on]:bg-white/15 data-[state=on]:text-white"
-              aria-label={`Show ${l}`}
-            >
-              {l}
-            </Toggle>
-          ))}
-        </div>
-      )}
+      <div className="absolute right-2.5 top-2 flex gap-1">
+        <Toggle size="sm" pressed={orbit} onPressedChange={setOrbit} className={TOGGLE_CLASS} aria-label="Auto-orbit">
+          <Rotate3d className="size-3.5" /> Orbit
+        </Toggle>
+        {TOGGLES.filter((l) => layers.includes(l)).map((l) => (
+          <Toggle
+            key={l}
+            size="sm"
+            pressed={!hidden[l]}
+            onPressedChange={(on) => setHidden((h) => ({ ...h, [l]: !on }))}
+            className={cn(TOGGLE_CLASS, "capitalize")}
+            aria-label={`Show ${l}`}
+          >
+            {l}
+          </Toggle>
+        ))}
+      </div>
       {layers.length > 0 && (
         <div className="pointer-events-none absolute left-3 top-2.5 font-mono text-[10px] text-white/40">Mesh layers · {layers.join(" · ")}</div>
       )}
