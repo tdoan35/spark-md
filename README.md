@@ -4,6 +4,22 @@
 
 Spark MD is an always-on, fully air-gapped lung cancer screening assistant for a radiology team, running on a single Dell Pro Max with GB10 (aarch64, CUDA 13). It watches an intake folder that acts as a mock PACS, organizes incoming chest CTs into a per-patient registry, detects and tracks lung nodules across yearly screens, computes Lung-RADS v2022 categories in deterministic tested code, and drafts a radiology-style report plus a primary-care letter for a radiologist to confirm and approve. Patient data never leaves the box: no remote LLM or API calls, no CDNs, no telemetry, no browser speech services. Built in one day (Oct 25, 2026) for the Dell x NVIDIA AI Hackathon, San Francisco.
 
+## Features
+
+**Worklist** — patients sorted by highest-priority scan, with Lung-RADS badge, review state and report status. Hero patient 134503 shows an approved Lung-RADS 4B.
+
+![Worklist](assets/worklist.png)
+
+**3D anatomy** — lungs, airways, vessels and skeleton meshes with the nodule focused; the assessment panel shows the human-confirmed diameter, growth, VDT and the Lung-RADS category, alongside the precomputed Sybil research risk card and the voice/text "Ask the scan" agent.
+
+![3D anatomy viewer](assets/anatomy3d.png)
+
+**Longitudinal compare** — prior (T0) and current (T1) axial key slices side by side with confirmed measurements (6.5 mm → 10.4 mm over 357 days).
+
+![Longitudinal comparison](assets/compare.png)
+
+All numbers on screen are from the research demo data; "Research demo, not for clinical use" is shown in the footer.
+
 ## Human-in-the-loop flow
 
 Principle: deterministic code does the medical math; the LLM orchestrates and writes. The agent never proposes or edits a diameter and never assigns or changes a Lung-RADS category. Every number in agent-written text comes from a tool result.
@@ -27,22 +43,6 @@ Principle: deterministic code does the medical math; the LLM orchestrates and wr
 | UI | Electron + React + three.js served by the worker: worklist, study viewer (2D slices, 3D), agent log, research risk card, Approve, mock EHR inbox; optional local voice (whisper.cpp ASR, Qwen3-TTS) with chips/mute fallback | worker serves `ui/dist` on `:8100` |
 
 The sandbox can reach only the worker's agent routes — not the registry, cache, outbox or the approve route.
-
-## Screenshots
-
-**Worklist** — patients sorted by highest-priority scan, with Lung-RADS badge, review state and report status. Hero patient 134503 shows an approved Lung-RADS 4B.
-
-![Worklist](assets/worklist.png)
-
-**3D anatomy** — lungs, airways, vessels and skeleton meshes with the nodule focused; the assessment panel shows the human-confirmed diameter, growth, VDT and the Lung-RADS category, alongside the precomputed Sybil research risk card and the voice/text "Ask the scan" agent.
-
-![3D anatomy viewer](assets/anatomy3d.png)
-
-**Longitudinal compare** — prior (T0) and current (T1) axial key slices side by side with confirmed measurements (6.5 mm → 10.4 mm over 357 days).
-
-![Longitudinal comparison](assets/compare.png)
-
-All numbers on screen are from the research demo data; "Research demo, not for clinical use" is shown in the footer.
 
 ## Running it
 
