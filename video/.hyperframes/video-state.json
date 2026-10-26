@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "historyId": "c5356036-9f65-4fac-b56c-f10355fba4cd",
+  "currentRevision": "66a4f629-d457-4459-a912-7ece166c3093",
+  "pendingChanges": false,
+  "files": {
+    "AGENTS.md": {
+      "hash": "1b36171117cb7c18f4100a0db6a3782ff2e096115995733200445cc2e80a4060",
+      "content": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/1b/1b36171117cb7c18f4100a0db6a3782ff2e096115995733200445cc2e80a4060"
+    },
+    "CLAUDE.md": {
+      "hash": "1b36171117cb7c18f4100a0db6a3782ff2e096115995733200445cc2e80a4060",
+      "content": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/1b/1b36171117cb7c18f4100a0db6a3782ff2e096115995733200445cc2e80a4060"
+    },
+    "hyperframes.json": {
+      "hash": "53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50",
+      "content": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/53/53dbce1e19aa713cbb12ee0bc4d206143b45ab15e6ffbfcaa8f69572d4d24d50"
+    },
+    "index.html": {
+      "hash": "8c6bd137fa59af09d82809a2ca414f7ee35cc7d398b586bbf5f26427eabdce9a",
+      "content": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/8c/8c6bd137fa59af09d82809a2ca414f7ee35cc7d398b586bbf5f26427eabdce9a"
+    },
+    "meta.json": {
+      "hash": "d54f72b3e72997529cd78b3d6a865b75c4337fd43dedfa3013cec477ff2c3310",
+      "content": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/d5/d54f72b3e72997529cd78b3d6a865b75c4337fd43dedfa3013cec477ff2c3310"
+    },
+    "package-lock.json": {
+      "hash": "519920a74eddae8092b2f9cdcdd2eb7092ca49530b509dffb637ab434985212d",
+      "content": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/51/519920a74eddae8092b2f9cdcdd2eb7092ca49530b509dffb637ab434985212d"
+    },
+    "package.json": {
+      "hash": "c6b90b8f6ffc58795136359fc235d320f3925ef23e0b5743c9f54c8a4e945fda",
+      "content": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/c6/c6b90b8f6ffc58795136359fc235d320f3925ef23e0b5743c9f54c8a4e945fda"
+    }
+  },
+  "revisions": {
+    "66a4f629-d457-4459-a912-7ece166c3093": {
+      "actor": {
+        "kind": "outside",
+        "name": "Outside"
+      },
+      "label": "Changed outside the app",
+      "startedAt": 1792973484085,
+      "endedAt": 1792973484085,
+      "files": {
+        "index.html": {
+          "before": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/e3/e3a044b70410bd2c2dbfe02b7a60ee7bf92355e5998c3d5bc33b141f677cb955",
+          "after": "/home/dell/.cache/hyperframes/history/c5356036-9f65-4fac-b56c-f10355fba4cd/blobs/8c/8c6bd137fa59af09d82809a2ca414f7ee35cc7d398b586bbf5f26427eabdce9a"
+        }
+      }
+    }
+  },
+  "checks": {
+    "latest": {
+      "revision": null,
+      "id": "efdc5e0d-b994-4ac1-ac36-562514f8ca51"
+    },
+    "revisions": {},
+    "unversioned": [
+      {
+        "id": "efdc5e0d-b994-4ac1-ac36-562514f8ca51",
+        "scope": "project",
+        "report": "/home/dell/spark-md-app/video/.hyperframes/artifacts/checks/efdc5e0d-b994-4ac1-ac36-562514f8ca51.json",
+        "metadata": {
+          "ok": true,
+          "browserSkipped": false,
+          "options": {
+            "samples": 9,
+            "atTransitions": false,
+            "maxIssues": 80,
+            "collapseStatic": true,
+            "tolerance": 2,
+            "timeout": 3000,
+            "contrast": true,
+            "strict": false,
+            "snapshots": false,
+            "browserGpuMode": "auto"
+          }
+        },
+        "createdAt": 1792973287637,
+        "contentHash": "f68a7d18068f7055fc03b3578f1f23b566100173cc4ef2927ed6c67f2715d491",
+        "revision": null,
+        "inputFingerprint": "57c432cfda5e71bf7c76d0f37485bd6d6cd8884ebec4d857cbac29b0523427a4",
+        "inputScope": "local-project-files",
+        "attribution": "unversioned"
+      }
+    ]
+  },
+  "snapshots": {
+    "latest": null,
+    "revisions": {},
+    "unversioned": []
+  },
+  "renders": {
+    "latest": {
+      "id": "335332fb-ef9a-4a98-8809-1f7be86314e6",
+      "completedAt": 1792973450126,
+      "output": "/home/dell/spark-md-app/video/renders/video_2026-10-25_17-10-43.mp4",
+      "status": "completed",
+      "revision": null
+    },
+    "retainedRevisions": []
+  },
+  "pendingArtifactCleanup": []
+}
