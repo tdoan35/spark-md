@@ -170,6 +170,11 @@
       object-position: top center;
     }
 
+    .frame img.shot-right {
+      object-fit: cover;
+      object-position: right center;
+    }
+
     .caption {
       margin: 14px 8px 4px;
       font-size: 22px;
@@ -600,6 +605,33 @@
         </div>
       </section>
 
+      <section class="slide">
+        <template class="speaker-notes" data-edit="notes-6">Scroll the slices. The box proposes a diameter, the radiologist confirms it. Growth and Lung-RADS only appear after that click.</template>
+        <div class="pad">
+          <div class="top">
+            <div class="brand">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#134074"/><circle cx="32" cy="32" r="16" fill="none" stroke="#eef4ed" stroke-width="3"/><path fill="#eef4ed" transform="translate(14 14) scale(2)" d="M10.2 1.2 4.2 9.2h3.2L6.2 16.8 14 8.2H10.6L13.8 1.2H10.2Z"/></svg>
+              <span class="brand-name" data-edit="brand-6">Spark MD</span>
+            </div>
+            <p class="kicker" data-edit="kicker-6">04 · Radiologist in control</p>
+          </div>
+          <div class="split">
+            <div>
+              <h1 data-edit="line-6">The radiologist confirms every measurement.</h1>
+              <ul class="points">
+                <li data-edit="point-6-1">Nodules are marked on the CT slices with a proposed diameter.</li>
+                <li data-edit="point-6-2">The radiologist confirms or edits each size.</li>
+                <li data-edit="point-6-3">Growth and Lung-RADS are computed by code only after confirmation.</li>
+              </ul>
+            </div>
+            <figure class="frame">
+              <img class="shot-right" src="assets/ct-slices.png" alt="CT slices viewer with proposed nodule diameters awaiting confirmation." />
+              <figcaption class="caption" data-edit="cap-6">Study viewer · CT slices. Sped up 2×.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
       <section class="slide slide-4">
         <template class="speaker-notes" data-edit="notes-3">The radiologist still decides. The box does the first look and the comparison. Press play for the video, or switch to the live app. Do not talk over it.</template>
         <div class="pad">
@@ -608,7 +640,7 @@
               <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#134074"/><circle cx="32" cy="32" r="16" fill="none" stroke="#eef4ed" stroke-width="3"/><path fill="#eef4ed" transform="translate(14 14) scale(2)" d="M10.2 1.2 4.2 9.2h3.2L6.2 16.8 14 8.2H10.6L13.8 1.2H10.2Z"/></svg>
               <span class="brand-name" data-edit="brand-3">Spark MD</span>
             </div>
-            <p class="kicker" data-edit="kicker-4">04 · Why it matters</p>
+            <p class="kicker" data-edit="kicker-4">05 · Why it matters</p>
           </div>
           <div class="split">
             <div>
@@ -650,8 +682,9 @@
     <li><button type="button" data-slide="0" aria-label="Title"></button></li>
     <li><button type="button" data-slide="1" aria-label="The challenge"></button></li>
     <li><button type="button" data-slide="2" aria-label="Spark MD"></button></li>
-    <li><button type="button" data-slide="3" aria-label="Why it matters"></button></li>
-    <li><button type="button" data-slide="4" aria-label="Q&amp;A"></button></li>
+    <li><button type="button" data-slide="3" aria-label="Radiologist in control"></button></li>
+    <li><button type="button" data-slide="4" aria-label="Why it matters"></button></li>
+    <li><button type="button" data-slide="5" aria-label="Q&amp;A"></button></li>
   </ol>
   <div class="editor" id="editor" hidden>
     <p id="save-status">Click any text. N edits the speaker notes. Save writes this HTML file.</p>
