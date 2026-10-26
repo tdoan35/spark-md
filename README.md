@@ -28,6 +28,22 @@ Principle: deterministic code does the medical math; the LLM orchestrates and wr
 
 The sandbox can reach only the worker's agent routes — not the registry, cache, outbox or the approve route.
 
+## Screenshots
+
+**Worklist** — patients sorted by highest-priority scan, with Lung-RADS badge, review state and report status. Hero patient 134503 shows an approved Lung-RADS 4B.
+
+![Worklist](assets/worklist.png)
+
+**3D anatomy** — lungs, airways, vessels and skeleton meshes with the nodule focused; the assessment panel shows the human-confirmed diameter, growth, VDT and the Lung-RADS category, alongside the precomputed Sybil research risk card and the voice/text "Ask the scan" agent.
+
+![3D anatomy viewer](assets/anatomy3d.png)
+
+**Longitudinal compare** — prior (T0) and current (T1) axial key slices side by side with confirmed measurements (6.5 mm → 10.4 mm over 357 days).
+
+![Longitudinal comparison](assets/compare.png)
+
+All numbers on screen are from the research demo data; "Research demo, not for clinical use" is shown in the footer.
+
 ## Running it
 
 ```
