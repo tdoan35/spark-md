@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spark MD — pitch</title>
+  <style>
+    :root {
+      --paper: #eef4ed;
+      --mist: #8da9c4;
+      --blue: #134074;
+      --stone: #13315c;
+      --ink: #0b2545;
+      --line: #d5ddd4;
+      --analyzing: #86b4e9;
+      --watch: #e9cc86;
+      --needs: #e9a786;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      background: var(--ink);
+      color: var(--ink);
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    button, video { font: inherit; }
+
+    .viewport {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .stage {
+      width: 1920px;
+      height: 1080px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform-origin: center center;
+      background: var(--paper);
+      overflow: hidden;
+    }
+
+    .track {
+      display: flex;
+      height: 100%;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .slide {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      flex: none;
+      background: var(--paper);
+      color: var(--ink);
+      overflow: hidden;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .track { transition: none; }
+    }
+
+    .pad {
+      height: 100%;
+      padding: 72px 88px 96px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 36px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      font-size: 28px;
+    }
+
+    .brand svg { width: 44px; height: 44px; display: block; }
+
+    .kicker {
+      margin: 0;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 18px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue);
+    }
+
+    h1 {
+      margin: 0 0 28px;
+      font-size: 64px;
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      font-weight: 650;
+      max-width: 16ch;
+    }
+
+    .split {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 56px;
+      align-items: center;
+      min-height: 0;
+    }
+
+    ul.points {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    ul.points li {
+      display: grid;
+      grid-template-columns: 18px 1fr;
+      gap: 18px;
+      align-items: start;
+      font-size: 32px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    ul.points li::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      margin-top: 12px;
+      border-radius: 50%;
+      background: var(--blue);
+    }
+
+    .frame {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 18px;
+      box-shadow: 0 24px 60px rgba(11, 37, 69, 0.08);
+      min-height: 0;
+    }
+
+    .frame img,
+    .frame video {
+      display: block;
+      width: 100%;
+      height: 640px;
+      object-fit: contain;
+      background: #f7f8f6;
+      border-radius: 16px;
+    }
+
+    .frame img.shot-wide {
+      object-fit: cover;
+      object-position: top center;
+    }
+
+    .caption {
+      margin: 14px 8px 4px;
+      font-size: 22px;
+      line-height: 1.35;
+      color: var(--stone);
+    }
+
+    .scan-board {
+      height: 700px;
+      margin: 0;
+      display: grid;
+      grid-template-columns: 1.4fr 0.7fr;
+      grid-template-rows: 1fr auto;
+      gap: 14px 22px;
+      min-height: 0;
+    }
+
+    .scan-main,
+    .thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      background: #111;
+      display: block;
+    }
+
+    .scan-main {
+      border-radius: 28px;
+      min-height: 0;
+    }
+
+    .thumbs {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .thumb {
+      flex: 1;
+      min-height: 0;
+      border-radius: 18px;
+    }
+
+    .scan-board .caption {
+      grid-column: 1 / -1;
+      margin: 0;
+    }
+
+    .slide-3 .pad { padding-bottom: 72px; }
+    .slide-3 h1 { max-width: none; font-size: 56px; margin-bottom: 20px; }
+
+    .demo-row {
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 460px 1fr;
+      gap: 40px;
+    }
+
+    ol.chapters {
+      margin: 8px 0 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    ol.chapters li {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      gap: 16px;
+      align-items: start;
+      font-size: 28px;
+      line-height: 1.3;
+      letter-spacing: -0.02em;
+    }
+
+    ol.chapters span {
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      font-size: 22px;
+      letter-spacing: 0.06em;
+      color: var(--blue);
+      padding-top: 4px;
+    }
+
+    .player {
+      position: relative;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .player .frame { flex: 1; display: flex; flex-direction: column; }
+    .player .frame img,
+    .player .frame video { height: 100%; flex: 1; }
+
+    .player video {
+      position: absolute;
+      inset: 18px 18px 72px;
+      width: calc(100% - 36px);
+      height: calc(100% - 90px);
+      border-radius: 16px;
+      background: #111;
+    }
+
+    .player video[hidden] { display: none; }
+
+    .play {
+      position: absolute;
+      left: 50%;
+      top: 42%;
+      transform: translate(-50%, -50%);
+      border: 0;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 18px 28px;
+      font-size: 28px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      cursor: pointer;
+    }
+
+    .play[hidden] { display: none; }
+
+    .slide-4 h1 { max-width: 18ch; }
+
+    .flow {
+      margin-top: auto;
+      display: grid;
+      grid-template-columns: 1fr 48px 1fr 48px 1fr;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .step {
+      border-radius: 24px;
+      min-height: 220px;
+      padding: 32px;
+      display: flex;
+      align-items: flex-end;
+      font-size: 36px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      font-weight: 650;
+    }
+
+    .step.current { background: var(--analyzing); }
+    .step.prior { background: var(--watch); }
+    .step.review { background: var(--needs); }
+
+    .arrow {
+      display: grid;
+      place-items: center;
+      color: var(--blue);
+      font-size: 42px;
+    }
+
+    .title-slide .pad {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .title-slide .brand {
+      flex-direction: column;
+      gap: 28px;
+      font-size: 92px;
+    }
+
+    .title-slide .brand svg {
+      width: 128px;
+      height: 128px;
+    }
+
+    .title-slide h1 {
+      max-width: none;
+      margin: 8px 0 0;
+      font-size: 40px;
+      font-weight: 500;
+      color: var(--stone);
+      white-space: nowrap;
+    }
+
+    .slide-5 .pad {
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .slide-5 h1 {
+      max-width: none;
+      margin: 0;
+      font-size: 180px;
+      letter-spacing: -0.045em;
+    }
+
+    .takeaway {
+      margin: 0;
+      max-width: 28ch;
+      font-size: 36px;
+      line-height: 1.35;
+      letter-spacing: -0.02em;
+    }
+
+    .close-row {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 48px;
+      align-items: end;
+      min-height: 0;
+    }
+
+    .slide-5 .frame img { height: 460px; }
+
+    .legal {
+      margin-top: 28px;
+      font-size: 22px;
+      line-height: 1.4;
+      color: var(--stone);
+      max-width: 62ch;
+    }
+
+    .notes {
+      position: fixed;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+      z-index: 5;
+    }
+
+    .notes[hidden] { display: none; }
+
+    .notes p {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.4;
+      white-space: pre-wrap;
+    }
+
+    .hint {
+      position: fixed;
+      right: 20px;
+      bottom: 16px;
+      color: var(--mist);
+      font-size: 13px;
+      font-family: ui-monospace, "SF Mono", Menlo, monospace;
+      z-index: 4;
+    }
+
+    .dots {
+      position: fixed;
+      right: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 0;
+      padding: 14px 10px;
+      list-style: none;
+      border-radius: 999px;
+      background: rgba(11, 37, 69, 0.45);
+    }
+
+    .dots button {
+      display: block;
+      width: 12px;
+      height: 12px;
+      padding: 0;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(238, 244, 237, 0.45);
+      cursor: pointer;
+    }
+
+    .dots button[aria-current="true"] {
+      background: var(--paper);
+      box-shadow: 0 0 0 4px rgba(141, 169, 196, 0.85);
+    }
+
+    .editor {
+      position: fixed;
+      left: 50%;
+      top: 18px;
+      transform: translateX(-50%);
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      max-width: calc(100% - 48px);
+      padding: 10px 12px 10px 18px;
+      background: var(--paper);
+      color: var(--ink);
+      border-radius: 999px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+
+    .editor[hidden] { display: none; }
+
+    .editor p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.3;
+      color: var(--stone);
+    }
+
+    .editor button {
+      border: 0;
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: var(--blue);
+      color: var(--paper);
+      font-weight: 650;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .editor button.quiet {
+      background: transparent;
+      color: var(--blue);
+    }
+
+    body.editing [data-edit]:not(template) {
+      outline: 1px dashed transparent;
+      outline-offset: 4px;
+      border-radius: 8px;
+      cursor: text;
+    }
+
+    body.editing [data-edit]:not(template):hover,
+    body.editing [data-edit]:not(template):focus {
+      outline-color: var(--blue);
+      background: rgba(19, 64, 116, 0.06);
+    }
+
+    body.editing .title-slide h1 { white-space: normal; }
+
+    body.editing .notes p {
+      outline: 1px dashed var(--blue);
+      outline-offset: 6px;
+      cursor: text;
+    }
+  </style>
+</head>
+<body>
+  <div class="viewport">
+    <div class="stage" id="stage">
+      <div class="track" id="track">
+
+      <section class="slide title-slide active">
+        <template class="speaker-notes" data-edit="notes-0">Read the line, then go to the challenge.</template>
+        <div class="pad">
+          <div class="brand">
+            <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#134074"/><circle cx="32" cy="32" r="16" fill="none" stroke="#eef4ed" stroke-width="3"/><path fill="#eef4ed" transform="translate(14 14) scale(2)" d="M10.2 1.2 4.2 9.2h3.2L6.2 16.8 14 8.2H10.6L13.8 1.2H10.2Z"/></svg>
+            <span class="brand-name" data-edit="brand-0">Spark MD</span>
+          </div>
+          <h1 data-edit="line-0">Local AI CT scan assistant for radiologists</h1>
+        </div>
+      </section>
+
+      <section class="slide">
+        <template class="speaker-notes" data-edit="notes-1">The radiologist’s afternoon. No statistics.</template>
+        <div class="pad">
+          <div class="top">
+            <div class="brand">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#134074"/><circle cx="32" cy="32" r="16" fill="none" stroke="#eef4ed" stroke-width="3"/><path fill="#eef4ed" transform="translate(14 14) scale(2)" d="M10.2 1.2 4.2 9.2h3.2L6.2 16.8 14 8.2H10.6L13.8 1.2H10.2Z"/></svg>
+              <span class="brand-name" data-edit="brand-1">Spark MD</span>
+            </div>
+            <p class="kicker" data-edit="kicker-1">02 · The challenge</p>
+          </div>
+          <div class="split">
+            <div>
+              <h1 data-edit="line-1">A CT scan is hundreds of images, and hundreds more from prior scans.</h1>
+              <ul class="points">
+                <li data-edit="point-1-1">Time consuming for radiologists to review each CT.</li>
+                <li data-edit="point-1-2">Careful attention needed to compare scans over time.</li>
+                <li data-edit="point-1-3">CT scans contain sensitive patient data.</li>
+              </ul>
+            </div>
+            <figure class="scan-board">
+              <img class="scan-main" src="../docs/deck-assets/hero134503_T0_LLL_gray.png" alt="Axial chest CT slice." />
+              <div class="thumbs">
+                <img class="thumb" src="../docs/deck-assets/hero134503_T0_RUL_secondary_gray.png" alt="" />
+                <img class="thumb" src="../docs/deck-assets/hero134503_T1_LLL_gray.png" alt="" />
+                <img class="thumb" src="../docs/deck-assets/hero134503_T0_LLL_color.png" alt="" />
+              </div>
+              <figcaption class="caption">NLST via TCIA (CC BY 4.0).</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide">
+        <template class="speaker-notes" data-edit="notes-2">One sentence, then go to the product. “It watches for a new scan, and it runs on this box.”</template>
+        <div class="pad">
+          <div class="top">
+            <div class="brand">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#134074"/><circle cx="32" cy="32" r="16" fill="none" stroke="#eef4ed" stroke-width="3"/><path fill="#eef4ed" transform="translate(14 14) scale(2)" d="M10.2 1.2 4.2 9.2h3.2L6.2 16.8 14 8.2H10.6L13.8 1.2H10.2Z"/></svg>
+              <span class="brand-name" data-edit="brand-2">Spark MD</span>
+            </div>
+            <p class="kicker" data-edit="kicker-2">03 · Spark MD</p>
+          </div>
+          <div class="split">
+            <div>
+              <h1 data-edit="line-2">AI-assisted CT review, running locally.</h1>
+              <ul class="points">
+                <li data-edit="point-2-1">Spark MD flags abnormalities in CT scans (e.g. lung nodules) for a radiologist to review.</li>
+                <li data-edit="point-2-2">It compares CT scans over time and estimates probability for cancer.</li>
+                <li data-edit="point-2-3">Inference runs locally on a Dell Pro Max with GB10.</li>
+              </ul>
+            </div>
+            <figure class="frame">
+              <img class="shot-wide" src="assets/worklist.png" alt="Spark MD worklist." />
+              <figcaption class="caption" data-edit="cap-2">Worklist</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide-4">
+        <template class="speaker-notes" data-edit="notes-3">The radiologist still decides. The box does the first look and the comparison. Press play for the video, or switch to the live app. Do not talk over it.</template>
+        <div class="pad">
+          <div class="top">
+            <div class="brand">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="16" fill="#134074"/><circle cx="32" cy="32" r="16" fill="none" stroke="#eef4ed" stroke-width="3"/><path fill="#eef4ed" transform="translate(14 14) scale(2)" d="M10.2 1.2 4.2 9.2h3.2L6.2 16.8 14 8.2H10.6L13.8 1.2H10.2Z"/></svg>
+              <span class="brand-name" data-edit="brand-3">Spark MD</span>
+            </div>
+            <p class="kicker" data-edit="kicker-4">04 · Why it matters</p>
+          </div>
+          <div class="split">
+            <div>
+              <h1 data-edit="line-4">Help radiologists focus their review.</h1>
+              <ul class="points">
+                <li data-edit="point-4-1">Brings a potential area of concern into view.</li>
+                <li data-edit="point-4-2">Compares that area across scans, and shows the change over time.</li>
+                <li data-edit="point-4-3">Local inference means the model call stays on the Dell Pro Max with GB10, instead of sending the scan to a cloud model.</li>
+              </ul>
+            </div>
+            <div class="player">
+              <figure class="frame">
+                <img id="demo-poster" src="assets/compare.png" alt="Prior and current CT slices side by side." />
+                <video id="demo-video" hidden playsinline preload="metadata" poster="assets/compare.png">
+                  <source src="assets/demo.mp4" type="video/mp4" />
+                </video>
+                <button class="play" id="play-demo" type="button" hidden>Play demo</button>
+                <figcaption class="caption" data-edit="cap-3">Comparison view. Numbers in this preview are placeholders.</figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="slide slide-5">
+        <div class="pad">
+          <h1 data-edit="line-5">Q&amp;A</h1>
+        </div>
+      </section>
+
+      </div>
+    </div>
+  </div>
+
+  <aside class="notes" id="notes" hidden>
+    <p id="notes-text"></p>
+  </aside>
+  <ol class="dots" id="dots">
+    <li><button type="button" data-slide="0" aria-label="Title"></button></li>
+    <li><button type="button" data-slide="1" aria-label="The challenge"></button></li>
+    <li><button type="button" data-slide="2" aria-label="Spark MD"></button></li>
+    <li><button type="button" data-slide="3" aria-label="Why it matters"></button></li>
+    <li><button type="button" data-slide="4" aria-label="Q&amp;A"></button></li>
+  </ol>
+  <div class="editor" id="editor" hidden>
+    <p id="save-status">Click any text. N edits the speaker notes. Save writes this HTML file.</p>
+    <button type="button" id="save-deck">Save</button>
+    <button type="button" class="quiet" id="edit-done">Done</button>
+  </div>
+  <div class="hint">← → move · click a dot · N notes · E edit</div>
+
+  <script>
+    const slides = Array.from(document.querySelectorAll(".slide"));
+    const notes = document.getElementById("notes");
+    const notesText = document.getElementById("notes-text");
+    const stage = document.getElementById("stage");
+    const track = document.getElementById("track");
+    const video = document.getElementById("demo-video");
+    const poster = document.getElementById("demo-poster");
+    const play = document.getElementById("play-demo");
+    const dots = Array.from(document.querySelectorAll("#dots button"));
+    const editor = document.getElementById("editor");
+    const saveStatus = document.getElementById("save-status");
+    const DRAFT_KEY = "spark-md-pitch-draft-v1";
+    const HANDLE_DB = "spark-md-pitch";
+    const HANDLE_KEY = "index-html";
+    let index = 0;
+    let placed = false;
+    let editing = false;
+    let dirty = false;
+    let restored = false;
+
+    function fit() {
+      const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      stage.style.transform = "translate(-50%, -50%) scale(" + scale + ")";
+    }
+
+    function show(next) {
+      index = (next + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+      dots.forEach((dot, i) => {
+        if (i === index) dot.setAttribute("aria-current", "true");
+        else dot.removeAttribute("aria-current");
+      });
+      notesText.textContent = speakerNotes(slides[index]);
+      if (!placed) track.style.transition = "none";
+      track.style.transform = "translateX(" + (-index * 1920) + "px)";
+      if (!placed) {
+        track.getBoundingClientRect();
+        track.style.transition = "";
+        placed = true;
+      }
+      if (index !== 3) video.pause();
+    }
+
+    video.addEventListener("loadeddata", () => {
+      poster.hidden = true;
+      video.hidden = false;
+      play.hidden = false;
+    });
+
+    play.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (video.paused) video.play();
+      else video.pause();
+    });
+
+    video.addEventListener("play", () => {
+      play.hidden = true;
+      video.controls = true;
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => show(Number(dot.dataset.slide)));
+    });
+
+    function readNode(el) {
+      return el.tagName === "TEMPLATE" ? el.content.textContent : el.textContent;
+    }
+
+    function writeNode(el, value) {
+      if (el.tagName === "TEMPLATE") el.innerHTML = escapeText(value);
+      else el.textContent = value;
+    }
+
+    function speakerNotes(slide) {
+      const template = slide.querySelector(".speaker-notes");
+      return template ? readNode(template) : "";
+    }
+
+    function fieldText(el) {
+      const text = readNode(el).replace(/\u00a0/g, " ");
+      if (el.classList.contains("speaker-notes")) return text.replace(/^\n+|\n+$/g, "");
+      return text.replace(/\s+/g, " ").trim();
+    }
+
+    function remember() {
+      const data = {};
+      document.querySelectorAll("[data-edit]").forEach((el) => {
+        data[el.dataset.edit] = fieldText(el);
+      });
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(data));
+    }
+
+    function restoreDraft() {
+      const raw = localStorage.getItem(DRAFT_KEY);
+      if (!raw) return false;
+      let data;
+      try { data = JSON.parse(raw); } catch { return false; }
+      let changed = false;
+      document.querySelectorAll("[data-edit]").forEach((el) => {
+        const next = data[el.dataset.edit];
+        if (typeof next !== "string" || fieldText(el) === next) return;
+        writeNode(el, next);
+        changed = true;
+      });
+      return changed;
+    }
+
+    function markDirty() {
+      dirty = true;
+      remember();
+      saveStatus.textContent = "Unsaved changes";
+    }
+
+    function setEditing(on) {
+      editing = on;
+      document.body.classList.toggle("editing", on);
+      editor.hidden = !on;
+      document.querySelectorAll("[data-edit]:not(template)").forEach((el) => {
+        if (on) el.setAttribute("contenteditable", "plaintext-only");
+        else el.removeAttribute("contenteditable");
+      });
+      notesText.contentEditable = on ? "plaintext-only" : "false";
+      if (!on) return;
+      if (restored || dirty) {
+        saveStatus.textContent = "Unsaved edits are in this browser. Save writes them into the HTML file.";
+      } else {
+        saveStatus.textContent = "Click any text. N edits the speaker notes. Save writes this HTML file.";
+      }
+    }
+
+    function escapeText(value) {
+      return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    function setInner(html, id, text) {
+      const attr = 'data-edit="' + id + '"';
+      const at = html.indexOf(attr);
+      if (at < 0) throw new Error("The file on disk is missing " + id + ". Reload this page and try again.");
+      const openEnd = html.indexOf(">", at);
+      const tagStart = html.lastIndexOf("<", at);
+      const tagName = html.slice(tagStart + 1, openEnd).trim().split(/\s+/)[0];
+      const closeAt = html.indexOf("</" + tagName + ">", openEnd);
+      if (closeAt < 0) throw new Error("Could not find the end of " + id + ".");
+      return html.slice(0, openEnd + 1) + escapeText(text) + html.slice(closeAt);
+    }
+
+    async function savedHtml() {
+      const res = await fetch("index.html", { cache: "no-store" });
+      if (!res.ok) throw new Error("This page was not loaded from a local server, so the original file could not be read.");
+      let html = await res.text();
+      document.querySelectorAll("[data-edit]").forEach((el) => {
+        html = setInner(html, el.dataset.edit, fieldText(el));
+      });
+      return html;
+    }
+
+    function openHandleDb() {
+      return new Promise((resolve, reject) => {
+        const req = indexedDB.open(HANDLE_DB, 1);
+        req.onupgradeneeded = () => req.result.createObjectStore("files");
+        req.onsuccess = () => resolve(req.result);
+        req.onerror = () => reject(req.error);
+      });
+    }
+
+    async function storedHandle() {
+      try {
+        const db = await openHandleDb();
+        return await new Promise((resolve, reject) => {
+          const req = db.transaction("files", "readonly").objectStore("files").get(HANDLE_KEY);
+          req.onsuccess = () => resolve(req.result || null);
+          req.onerror = () => reject(req.error);
+        });
+      } catch {
+        return null;
+      }
+    }
+
+    async function storeHandle(handle) {
+      const db = await openHandleDb();
+      await new Promise((resolve, reject) => {
+        const tx = db.transaction("files", "readwrite");
+        tx.objectStore("files").put(handle, HANDLE_KEY);
+        tx.oncomplete = resolve;
+        tx.onerror = () => reject(tx.error);
+      });
+    }
+
+    function downloadHtml(html) {
+      const url = URL.createObjectURL(new Blob([html], { type: "text/html" }));
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "index.html";
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    async function writableHandle() {
+      if (!window.showSaveFilePicker) return null;
+      let handle = await storedHandle();
+      if (handle) {
+        let perm = await handle.queryPermission({ mode: "readwrite" });
+        if (perm !== "granted") perm = await handle.requestPermission({ mode: "readwrite" });
+        if (perm !== "granted") handle = null;
+      }
+      if (!handle) {
+        handle = await window.showSaveFilePicker({
+          id: "spark-md-pitch",
+          suggestedName: "index.html",
+          types: [{ description: "HTML", accept: { "text/html": [".html"] } }]
+        });
+        await storeHandle(handle);
+      }
+      return handle;
+    }
+
+    async function saveDeck() {
+      saveStatus.textContent = "Saving…";
+      try {
+        const handle = await writableHandle();
+        const html = await savedHtml();
+        if (handle) {
+          const writable = await handle.createWritable();
+          await writable.write(html);
+          await writable.close();
+          saveStatus.textContent = "Saved into the HTML file.";
+        } else {
+          downloadHtml(html);
+          saveStatus.textContent = "Downloaded index.html. Replace pitch/index.html with that file.";
+        }
+        dirty = false;
+        restored = false;
+        localStorage.removeItem(DRAFT_KEY);
+      } catch (error) {
+        if (error && error.name === "AbortError") {
+          saveStatus.textContent = "Save cancelled.";
+          return;
+        }
+        try {
+          downloadHtml(await savedHtml());
+          saveStatus.textContent = "Downloaded index.html. Replace pitch/index.html with that file.";
+          dirty = false;
+          restored = false;
+          localStorage.removeItem(DRAFT_KEY);
+        } catch (fallback) {
+          saveStatus.textContent = fallback.message || "Could not save.";
+        }
+      }
+    }
+
+    document.querySelectorAll("[data-edit]:not(template)").forEach((el) => {
+      el.addEventListener("paste", (event) => {
+        if (!editing) return;
+        event.preventDefault();
+        const text = event.clipboardData.getData("text/plain").replace(/\s+/g, " ").trim();
+        document.execCommand("insertText", false, text);
+      });
+      el.addEventListener("input", () => {
+        if (el.classList.contains("brand-name")) {
+          const value = el.textContent;
+          document.querySelectorAll(".brand-name").forEach((other) => {
+            if (other !== el) other.textContent = value;
+          });
+        }
+        markDirty();
+      });
+    });
+
+    notesText.addEventListener("input", () => {
+      const template = slides[index].querySelector(".speaker-notes");
+      if (template) writeNode(template, notesText.textContent);
+      markDirty();
+    });
+
+    notesText.addEventListener("paste", (event) => {
+      if (!editing) return;
+      event.preventDefault();
+      const text = event.clipboardData.getData("text/plain");
+      document.execCommand("insertText", false, text);
+    });
+
+    document.getElementById("save-deck").addEventListener("click", saveDeck);
+    document.getElementById("edit-done").addEventListener("click", () => setEditing(false));
+
+    window.addEventListener("resize", fit);
+    window.addEventListener("beforeunload", (event) => {
+      if (!dirty) return;
+      event.preventDefault();
+      event.returnValue = "";
+    });
+    document.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "s") {
+        event.preventDefault();
+        if (editing || dirty) saveDeck();
+        return;
+      }
+      const typing = event.target.isContentEditable;
+      if (typing) {
+        if (event.key === "Enter" && event.target.id !== "notes-text") event.preventDefault();
+        return;
+      }
+      if (!event.metaKey && !event.ctrlKey && !event.altKey && (event.key === "e" || event.key === "E")) {
+        event.preventDefault();
+        setEditing(!editing);
+      }
+      if (event.key === "ArrowRight" || event.key === "PageDown") show(index + 1);
+      if (event.key === "ArrowLeft" || event.key === "PageUp") show(index - 1);
+      if (event.key === "Home") show(0);
+      if (event.key === "End") show(slides.length - 1);
+      if (event.key === "n" || event.key === "N") notes.hidden = !notes.hidden;
+    });
+
+    window.addEventListener("hashchange", () => {
+      const n = Number(location.hash.replace("#", ""));
+      if (n >= 1 && n <= slides.length) show(n - 1);
+    });
+
+    restored = restoreDraft();
+    dirty = restored;
+    fit();
+    const start = Number(location.hash.replace("#", ""));
+    show(start >= 1 && start <= slides.length ? start - 1 : 0);
+  </script>
+</body>
+</html>
