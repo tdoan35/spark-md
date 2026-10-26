@@ -6,6 +6,10 @@ Spark MD is an always-on, fully air-gapped lung cancer screening assistant for a
 
 ## Features
 
+**CT slices** — the study viewer's default 2D axial view with scrollable slices. Detected nodules carry the A7 diameter as a *proposed* measurement; the radiologist confirms or edits each one before growth, VDT and Lung-RADS are computed. (Recorded footage, sped up 2× as labeled.)
+
+![CT slices viewer with proposed nodule diameters awaiting confirmation](assets/ct-slices.png)
+
 **Worklist** — patients sorted by highest-priority scan, with Lung-RADS badge, review state and report status. Hero patient 134503 shows an approved Lung-RADS 4B.
 
 ![Worklist](assets/worklist.png)
