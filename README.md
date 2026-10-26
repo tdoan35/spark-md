@@ -1,5 +1,7 @@
 # Spark MD
 
+![Spark MD hero](assets/spark-md-hero.png)
+
 Spark MD is an always-on, fully air-gapped lung cancer screening assistant for a radiology team, running on a single Dell Pro Max with GB10 (aarch64, CUDA 13). It watches an intake folder that acts as a mock PACS, organizes incoming chest CTs into a per-patient registry, detects and tracks lung nodules across yearly screens, computes Lung-RADS v2022 categories in deterministic tested code, and drafts a radiology-style report plus a primary-care letter for a radiologist to confirm and approve. Patient data never leaves the box: no remote LLM or API calls, no CDNs, no telemetry, no browser speech services. Built in one day (Oct 25, 2026) for the Dell x NVIDIA AI Hackathon, San Francisco.
 
 ## Human-in-the-loop flow
