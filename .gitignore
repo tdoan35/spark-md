@@ -13,3 +13,5 @@ wheelhouse/
 .DS_Store
 ._*
 *.tsbuildinfo
+archive/
+.omp/
