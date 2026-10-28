@@ -1,5 +1,7 @@
 # Spark MD
 
+> 🏆 **1st place, [Dell x NVIDIA AI Hackathon San Francisco](https://builderbase.com/event/dell-x-nvidia-ai-hackathon-san-francisco)** (Oct 25, 2026). Thank you to Dell Technologies, NVIDIA, BuilderBase and everyone who made the event happen.
+
 ![Spark MD hero](assets/spark-md-hero.png)
 
 Spark MD is an always-on, fully air-gapped lung cancer screening assistant for a radiology team, running on a single Dell Pro Max with GB10 (aarch64, CUDA 13). It watches an intake folder that acts as a mock PACS, organizes incoming chest CTs into a per-patient registry, detects and tracks lung nodules across yearly screens, computes Lung-RADS v2022 categories in deterministic tested code, and drafts a radiology-style report plus a primary-care letter for a radiologist to confirm and approve. Patient data never leaves the box: no remote LLM or API calls, no CDNs, no telemetry, no browser speech services. Built in one day (Oct 25, 2026) for the Dell x NVIDIA AI Hackathon, San Francisco.
@@ -82,6 +84,11 @@ Measured Oct 24–25 on the prep DGX Spark; method, machine and raw data for eac
 ## Honesty
 
 "Research demo, not for clinical use" is shown on screen. No clinical outcome is claimed beyond what the data supports; anything not measured is marked **unverified**. The agent log stays visible during time-travel replay. Recordings are of real runs; sped-up footage is labeled (e.g. "2×").
+
+## Team
+
+- **[Ty](https://github.com/tdoan35)**: architecture, engineering, agents and imaging pipeline
+- **[Joyce](https://github.com/joycechen01)**: product story, pitch, demo video and QA
 
 ## Credits
 
