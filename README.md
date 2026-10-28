@@ -87,8 +87,8 @@ Measured Oct 24–25 on the prep DGX Spark; method, machine and raw data for eac
 
 ## Team
 
-- **[Ty](https://github.com/tdoan35)**: architecture, engineering, agents and imaging pipeline
-- **[Joyce](https://github.com/joycechen01)**: product story, pitch, demo video and QA
+- **[Ty](https://www.linkedin.com/in/ty-thanh-doan/)**: architecture, engineering, agents and imaging pipeline
+- **[Joyce](https://www.linkedin.com/in/joycechen1/)**: product story, pitch, demo video and QA
 
 ## Credits
 
